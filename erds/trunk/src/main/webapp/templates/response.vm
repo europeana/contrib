@@ -1,0 +1,28 @@
+
+#parse("header.vm")
+<div id="content">
+	<center>
+#if ($exception)
+	<h2>Error:</h2>
+	<p>$exception.message.
+	#if ($exception.dataProviderId)
+		<br/>(Source: <em>#springMessageText("${exception.dataProviderId}.label" "Unknown")</em>)
+	#end
+	</p>
+#else
+	<h2>Link to the resource: </h2>
+	#if ($resolverResponse.url)
+		<p><a href="$resolverResponse.url">$resolverResponse.url</a><br/></p>
+	#else
+		<p>Sorry, no URL found for this identifier.</p>
+	#end
+#end
+	</center>
+</div>
+
+<div id="content">
+	<center>
+		<a href="$!req.contextPath" target="_blank"><strong>  << B A C K </strong></a>
+	</center>
+</div>
+#parse("footer.vm")

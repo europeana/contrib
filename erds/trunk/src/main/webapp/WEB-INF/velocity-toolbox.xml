@@ -1,0 +1,12 @@
+<toolbox>
+	<tool>
+		<key>esc</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.EscapeTool</class>
+	</tool>
+	<tool>
+		<key>linkTool</key>
+		<scope>request</scope>
+		<class>org.apache.velocity.tools.view.tools.LinkTool</class>
+	</tool>
+</toolbox>

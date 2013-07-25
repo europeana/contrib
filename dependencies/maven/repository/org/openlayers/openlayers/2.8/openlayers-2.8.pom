@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.openlayers</groupId>
+  <artifactId>openlayers</artifactId>
+  <packaging>javascript</packaging>
+  <version>2.8</version>
+  <name>OpenLayers</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+  <repositories>
+    <repository>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/javascript</directory>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+    <outputDirectory>target/scripts</outputDirectory>
+    <testOutputDirectory>target/test-scripts</testOutputDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo.javascript</groupId>
+        <artifactId>javascript-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <descriptor>${basedir}/src/assembler/openlayers.xml</descriptor>
+          <compressor>jsmin</compressor>
+          <languageVersion>160</languageVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

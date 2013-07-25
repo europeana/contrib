@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration file to use with Spring Framework (Please use Spring 3.0.2 or higher)
+   - Karaca Kocer, (c) 2010 - German National Library -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        
+	<import resource="metaResolver.xml" />
+	
+	<!-- GUI: present a simple search interface -->
+	<bean id="resolverController"
+		class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+				<property name="paramName">
+					<value>method</value>
+				</property>
+				<property name="defaultMethodName">
+					<value>showResource</value>
+				</property>
+			</bean>
+		</property>
+		<property name="delegate" ref="resolverDelegate"/>
+	</bean>
+	
+	<!-- For maschine interface: return only the URL back without HTML -->
+	<bean id="plainController"
+		class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+				<property name="paramName">
+					<value>method</value>
+				</property>
+				<property name="defaultMethodName">
+					<value>showPlainResource</value>
+				</property>
+			</bean>
+		</property>
+		<property name="delegate" ref="resolverDelegate"/>
+	</bean>
+	
+	<bean id="resolverDelegate" class="eu.europeanaconnect.erds.ResolverGUI">
+		<property name="metaResolver" ref="metaResolver" />
+	</bean>
+	
+	<bean id="defaultController"
+		class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
+	</bean>
+	
+	<!--  Multi Language support can easily be implemented if needed -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<value>messages</value>
+		</property>
+	</bean>
+
+	<!-- Declare the Interceptor -->
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="siteLang" />
+	</bean>
+
+	<!-- Declare the Resolver -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="us" />
+	</bean>
+	
+	<!--  Needed for Velocity options -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".vm" />
+		<property name="contentType">
+			<value>text/html;charset=UTF-8</value>
+		</property>
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="dateToolAttribute" value="dateTool" />
+		<property name="toolboxConfigLocation" value="WEB-INF/velocity-toolbox.xml" />
+	</bean>
+	
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref local="localeChangeInterceptor" />
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				<prop key="/webapp/*">defaultController</prop>
+				<prop key="/gui.htm">resolverController</prop>
+				<prop key="/*">plainController</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

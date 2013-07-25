@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration file to use with Spring Framework (Please use Spring 3.0.2 or higher)
+   - Karaca Kocer, (c) 2010 - German National Library -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- Configure the resolving service with all known partner resolvers -->
+	<bean id="metaResolver" class="eu.europeanaconnect.erds.ResolvingService">
+		<property name="resolvers">
+			<list>
+				<!-- Germany / Austria / Switzerland  -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.de" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:de</value>
+							<value>urn:nbn:at</value>
+							<value>urn:nbn:ch</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:(de|ch|at).*" />
+					<property name="requestUrlPattern" value="http://nbn-resolving.de/$identifier" />
+				</bean>
+				
+				<!-- Netherlands -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.nl" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:nl</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:nl.*" />
+					<property name="requestUrlPattern"
+						      value="http://persistent-identifier.nl/?identifier=$identifier" />
+				</bean>
+				
+				<!-- Sweden -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.se"></property>
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:se</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:se.*" />
+					<property name="requestUrlPattern" value="http://urn.kb.se/resolve?urn=$identifier" />
+				</bean>
+				
+				<!-- Norway -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.no" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:no</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:no.*" />
+					<property name="requestUrlPattern" value="http://urn.nb.no/$identifier" />
+				</bean>
+				
+				<!-- Finland -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.fi" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:fi</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:fi.*" />
+					<property name="requestUrlPattern" value="http://urn.fi/$identifier" />
+				</bean>
+				
+				<!-- Hungary -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="urn.nbn.hu" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>urn:nbn:hu</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="urn:nbn:hu.*" />
+					<property name="requestUrlPattern" value="http://nbn.urn.hu/N2L?$identifier" />
+				</bean>
+				
+				<!-- DOI -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="doi" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>doi</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="doi:.*" />
+					<property name="requestUrlPattern" value="http://dx.doi.org/$identifier" />
+				</bean>
+				
+				<!-- Handle -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="handle" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>hdl</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="hdl:.*" />
+					<property name="requestUrlPattern" value="http://hdl.handle.net/$identifier" />
+				</bean>
+										
+				<!-- ARK -->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="ark" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>ark</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="ark:.*" />
+					<property name="requestUrlPattern" value="http://ark.cdlib.org/$identifier" />
+				</bean>
+												
+				<!-- All other HTTP URL based "actionable" identifiers-->				
+				<!--  Single threaded HTTP connections are replaced with multithreaded ones
+				      bean class="eu.europeanaconnect.erds.HTTPResolver" -see ticket #931 -->
+				<bean class="eu.europeanaconnect.erds.HTTPResolverMultiThreaded">
+					<property name="id" value="all_url_based_identifiers" />
+					<property name="supportedNamespaces">
+						<list>
+							<value>http</value>
+						</list>
+					</property>
+					<property name="identifierPattern" value="http.*" />
+					<property name="requestUrlPattern" value="$identifier" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

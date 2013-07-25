@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Build file to use with Apache ANT - Karaca Kocer, German National Library
+Please note that this file is obsolete since the project is ported to
+Apache Maven2. 
+It is here just for historical reasons. Do not use it! -->
+
+<project name="erds" default="buildJAR">
+	<!-- the sources  -->
+	<property name="src" value="../src/main/java" />
+	<!-- the sources for all test cases -->
+	<property name="test.src" value="../src/test/java" />
+	<!-- the compiled classes -->
+	<property name="classes" value="../target/classes" />
+	<!-- the compiled test case classes -->
+	<property name="test.classes" value="../target/classes" />
+
+	<!-- built and packaged distributions -->
+	<property name="jar" value="../target/jar" />
+
+	<!-- Apache Tomcat Libraries -->
+	<property name="tomcatlibs" value="C:\opt\apache-tomcat-6.0.29\lib" />
+	<!-- Apache ANT libraries -->
+	<property name="antlibs" value="T:\Abt_IT\4-ARCHE\Arbeitsumgebung\library\apache-ant-1.6.5\lib" />
+	<!-- all third-party jars -->
+	<property name="lib" value="C:\opt\apache-maven-2.2.1\m2\repository" />
+
+	<!-- the version of the distribution to build -->
+	<property name="version" value="1.0.3" />
+
+	<path id="classPath">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${antlibs}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${tomcatlibs}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${classes}" />
+	</path>
+
+	<target name="buildJAR">
+		<echo>Building JAR</echo>
+		<tstamp />
+		<mkdir dir="${jar}" />
+		<mkdir dir="${classes}" />
+
+		<javac debug="true" debuglevel="lines,source" destdir="${classes}" encoding="UTF-8" source="1.6" target="1.6">
+			<src path="${src}" />
+			<classpath refid="classPath" />
+		</javac>
+		
+		<echo>Saving the JAR file: ${ant.project.name}-core-${version}.jar</echo>
+		<jar destfile="${jar}/${ant.project.name}-core-${version}.jar">
+			<fileset dir="${classes}">
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.jmx" />
+				<exclude name="**/*.txt" />
+				<exclude name="**/*.log" />
+				<exclude name="**/ResolverGUI.*" />
+				<exclude name="**/*Test.*" />
+			</fileset>
+		</jar>
+		<echo>Target BuildJAR  -- END.</echo>
+	</target>
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de" dir="ltr">
+<head>
+	<title>#springMessageText("page.title" "The European Resolving Discovery Service - Version 1.0 Alpha 1")</title>
+	<meta name="The European Resolving Discovery Service">
+	<link rel="shortcut icon" href="http://www.europeana.eu/portal/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="http://www.europeanaconnect.eu/styles.css" />
+</head>
+<body>
+<div id="logo">
+	<center>
+		<img src="http://www.europeanaconnect.eu/images/header-1.jpg" alt="Europeana Connect Logo" />
+	</center>
+</div>
+<br />
+<div id="header">
+	<center>
+		<p><h1>The European Resolution Discovery Service</h1></p>
+	</center>
+</div>
+<br />

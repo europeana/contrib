@@ -1,0 +1,18 @@
+#set($page="form")
+#parse("header.vm")
+
+<div id="body">
+	<center>
+		<p>
+		<form method="get" action="">
+			<!-- <fieldset> -->
+				<b>#springMessageText("form.text" "Please enter the URN or DOI of the document:  ")</b>
+				<input name="identifier" id="identifier" size="60" type="text">
+				<input id="search-submit" value="   G  O   " type="submit">
+			<!-- </fieldset> -->
+		</form>
+		</p>
+	</center>
+</div>
+<!-- end #search -->
+#parse("footer.vm")

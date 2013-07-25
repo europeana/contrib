@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Application context definition for "springapp" DispatcherServlet -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<!-- here comes your beans -->
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="templates" />
+		<property name="overrideLogging">
+			<value>false</value>
+		</property>
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="runtime.log.logsystem.class"> org.apache.velocity.runtime.log.SimpleLog4JLogSystem </prop>
+				<prop key="runtime.log.logsystem.log4j.category"> org.apache.velocity.runtime.log.SimpleLog4JLogSystem </prop>
+				<prop key="runtime.log.error.stacktrace">false</prop>
+				<prop key="runtime.log.warn.stacktrace">false</prop>
+				<prop key="runtime.log.info.stacktrace">false</prop>
+				<prop key="runtime.log.info.stacktrace">false</prop>
+				<prop key="runtime.log.invalid.references">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+</beans>

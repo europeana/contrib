@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.eae.webfx</groupId>
+  <artifactId>slider</artifactId>
+  <packaging>javascript</packaging>
+  <version>1.0.2</version>
+  <name>Slider for WebFX</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <repositories>
+    <repository>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/javascript</directory>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+    <outputDirectory>target/scripts</outputDirectory>
+    <testOutputDirectory>target/test-scripts</testOutputDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo.javascript</groupId>
+        <artifactId>javascript-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <descriptor>${basedir}/src/assembler/slider.xml</descriptor>
+          <compressor>shrinksafe</compressor>
+        </configuration>
+        <executions>
+          <execution>
+            <id>compress</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-compressed</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

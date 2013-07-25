@@ -1,0 +1,5 @@
+#if($url)
+	$url
+#else
+ ERROR: no valid URL is found!
+#end

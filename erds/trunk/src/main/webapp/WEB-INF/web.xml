@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app 
+	xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        id="ERDS_Version_1.0_Alpha" 
+        version="2.5">
+            
+	<display-name>European Resolution Discovery Service - Version 1.0 Alpha 1</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>MetaResolver</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MetaResolver</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!--
+		Loads the root application context of this web app at startup. - The
+		application context is then available via -
+		WebApplicationContextUtils.getWebApplicationContext(servletContext).
+	-->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+	<session-config>
+		<session-timeout>30</session-timeout><!-- 30 minutes -->
+	</session-config>
+</web-app>
