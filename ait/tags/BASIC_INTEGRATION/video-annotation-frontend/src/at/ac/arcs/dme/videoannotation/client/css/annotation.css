@@ -1,0 +1,131 @@
+Application {
+   backgroundColor: #8ac3e7;
+   backgroundGradientColors: #8ac3e7, #21a9ed;
+   themeColor: #009dff;
+}
+
+Button {
+   cornerRadius: 11;
+   textIndent: 0;
+}
+
+ButtonBar {
+   horizontalGap: -1;
+}
+
+ColorPicker {
+   columnCount: 20;
+   swatchBorderColor: #000000;
+}
+
+ComboBox {
+   cornerRadius: 11;
+}
+
+HScrollBar {
+   cornerRadius: 6;
+}
+
+Panel {
+   borderStyle: solid;
+   borderAlpha: 0;
+   borderThickness: 0;
+   cornerRadius: 11;
+   backgroundAlpha: 0.3;
+   dropShadowEnabled: false;
+   shadowDistance: 0;
+   shadowDirection: center;
+   titleStyleName: "mypanelTitle";
+}
+
+
+.mypanelTitle {
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+TitleWindow {
+   backgroundAlpha: 0.7;
+}
+
+TextArea {
+   borderStyle: solid;
+}
+
+ToggleButtonBar {
+   horizontalGap: -1;
+}
+
+.annotationTree {
+        folderClosedIcon: ClassReference(null);
+       	folderOpenIcon: ClassReference(null);
+        defaultLeafIcon: ClassReference(null);
+        backgroundAlpha: 0;
+        rollOverColor: #8ac3e7;
+}
+
+.annotationHeaderUser {	
+	color: blue;
+	font-family: Verdana;
+	font-size: 11;	
+	font-weight: bold;
+}
+
+.annotationHeaderDate {
+	color: gray;	
+	font-family: Verdana;
+	font-size:10px;	
+}
+
+.annotationHeaderFragment {
+	background: url(../images/fragment-small.gif) no-repeat scroll 0px 2px;	
+	opacity: 0.5;	
+	margin-left:5px;
+}
+
+.annotationPrivateImage {
+	background: transparent url(../images/lock1.gif) no-repeat scroll 0px;
+}
+
+.annotationText {
+	font-family:Verdana;
+	font-size:11px;
+}
+
+.annotationFormLabelText {
+	font-family:Verdana;
+	font-size:10px;	
+	font-weight: bold;
+}
+
+.annotationFormText {
+	font-family:Verdana;
+	font-size:11px;	
+}
+
+.annotationTitle {
+	font-family:Verdana;
+	font-size:11px;	
+	font-weight: bold;
+}
+
+.annotationFormLabel {
+	font-family:Verdana;
+	font-size:11px;	
+	font-weight: bold;
+}
+
+.annotationFormTitle {
+	font-family:Verdana;
+	font-size:11px;	
+}
+
+.annotationAction {
+	font-family:Verdana;
+	border-bottom:1px dotted #0033CC;
+	color:#0033CC;
+	cursor:pointer;
+	text-decoration:none;
+	margin-right:10px;
+	font-size:10px;	
+}

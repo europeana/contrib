@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+		    
+<mx:Image source="@Embed('/at/ac/arcs/dme/videoannotation/client/images/control_play_blue.png')" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	click="dispatchEvent(new AnnotationEvent(AnnotationEvent.PLAY_FRAGMENT, VideoAnnotation(_annotation)))" 
+	creationComplete="doInit();" >
+
+	<mx:Script>
+		<![CDATA[
+	    	import at.ac.arcs.dme.videoannotation.client.model.VideoAnnotation;    	
+	    	import at.ac.arcs.dme.videoannotation.client.event.AnnotationEvent;
+		    import mx.managers.PopUpManager;
+		    
+			[Bindable] private var _annotation:VideoAnnotation;
+	
+	        private function doInit():void {
+	               PopUpManager.centerPopUp(this);	               
+	        }        
+			
+			public function set annotation(videoAnnotation:VideoAnnotation):void {
+				this._annotation = videoAnnotation;
+			}
+		    
+		    public function get annotation():VideoAnnotation {
+		    	return _annotation;
+		    }
+		]]>
+	</mx:Script>
+</mx:Image>
+
+

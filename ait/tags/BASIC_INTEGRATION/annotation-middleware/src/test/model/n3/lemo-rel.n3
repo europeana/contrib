@@ -1,0 +1,25 @@
+@prefix rdf:  		<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: 		<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  		<http://www.w3.org/2002/07/owl#> .
+@prefix xsd:		<http://www.w3.org/2001/XMLSchema#>.
+
+@prefix lemo: 		<http://lemo.mminf.univie.ac.at/annotation-core#> .
+@prefix rel: 		<http://lemo.mminf.univie.ac.at/ann-relationship#> .
+
+
+<> a owl:Ontology;
+    rdfs:label "The LEMO Annotation Relationship Schema."@en;
+    rdfs:comment "This vocabulary defines the required concepts for annotations that represent a relationship between distinct annotations."@en;
+    .
+
+rel:Relationship a rdfs:Class;
+	rdfs:label "Relationship"@en;
+	rdfs:comment "A relationship between two annotated resources"@en;
+	rdfs:subClassOf lemo:Annotation;
+	.
+
+rel:isLinkedTo a rdf:Property;
+	rdfs:label "is linked to"@en;
+	rdfs:comment "The linking property between two annotated resources"@en;
+	rdfs:domain rel:Relationship;
+	.

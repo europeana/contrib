@@ -1,0 +1,7 @@
+
+DONE
+- remove the mouseover on highlighted places
+- use a correct header for the Invalid / Unrecognized places table
+  - use a component from e.g. GWT-Mosaic for the data table
+- export table to simple XML format
+- enhance the layout

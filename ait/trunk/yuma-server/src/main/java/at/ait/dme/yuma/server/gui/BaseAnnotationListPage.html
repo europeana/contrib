@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<title wicket:id="title">YUMA Annotation Server</title>
+		<link href="css/common.css" rel="stylesheet" type="text/css" />
+		<link href="css/annotation-list.css" rel="stylesheet" type="text/css" />  
+	</head>
+	<body>
+		<div class="header">
+			<h1>
+				<span class="heading" wicket:id="heading"></span>
+				<a class="feed-icon" wicket:id="list-feed-url">
+					<img src="images/feed-icon-28x28.png" alt="Subscribe" title="Subscribe"/>
+				</a>
+				<br style="clear:both" />
+			</h1>
+		</div>
+		
+		<div class="navigation">
+			<p class="home"><a wicket:id="home">Home</a><p>
+			<br style="clear:both"/>
+		</div>
+			
+		<div class="annotation" wicket:id="annotations">
+			<wicket:child />
+			<table>
+				<tbody>
+					<tr>
+						<td class="feedicon">
+							<a wicket:id="reply-feed-url"><img src="images/feed-icon-28x28.png" alt="Subscribe" title="Subscribe to this Annotation"/></a>
+						</td>
+						<td class="label">Title</td><td class="content" wicket:id="title"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Author</td><td class="content"><a wicket:id="author-href"><span wicket:id="author-label"></span></a></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Annotates</td><td class="content"><a wicket:id="objectPage"></a> <a target="_blank" class="btn-open-media" wicket:id="objectUri">Open</a></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Created</td><td class="content" wicket:id="created"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Last Modified</td><td class="content" wicket:id="lastModified"></td>
+					</tr>
+					<tr>              
+						<td colspan="2" class="label">Text</td><td class="content" wicket:id="text"></td>
+					</tr>
+					<tr>              
+						<td colspan="2" class="label">Language</td><td class="content" wicket:id="lang"></td>
+					</tr>
+					<tr>              
+						<td colspan="2" class="label">Scope</td><td class="content" wicket:id="scope"></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="label">Tags</td>
+						<td class="content">
+							<ul class="tags">
+								<li class="tag" wicket:id="tags"><a wicket:id="tag"></a></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>              
+						<td colspan="2" class="label">URI</td><td class="content"><a wicket:id="uri" href="#"></a></td>
+					</tr>
+					<tr>              
+						<td colspan="3" class="no-border">
+							<a wicket:id="dl-json" class="btn-json" title="Download as JSON"></a>
+							<a wicket:id="dl-rdf-xml" class="btn-rdf" title="Download as RDF/XML"></a>
+							<a wicket:id="dl-rdf-n3" class="btn-rdf" title="Download as N3"></a>
+							<a wicket:id="dl-rdf-turtle" class="btn-rdf" title="Download as Turtle"></a>
+							<a wicket:id="dl-rdf-xml-oac" class="btn-rdf" title="Download as OAC in RDF/XML Format (Beta)"></a>
+							<a wicket:id="open-in-client" class="btn-open-in-client"></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

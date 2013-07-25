@@ -1,0 +1,94 @@
+html {
+	margin:0px;
+	padding:0px;
+}
+
+body {
+	margin:0px;
+	padding:0px;
+	text-align:center;
+	font-family:"Verdana","Arial";
+	line-height:19px;
+	font-size:12px;
+}
+
+img {
+	border-width:0px;
+}
+
+.header {
+	width:100%;
+	background-color:#2d2d2d;
+	color:#fff;
+	margin:0px;
+	padding:0px;
+}
+
+.header span.grad {
+	position:absolute;
+	left:-5px;
+	width:570px;
+	height:26px;
+	background-image:url('../images/font-grad.png');
+	background-position:left bottom; 
+	background-repeat:repeat-x;
+}
+
+.header h1 {
+	position:relative;
+	color:#fff;
+	margin:0px auto 0px auto;
+	padding:30px 0px 22px 0px;
+	font-family:"Trebuchet MS", "Lucida Sans", "Verdana";
+	font-size:24px;
+	font-weight:normal;
+	font-style:italic;
+	text-align:left;
+}
+
+.navigation {
+	color:#000;
+	margin:2px auto 0px auto;
+	padding:0px;
+	border:1px solid transparent;
+}
+
+.navigation ul {
+	padding:0px;
+	margin:0px;
+	font-family:Verdana;
+	font-size:14px;
+	font-weight:normal;
+	text-align:left;
+	float:left;
+}
+
+.navigation li {
+	display:inline;
+	padding:0px 10px 0px 3px;
+	font-size:12px;
+}
+
+.navigation a {
+	color:#000;
+	text-decoration:none;
+}
+
+.navigation a:hover {
+	text-decoration:underline;
+}
+
+.navigation a:visited {
+	color:#000;
+}
+
+.navigation li.selected a {
+	font-weight:bold;
+	color:#000;
+}
+
+.navigation .home {
+	float:right;
+	padding:0px 3px 10px 0px;
+	margin:0px;
+}

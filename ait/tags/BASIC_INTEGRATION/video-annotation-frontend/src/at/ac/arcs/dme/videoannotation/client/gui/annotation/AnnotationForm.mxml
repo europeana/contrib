@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="Annotation" borderAlpha="0.8"
+	showCloseButton="true" verticalScrollPolicy="auto" close="close();" creationComplete="doInit();" height="100%" width="700">
+	
+	<mx:VBox>
+        <mx:HBox>
+          	<mx:Label text="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_TITLE')}" width="120" styleName="annotationFormLabel" />
+          	<mx:TextArea id="annotationTitle" width="350" height="20" text="{_annotation.title}" 
+          		styleName="annotationFormTitle" change="{_annotation.title=this.annotationTitle.text}" />
+         </mx:HBox>
+         <mx:HBox>
+          	<mx:Label text="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_COMMENT')}" width="120" styleName="annotationFormLabel" />
+          	<mx:TextArea
+          	    id="comment" width="350" height="100" text="{_annotation.text}" 
+          		styleName="annotationFormText" change="{_annotation.text=this.comment.text}" keyUp="on_KeyUp(event)"/>
+         </mx:HBox>
+         <mx:HBox>
+          	<mx:Label text="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_RANGE')}" width="120" styleName="annotationFormLabel"/>
+          	<mx:TextArea id="timeFrom" height="20" text="{_annotation.videoFragment.formattedTimeFrom}" focusOut="on_timeFromChange()"/>
+          	<mx:Label text="-" width="13" />
+          	<mx:TextArea id="timeTo" height="20" text="{_annotation.videoFragment.formattedTimeTo}" focusOut="on_timeToChange()"/>  		
+         </mx:HBox>
+         <mx:HBox>
+         	<mx:Label text="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_SCOPE')}" width="120" styleName="annotationFormLabel"/>
+            <mx:RadioButton groupName="scope" id="publicScope" click="{_annotation.scope=Scope.PUBLIC}"
+                label="public" width="150" selected="{_annotation.scope==Scope.PUBLIC}" />
+            <mx:RadioButton groupName="scope" id="privateScope" click="{_annotation.scope=Scope.PRIVATE}" 
+                label="private" width="150" selected="{_annotation.scope==Scope.PRIVATE}" />
+         </mx:HBox>
+         <mx:HBox visible="{!MiscUtil.isAudio()}">
+         	<mx:Label text="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_SHAPE')}" width="120" styleName="annotationFormLabel"/>
+            <mx:RadioButton groupName="graphical" id="none" click="on_selectNoAnnotationTool();" label="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_GRAPHICAL_ANNOTATION_NONE')}" selected="{_annotation.videoFragment.shape.isNoShape}" />
+            <mx:RadioButton groupName="graphical" id="rectangle" click="on_selectRectangleAnnotationTool();" label="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_GRAPHICAL_ANNOTATION_RECTANGLE')}" selected="{_annotation.videoFragment.shape.isRectangleShape}" />
+            <mx:RadioButton groupName="graphical" id="ellipse" click="on_selectEllipseAnnotationTool();" label="{resourceManager.getString('videoannotationIntl', 'LABEL_FORM_GRAPHICAL_ANNOTATION_ELLIPSE')}" selected="{_annotation.videoFragment.shape.isEllipseShape}" />
+            <mx:ColorPicker id="colorPicker" selectedColor="{_annotation.videoFragment.shape.color}" change="on_changeColor(event)" showTextField="false" />
+         </mx:HBox>
+         <mx:HBox horizontalAlign="right">
+          	<mx:Button id="btnSave" label="{resourceManager.getString('videoannotationIntl', 'BUTTON_FORM_SAVE')}" click="sendSaveAnnotationEvent()" />
+          	<mx:Button id="btnCancel" label="{resourceManager.getString('videoannotationIntl', 'BUTTON_FORM_CANCEL')}" click="close()"/>  		
+         </mx:HBox>
+ 	</mx:VBox>
+ 	<mx:VBox width="100%">
+ 	    <mx:Panel id="linkedResourcesPanel" title="{resourceManager.getString('videoannotationIntl', 'TITLE_RELATED_INFO_SELECTED')}" width="100%">
+            <mx:Repeater id="linkedResources" dataProvider="{_resources}">
+                <mx:CheckBox id="res" selected="true" click="on_changeSelectedResources(event.currentTarget.getRepeaterItem());" /> <mx:Text text="{linkedResources.currentItem.description}" width="100%"/>
+            </mx:Repeater> 	    
+ 	    </mx:Panel>
+ 	
+ 	    <mx:Panel title="{resourceManager.getString('videoannotationIntl', 'TITLE_RELATED_INFO')}" width="100%">
+     	    <mx:Repeater id="relatedResources" dataProvider="{_annotationEnrichmentData.entity}">
+         	    <mx:Text 
+         	            id="entity" 
+         	            text="{'You mean ' + _annotationEnrichmentData.entity[relatedResources.currentIndex].entityName + ' as:'}"
+         	            fontWeight="bold"
+         	            width="100%"
+         	        />
+         	       <mx:Repeater id="reference" dataProvider="{_annotationEnrichmentData.entity[relatedResources.currentIndex].refrence}"> 
+         	          <mx:RadioButton
+         	            groupName="references{relatedResources.currentIndex}"
+         	            id="rel"
+         	            change="on_changeRelatedInformation(event.currentTarget.getRepeaterItem(0).entityName, event.currentTarget.getRepeaterItem().link, event.currentTarget.getRepeaterItem().linkAbstract)"
+         	          />
+         	          <mx:Text text="{_annotationEnrichmentData.entity[relatedResources.currentIndex].refrence[reference.currentIndex].linkAbstract}" width="100%"/>
+         	        </mx:Repeater>
+     	    </mx:Repeater>
+     	</mx:Panel>
+
+ 	</mx:VBox>
+	
+
+	<mx:Script>
+    <![CDATA[
+        import mx.binding.utils.BindingUtils;
+        import com.ericfeminella.collections.HashMap;
+        import mx.collections.ArrayCollection;
+        import at.ac.arcs.dme.videoannotation.client.model.AnnotationResource;
+        import at.ac.arcs.dme.videoannotation.client.event.ApplicationEvent;
+        import at.ac.arcs.dme.videoannotation.client.util.MiscUtil;
+        import mx.events.ColorPickerEvent;
+        import at.ac.arcs.dme.videoannotation.client.controller.AnnotationController;
+        import at.ac.arcs.dme.videoannotation.client.event.UserEvent;
+        import at.ac.arcs.dme.videoannotation.client.event.RangeEvent;
+        import mx.controls.PopUpButton;
+    	import mx.controls.Alert;    	
+    	import at.ac.arcs.dme.videoannotation.client.model.Scope;
+    	import at.ac.arcs.dme.videoannotation.client.model.AnnotationShape; 
+    	import at.ac.arcs.dme.videoannotation.client.model.VideoAnnotation;    	
+    	import at.ac.arcs.dme.videoannotation.client.model.VideoFragment;
+    	import at.ac.arcs.dme.videoannotation.client.event.AnnotationEvent;
+	    import mx.managers.PopUpManager;
+            		
+    	[Bindable] private var _annotation:VideoAnnotation;
+    	
+    	[Bindable] private var _annotationEnrichmentData:XML;
+
+    	[Bindable] private var _resources:Array = new Array();;
+
+
+        private var unselectedResources:ArrayCollection = new ArrayCollection();
+        
+        private var selectedResources:HashMap = new HashMap();
+
+    	
+    	public function set annotation(videoAnnotation:VideoAnnotation):void {
+			this._annotation = videoAnnotation;
+		}
+	    
+	    public function get annotation():VideoAnnotation {
+	    	return this._annotation;
+	    }
+
+        private function doInit():void {
+        	PopUpManager.centerPopUp(this);
+        	comment.addEventListener(KeyboardEvent.KEY_UP, on_KeyUp);
+        }
+        
+	    
+	    /***********************/
+	    /**    User events     */
+	    /***********************/
+	    private function on_selectNoAnnotationTool():void {
+	        _annotation.videoFragment.shape.type = AnnotationShape.NO_SHAPE;
+	        systemManager.dispatchEvent(new UserEvent(UserEvent.SELECT_NO_SHAPE_TOOL, _annotation));
+	    }
+	    
+	    private function on_selectRectangleAnnotationTool():void {
+	        _annotation.videoFragment.shape.type=AnnotationShape.RECTANGLE_SHAPE;
+            systemManager.dispatchEvent(new UserEvent(UserEvent.SELECT_RECTANGLE_SHAPE_TOOL, _annotation));
+	    }
+	    
+	    private function on_selectEllipseAnnotationTool():void {
+	        _annotation.videoFragment.shape.type=AnnotationShape.ELLIPSE_SHAPE;
+	        systemManager.dispatchEvent(new UserEvent(UserEvent.SELECT_ELLIPSE_SHAPE_TOOL, _annotation));
+	    }
+	    
+	    private function on_changeColor(event:ColorPickerEvent):void {
+	        _annotation.videoFragment.shape.color=event.color;
+	        systemManager.dispatchEvent(new UserEvent(UserEvent.SELECT_ANNOTATION_COLOR, _annotation));
+	    }
+
+	    private function on_timeFromChange():void {
+  			_annotation.videoFragment.formattedTimeFrom = this.timeFrom.text;
+  			systemManager.dispatchEvent(new RangeEvent(RangeEvent.CHANGE_FORM_RANGE, [_annotation.videoFragment.timeFrom, _annotation.videoFragment.timeTo]));
+	    }
+
+	    private function on_timeToChange():void {
+  			_annotation.videoFragment.formattedTimeTo = this.timeTo.text;
+  			systemManager.dispatchEvent(new RangeEvent(RangeEvent.CHANGE_FORM_RANGE, [_annotation.videoFragment.timeFrom, _annotation.videoFragment.timeTo]));
+	    }
+	    
+        private var numElements:int = 0;
+        private function on_KeyUp(event:KeyboardEvent):void {
+	        trace("key pressed!");
+   	        if (event.keyCode.toString().match("32")){
+              numElements++;
+            }
+   	        if (event.keyCode.toString().match("8")) {
+				if(numElements > 0) {
+	   	        	numElements--;
+				}
+   	        }
+   
+            if ( (event.keyCode.toString().match("32") &&  (numElements % 2) == 0  ) || event.keyCode.toString().match("190")  ) {
+                var ae:AnnotationEvent = new AnnotationEvent(AnnotationEvent.GET_ANNOTATION_ENRICHEMENT_DATA);
+                ae.annotationDescription = comment.text;
+                ae.annotation = _annotation;
+                
+                systemManager.dispatchEvent(ae);
+                trace("Sending text for enrichment: " + comment.text);
+            }
+        }
+        
+        private function on_changeSelectedResources(r:AnnotationResource):void {
+            if(!unselectedResources.contains(r)) {
+                unselectedResources.addItem(r);
+            } else {
+                unselectedResources.removeItemAt(unselectedResources.getItemIndex(r));
+            }
+        }
+        
+        private function on_changeRelatedInformation(entityName:String, link:String, abstract:String):void {
+            if(!selectedResources.containsKey(entityName)) {
+                var d:Array = new Array();
+                d[0] = link;
+                d[1] = abstract;
+                selectedResources.put(entityName, d);
+            } else {
+                selectedResources.remove(entityName);
+            }
+        }
+
+	    
+	    /***********************/
+	    /** "Business" events **/
+	    /***********************/
+	    public function handleLoadAnnotation(event:AnnotationEvent):void {
+	        // this annotation = the annotation to be loaded
+	        this._annotation = event.annotation;
+	        
+	        // update the range selector
+	        updateRange(event.annotation.videoFragment.timeFrom, event.annotation.videoFragment.timeTo);
+	        
+	        _resources = _annotation.resources.getValues();
+	        
+	        linkedResources.dataProvider = _resources;
+	        linkedResources.invalidateProperties();
+	        linkedResources.invalidateDisplayList();
+	        
+	    }
+	    
+	    public function handleLoadAnnotationEnrichmentData(event:AnnotationEvent):void {
+            this._annotationEnrichmentData = event.annotationEnrichmentData;
+	    }
+	    
+
+
+
+        /***********************/
+	    /** Utility methods   **/
+	    /***********************/
+	    private function sendSaveAnnotationEvent():void {
+	    	if (_annotation.videoFragment!=null && (_annotation.videoFragment.timeFrom > _annotation.videoFragment.timeTo)) {
+				Alert.show(resourceManager.getString('videoannotationIntl', 'ERROR_INVALID_TIMESPAN'));
+				timeFrom.setFocus();
+				return;
+	    	}
+	    	
+	    	// resources handling
+	    	for each(var r:AnnotationResource in unselectedResources) {
+	    	    _annotation.resources.remove(r.name);
+	    	}
+	    	for each(var k:String in selectedResources.getKeys()) {
+	    	    var name:String = k;
+	    	    var link:String = (selectedResources.getValue(k) as Array)[0];
+	    	    var abstract:String = (selectedResources.getValue(k) as Array)[1];
+	    	    
+	    	    _annotation.addResource(new AnnotationResource(name, link, null, abstract));
+	    	}
+	    	
+	    	
+	    	systemManager.dispatchEvent(new AnnotationEvent(AnnotationEvent.SAVE,_annotation));
+	    	close();
+	    }
+	    
+	    private function close():void {
+       		PopUpManager.removePopUp(this);
+       		systemManager.dispatchEvent(new AnnotationEvent(AnnotationEvent.SHAPE_READONLY, _annotation));
+       		systemManager.dispatchEvent(new UserEvent(UserEvent.CLICK_CANCEL_ANNOTATION, _annotation));
+        }
+
+	    
+	    private function isShapeNull():Boolean {
+	        return _annotation.videoFragment == null || _annotation.videoFragment.shape == null;
+	    }
+	    
+	    private function isFragmentNull():Boolean {
+	        return _annotation.videoFragment == null;
+	    }
+	    
+	    public function handleUpdateRange(e:RangeEvent):void {
+	        updateRange(e.range[0], e.range[1]);
+	    }
+	    
+	    public function updateRange(timeFrom:Number, timeTo:Number):void {
+	        if(!isFragmentNull()) {
+	            _annotation.videoFragment.timeFrom = timeFrom;
+	            _annotation.videoFragment.timeTo = timeTo;
+	            this.timeFrom.text = _annotation.videoFragment.formattedTimeFrom;
+	            this.timeTo.text = _annotation.videoFragment.formattedTimeTo;
+	        }
+	    }
+
+	]]>
+   </mx:Script>
+</mx:TitleWindow>

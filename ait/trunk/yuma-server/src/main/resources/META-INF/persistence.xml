@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+
+    <persistence-unit name="annotation">   
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.AnnotationEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.UserEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.SemanticTagEntity</class>
+    	<class>at.ait.dme.yuma.server.db.hibernate.entities.PlainLiteralEntity</class>
+    	<exclude-unlisted-classes>true</exclude-unlisted-classes>
+    </persistence-unit>
+
+</persistence>

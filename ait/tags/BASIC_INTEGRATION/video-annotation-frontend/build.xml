@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="video-annotation-frontend" default="create-war" basedir=".">
+	<property name="bin.dir" location="bin-debug/" />	
+	<property name="src.dir" location="src" />
+	<property name="test.dir" location="test" />
+	<property name="classes.dir" location="bin" />
+	<property name="lib.dir" location="libs" />
+	<property name="keys.dir" location="keys" />
+
+	<property name="APP_ROOT" location="src/" />
+
+    <property file="build.properties" />
+
+	<taskdef resource="flexTasks.tasks" classpath="${basedir}/libs/flexTasks.jar" /> 
+	
+	<target name="compile" description="Compiles the Flex project">
+
+		<compileLocale locale="en_GB" />
+		<compileLocale locale="de_DE" />
+		<compileLocale locale="fr_FR" />
+		
+		<mxmlc
+			file="${basedir}/src/videoannotation.mxml"
+			dir="${src.dir}"
+			output="${bin.dir}/videoannotation.swf"
+			actionscript-file-encoding="utf-8"
+			keep-generated-actionscript="true"
+			locale="en_GB,de_DE,fr_FR"
+			>
+		
+			<!-- Source path of the project -->
+			<source-path path-element="${src.dir}"/>
+			
+			<!-- List of SWC files or directories that contain SWC files -->
+		    <compiler.library-path dir="${FLEX_HOME}/frameworks" append="true">
+		        <include name="libs" />
+		    </compiler.library-path>
+			
+			<!-- Custom libraries for the project -->
+			<compiler.include-libraries dir="${lib.dir}">
+				<include name="as3corelib.swc" />
+			</compiler.include-libraries>
+
+			<!-- Locale bundles for the project -->
+			<compiler.include-libraries dir="${basedir}/locale">
+		        <include name="Resources_en_GB.swc" />
+        		<include name="Resources_de_DE.swc" />
+		        <include name="Resources_fr_FR.swc" />
+			</compiler.include-libraries>
+		</mxmlc>
+	</target>
+	
+	<target name="clean">
+		<delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="${bin.dir}" includes="**/*, **/*.*" />
+		</delete>
+	</target>
+	
+	<target name="create-war" depends="compile" description="Creates a deployable WAR file for the project">
+		
+		<copy file="${basedir}/html-template/index.template.html" tofile="${bin.dir}/videoannotation.html" />
+		<replace file="${bin.dir}/videoannotation.html" token="$${swf}" value="videoannotation"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${width}" value="100%"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${height}" value="100%"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${bgcolor}" value="#869ca7"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${application}" value="videoannotation"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${version_major}" value="9"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${version_minor}" value="0"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${version_revision}" value="28"/>
+		<replace file="${bin.dir}/videoannotation.html" token="$${title}" value="Video Annotation frontend"/>
+	
+		<war destfile="${war.filename}" needxmlfile="false">
+			
+			<fileset dir="${bin.dir}">
+				<include name="videoannotation.swf" />
+				<include name="videoannotation.html" />
+			</fileset>
+
+			<fileset dir="${basedir}/locale">
+				<include name="Resources_en_GB.swc" />
+				<include name="Resources_de_DE.swc" />
+				<include name="Resources_fr_FR.swc" />
+			</fileset>
+			
+			<fileset dir="${basedir}/html-template">
+				<include name="AC_OETags.js" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="index.html" />
+				<include name="ait.gif" />
+			</fileset>
+		</war>
+	</target>
+	
+	<macrodef name="compileLocale" description="Compiles the Resource package for the given locale">
+		<attribute name="locale" default="en_GB"/>
+		<sequential>
+			<!--
+			  Create the Flex Home directory for the language in question.
+			  This is necessary to compensate for a bug in pre-3.2 releases of 
+			  mxmlc.
+			-->
+			<mkdir dir="${FLEX_HOME}/frameworks/locale/@{locale}"/>
+		
+			<!-- Invoke COMPC -->
+			<compc output="${basedir}/locale/Resources_@{locale}.swc">
+				<locale>@{locale}</locale>
+				<source-path path-element="${basedir}/locale/{locale}"/>
+				<include-resource-bundles>videoannotationIntl</include-resource-bundles>
+				<source-path path-element="${FLEX_HOME}/frameworks"/>
+			</compc>
+			
+		</sequential>
+	</macrodef>
+	
+</project>

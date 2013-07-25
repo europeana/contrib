@@ -1,0 +1,23 @@
+<module rename-to="yuma.core">
+	
+	<!-- TODO some modules are not needed here, but should be -->
+	<!-- included in the media-specific modules!              -->
+	
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	<inherits name='org.gwtwidgets.WidgetLibrary'/>    
+    <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+    <inherits name='com.google.gwt.json.JSON'/>  
+ 	<inherits name="com.google.gwt.maps.GoogleMaps"/>
+ 	
+ 	<inherits name='com.google.gwt.user.theme.aegean.Aegean'/>
+ 	
+ 	<inherits name='org.gwt.mosaic.Mosaic'/>
+	<inherits name='org.gwt.mosaic.actions.Actions' />
+ 
+  	<extend-property name="locale" values="de"/>
+  	<extend-property name="locale" values="fr"/>
+  	
+	<source path = "client"/>
+	<source path = "shared"/>
+</module>

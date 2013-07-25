@@ -1,0 +1,2927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Encompassing the Globe</name>
+	<open>1</open>
+	<Snippet maxLines="2">Arthur M. Sackler Gallery, Smithsonian Institution</Snippet>
+	<LookAt>
+		<longitude>-2.765335020543193</longitude>
+		<latitude>15.32598101527606</latitude>
+		<altitude>200000</altitude>
+		<range>11578211.23993856</range>
+		<tilt>5.35458772938372e-015</tilt>
+		<heading>-4.597863273513222</heading>
+	</LookAt>
+	<Style id="ETGline3">
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffcccccc</color>
+			<width>0.5</width>
+		</LineStyle>
+	</Style>
+	<Style id="chronology">
+		<IconStyle>
+			<scale>0.8</scale>
+			<Icon>
+				<href>C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/orangeDotIcon.gif</href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<antialias>0</antialias>
+		</LineStyle>
+	</Style>
+	<Style id="ETGline">
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff362591</color>
+			<width>0.5</width>
+		</LineStyle>
+	</Style>
+	<Style id="ETG">
+		<IconStyle>
+			<scale>0.8</scale>
+			<Icon>
+				<href>C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/yellowDotIcon.gif</href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<antialias>0</antialias>
+		</LineStyle>
+	</Style>
+	<Style id="ETGline5">
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffcc9933</color>
+			<width>0.5</width>
+		</LineStyle>
+	</Style>
+	<Style id="ETGline2">
+		<LabelStyle>
+			<color>ff000000</color>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff059cff</color>
+			<width>0.5</width>
+		</LineStyle>
+	</Style>
+	<Style id="overview">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/redDotIcon.gif</href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<antialias>0</antialias>
+		</LineStyle>
+	</Style>
+	<Style id="ETGline4">
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text>$[description]</text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff2b8e7f</color>
+			<width>0.5</width>
+		</LineStyle>
+	</Style>
+	<ScreenOverlay>
+		<name>Legend</name>
+		<Icon>
+			<href>C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_legend.png</href>
+		</Icon>
+		<overlayXY x="0" y="500" xunits="pixels" yunits="pixels"/>
+		<screenXY x="5" y="1" xunits="pixels" yunits="fraction"/>
+		<rotationXY x="0" y="0" xunits="pixels" yunits="pixels"/>
+		<size x="0" y="0" xunits="pixels" yunits="pixels"/>
+	</ScreenOverlay>
+	<Folder>
+		<name>Portugal</name>
+		<LookAt>
+			<longitude>-9.161228105543239</longitude>
+			<latitude>36.82555760047872</latitude>
+			<altitude>0</altitude>
+			<range>1649399.045969239</range>
+			<tilt>46.40621917137705</tilt>
+			<heading>-3.02403254767321</heading>
+		</LookAt>
+		<Placemark>
+			<name>PORTUGAL AND THE AGE OF DISCOVERY</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><font size="3" face="Verdana" color="#752641">
+<B>PORTUGAL AND THE AGE OF DISCOVERY</B><BR>
+<font size="3" face="Verdana" color="#000000">
+Portugal's voyages of exploration turned a small country on the periphery of Europe into a major world power, establishing a unique empire that was based on trade rather than territory. The forts and commercial settlements the Portuguese built on the coasts of the Atlantic, Indian, and Pacific oceans were linked by cargo-carrying ships that transported soldiers, merchants, and missionaries along routes that began in Lisbon and led west as far as Rio de Janeiro and east to Nagasaki.
+<p>
+Yet the empire's most enduring legacy was cultural rather than political. This seaborne network of communications connected previously isolated parts of the globe and enabled an unprecedented, worldwide exchange of information.
+<p>
+Learn more on our website: <a href="http://www.asia.si.edu/EncompassingtheGlobe">www.asia.si.edu/EncompassingtheGlobe</a>
+<br><br></font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-9.161228105543239</longitude>
+				<latitude>36.82555760047872</latitude>
+				<altitude>0</altitude>
+				<range>1649399.045969239</range>
+				<tilt>46.40621917137705</tilt>
+				<heading>-3.02403254767321</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>-8.03676586545204,39.58522508561821,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Brazil</name>
+		<LookAt>
+			<longitude>-44.86709071070245</longitude>
+			<latitude>-18.85229691197564</latitude>
+			<altitude>0</altitude>
+			<range>3421685.448681944</range>
+			<tilt>30.25108226583678</tilt>
+			<heading>-9.714337113714928</heading>
+		</LookAt>
+		<Placemark>
+			<name>BRAZIL</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>BRAZIL</b><br>
+<font size="3" face="Verdana" color="#000000">
+In 1500, Pedro &Aacute;lvarez Cabral, commanding the second Portuguese fleet sent to India, sailed far into the western Atlantic to take advantage of favorable winds and by chance landed on the coast of Brazil. Portugal claimed this new territory, which lay on its side of the line of demarcation established with Spain, and began the long process of developing its potential. 
+<p>
+In Africa and Asia, Portugal established trading centers rather than territorial settlements. Responding to different opportunities in South America, the Portuguese created a full-scale colony in Brazil. Settlers slowly began to explore and populate a vast new land. 
+<p>
+The country's first economy was based on Brazil wood, the source of a valuable dyestuff, which was harvested with the help of the local Indians. The Portuguese soon introduced the cultivation of sugar, which depended on the labor of slaves brought from Africa. A century later, in the 1630s, Brazil was invaded by the Dutch, who took over the northeastern part of the colony and its sugar production until they were expelled in 1654. At the end of the seventeenth century, extensive deposits of gold and diamonds were discovered in the area that came to be called Minas Gerais (general mines), leading to an age of great wealth in Brazil. 
+
+<p><a href="http://www.asia.si.edu/EncompassingtheGlobe/Brazil.htm">Learn more on our website</a>
+<br><br> 
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-46.46940568339036</longitude>
+				<latitude>-13.81022233108013</latitude>
+				<altitude>0</altitude>
+				<range>4311338.938559525</range>
+				<tilt>2.85856295709877e-013</tilt>
+				<heading>3.261325789470265</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>-48.51197901446096,-11.45709480875657,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Map of Brazil</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+
+
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Brazil/ELS2007.2.15.jpg" alt="" width="250" height="338" border="0" /></td>
+
+<td><font size="3" face="Verdana" color="#752641"><b>Map of Brazil, folio 5v, from the Miller Atlas</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Pedro and Jorge Reinel, Lopo Homen, and Antonio da Hollanda<br>
+Portugal, ca. 1519<br>
+Ink and color on parchment <br>
+Biblioth&egrave;que nationale de France, Paris, GE DD 683 RES 
+<br><br>
+This early atlas of the Portuguese world includes a map of Brazil showing Indians harvesting Brazil wood, the source of the red dye that was the basis of the colony’s first economy. The map also features the exotic animal life of the New World, including monkeys, macaws and other brightly colored birds, a cat that may represent a jaguar, and at the left, a dragon.<br>
+</font></td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-41.6555190791096</longitude>
+				<latitude>-12.46153098394212</latitude>
+				<altitude>0</altitude>
+				<range>3584862.237490788</range>
+				<tilt>30.09765163580644</tilt>
+				<heading>-11.09314875134616</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-41.32617498422381,-11.35124691298367,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Tupinamba dish</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td colspan=2><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Brazil/ELS2007.2.168.jpg" alt="" width="500" height="332" border="0" /><br>
+<font size="3" face="Verdana" color="#752641"><b>Tupinamb&aacute; dish</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Tupinamb&aacute; culture, Brazil, 16th century<br>
+Painted pottery <br>
+Museu de Arqueologia e Etnologia, Universidade de S&atilde;o Paulo, RGA 188<br>
+</font></td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-43.30763104048158</longitude>
+				<latitude>-10.58660658111647</latitude>
+				<altitude>0</altitude>
+				<range>3470665.927862766</range>
+				<tilt>0.004715774960506226</tilt>
+				<heading>0.2718829575337313</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-42.46512798436086,-13.26594247392104,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Seated Santarem figure</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width=225><font size="3" face="Verdana" color="#752641"><b>Seated Santar&eacute;m figure</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Brazil<br>
+Ceramic<br>
+Museu de Arqueologia e Etnologia, Universidade de S&atilde;o Paulo
+<br>
+</font></td>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Brazil/525.png" alt="" width="277" height="400" border="0" /><br>
+</td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-47.66358619247496</longitude>
+				<latitude>-7.458735483467287</latitude>
+				<altitude>0</altitude>
+				<range>4557973.30211414</range>
+				<tilt>0</tilt>
+				<heading>-0.8485771327155566</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-54.7203971932563,-2.43189487015459,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Costume study</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+
+
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Brazil/ELS2007.2.46.jpg" alt="" width="245" height="348" border="0" /><br>
+<font size="3" face="Verdana" color="#752641"><b>Costume study: youth holding a club and a shield</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Hans Burgkmair the Elder (1473-1531)<br>
+Germany, 1519-25<br>
+Pen and ink with washes on paper<br>
+The British Museum, SL.5218.129<br>
+</font></td>
+
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Brazil/ELS2007.2.47.jpg" alt="" width="245" height="348" border="0" /><br>
+<font size="3" face="Verdana" color="#752641"><b>Costume study: Youth holding an ax</b></font><br><font size="3" face="Verdana" color="#000000">
+Hans Burgkmair the Elder (1473-1531)<br>
+Pen and ink with washes on paper <br>
+The British Museum, SL.5218.128<br></td></tr>
+<tr>
+<td colspan=2><font size="3" face="Verdana" color="#000000">Hans Burgkmair the Elder was a contemporary of Albrecht Durer's; in these two drawings, he poses African youths with artifacts from American cultures. Both figures wear Tupinamb&aacute; feather mantles from Brazil around their hips as though they were skirts, as well as Brazilian feathered headdresses. The bearded figure holds a South American axe, while the other grasps an Aztec feathered shield and a Tairona club from Colombia.</font><br></td>
+</tr>
+
+<tr>
+<td colspan=2>
+<font size="2" face="Verdana" color="#000000">Images &copy;The Trustees of the British Museum. All rights reserved.</font>
+<a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>9.654097746862808</longitude>
+				<latitude>48.21954968314994</latitude>
+				<altitude>0</altitude>
+				<range>2965928.211656406</range>
+				<tilt>30.09765163580641</tilt>
+				<heading>-8.70517120815531</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>9.72546224231742,50.40698088003234,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Africa</name>
+		<LookAt>
+			<longitude>1.250853631498604</longitude>
+			<latitude>8.379277876514024</latitude>
+			<altitude>0</altitude>
+			<range>5173169.584562379</range>
+			<tilt>4.63866540567798e-015</tilt>
+			<heading>-0.1022589977444377</heading>
+		</LookAt>
+		<Placemark>
+			<name>AFRICA</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>AFRICA</b><br>
+<font size="3" face="Verdana" color="#000000">
+In a celebrated series of voyages beginning in the 1430s, navigators sailing under the Portuguese flag explored the west coast of Africa as far as the Cape of Good Hope, which they rounded in 1488.
+<p>
+Portugal pursued a variety of goals in western Africa. Slave trading began in the 1440s, although its volume remained relatively limited until the seventeenth century, when the sugar industry expanded to Brazil and the Caribbean islands, sharply increasing the demand for labor. The Portuguese also searched for the source of the gold trade - a goal they achieved when they reached Ghana and constructed a fort at Elmina in 1482 - and hoped to make contact with Prester John, the legendary Christian king who was thought to live in Ethiopia. Eventually, the principal goal became the quest for a sea route to the spice trade of the Indian Ocean. 
+<p>
+For the most part, the African works of art from Portugal's early years on the continent were created specifically for trade. Exquisitely carved ivories from what is now Sierra Leone and the kingdoms of Benin and Kongo reached Europe aboard Portuguese ships. Other objects, which remained in Africa, also reveal Portugal's presence: works of sculpture from the Kingdom of Benin, cast in brass, show the figures of Portuguese soldiers, and crucifixes from the Kingdom of Kongo reflect missionary activity. 
+<br><br>
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>5.101417616112609</longitude>
+				<latitude>1.981093971217933</latitude>
+				<altitude>0</altitude>
+				<range>4876874.753037867</range>
+				<tilt>0</tilt>
+				<heading>-1.945715938034892</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>6.518920149349724,11.934429226526,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>SIERRA LEONE</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>SIERRA LEONE</b><br>
+<font size="3" face="Verdana" color="#000000">
+In the early 1460s, a Portuguese expedition reached the part of the African coast that came to be called Sierra Leone (Lion Mountains) because of its forest-covered mountain ranges. Early 16th-century accounts of the region describe the high quality of the carved ivories that were made there, and customs records from this period indicate that ivory spoons and saltcellars were soon imported into Portugal. It was not until the twentieth century, however, that scholars realized that these documents and descriptions referred to a stylistically related group of ivory carvings in European and American collections, some of which are described in early inventories. The 16th-century compilers of these catalogues were unaware of the objects' African origin and sometimes referred to them as Indian, Turkish, or Oriental.
+<p>
+The figures that appear on some of the ivories are connected to small stone figural carvings from Sierra Leone, known as <i>nomoli</i>. Both the <i>nomoli</i> and the ivories are thought to have been produced by the inhabitants of this region in the sixteenth century, the former for local religious uses and the latter for trade with the Europeans. Early Portuguese sources refer to these peoples as the "Sapi," and so the ivories are often called Sapi-Portuguese. 
+<br><br>  
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-11.97191028713597</longitude>
+				<latitude>7.251259820682325</latitude>
+				<altitude>0</altitude>
+				<range>2667730.485532423</range>
+				<tilt>0</tilt>
+				<heading>-2.963364443084546</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>-12.24766317068742,8.115136790168208,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>THE KINGDOM OF BENIN</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>THE KINGDOM OF BENIN</b><br>
+<font size="3" face="Verdana" color="#000000">
+Portuguese navigators explored the coastline of the kingdom of Benin, located in modern Nigeria, in the 1470s, and in 1486 an official delegation sailed inland to the capital. Portugal began to trade with Benin, while missionaries, responding to the request of the Oba (king), arrived in 1514, although there was considerable resistance to conversion. 
+<p>
+Benin's Obas were great warrior kings, and the Portuguese afforded them valuable access to imported goods and gun-bearing mercenaries. The kingdom was already established as a center for the casting of artworks in brass, and the figures of Portuguese soldiers and traders - recognizable from their long hair, beards, aquiline noses, and European dress - began to appear in a variety of royal works, including plaques that decorated the pillars of the Oba's palace. These first became known in Europe when they were confiscated in 1897 by a British military expedition. 
+<p>
+Scholars believe that a number of carved ivories intended for trade with the Portuguese were produced in Benin in the sixteenth century. These include saltcellars with figures of Portuguese soldiers, as well as hunting horns and spoons with animal motifs. Because of their connections with the royal art of the Kingdom of Benin, they are usually called Bini-Portuguese. 
+  <br><br>
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>4.752773232825537</longitude>
+				<latitude>5.121448833002262</latitude>
+				<altitude>0</altitude>
+				<range>4532756.933782241</range>
+				<tilt>6.912371972545308e-015</tilt>
+				<heading>-0.7691696636972055</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>5.687100556196569,6.201219945467873,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>THE KINGDOM OF CONGO</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>THE KINGDOM OF CONGO</b><br>
+<font size="3" face="Verdana" color="#000000">
+In 1482, the Portuguese first made contact with the powerful Kingdom of Kongo, located in a region that is now divided among three countries: the Republic of the Congo, the Democratic Republic of the Congo, and Angola. From the Portuguese point of view, their long and complex relationship with the Kongo peoples began on a positive note, with the king's conversion to Christianity in 1491 and his acceptance of a wide range of assistance, from military support to the establishment of a school to teach the Portuguese language. By the later sixteenth century, however, relations had deteriorated, and the Portuguese became embroiled in a protracted war with the kingdom's tributary state of Ndongo, which eventually became the colony of Angola. 
+<p>
+A small group of carved works in ivory, principally hunting horns, are thought to date from the early period of Portuguese presence. Their decoration is more geometrical than figurative and resembles the delicately woven patterns found in raffia (palm fiber) textiles, which are described in accounts written by early European travelers to the region. 
+<p>
+Portugal's presence in the Kongo kingdom is also evident from a group of brass crucifixes and other objects decorated with crosses. These attest to the long period of Christian influence that began soon after the arrival of the Portuguese. <br><br> 
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>13.73701708614366</longitude>
+				<latitude>-10.46404616818424</latitude>
+				<altitude>0</altitude>
+				<range>3276471.084439586</range>
+				<tilt>8.381168114934198e-016</tilt>
+				<heading>1.124175377121492</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>17.56005143946633,-5.732680758594907,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Male figure (nomoli)</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.117.jpg" alt="" width="314" height="394" border="0" /></td>
+<td valign="top"><font size="3" face="Verdana" color="#752641"><b>Male figure (nomoli)<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Sierra Leone, Guinea<br>
+15th-17th century<br>
+Steatite<br>
+HxWxD: 16.2 x 8.6 x 10.8 cm (6 3/8 x 3 3/8 x 4 1/4 in.)<br>
+Museum purchase, 85-1-2<br>
+Photograph by Franko Khoury<br>
+National Museum of African Art<br>
+Smithsonian Institution
+</td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-11.80486781216997,9.149434680230181,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Plaque: Figure with a crossbow</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.131.jpg" alt="" width="314" height="445" border="0" /></td>
+<td valign="top"><font size="3" face="Verdana" color="#752641"><b>Plaque: Figure with a crossbow<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Edo peoples<br>
+Benin Kingdom, Nigeria, mid 16th–17th century<br>
+Copper alloy <br>
+The British Museum, 98.1-15.10<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+</td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>6.424932971617285</longitude>
+				<latitude>6.879455027313092</latitude>
+				<altitude>0</altitude>
+				<range>1677629.898399629</range>
+				<tilt>0</tilt>
+				<heading>-6.573210728470912</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>7.559345439922083,6.596731620097566,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Ivory saltcellar</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.377.jpg" alt="" width="245" height="450" border="0" /></td>
+<td valign="top"><font size="3" face="Verdana" color="#752641"><b>Ivory saltcellar<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Sapi-Portuguese style<br>
+Sierra Leone, 1490-1530<br>
+Ivory<br>
+The British Museum, 1981.AF.35.1<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+</td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>0.03497466325695362</longitude>
+				<latitude>5.60006618134619</latitude>
+				<altitude>0</altitude>
+				<range>3544472.46279665</range>
+				<tilt>0</tilt>
+				<heading>-2.778868742346979</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-10.37870369988059,8.489277967257456,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Ivory saltcellar with boat</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.134.jpg" alt="" width="314" height="474" border="0" /></td>
+<td valign="top"><font size="3" face="Verdana" color="#752641"><b>Saltcellar with boat<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Bini-Portuguese style, Nigeria, 16th century<br>
+Ivory<br>
+The British Museum, 1878, 11-1.48a-c<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+</td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>7.931895112366454</longitude>
+				<latitude>7.771957005824399</latitude>
+				<altitude>0</altitude>
+				<range>1677629.898399628</range>
+				<tilt>0</tilt>
+				<heading>-6.280978844411185</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>7.177815705738482,5.227030559374978,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Musketeer</name>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.432.jpg" alt="" width="314" height="498" border="0" /></td>
+<td valign="top"><font size="3" face="Verdana" color="#752641"><b>Musketeer<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Edo peoples<br>
+Benin Kingdom, Nigeria, 18th century<br>
+Copper alloy<br>
+The British Museum, 1944 AF4.7<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+</td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>6.951473869411394</longitude>
+				<latitude>6.686509091091811</latitude>
+				<altitude>0</altitude>
+				<range>1677629.898399625</range>
+				<tilt>3.594584518401882e-017</tilt>
+				<heading>-6.460971080850975</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>6.311808248824605,7.197557011659958,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Knife Case</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="2" cellpadding="2">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr><td>
+<img src="http://www.asia.si.edu/beta/portugal/mainImages/ELS2007.2.144.jpg" alt="Knife Case" height="350" width="210"/></td>
+
+<td><font size="3" face="Verdana" color="#752641"><b>Knife Case<b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Kongo peoples<br>
+Democratic Republic of the Congo or Angola, 16th-18th century<br>
+Ivory<br>
+The Detroit Institute of Arts, 25.183.A-B<br>
+Photograph &copy; 1987 The Detroit Institute of Arts
+<br></font></td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>15.16414825724942</longitude>
+				<latitude>-5.815311710035798</latitude>
+				<altitude>0</altitude>
+				<range>4028250.904020922</range>
+				<tilt>0</tilt>
+				<heading>-0.9763612375789972</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>14.27190611260676,-4.690698277942256,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Oliphant</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="2" cellpadding="2">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.497.jpg" alt="" width="500" height="196" border="0" /></td></tr>
+
+<tr><td><font size="3" face="Verdana" color="#752641"><b>Oliphant<b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Sapi-Portuguese style<br>
+Sierra Leone, ca. 1500<br>
+Ivory<br>
+Private collection
+<br><br></font></td></tr>
+
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-13.06334327599217</longitude>
+				<latitude>7.128546164126067</latitude>
+				<altitude>0</altitude>
+				<range>2267867.696222087</range>
+				<tilt>3.925254260347731e-015</tilt>
+				<heading>-9.481346928137835</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>-11.1135049623516,7.736357206590062,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Ivory spoon</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="2" cellpadding="2">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+</td></tr>
+
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Africa/ELS2007.2.400.jpg" alt="" width="170" height="493" border="0" /></td>
+
+<td><font size="3" face="Verdana" color="#752641"><b>Ivory spoon<b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Bini-Portuguese style<br>
+Nigeria, 16th century<br>
+Ivory<br>
+Private collection
+<br><br></font></td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>10.35686809127313</longitude>
+				<latitude>6.177434093397244</latitude>
+				<altitude>0</altitude>
+				<range>4037548.377074558</range>
+				<tilt>0</tilt>
+				<heading>-1.997871116395974</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>8.622391443700153,7.03702265679427,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Indian Ocean</name>
+		<LookAt>
+			<longitude>66.3143607470662</longitude>
+			<latitude>16.40483456285993</latitude>
+			<altitude>0</altitude>
+			<range>4006705.536391688</range>
+			<tilt>0</tilt>
+			<heading>5.270870546684172</heading>
+		</LookAt>
+		<Placemark>
+			<name>THE INDIAN OCEAN</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>THE INDIAN OCEAN</b><br>
+<font size="3" face="Verdana" color="#000000">
+When Vasco da Gama sailed his four ships into the Indian Ocean in late 1497, he encountered an extensive and long-established network of maritime trade connecting ports from East Africa to what is now Indonesia. The Portuguese quickly developed a strategy for entering this arena by creating the Estado da &Iacute;ndia (State of India), a series of fortresses, trading posts, and strategic coastal cities that ultimately stretched from Mozambique to Macao. These were intended to dominate maritime commerce in the Indian Ocean and, especially, to control the trade in spices. The administrative headquarters was established in the city of Goa, on the west coast of India.
+<p>
+The Portuguese never did achieve a real monopoly over spices, but the very existence of the Estado was an astonishing accomplishment in view of Portugal's relatively small size and great distance from Asia. Portuguese merchants in India soon began to trade in luxury goods as well. Artworks and furniture that survive from the period attest to the extraordinary skills of the artists and craftsmen working in India and Sri Lanka as well as to the richness and rarity of the materials used in their manufacture.
+<br><br>
+<a href="http://www.asia.si.edu/EncompassingtheGlobe/IndianOcean.htm">Learn more on our website</a>
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>69.48697017457377</longitude>
+				<latitude>19.39489000093638</latitude>
+				<altitude>0</altitude>
+				<range>5517618.990839482</range>
+				<tilt>4.840109655742826e-014</tilt>
+				<heading>-2.493508815765378</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>75.39466169106754,16.00467619393487,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Portrait of Afonso de Albuquerque</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width="202">
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/ELS2007.2.218.jpg" alt="Portrait of Afonso de Albuquerque" height="350" width="202"/></td>
+</td>
+<td><font size="3" face="Verdana" color="#752641"><b>Portrait of Afonso de Albuquerque<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Goa, India; 16th century<br>
+Mixed technique on wood<br>
+Museu Nacional de Arte Antiga/IMC/Ministry of Culture, Lisbon, 2144P<br>
+Photo: IMC/DDF/Lu&iacute;s Pav&atilde;o
+<br><br>
+The second governor of the Estado da &Iacute;ndia, Albuquerque (1453-1515) helped plan and then implemented Portugal's strategy for taking control of Indian Ocean trade by capturing strategic ports like Hormuz, Goa, and Malacca.  
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>69.48697017457377</longitude>
+				<latitude>19.39489000093638</latitude>
+				<altitude>0</altitude>
+				<range>5517618.990839482</range>
+				<tilt>4.840109655742826e-014</tilt>
+				<heading>-2.493508815765378</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>73.60008655400347,15.99238445423564,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Young Christ as the Mariner on the Ship of Salvation</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width="301">
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/503.png" alt="" width="301" height="400" border="0" /></td>
+</td>
+<td><font size="3" face="Verdana" color="#752641"><b>Young Christ as the Mariner on the Ship of Salvation<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+India, 16th century<br>
+Ivory<br>
+The British Museum, OA 1959 70.21.1<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>72.18539468934783</longitude>
+				<latitude>15.86774325524471</latitude>
+				<altitude>0</altitude>
+				<range>3480797.824934339</range>
+				<tilt>8.059186252223269e-015</tilt>
+				<heading>2.52692770957947</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>75.0054839140054,14.60481564886501,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Salt container</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width="247">
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/ELS2007.2.386.jpg" alt="" width="247" height="400" border="0" /></td>
+</td>
+<td><font size="3" face="Verdana" color="#752641"><b>Salt container<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Sri Lanka, 17th century<br>
+Gold, gems, rock crystal<br>
+The Burghley House Collection, Stamford, EWA08530
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>80.43591900037775</longitude>
+				<latitude>11.76686387386923</latitude>
+				<altitude>0</altitude>
+				<range>2634695.108762921</range>
+				<tilt>0</tilt>
+				<heading>3.888250709475801</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>80.51388213216362,7.839543911541452,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Casket with Portuguese coat-of-arms</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/494casket.png" alt="" width="450" height="361" border="0" /></td>
+</tr>
+<tr><td><font size="3" face="Verdana" color="#752641"><b>Casket with Portuguese coat-of-arms<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Portugal, 16th century<br>
+Tortoiseshell and silver<br>
+Private collection
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>80.43591900037775</longitude>
+				<latitude>11.76686387386923</latitude>
+				<altitude>0</altitude>
+				<range>2634695.108762921</range>
+				<tilt>0</tilt>
+				<heading>3.888250709475801</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>81.38992856905483,7.282145654746749,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Heliotrope Spoon</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width="134"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/469spoon.png" alt="" width="134" height="450" border="0" /></td>
+<td><font size="3" face="Verdana" color="#752641"><b>Heliotrope Spoon<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Sri Lanka, mid- to late-16th century<br>
+Heliotrope, gold, rubies, sapphires<br>
+Kunsthistorisches Museum Wien, Kunstkammer, Vienna, KK 1620
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>76.22472802985409</longitude>
+				<latitude>10.73493868470069</latitude>
+				<altitude>0</altitude>
+				<range>2871879.817587558</range>
+				<tilt>1.52543101189431e-012</tilt>
+				<heading>-6.587667391439521</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>80.55494467961802,8.75687925900003,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Casket of Matias de Albuquerque</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/268casket.png" alt="" width="400" height="334" border="0" /></td></tr>
+<tr>
+<td><font size="3" face="Verdana" color="#752641"><b>Casket of Matias de Albuquerque</b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Goa, India, last quarter of 16th century<br>
+Gold filigree with enamels<br>
+Museu Nacional de Arte Antiga/IMC/Ministry of Culture, Lisbon, 577 OUR 
+<br><br>
+This exquisite filigree casket belonged to the sixteenth viceroy of Portuguese India and was given by his widow to the high chapel of an Augustinian convent in Lisbon, where it was used as a container for the Eucharist. The fanciful filigree case houses a "Goa stone," a manmade version of the bezoar (gallstone from ruminant animals) that was believed to have medicinal properties.
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>74.97154256889988</longitude>
+				<latitude>15.34430856819933</latitude>
+				<altitude>0</altitude>
+				<range>1377889.998366782</range>
+				<tilt>1.582765950540492e-012</tilt>
+				<heading>-1.155602455139155</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>73.96042514978026,15.70589233373318,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Allegorical representation of Emperor Jahangir and Shah &apos;Abbas of Persia</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width="293">
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/F1945.9a.jpg" alt="" width="293" height="400" border="0" /></td>
+</td>
+<td><font size="3" face="Verdana" color="#752641"><b>Detail, Allegorical representation of Emperor Jahangir and Shah 'Abbas of Persia, from the St. Petersburg Album<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Abu'l Hasan (b. 1588 or 1589); Mughal School<br>
+India; Mughal dynasty, ca. 1618<br>
+Opaque watercolor, gold and ink on paper 
+<br><br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>73.43906238048804</longitude>
+				<latitude>19.5474551204516</latitude>
+				<altitude>0</altitude>
+				<range>3485751.163576107</range>
+				<tilt>1.846776242005655e-012</tilt>
+				<heading>-0.751662675408087</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>78.04208687295795,27.17464328737374,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Quatrefoil box</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/IndianOcean/F1986.22ab.jpg" alt="" width="500" height="311" border="0" /></td>
+</tr>
+<tr>
+<td><font size="3" face="Verdana" color="#752641"><b>Quatrefoil box<b></font><br>
+<font size="3" face="Verdana" color="#000000">
+Mughal School<br>
+North India, Mughal dynasty, ca. 1650<br>
+Red, green, and white enamels with gold<br>
+Freer Gallery of Art, F1986.22a–b<br>
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>73.43906238048804</longitude>
+				<latitude>19.5474551204516</latitude>
+				<altitude>0</altitude>
+				<range>3485751.163576107</range>
+				<tilt>1.846776242005655e-012</tilt>
+				<heading>-0.751662675408087</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>76.78668141192912,26.31171053638694,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>China</name>
+		<LookAt>
+			<longitude>111.3031149661756</longitude>
+			<latitude>25.54656777730864</latitude>
+			<altitude>0</altitude>
+			<range>4100359.733626964</range>
+			<tilt>0</tilt>
+			<heading>-7.663672555338469</heading>
+		</LookAt>
+		<Placemark>
+			<name>CHINA</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>CHINA</b><br>
+<font size="3" face="Verdana" color="#000000">
+Europeans had dreamed about reaching the riches of China for centuries, but only during the period of Mongol rule known as the Yuan Dynasty (1271-1368) were the borders open enough to enable a handful of merchants and missionaries to journey there on overland routes. Marco Polo's celebrated account, written in the late thirteenth century, became a beacon for future travelers. Between 1405 and 1433, emperors of the Ming Dynasty (1368-1644) sent a series of imperial naval expeditions into the Indian Ocean, reaching as far as the east coast of Africa. The initiative ended abruptly, however, and by the early sixteenth century, the Chinese government had placed strict limits on maritime commerce.
+<p>
+Stories about these voyages still echoed in the Indian Ocean when the Portuguese arrived there, and reaching Chinese ports quickly became a priority. The first merchants from Portugal arrived in southern China in 1513. Though unable to establish official relations with the government, they initiated a profitable clandestine trade along the coast, which eventually led to the establishment of a permanent Portuguese settlement at Macao in 1557. 
+<p>
+China was also a magnet for European missionaries; Francis Xavier died on an island off the south Chinese coast in 1553 while attempting to enter the country. Nearby Macao soon became the east Asian base for the Jesuits. Matteo Ricci (1552-1610) was dispatched to the mainland, where he ultimately founded a mission in Beijing. There the Jesuits became scientific and artistic advisors to the imperial court, maintaining their influence after the fall of the Ming and the establishment of the Qing Dynasty (1644-1912).
+<br><br>
+<a href="http://www.asia.si.edu/EncompassingtheGlobe/China.htm">Learn more on our website</a>
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>114.296182836471</longitude>
+				<latitude>25.98804240187132</latitude>
+				<altitude>0</altitude>
+				<range>3843435.688462316</range>
+				<tilt>1.173854949367901e-012</tilt>
+				<heading>-1.878015393341754</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>114.347365827071,27.83264585344363,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>MACAU</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>MACAU</b><br>
+<font size="3" face="Verdana" color="#000000">
+In the mid-sixteenth century, Portugal's growing maritime commerce in the South China Sea made a secure harbor on Chinese territory increasingly desirable. In 1557 authorities in Guangdong province authorized the Portuguese to start a settlement on the Macao peninsula, near the mouth of the Pearl River. The residents elected their own senate, and the captain of the annual trading ship to Nagasaki served as their executive when he was in Macao. By the end of the century, Macao had become one of Asia's great commercial ports. 
+<p>
+It was also an important center of religious activity. The Jesuits began construction of St. Paul College around 1572 and of the imposing Madre de Deus church, also known as St. Paul's, in 1601. 
+<p>
+The Dutch attacked Macao several times in the early seventeenth century, but the city remained Portuguese, although it lost much of its importance as a trading center with the decline of Portugal's Asian empire. Macao stayed under Portugal's control until December 1999, when it was formally handed over to China. <br>  
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.5438743930668</longitude>
+				<latitude>22.19874505857965</latitude>
+				<altitude>0</altitude>
+				<range>341343.87808362</range>
+				<tilt>0</tilt>
+				<heading>-1.741509610219644e-014</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>113.5195179958783,22.10917608205334,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>BEIJING</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>BEIJING</b><br>
+<font size="3" face="Verdana" color="#000000">
+In the late sixteenth century, the Jesuits in Macao developed a new strategy of accommodation with Chinese culture, in an attempt to establish relationships with the country's elite. It was spearheaded by Matteo Ricci (1552-1610), who arrived in Macao in 1582 and received permission to settle on the mainland the following year. This initiative, which was sanctioned by the pope, required the Jesuits to become fluent in Chinese and to ally themselves with Confucian scholars. 
+<P>
+Ricci, who moved to Beijing in 1601, found that European scientific knowledge was of great interest to high court officials. He published successive editions of a world map, based on European prototypes but with Chinese texts - the first map created in China to depict the Americas. The Jesuits' mathematical and astronomical abilities eventually made them invaluable to the imperial court, as they were able to correct errors in the official Chinese calendar and predict important celestial events like eclipses with greater accuracy than could the Chinese. The Jesuits Adam Schall von Bell and Ferdinand Verbiest became directors of the imperial astronomical bureau. 
+<P>
+The mission survived the collapse of the Ming Dynasty, and leading Jesuits in Beijing developed close relationships with the new Qing Dynasty emperors, although this success at court did not lead to extensive conversions as they had hoped. Moreover, the Chinese were highly selective in their acceptance of Western culture. Among the Jesuits' converts, for example, was Wu Li, an artist who continued to paint in the traditional literati style, despite his exposure to European art and his embrace of Christianity.  
+<br>  
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>116.460648315547</longitude>
+				<latitude>37.62647416636724</latitude>
+				<altitude>0</altitude>
+				<range>2044968.63155835</range>
+				<tilt>1.792978083861454e-012</tilt>
+				<heading>-0.3130509229958126</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>116.2740789010593,39.12010050958457,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>SOUTH CHINA</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>SOUTH CHINA</b><br>
+<font size="3" face="Verdana" color="#000000">
+South China was the traditional center for the manufacture of high-quality crafts in a variety of media. The technique for manufacturing porcelain was unknown outside Asia until the early eighteenth century, and the small number of pieces that reached Europe before the sixteenth century were prized objects often embellished there with elegant mounts. It is not surprising that Portuguese traders were anxious to obtain Chinese porcelain as soon as they reached eastern Asia. 
+<P>
+Sixteenth-century Chinese blue-and-white bowls, ewers, and bottles, sometimes decorated with Portuguese coats-of-arms and inscriptions, attest to the early trade in porcelain. The works occasionally reveal mistakes in transcription made by Chinese artists unfamiliar with the foreign language and iconography. In addition, Chinese silks were highly esteemed by the Europeans and were used for furnishings and clothing, while exquisite items were sometimes turned into vestments and other paraphernalia for religious services. The Portuguese also purchased small objects of religious devotion, which reveal their Chinese origin in their dependence on Buddhist figural and iconographical models. 
+<br>  
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>111.6539626564756</longitude>
+				<latitude>23.95324111219129</latitude>
+				<altitude>0</altitude>
+				<range>2591595.779352031</range>
+				<tilt>1.829354347782289e-012</tilt>
+				<heading>-1.92987899380761</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>114.6251471542866,24.79148657050012,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Mother Goddess and Child</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width=194><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/China/madonna292.png" alt="" width="194" height="450" border="0" /></td>
+<td><font size="3" face="Verdana" color="#752641"><b>Mother Goddess and Child<b></font><font size="3" face="Verdana" color="#000000">
+Fujian province, China<br>
+Ming dynasty; late 16th–early 17th century<br>
+Ivory<br>
+The State Hermitage Museum, St. Petersburg, LN-939<br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>118.0671897790752</longitude>
+				<latitude>25.69034842691491</latitude>
+				<altitude>0</altitude>
+				<range>2422051.718376428</range>
+				<tilt>1.603731862473685e-012</tilt>
+				<heading>-0.6487246111561269</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>118.0671897790752,25.69034842691491,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>View of Macao</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/China/ELS2007.2.281.jpg" alt="" width="500" height="312" border="0" /></td></tr>
+<tr>
+<td><font size="3" face="Verdana" color="#752641"><b>View of Macao in Livro das Plantas de todas as fortalezas, cidades e povoa&ccedil;oens do Estado da &Iacute;ndia oriental (Book of the plans of all the forts, cities, and settlements in the State of India in Asia)</b><br></font><font size="3" face="Verdana" color="#000000">
+Pedro Barreto de Resende (plans) and Antonio Bocarro (text)<br>
+Portugal, ca. 1635<br>
+Watercolor on paper<br>
+Biblioteca P&uacute;blica de &Eacute;vora, COD-CXV-2-1 115<br>
+Image: Biblioteca P&uacute;blica de &Eacute;vora, Jos&eacute; Ant&oacute;nio Silva/IAN/TT<br>
+</font></td>
+</tr>
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.7631778045353</longitude>
+				<latitude>21.62672086755822</latitude>
+				<altitude>0</altitude>
+				<range>1710021.9073974</range>
+				<tilt>1.360690788358471e-013</tilt>
+				<heading>-2.009524070735959</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>113.2463228684439,22.10168883770317,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Portrait of Matteo Ricci</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width=320><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/China/ELS2007.2.501.jpg" alt="" width="320" height="400" border="0" /></td>
+<td><font size="3" face="Verdana" color="#752641"><b>Portrait of Matteo Ricci</b></font><font size="3" face="Verdana" color="#000000">
+Emmanuel Pereira (born Yu Wenhui) (1575-1633)<br>
+Macao, China, 1610<br>
+Oil on canvas<br>
+Chiesa del Santissimo Nome di Ges&ugrave; all'Argentina, Rome, 68
+<br><br>
+Painted by a Chinese Christian artist, this is the only known portrait of Matteo Ricci, one of the founders of the Jesuit mission to mainland China and an architect of the policy of establishing relationships with the country's elite. Ricci, who immersed himself in classical Chinese learning and dressed in the robes of a Chinese scholar, discovered that European scientific knowledge allowed him access to increasingly exalted intellectual circles within the imperial court.<br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.9535590855923</longitude>
+				<latitude>21.81601302020674</latitude>
+				<altitude>0</altitude>
+				<range>695974.1724549829</range>
+				<tilt>0</tilt>
+				<heading>-1.238354206252147</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>113.3017297749797,22.27197217505265,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Pair of ewers with figurative handles</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td width=313><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/China/ELS2007.2.314.jpg" alt="" width="313" height="400" border="0" /></td>
+<td><font size="3" face="Verdana" color="#752641"><b>Pair of ewers with figurative handles</b></font><font size="3" face="Verdana" color="#000000">
+Jingdezhen, Jiangxi province, China<br>
+Ming dynasty; late 16th or early 17th century<br>
+Porcelain with underglaze cobalt blue<br>
+The British Museum, OAF.154<br>
+Image &copy; The Trustees of the British Museum. All rights reserved.<br>
+</font></td>
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>116.9306653690769</longitude>
+				<latitude>29.34024068213872</latitude>
+				<altitude>0</altitude>
+				<range>2037403.691739533</range>
+				<tilt>0</tilt>
+				<heading>0.03697040315842946</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>117.1375545154981,29.26118307637411,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Japan</name>
+		<LookAt>
+			<longitude>133.3057669177132</longitude>
+			<latitude>35.30868987367079</latitude>
+			<altitude>0</altitude>
+			<range>2045430.45491172</range>
+			<tilt>44.66344442903953</tilt>
+			<heading>3.069713324642116</heading>
+		</LookAt>
+		<Placemark>
+			<name>JAPAN</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td>
+<font size="3" face="Verdana" color="#752641"><b>JAPAN</b><br>
+<font size="3" face="Verdana" color="#000000">
+Japan was the last of the major Asian countries reached by the Portuguese, beginning with three shipwrecked traders in 1543. Francis Xavier (1506-1552), the great Jesuit missionary, arrived only six years later, beginning an extraordinary chapter in the history of his religious order. Xavier's top-down strategy of preaching first to the warlords (daimyo) achieved success for his followers in Japan and led to the establishment of the Jesuit base at Nagasaki.
+<p>
+The Jesuits' success led to confrontations with Japan's military rulers, who issued a series of proclamations banning Christianity and began to persecute its adherents, some of whom were martyred. By 1614, the Christian religion had been driven underground. 
+<p>
+The Jesuits were supported by the commercial activities of the Portuguese, known to the Japanese as Nanban (Southern Barbarians) because they traveled to Japan from Macao to the south. Nagasaki became the terminus for the voyage of the "Great Ship" or "Black Ship," the carrack (freighter) that annually sailed east from Goa in India. It stopped in Macao to purchase Chinese goods, principally silks, which were then sold in Nagasaki in exchange for silver, extracted from Japan's rich mines and highly valued in China.
+<br><br>
+<a href="http://www.asia.si.edu/EncompassingtheGlobe/Japan.htm">Learn more on our website</a>
+</font></td>
+</tr>
+
+<tr>
+<td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>127.4110696809745</longitude>
+				<latitude>34.8945717064087</latitude>
+				<altitude>0</altitude>
+				<range>5562185.414366588</range>
+				<tilt>0</tilt>
+				<heading>0.949359422339502</heading>
+			</LookAt>
+			<styleUrl>#overview</styleUrl>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>136.9337874797652,34.30343362833879,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Samurai armor</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/ELS2007.2.102.jpg" alt="" width="298" height="450" border="0" /></td>
+<td><font size="3" face="Verdana" color="#752641"><b>Samurai armor</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Japan, early 17th century<br>
+Iron, leather, cords, plated sheet copper, lacquer, and cloth<br>
+Kunsthistorisches Museum, Schloss Ambras, PA 586<br>
+<p>
+The Europeans evidently were fascinated by traditional Japanese armor, with its exotic appearance. Several examples entered early <i>Kunstkammer</i> collections, where they have remained until the present day.<br>
+</font></td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>133.3057670863273</longitude>
+				<latitude>35.30868989298284</latitude>
+				<altitude>0</altitude>
+				<range>2045442.20058177</range>
+				<tilt>44.66344300123225</tilt>
+				<heading>3.069713352990788</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>134.1469157673313,33.93571912158783,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Fumi-e</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/ELS2007.2.482.jpg" alt="" width="240" height="313" border="0"><br>
+<font size="3" face="Verdana" color="#752641"><b>Christ (Crucifixion)</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+<i>Fumi-e</i><br>
+Japan, 17th century<br>
+Brass <br>
+Tokyo National Museum, 21, C1009<br></font></td>
+<td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/ELS2007.2.484.jpg" alt="" width="232" height="313" border="0"><br>
+<font size="3" face="Verdana" color="#752641"><b>The Virgin and Child (Virgin with Rosary)</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+<i>Fumi-e</i><br>
+Japan, 17th century<br>
+Brass <br>
+Tokyo National Museum, 26, C1013<br></font></td></tr>
+
+<tr>
+<td colspan=2><font size="3" face="Verdana" color="#000000">A number of works of art attest to the persecution of Christians, both converts and European priests, that increased in Japan beginning in 1614 under the shogun Tokugawa Ieyasu. Fumi-e, or "picture-treading" plaques, are small, bronze religious images, generally representing Christ or the Virgin. The original fumi-e were brought to Japan from Europe, but later versions were cast by the Japanese specifically for use in the persecution of Christians. In the e-fumi ceremony, suspected converts were required to tread upon the plaques to prove their indifference to Christianity.</font><br></td>
+</tr>
+
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>133.3057670863273</longitude>
+				<latitude>35.30868989298284</latitude>
+				<altitude>0</altitude>
+				<range>2045442.20058177</range>
+				<tilt>44.66344300123225</tilt>
+				<heading>3.069713352990788</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>132.8003999449146,33.5212699749132,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Chest</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/F1979.50.jpg" alt="" width="500" height="320" border="0" /><br><font size="3" face="Verdana" color="#752641"><b>Chest</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Japan, Momoyama or Edo period, early 17th century<br>
+Black lacquer and gold flakes on wood, with mother-of-pearl, gold, silver, and gilt-copper fittings<br>
+Freer Gallery of Art, F1979.50a-c<br><br>
+As was the case in India and China, a market in objects made specifically for the Portuguese also developed in Japan. European-style serving dishes and furniture, including domed chests in various sizes, richly decorated in Japanese lacquer, with gold and silver dust and mother-of-pearl inlays, were taken back to Portugal. In some instances they appeared in the inventories of early <i>Kunstkammer</i> collections elsewhere in Europe.<br>
+</font></td>
+
+</tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>133.3057670863273</longitude>
+				<latitude>35.30868989298284</latitude>
+				<altitude>0</altitude>
+				<range>2045442.20058177</range>
+				<tilt>44.66344300123225</tilt>
+				<heading>3.069713352990788</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>133.4489140655237,33.78646083972082,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Edict board</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br>
+</td></tr>
+<tr><td colspan=2><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/ELS2007.2.332.jpg" alt="" width="500" height="287" border="0" /><br><font size="3" face="Verdana" color="#752641"><b>Edict board</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+Japan, 1682<br>
+Ink on wood<br>
+The British Museum, JA 1895-7-21.1<br><br>
+"Edict boards" are public signposts inscribed with anti-Christian regulations, sometimes offering rewards for the denunciation of a Japanese convert.<br>
+</font></td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>133.3057670863273</longitude>
+				<latitude>35.30868989298284</latitude>
+				<altitude>0</altitude>
+				<range>2045442.20058177</range>
+				<tilt>44.66344300123225</tilt>
+				<heading>3.069713352990788</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>133.7908109898785,34.31743084599196,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Martyrs in Nagasaki</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="504" border="0" cellspacing="1" cellpadding="1">
+<tr><td colspan=2>
+<img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/ETG_title.gif" alt="" width="504" height="52" border="0" />
+<br clear="all">
+</td></tr>
+<tr><td colspan=2><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/Japan/ELS2007.2.405_crop.jpg" alt="" width="500" height="299" border="0" /><br>
+<font size="3" face="Verdana" color="#752641"><b>Detail, Martyrs in Nagasaki</b></font>
+<br><font size="3" face="Verdana" color="#000000">
+School of Giovanni Niccol&ograve;<br>
+Japan, 1622<br>
+Color on paper (varnished) <br>
+Chiesa del Santissimo Nome di Ges&ugrave; all'Argentina, Rome<br></font></td></tr>
+<tr>
+<td colspan=2><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/footer.gif" alt="" width="504" height="21" border="0" /></a></td>
+</tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>133.3057670863273</longitude>
+				<latitude>35.30868989298284</latitude>
+				<altitude>0</altitude>
+				<range>2045442.20058177</range>
+				<tilt>44.66344300123225</tilt>
+				<heading>3.069713352990788</heading>
+			</LookAt>
+			<styleUrl>#ETG</styleUrl>
+			<Point>
+				<coordinates>130.8581121276353,32.56201948365833,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Key Voyages</name>
+		<open>1</open>
+		<Placemark>
+			<name>Diogo Cao, 1482</name>
+			<styleUrl>#ETGline</styleUrl>
+			<LineString>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>
+-9.233954382363592,38.63442146780348,40000 -9.982874914595271,37.84943693996979,40000 -10.8553563761825,36.94128818619809,40000 -11.6376873183915,36.1779569275427,40000 -12.94509864611655,35.22069735438996,40000 -13.79138943753334,33.99741234290931,40000 -14.68112299408936,33.03636479764982,40000 -15.79377125256656,31.91825002936977,40000 -16.84823947217797,31.01754351021568,40000 -17.99929426574175,30.32123652275841,40000 -18.59602769323172,29.31391611844517,40000 -19.01586773023611,28.62047194551106,40000 -19.51537480037561,27.10309966978284,40000 -19.88152109610728,25.89571219499506,40000 -20.01613811461034,24.79494378529521,40000 -19.7725963373171,23.3316889201705,40000 -18.93212352204351,21.95288578005836,40000 -18.22063633019016,20.98387168263108,40000 -17.34425903768781,20.39327850834209,40000 -16.65980281158384,20.02587592500575,40000 -16.65980281158384,20.02587592500575,40000 -17.00903909200106,19.61545624560828,40000 -17.38654327267352,18.96827025438186,40000 -17.8827021471233,18.38313042611317,40000 -18.22448467534721,17.65682473514224,40000 -18.70107403985922,16.68428975559059,40000 -18.83520623971884,15.71865625772315,40000 -18.99884152526741,14.7970713881364,40000 -18.97583512218108,13.78338126731695,40000 -18.66188604864587,12.7292129323021,40000 -18.28276250596241,11.59226851480955,40000 -17.81594986624508,10.34791962986526,40000 -17.36009007282011,9.487787421813763,40000 -16.57442286942374,8.580881525708865,40000 -15.81240189729182,7.995330682585953,40000 -14.82061435383986,7.575176326153117,40000 -13.86444319530602,7.368027311773385,40000 -13.06998563163563,7.301610781164733,40000 -12.67882741215259,7.367816437579193,40000 -12.67882741215259,7.367816437579193,40000 -12.58268027907395,6.986192259450415,40000 -12.35399995738068,6.54171349833751,40000 -12.03311124909447,6.065214799606245,40000 -11.55980259307177,5.625120213793296,40000 -11.1292653187862,5.196599250581694,40000 -10.44639081664508,4.640678732623923,40000 -9.864291193093379,4.220663230830518,40000 -9.18917906591787,3.985942409371015,40000 -8.442585354797672,3.882994952344872,40000 -7.755767449351965,3.95702362146139,40000 -7.494400236428476,4.191042833043888,40000 -7.494400236428476,4.191042833043888,40000 -6.993052964005301,3.985197747225308,40000 -6.268660104643061,3.842397671000742,40000 -5.345264951089462,3.732883735518763,40000 -4.225309993123389,3.655658508696843,40000 -3.023028100564474,3.62637075529716,40000 -1.871557452550036,3.660345972814044,40000 -0.8801519993931634,3.75260916978092,40000 0.3410710565845534,3.876524983455572,40000 1.366529073050444,3.967371587489894,40000 2.164051797381575,4.183492727401396,40000 3.06907574816762,4.24479824438784,40000 3.945039075131618,4.121166879303004,40000 4.763284293804176,3.924265986386367,40000 5.518885897294837,3.745327015663206,40000 6.307617179414805,3.611111118304787,40000 7.278300461747321,3.619475465003208,40000 8.114486448782131,3.668581780033954,40000 9.152940330699323,3.698868731612213,40000 9.688277209406294,3.595419524279571,40000 9.688277209406294,3.595419524279571,40000 9.348585519039162,3.108649518138992,40000 9.135224065298033,2.682115460616445,40000 8.993089352983986,2.215410405214335,40000 8.675920904998478,1.605130779014247,40000 8.287181491268981,1.130943892761251,40000 8.022563705645339,0.4378382566562278,40000 7.888369390157237,-0.1113582928561047,40000 7.912021026964125,-1.148896028201791,40000 8.090418767396741,-2.088738467415855,40000 8.393002640238208,-2.753336738964592,40000 8.771915884227866,-3.552832030463378,40000 9.172162007935427,-4.26445856282371,40000 9.821525344136731,-4.856180317060248,40000 10.61551597751011,-5.055789839564214,40000 11.6985655635967,-5.294507904267926,40000 12.09875661903412,-5.327558784005865,40000 12.09875661903412,-5.327558784005865,40000 11.79744934065026,-5.822695344851993,40000 11.74489228845765,-6.377202438327088,40000 11.64563353863588,-6.931990908082768,40000 11.53317598111619,-7.645043710083313,40000 11.44195045927979,-8.354677607620451,40000 11.50582024755924,-8.985959177645182,40000 11.65177120403689,-9.837883341491697,40000 11.84502660480587,-10.34684136073403,40000 12.0788458822059,-11.14789513822467,40000 12.46638229205456,-11.80405118657156,40000 12.87251723325737,-12.36910324903442,40000 13.26290795713555,-12.6624142661304,40000 </coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Bartolomeu Dias, 1487</name>
+			<styleUrl>#ETGline2</styleUrl>
+			<LineString>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>
+-9.233954382363592,38.63442146780348,40000 -10.61922517973578,38.05842237651631,40000 -11.42852631151638,37.6135404876114,40000 -12.18517495205215,37.17625171598583,40000 -12.96746490297326,36.80117249564994,40000 -14.02848321655445,36.22026520314366,40000 -14.8280736858851,35.66560224104393,40000 -15.80671583680149,35.03826585975099,40000 -16.63812810192526,34.45687325575127,40000 -17.47532200823026,33.78890556540897,40000 -17.99623062339479,32.9228333214221,40000 -18.8443658323324,31.91597532499712,40000 -19.18201307690006,30.71480383959826,40000 -19.39155614983062,29.90379343509043,40000 -19.75490507755563,28.88433163593845,40000 -19.78044320017295,28.13081875454657,40000 -20.11676622338466,27.14859990053326,40000 -20.11343895139754,26.01667268390009,40000 -20.07327724401966,25.00124570962592,40000 -20.01056375940269,23.79448455410574,40000 -19.82112271215962,22.48955045017997,40000 -19.68737811217827,21.279609598398,40000 -19.45192572066085,20.38437289429005,40000 -19.2025543788977,19.56909132614681,40000 -18.96414044365874,18.80215130069679,40000 -18.77276097690411,17.87462239949075,40000 -18.28403240892443,16.89020554634184,40000 -18.0259351934158,15.76200830307155,40000 -17.90908834213243,15.14061405500404,40000 -17.47226768838452,14.56012977113299,40000 -17.47226768838452,14.56012977113299,40000 -17.5344337181189,14.19481864920107,40000 -17.66012668801906,13.707015313959,40000 -17.84085094341117,12.73808658057031,40000 -17.9663911183556,11.88029909725532,40000 -18.00299833465344,11.19881912301918,40000 -17.83666706856143,9.984631828272894,40000 -17.59901964625914,9.051384820851723,40000 -17.17542787274587,7.964855660869546,40000 -16.80330872029649,7.413837229978577,40000 -16.13251629223788,6.613589026803153,40000 -15.38103630002801,6.019031274107336,40000 -14.68033060910714,5.394304503526712,40000 -13.85929391680449,4.940204471671779,40000 -12.6771376146913,4.502886395865723,40000 -11.28336025339345,3.978532950090806,40000 -10.48356448546066,3.816520380157311,40000 -9.494506424239717,3.596356345653156,40000 -7.96837903163113,3.455713853932435,40000 -6.455645781575171,3.053774757871575,40000 -4.132991214937377,2.853643524815258,40000 -2.989652814636656,2.714526298558608,40000 -1.809373102063489,2.411117705639804,40000 -0.4910880347814839,1.909264658940055,40000 0.9712098390057946,1.331404306053131,40000 2.364545739995862,0.5418183818508968,40000 3.497416810779499,-0.497246651167647,40000 4.791526022924387,-1.433711527758252,40000 6.349806049949933,-2.550779577362366,40000 7.99487818573111,-3.440022604363891,40000 9.631624508921959,-4.555865800586473,40000 11.20511259352877,-5.353551436514979,40000 12.29163489533613,-5.347628344923911,40000 12.29163489533613,-5.347628344923911,40000 12.03044564143056,-6.222750869425777,40000 12.03240627590597,-7.199380116093856,40000 12.00116883197728,-8.230839611136371,40000 12.0032510567563,-9.27882706856059,40000 12.14884468900868,-10.44742585971103,40000 12.14035059535617,-11.42602149735772,40000 11.82219056447336,-12.50244180035026,40000 11.35121598031667,-13.43413219064428,40000 10.9663133801927,-14.8293328647103,40000 10.8118832185646,-16.10823713855046,40000 10.51120457320175,-17.55074965887966,40000 10.51186045213463,-18.71687196096277,40000 11.02237347155766,-20.30130765851552,40000 11.4862151255295,-21.52127973205839,40000 11.9154350289441,-22.78070544471455,40000 12.38620835642041,-24.14947263504519,40000 13.07938909684555,-25.21286537345671,40000 13.64340418745132,-26.67798544526827,40000 13.64340418745132,-26.67798544526827,40000 13.99626852197871,-27.27007539953079,40000 14.334421709254,-27.93983853912718,40000 14.90909441802593,-28.65240447697286,40000 15.53853002176149,-29.13251008315085,40000 16.26803625798604,-29.28987803556433,40000 16.76583611547571,-29.24792691015135,40000 16.7492205707848,-29.77422555155124,40000 16.66674512169732,-30.29794042643427,40000 16.58293277668368,-30.82121893405303,40000 16.5744069661133,-31.64691967425663,40000 16.64003701417504,-32.25006751053964,40000 16.67764870862254,-33.00487113494791,40000 16.96988346978591,-34.2250582514183,40000 17.84039891366128,-34.96749318369142,40000 18.43617294787485,-35.16808953916486,40000 19.43051823273284,-35.44818054522585,40000 20.27027826627426,-35.5692783469622,40000 21.01869702627945,-35.55170075905222,40000 21.64231716431054,-35.26076750933805,40000 22.02682428248254,-34.91187141168694,40000 22.17292205781318,-34.48805770655185,40000 22.18250400369064,-34.14327701650507,40000 </coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Vasco da Gama, 1497-99</name>
+			<styleUrl>#ETGline3</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>
+-9.233954382363592,38.63442146780348,40000 -10.99209488571124,37.74370870405087,40000 -13.13886679334074,36.30392463435231,40000 -14.89245579618671,35.0612545186325,40000 -16.26378442736323,34.12681473157927,40000 -17.66834351088352,33.1902624581155,40000 -18.92001908677186,31.81308291930177,40000 -20.02052902331504,30.47276044431741,40000 -20.35346825290098,28.7669579977679,40000 -20.98966311776618,27.47761319300282,40000 -21.00217917655733,25.32053966706898,40000 -20.95886077028076,23.80117258558356,40000 -21.06311881994769,21.24167737566887,40000 -20.63497263291647,19.09645541482312,40000 -20.75785389769729,16.76221901726843,40000 -20.54969887271216,15.00979027480057,40000 -20.21313008031129,12.89387047274106,40000 -19.68492378000695,10.40758136848451,40000 -19.48387707725679,8.265451618361592,40000 -19.05290665931327,5.964931285974492,40000 -18.60811810793861,3.342341851741057,40000 -18.04648608720403,0.1002002261725818,40000 -17.57658854465579,-3.485047142941393,40000 -17.11566225241523,-6.666617776660946,40000 -16.33827589989983,-11.23401254884556,40000 -16.33827589989983,-11.23401254884556,40000 -15.67554175315482,-13.21817073185828,40000 -15.03903932761153,-15.53124615518084,40000 -13.54110054047781,-18.7585386838773,40000 -12.09184818190775,-21.79783712797969,40000 -10.81374099718204,-24.29698393083852,40000 -9.92968685201599,-26.84795396330728,40000 -8.578671153351095,-29.31237804362868,40000 -6.393801254376314,-31.79995396591112,40000 -3.576004592202253,-34.00920003262259,40000 -1.026445489492119,-35.20958084839223,40000 2.34034387973125,-36.57344962090605,40000 6.232087360865407,-37.60648649224984,40000 11.46005880159308,-37.849402279266,40000 17.13163938064535,-37.92120051006658,40000 21.084058130915,-37.54584905798627,40000 23.9189399911358,-36.82381060753269,40000 26.48682281450048,-36.44951989206561,40000 28.49558423257136,-35.63174592124911,40000 28.49558423257136,-35.63174592124911,40000 29.29275792041136,-35.08247620526899,40000 30.39923948026406,-34.35469200163212,40000 31.48493416755788,-33.08827611151686,40000 32.46057758394569,-32.08238962929835,40000 33.06564328231993,-30.87703273831933,40000 33.69650484872945,-29.8694594306798,40000 34.23303817547415,-28.41431477470524,40000 34.70441150261861,-27.72461852570769,40000 34.90858163746815,-26.71293434001984,40000 35.44669371605616,-25.86970427547627,40000 36.55553416049499,-25.09944594866365,40000 37.21390247550315,-24.42043005487353,40000 36.97095461450118,-23.14892416821533,40000 36.60871473865427,-22.41768618591101,40000 36.36098922199346,-21.72091743751839,40000 36.48531046763624,-20.93572325209767,40000 36.97351789564296,-19.82425836285423,40000 37.10422947882226,-18.95857654908453,40000 37.10367983702781,-17.9857975925592,40000 37.10367983702781,-17.9857975925592,40000 37.64546894803667,-18.06880911012462,40000 38.3391866324568,-17.9089582075767,40000 39.07630341464741,-17.7446244788996,40000 40.00882952201829,-17.28461825071523,40000 40.87478410739195,-16.5661829045438,40000 41.43141821446036,-15.67235641400536,40000 41.59332478064258,-14.88084801538421,40000 41.61273945680415,-13.9440479815388,40000 41.42690682402912,-13.15522310555968,40000 41.42265797169551,-12.46740265139088,40000 41.62979915962455,-11.52101156834968,40000 41.53522347859803,-10.70399159529039,40000 41.17889626983691,-10.12805592169212,40000 40.73298319792107,-9.820821810313959,40000 40.32253804861512,-9.199393592561947,40000 40.3002286421312,-8.39165988931747,40000 40.59426588266302,-7.619279173619859,40000 40.63494624797539,-6.360094948437339,40000 40.36761833660407,-5.557470792930198,40000 40.16273161899471,-4.689221406262385,40000 39.60912264690575,-3.967057333999438,40000 39.60912264690575,-3.967057333999438,40000 40.04557939527538,-3.928677907557594,40000 40.19045732898959,-3.673337019484365,40000 40.30210448411759,-3.368294668877153,40000 40.17093050732831,-3.169329591730706,40000 40.17093050732831,-3.169329591730706,40000 42.12842748129214,-2.755326985982141,40000 43.17564419898352,-2.033667866456468,40000 43.95233252108312,-1.366073517801665,40000 45.06771853714761,-0.7619137304300079,40000 45.93847823742669,0.01053381188171531,40000 46.94504157167884,0.7237551423918525,40000 48.04271420204694,1.407525487215234,40000 49.01665524640708,2.032997830745646,40000 50.1114635989504,2.705382061739364,40000 52.19369891176745,3.506472367374875,40000 53.08207397465452,3.901665010438852,40000 53.08207397465452,3.901665010438852,40000 54.91464351741917,4.801129528325129,40000 56.33195297228692,5.545395237715541,40000 58.69601961789621,6.492038449263221,40000 60.60678296463021,7.541956127951654,40000 62.66527004376596,8.616012966193351,40000 65.20136317472267,9.82263298984074,40000 67.51628059765255,11.03233014462504,40000 70.26739581061392,12.44756667148553,40000 72.34128711982729,13.84604390500565,40000 74.00628540394126,15.36521575041814,40000 </coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Pedro Cabral, 1500</name>
+			<styleUrl>#ETGline4</styleUrl>
+			<LineString>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>
+-9.233954382363592,38.63442146780348,40000 -11.75570217333302,37.9174485772181,40000 -13.36518147290917,36.53610188404162,40000 -15.81868969253923,34.42143057828046,40000 -17.60587342828106,32.70672908891423,40000 -19.00436497987539,31.16524146440075,40000 -20.42234455513342,29.22583566238095,40000 -21.97707472410059,26.54744717111707,40000 -23.1742158606091,24.41932287766234,40000 -24.42846794779889,22.18372981011123,40000 -25.30746137704886,20.1217977195254,40000 -26.43736754201923,17.62946288956515,40000 -26.87767729812206,14.62169220462104,40000 -27.19637043232314,12.35154564621608,40000 -27.6277968442831,9.898707353045051,40000 -28.08393461719614,6.966268620023856,40000 -28.73296043229793,3.586516017303932,40000 -29.09610905695374,0.300860722446779,40000 -29.09610905695374,0.300860722446779,40000 -29.26733908448107,-1.62690997152758,40000 -29.66372944882356,-3.140000610102981,40000 -30.01183875750875,-4.938526429208475,40000 -30.51408945304253,-6.677279451327547,40000 -31.13551134568138,-8.371359735563491,40000 -32.38322501461347,-9.667719494253031,40000 -33.37354787320442,-10.90984282991396,40000 -34.44462979898277,-12.62999891656278,40000 -35.67038584745623,-13.73070420229913,40000 -36.94518494105575,-14.90953169805272,40000 -37.92724280147955,-15.82844213568513,40000 -39.05783325187129,-16.43462110552871,40000 -39.05783325187129,-16.43462110552871,40000 -37.85628606008443,-17.72936081202924,40000 -36.30450334214315,-19.13172790162119,40000 -34.40678030702089,-20.89541159315544,40000 -31.99487260721292,-23.15076922626889,40000 -29.83812987420423,-25.01811861810979,40000 -27.45891247811461,-26.97438475387516,40000 -23.7523694080194,-30.10573010650839,40000 -19.97473443195221,-32.28802769430265,40000 -16.2209742562294,-33.92839243379365,40000 -11.49094519492819,-35.49586607782962,40000 -5.360979734360527,-36.92261286274287,40000 0.6872333685749084,-37.84792147290162,40000 7.18721124321523,-38.30886194800895,40000 15.32761138965456,-38.47240192614581,40000 24.98222707276751,-37.26095322560784,40000 24.98222707276751,-37.26095322560784,40000 26.99558059268947,-36.54752764915528,40000 29.2299643550716,-35.73540318687505,40000 30.46136362244361,-34.60542940293608,40000 32.6140161070438,-33.18680724439071,40000 34.37368048074129,-30.64666204101889,40000 35.37689479608864,-28.74742851264679,40000 36.51439571234626,-26.52011194252436,40000 37.09608090686204,-24.02955529119282,40000 37.11057309688869,-22.19886829005451,40000 37.13363280058371,-19.80813054248897,40000 36.99185694796742,-17.78152976105617,40000 36.99185694796742,-17.78152976105617,40000 38.64968661726962,-18.03378819886307,40000 39.93539184474776,-17.63080973593494,40000 40.92702893901401,-16.91310424630874,40000 41.83982918555739,-15.96654106903058,40000 42.07264837788745,-14.57674043631106,40000 41.9658517979548,-12.81952677119863,40000 41.8999237947412,-11.48721214089347,40000 41.58950820254276,-9.854796645358608,40000 41.0662437641484,-9.06573716424662,40000 40.942750350815,-7.870361248168146,40000 40.57995738065253,-6.658255022322793,40000 39.99998283658937,-6.169748529895545,40000 39.14010389995821,-5.484745951823595,40000 39.14010389995821,-5.484745951823595,40000 40.26024469469999,-5.319290375556222,40000 40.80442277553061,-4.896932799714813,40000 40.85245750078795,-4.335093269075034,40000 40.76981220348927,-3.882985122170734,40000 40.18350499947744,-3.133074313980179,40000 40.18350499947744,-3.133074313980179,40000 41.11136243338726,-3.14618834469123,40000 42.1920393353399,-2.911621806828872,40000 43.62282670886361,-2.548271978459643,40000 44.46956248579176,-1.934074515551029,40000 45.74081990281422,-1.153035062870029,40000 47.11248423117002,-0.4873110923870594,40000 48.4477066099811,0.4095042290897132,40000 49.88647895287802,1.234675884981236,40000 51.73152090562908,2.158821656624525,40000 54.05506664124254,3.352734877922218,40000 56.44486862272302,4.223518691553741,40000 58.87097474315297,5.047913055568505,40000 61.84167449265846,5.992434890605137,40000 65.33469836175038,6.964385791407725,40000 69.4418189742081,8.353593699729132,40000 72.7016846944596,9.493851709566755,40000 72.7016846944596,9.493851709566755,40000 73.24742805732493,9.684081191478807,40000 73.90594784401,9.964082795738747,40000 74.69546773258026,10.40524038563779,40000 75.44937650751027,10.90518347364033,40000 75.78721905344665,11.29475926776748,40000 </coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Tome Pires, 1515</name>
+			<styleUrl>#ETGline5</styleUrl>
+			<LineString>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>
+73.90554538753037,15.32972965424848,0 73.81936135890922,15.22310359913413,20000 73.78487742104537,15.08744389802085,20000 73.72203219056402,14.94024351789644,20000 73.70151390269209,14.80429215700491,20000 73.69416501748569,14.6540798345427,20000 73.68610563262874,14.49061805076385,20000 73.67732421697667,14.31399184460374,20000 73.66917129601288,14.15135493729068,20000 73.63482925241198,14.01788955014457,20000 73.62731411802665,13.86938771398945,20000 73.60672039519309,13.73551383410327,20000 73.59845364349044,13.57409669906656,20000 73.60522311888158,13.43894639332436,20000 73.62490739519973,13.28974775350861,20000 73.60420391714052,13.15675696458874,20000 73.59714445820916,13.02308360821264,20000 73.58862740562142,12.86290292419588,20000 73.59511731360939,12.72875234992705,20000 73.60154757315752,12.59476318970113,20000 73.6479838558638,12.44512640811486,20000 73.70784020519781,12.29485567585456,20000 73.76601652980042,12.11826074770943,20000 73.78185108630055,11.91788633147127,20000 73.74420410085796,11.73424361619812,20000 73.76366032923946,11.60037635544737,20000 73.78381202655467,11.47981137744607,20000 73.7888628472115,11.33370864339203,20000 73.84780629287218,11.18447489096459,20000 73.93433063332881,11.04691765991369,20000 73.98030233377904,10.91183138885469,20000 74.0024568556079,10.83112406193335,20000 74.06874625483707,10.58908390186731,20000 74.11522542396108,10.46730108923554,20000 74.17260898038714,10.30520940447333,20000 74.1896501400972,10.1455060842108,20000 74.20745082423889,9.998964678302482,20000 74.22602365137666,9.865579367248634,20000 74.28306528492271,9.703423450339903,20000 74.34167718224376,9.567590691686041,20000 74.41442689254257,9.444106545275345,20000 74.47205474784772,9.294961950100948,20000 74.55633692225783,9.144132290272724,20000 74.61467125859457,9.008008726922007,20000 74.63119991379523,8.847741737394001,20000 74.67609808075957,8.712202548586831,20000 74.68092006665702,8.578960152867834,20000 74.73739635309931,8.415852636398352,20000 74.78392086899177,8.30646418144508,20000 74.84033517214405,8.143007823288347,20000 74.91178392269691,8.005118295997349,20000 74.95567590873219,7.85536051102049,20000 75.01462074356246,7.731242033780958,20000 75.0761477115783,7.647017079492302,20000 75.26160403316987,7.407153821323912,20000 75.30464791546962,7.24298239432252,20000 75.30938934141952,7.107922176427906,20000 75.35331708603621,6.956600774554226,20000 75.42568987868759,6.830194399704591,20000 75.52737970981883,6.742269220100485,20000 75.65412953317795,6.625344387972769,20000 75.78096764117515,6.508096598218059,20000 75.88032007127683,6.378797950069886,20000 75.97725519729315,6.208367672740191,20000 76.07849501367426,6.10553391928022,20000 76.15220983079243,5.990709780224109,20000 76.26622964212211,5.872679879519444,20000 76.40561150033176,5.72486624554527,20000 76.50735729801099,5.62073797567613,20000 76.58155308830192,5.504589088168988,20000 76.73898322723116,5.423232506468166,20000 76.86735753820091,5.30217693349126,20000 77.02297077098831,5.178451064833219,20000 77.16921188112349,5.124680790750644,20000 77.31417160346848,5.042824511448964,20000 77.48504257311583,4.930385157228152,20000 77.64133622502371,4.790553909833238,20000 77.80022375053733,4.692027765071069,20000 78.02705886573665,4.572608803874024,20000 78.12129798245397,4.53557002600551,20000 78.35193888386829,4.4712245369972,20000 78.51591713081578,4.441144978379386,20000 78.65337344920334,4.427601663563014,20000 78.80299887591715,4.370016367795188,20000 78.9824798337593,4.351741494013053,20000 79.16124329094211,4.304720187787598,20000 79.31333309385829,4.274415791240433,20000 79.53551205382385,4.236261634641023,20000 79.75909173211534,4.211730533434006,20000 79.85717957363994,4.200809812266585,20000 80.02573130314505,4.181818062921306,20000 80.09611498329369,4.173802990721811,20000 80.33465284173619,4.103122035324385,20000 80.46220458181955,4.088123084249106,20000 80.68978045550239,4.06095372126751,20000 80.84686982324848,4.041894038739252,20000 80.97709727064577,4.069266992777492,20000 81.0932625325988,4.098262031707288,20000 81.29790640809659,4.173883643995348,20000 81.42966657139721,4.215100247268409,20000 81.70836676305811,4.280827056705494,20000 81.75330032972778,4.318395299739175,20000 82.00540414074553,4.415887307845427,20000 82.13952426154626,4.470663251926403,20000 82.32035221823901,4.591318671829559,20000 82.42838601597046,4.735566676740871,20000 82.53502523264604,4.822320580669802,20000 82.58395992331975,4.959419617290449,20000 82.67857596974133,5.118999957266974,20000 82.68147523921004,5.204310701831571,20000 82.84365528765457,5.39136052443125,20000 82.94137062838442,5.494191799880246,20000 83.05309544783893,5.595800046729848,20000 83.18620374150166,5.62755405167648,20000 83.36436087549711,5.683189981096093,20000 83.52485613304472,5.712607284489621,20000 83.68475324996589,5.741863871968258,20000 83.82864013488918,5.758543098479607,20000 83.97207247567491,5.775117236691076,20000 84.18507391601438,5.786370513449988,20000 84.34402293056758,5.828452025195611,20000 84.5593531805479,5.879475906346841,20000 84.71842372141759,5.934523695417239,20000 84.88563590657952,5.934903066617862,20000 84.99855667285164,5.952891013727761,20000 85.14390338706434,6.021926060891512,20000 85.28887256315588,6.090774376598354,20000 85.42838342962361,6.106249013253492,20000 85.55775034814195,6.162633836486606,20000 85.71536531616096,6.229900262456144,20000 85.87134492105261,6.283723207571115,20000 86.03676595579867,6.296489280198522,20000 86.21785560532368,6.334488268467991,20000 86.36650620119613,6.321738025631611,20000 86.50391068761377,6.336557951398619,20000 86.66925452745238,6.362182562724009,20000 86.80743407182527,6.390059990063062,20000 86.96846876529202,6.375886348820163,20000 87.13048450018292,6.374851186780663,20000 87.29224362585561,6.373745901527165,20000 87.45502049552823,6.385752010529019,20000 87.65629293770428,6.380884284339863,20000 87.82937689763293,6.365168372913103,20000 87.9490726289682,6.354247240891013,20000 88.12179142521299,6.338412189812896,20000 88.26525605993797,6.298641986604501,20000 88.41112720502449,6.285140522599283,20000 88.570132278812,6.270349939860478,20000 88.70381799948652,6.271123595470806,20000 88.82420239177438,6.273091223718268,20000 89.02898627886623,6.320087214452929,20000 89.25200517237877,6.418234245765999,20000 89.39866678032468,6.417475002150468,20000 89.54401701500908,6.403524927308779,20000 89.68934460539305,6.389519108037478,20000 89.82145064082528,6.3767373225573,20000 90.00640012056648,6.358762553528842,20000 90.13851939838149,6.345865028446888,20000 90.26936410786014,6.31978275067779,20000 90.42667017228223,6.29104153926347,20000 90.51791356610431,6.268765668304661,20000 90.67530662945477,6.239898642522514,20000 90.92543341361915,6.20169072353603,20000 91.17450432248279,6.150121350508758,20000 91.30185209154094,6.084115373181731,20000 91.42125791915738,6.072003454111293,20000 91.56600215124477,6.04397048791866,20000 91.69890125886911,6.030382503770398,20000 91.89848715340146,6.009881116508077,20000 92.07171290937367,5.991994979204214,20000 92.23316386136436,5.98856869934543,20000 92.38280966566897,5.999639909672474,20000 92.53267719406642,6.010649919248035,20000 92.71094912363213,6.03198301243628,20000 92.83178897248843,6.019284407129583,20000 92.96624952463161,6.005107888381515,20000 93.14136924442079,5.986571143115067,20000 93.30335764018105,5.969350537228452,20000 93.44131811139039,5.981387110359966,20000 93.63518129815121,6.000807391173795,20000 93.80511389031592,6.049565395718704,20000 93.97689116793532,6.111559833366009,20000 94.11625621142946,6.12342340003041,20000 94.26825396336621,6.120492481609458,20000 94.42624194264478,6.170627312627078,20000 94.57232928018301,6.23554012860616,20000 94.70503396254971,6.301966486147198,20000 94.85196660863146,6.366945154833319,20000 95.01180493694119,6.417157402084419,20000 95.14285005508748,6.457043305266694,20000 95.27574117163194,6.510281833092334,20000 95.39503389522196,6.565050731409669,20000 95.54931431989282,6.548577826229476,20000 95.72120358892698,6.557247723696814,20000 95.86393961279453,6.555505405611866,20000 95.99142981745807,6.541831576866173,20000 96.23326895706792,6.515820413365534,20000 96.36033079722775,6.488518461507791,20000 96.51496973737851,6.444560650385589,20000 96.68309613333179,6.385394839155416,20000 96.86952799636727,6.351367480253182,20000 97.02466753003758,6.293338387030306,20000 97.19663364141128,6.246986507260124,20000 97.36942382581073,6.200409422226185,20000 97.5236701395857,6.114572565233453,20000 97.66231084156824,6.01650714797795,20000 97.77491902224983,5.94868964999656,20000 97.97910312970841,5.884018803212023,20000 98.1649770964225,5.779748199443613,20000 98.32482465900806,5.705826559681655,20000 98.43696595661332,5.609544554161054,20000 98.49742031311179,5.479556331858999,20000 98.55320085195886,5.403540470930451,20000 98.60947857148985,5.333295188158033,20000 98.66055439310401,5.269522587436008,20000 98.71264814638232,5.217235957004553,20000 98.77809895870063,5.129024858852419,20000 98.84009429394041,5.064275867683744,20000 98.8799486953891,5.008012281382172,20000 98.91349631338119,4.946855007053761,20000 98.93749479503059,4.904034890794239,20000 98.97591421720235,4.836756024130029,20000 99.00609654525556,4.7989595383033,20000 99.05381432231773,4.764740278178414,20000 99.10465190792377,4.70742722876424,20000 99.15040953498304,4.656457922992511,20000 99.17671211447954,4.585182044555117,20000 99.20543192262194,4.536390541834963,20000 99.24970968134629,4.474449711792379,20000 99.2995679139422,4.411876207879453,20000 99.36060794986905,4.348006272247386,20000 99.43217276111865,4.277265947748326,20000 99.5092324491918,4.205941463793413,20000 99.58737730485949,4.145904814831867,20000 99.65557097212856,4.098349462017399,20000 99.70073128564819,4.047877532535803,20000 99.75703881921334,3.996107280176758,20000 99.80279226216737,3.951234998070643,20000 99.86460671279868,3.898855424148576,20000 99.89160074793286,3.839326085457576,20000 99.92673262283459,3.801403246108193,20000 99.97792581233694,3.755968829329727,20000 100.0333755932182,3.698775023468197,20000 100.078964504713,3.654008258157986,20000 100.1478298065089,3.567103451562767,20000 100.2081213430714,3.503743105688074,20000 100.2467613049462,3.448557080266176,20000 100.2762276276596,3.411331674740882,20000 100.3475834386262,3.346682525843809,20000 100.3790006824813,3.326114573926323,20000 100.4307048936706,3.286280376159055,20000 100.5360558158012,3.223266462545644,20000 100.5933057233177,3.182766206259315,20000 100.6289662668493,3.150422987581214,20000 100.663976408288,3.11251621274872,20000 100.7569054403841,3.039618880645852,20000 100.8570504925863,2.93204028685552,20000 100.9123707399631,2.874790916952591,20000 100.9591979717893,2.841057951666127,20000 101.0473275651022,2.774201945796154,20000 101.1243667342496,2.708613010059138,20000 101.1496195467876,2.683030452871487,20000 101.2260487501437,2.61182150925158,20000 101.2568938548614,2.58554869920345,20000 101.3465396697583,2.529587000191681,20000 101.3836623816811,2.508166699780648,20000 101.4925241000685,2.421524332515337,20000 101.5432527955205,2.370107837343965,20000 101.5853973352403,2.342357393466286,20000 101.6618244555604,2.316049349436138,20000 101.7040598668437,2.288223304353502,20000 101.7555934825532,2.242240186887957,20000 101.8097246070749,2.218597617318335,20000 101.8956161722641,2.174028158340052,20000 101.9398613620657,2.162927688840039,20000 102.0034720061342,2.120989618639128,20000 102.0890979555208,2.070536372827619,20000 102.1191045839665,2.032655763214839,20000 102.2042421013871,1.976476136342191,20000 102.2518585177805,1.942034544286658,20000 102.3252589483112,1.881504346838561,20000 102.4063961881216,1.836974217837982,20000 102.498981276716,1.790931783562528,20000 102.5361802023792,1.76333658801005,20000 102.5943167225842,1.715841517784233,20000 102.6474533991156,1.674664768727171,20000 102.6836305138612,1.635593105028409,20000 102.7414439447178,1.582188302292297,20000 102.7885175067881,1.535868477938126,20000 102.8566940003305,1.469481706237371,20000 102.9108480832703,1.433619252218874,20000 102.9581524770305,1.38708317827345,20000 103.0113159551131,1.339675875980465,20000 103.083736066508,1.306868145370261,20000 103.1298159943293,1.30068279672138,20000 103.1989985107667,1.291394829599132,20000 103.245162872624,1.285198294486817,20000 103.3178796632285,1.252285908644785,20000 103.3583472582417,1.2468449668126,20000 103.1938855577121,1.28488130585143,20000 103.2203304124352,1.27921497988328,20000 103.2464740104515,1.271135019765897,20000 103.2707676360283,1.268182123999983,20000 103.2893161736203,1.258576728373063,20000 103.3221327269134,1.244790007075611,20000 103.3570676251588,1.228300688332004,20000 103.3804816072183,1.218112534975442,20000 103.4062366408908,1.207640402396001,20000 103.4338188624315,1.192051889999811,20000 103.458973741694,1.17676053419905,20000 103.48653958085,1.161179077412576,20000 103.5074277335055,1.151303806149365,20000 103.5379834874693,1.140257605636806,20000 103.5688123150791,1.131624499742311,20000 103.5953902954284,1.128400670854562,20000 103.6222572638065,1.127587791873443,20000 103.6536553620194,1.123778443538182,20000 103.6808046237823,1.125375795069533,20000 103.7133631569503,1.13120642411865,20000 103.7431948030908,1.134918537836789,20000 103.770023580288,1.134103782946619,20000 103.7974360733538,1.138107813683136,20000 103.815199104491,1.1432838380164,20000 103.8356655002049,1.150575398616368,20000 103.8612460613621,1.159688590244121,20000 103.8892341403307,1.168507303099741,20000 103.9105683541903,1.183023402132008,20000 103.9321950019871,1.199947540509076,20000 103.9541142875014,1.219279539917695,20000 103.9763242824526,1.241020198242866,20000 103.9961886059383,1.243489657369773,20000 104.0178758073132,1.240847551209526,20000 104.0479625725366,1.246959849841075,20000 104.0735216636211,1.256068327301136,20000 104.0936749764566,1.260947154329204,20000 104.1267539069077,1.271585316132703,20000 104.1544280853519,1.277992479510514,20000 104.188155520827,1.273883647395232,20000 104.2098370342587,1.271242116728695,20000 104.2420359883736,1.274653256879544,20000 104.2675998074619,1.283767567457995,20000 104.2961640237751,1.297407494105324,20000 104.3142092810303,1.304992971358619,20000 104.3467153649882,1.31081940790817,20000 104.3795189591841,1.319055460741013,20000 104.3960419843123,1.334163691569139,20000 104.4122719166841,1.346862942577698,20000 104.4293916337349,1.366796582927451,20000 104.4465142008815,1.386732789554961,20000 104.4666428383562,1.411201403106132,20000 104.4870785467116,1.438091874122267,20000 104.5171697532118,1.463818343249726,20000 104.538547339164,1.478365325279316,20000 104.5680588188884,1.499275629630573,20000 104.6008880250138,1.527142540350975,20000 104.6210660887931,1.551655224261576,20000 104.6418431547315,1.581000985353906,20000 104.6644611432627,1.605245994604655,20000 104.6738050867141,1.621286997508916,20000 104.6940172206032,1.645834844828142,20000 104.7232931399041,1.684028524193592,20000 104.7453434843544,1.703470123662193,20000 104.7622611961895,1.721078482711606,20000 104.7801046731425,1.745967962868423,20000 104.8006882798348,1.773007863256289,20000 104.8191793164637,1.802787992047456,20000 104.8279717181677,1.814046439499857,20000 104.854970130052,1.852686312631275,20000 104.8646853909858,1.871233050205481,20000 104.8807820837969,1.90134646743677,20000 104.8859570579051,1.922908198556242,20000 104.8969046357624,1.951188294146262,20000 104.8999617266558,1.975479174360374,20000 104.9042251683359,1.989771437099801,20000 104.9549085879881,2.180482267674912,20000 104.9929570355825,2.264339179599516,20000 105.0246526158072,2.366338017859917,20000 105.0656543068145,2.537192387135474,20000 105.079682276804,2.640609575134725,20000 105.0948674317102,2.752538340207126,20000 105.1163087474458,2.846160845242725,20000 105.1537260438626,2.929081617952853,20000 105.2072726297558,3.001414385437187,20000 105.2348397171608,3.076594485411221,20000 105.2830664561267,3.175432521845047,20000 105.3333188764997,3.291160491156408,20000 105.3801722829559,3.381159056282357,20000 105.4281084589371,3.47960180082393,20000 105.4811832814193,3.551342914166441,20000 105.5534782063535,3.637986855535722,20000 105.6204120223217,3.751059383032311,20000 105.6690210794355,3.857536860488742,20000 105.7367681308277,3.978823533539797,20000 105.8259320982611,4.131880913127264,20000 105.9094106603855,4.311150557698155,20000 105.9734740287225,4.475371082341935,20000 105.9873471536962,4.516667366324707,20000 106.0578497453,4.594052464959485,20000 106.141005258997,4.7041806842063,20000 106.2368041856792,4.847017675496396,20000 106.3205802973363,5.034158533711331,20000 106.4278122073478,5.201170853142626,20000 106.510642662847,5.311065648203518,20000 106.5785940867603,5.371305250903379,20000 106.650673558324,5.465364315869492,20000 106.6951262724668,5.545688583099183,20000 106.7883911103427,5.671451758147099,20000 106.8699958687867,5.772930985399787,20000 106.9717049120078,5.897732158436559,20000 107.0734353303778,6.022580527781696,20000 107.168730711877,6.165568688682188,20000 107.2630530012818,6.300150142078467,20000 107.3467733746393,6.419047885609105,20000 107.4528310405287,6.578430156382953,20000 107.5377766876937,6.706049451357308,20000 107.5600653896559,6.746538049655366,20000 107.6238209172229,6.842511096914895,20000 107.6833165552131,6.973847624595089,20000 107.7067183398879,7.02299340896666,20000 107.7524874387437,7.112920280023213,20000 107.8281881339788,7.233985781669889,20000 107.9040058443623,7.355159226523574,20000 107.9563906840847,7.427184471592975,20000 107.9970487794144,7.474575609809812,20000 108.0806070191382,7.586678104920745,20000 108.1847086255296,7.72264417226326,20000 108.2760838540562,7.825466404098361,20000 108.338560765349,7.905797860731379,20000 108.3892213970012,7.961218661009992,20000 108.4798673577701,8.055838497879769,20000 108.5564778288043,8.108158033250952,20000 108.5792947552469,8.149630991781384,20000 108.8995798148078,8.601509734385571,20000 108.9463545947733,8.789233273534284,20000 108.978103353272,8.995431894272709,20000 109.0069572561626,9.183928448443245,20000 109.0677413904637,9.351093531549299,20000 109.1334395668439,9.551893715365583,20000 109.2681811504018,9.744387588683011,20000 109.3455001200783,9.908169669231658,20000 109.4892425007846,10.04674921120532,20000 109.580854678488,10.19085103931285,20000 109.6919903297119,10.34945441767802,20000 109.8299362496353,10.57284400517302,20000 109.9650299326914,10.77875678290266,20000 110.0925016309955,10.93387123082054,20000 110.2245686499708,11.12202606882269,20000 110.3810353375224,11.23874953465758,20000 110.4711792818891,11.38034493624146,20000 110.6026030303562,11.56736361794685,20000 110.6288067043505,11.75033996933791,20000 110.7209858020678,11.90786516725047,20000 110.8301675343036,12.06299696896168,20000 110.8732134286177,12.24328082851632,20000 110.8990604234476,12.42563996527493,20000 110.9318163549952,12.65760336064894,20000 110.9403153961116,12.84200685837293,20000 110.9097757810116,12.99772541990931,20000 110.8883199967443,13.21970087275068,20000 110.8620543438738,13.40859830104076,20000 110.7885118600335,13.63745386901297,20000 110.7445396071845,13.82879389285228,20000 110.6807984613294,14.00593947268695,20000 110.5910871940772,14.25418401268892,20000 110.5440016664394,14.42941449852607,20000 110.5162463188003,14.61915112495332,20000 110.5186660492203,14.77118498023674,20000 110.4905441496817,14.96128401104968,20000 110.4796340121497,15.14929350317373,20000 110.4707035851154,15.35423931678203,20000 110.4726148094832,15.50697050962659,20000 110.4983633044309,15.7077262461357,20000 110.5282738126712,15.94231423806491,20000 110.5910469528947,16.15574087850959,20000 110.6341043252442,16.35510261070125,20000 110.6904815058159,16.51867138808083,20000 110.7468747054519,16.68246902582366,20000 110.8075243069726,16.88033202081927,20000 110.8816125885237,17.04222614196331,20000 110.9995824115462,17.2673224378629,20000 111.0469879122758,17.50293847293649,20000 111.1192115482354,17.64885055434153,20000 111.2113801751012,17.80958560869026,20000 111.2859482770621,17.97316488876265,20000 111.378392575727,18.13454761231452,20000 111.4596888786525,18.35049705315909,20000 111.5524841704897,18.51272336314389,20000 111.6476450701571,18.69265276624861,20000 111.780927003949,18.885263564109,20000 111.8989181186735,19.09850548388245,20000 112.0329634575725,19.29240150533813,20000 112.1225610706694,19.42203140338463,20000 112.2034750269815,19.62496935559344,20000 112.2846653747314,19.82869949848745,20000 112.3749828408774,19.95965513194691,20000 112.5015879640154,20.08562780357634,20000 112.6175056644325,20.26808033607971,20000 112.6795810757596,20.45930604396111,20000 112.7371413657079,20.61538663044825,20000 112.7833668928992,20.68801556992681,20000 112.8076863655097,20.73348804492463,20000 112.8280650792079,20.77615217567846,20000 112.8484309646043,20.81878699309056,20000 112.8649000168596,20.85865855539671,20000 112.8837932180937,20.89174118142271,20000 112.9070512121031,20.93070440614599,20000 112.9254664334152,20.96059772216483,20000 112.9409766763591,20.99408659268443,20000 112.9647309165727,21.03617182945776,20000 112.9880048438669,21.07507702492911,20000 113.0064178578612,21.10491832530639,20000 113.0286849703975,21.13745730537748,20000 113.0553161752754,21.17586042157691,20000 113.0790439937665,21.21785510340777,20000 113.0877511671569,21.25215010872962,20000 113.0993743863251,21.28283594665582,20000 113.1197353250009,21.30270383713117,20000 113.1483421089899,21.33114113101512,20000 113.181803303124,21.36858672722853,20000 113.2036312514682,21.39789887413929,20000 113.2259302189961,21.43035810712573,20000 113.2525796614377,21.46867137968119,20000 113.270504868247,21.49526319438076,20000 113.2932835315157,21.53086656681101,20000 113.3141336435741,21.55384567498646,20000 113.3325657445586,21.58358581275815,20000 113.3500334065019,21.60701352078725,20000 113.3616867764339,21.63765821040439,20000 113.3859723479684,21.68271443880262,20000 113.4000783170049,21.72913483250919,20000 113.4025321458137,21.76745712462352,20000 113.4205230999308,21.79403307601138,20000 113.4312175853791,21.81838025992716,20000 113.4467789386697,21.85174872633561,20000 113.4628372970045,21.88827901387616,20000 113.4716108058577,21.92257138158678,20000 113.4764965539769,21.95416781012063,20000 113.4750630823922,21.98984849750488,20000 113.4770354105461,22.02507631510944,20000 113.4653773109417,22.062149276845,20000 113.4517779366627,22.10915310423424,20000 113.449851538351,22.14168512947194,20000 </coordinates>
+			</LineString>
+		</Placemark>
+	</Folder>
+	<Folder>
+		<name>Chronology</name>
+		<Placemark>
+			<name>1420-1668: Lisbon</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="400" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle_400.jpg" alt="" width="400" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1420-60:</b> Portuguese merchants and financiers fund a series of sailing voyages down the west coast of Africa in search of gold. The Azores, Madeira, and the Canaries are all discovered by 1432; by 1444 the Portuguese have reached Cape Verde, and by 1460 they have arrived in Sierra Leone and the coast of Guinea. Limited settlement, sugar cultivation, and slave trading begin.
+<p>
+<b>1479:</b> Treaty of Alcacovas is signed between Portugal and Spain, giving Canary Islands to Spain, and the African coast and islands to Portugal.
+<p>
+<b>1494:</b> Treaty of Tordesillas is signed by Portugal and Spain, dividing the world beyond Europe into Portuguese and Spanish spheres of influence along a north-south meridian in the Atlantic, west of the Cape Verde islands.
+<p>
+<b>1497:</b> As a condition of his marriage to the daughter of Spanish King Ferdinand, King Manuel of Portugal issues an edict forcing Portuguese Jews to either convert to Christianity or abandon the country.
+<p>
+<b>1502:</b> Construction of the Monastery of the Jeronimites begins at Belem (Lisbon), on the site on the banks of the Tagus River from where Vasco da Gama departed on his voyage to India.
+<p>
+<b>1508:</b> King Manuel contracts with the Affaitati and the Gualteroti, Antwerp-based families of merchant financiers, who agree to purchase all the king's spices delivered to the Antwerp factory and resell them throughout northern Europe.
+<p>
+<b>1521:</b> Death of King Manuel; succession of Jo&atilde;o III.
+<p>
+<b>1536:</b> The Office of the Holy Inquisition is established in Portugal.
+<p>
+<b>1540:</b> The first Jesuits enter Portugal.
+<p>
+<b>1572:</b> Luis Vaz de Camoes publishes The Lusiads, an epic poem celebrating Portuguese discoveries and seafaring exploits.
+<p>
+<b>1578:</b> Portuguese King Sebastian is killed in Africa in the battle of Alcacer-Quibir; succession crisis ensues.
+<p>
+<b>1580-1640:</b> Spain's King Philip II (I of Portugal), having successfully outmaneuvered the other two contenders for the Portuguese throne, marches into Lisbon and declares himself ruler of a united Iberia.
+<p>
+<b>1609:</b> Spain and the Dutch Republic sign a truce ending hostilities brought on by the rebellion against Spanish rule. The truce (which would last only twelve years) makes Atlantic shipping safe for Portuguese merchants, enabling them to expand their trade networks and begin shipping Asian products from the India trade to Atlantic destinations such as Buenos Aires and Rio de Janeiro.
+<p>
+<b>1640:</b> Portugal rebels successfully against Habsburg Spain. Portuguese monarchy is restored under the newly founded Braganca dynasty.
+<p>
+<b>1649-59:</b> Uncertainty caused by ongoing political upheaval leads to easing of conditions for Portugal's New Christian (descendants of converted Jews) community: immunity is granted to the property of New Christians sentenced by the Inquisition.
+<p>
+<b>1659:</b> A damaging Dutch blockade of Lisbon's harbor lasts for three months.
+<p>
+<b>1656-62:</b> King Jo&atilde;o IV dies; Afonso VI ascends to the throne, but due to his youth and inexperience, the country is ruled by the Queen Mother Luisa for the following six years.
+<p>
+<b>1668:</b> After nearly thirty years of warfare between the two Iberian nations, Spain formally recognizes Portugal's independence in the Treaty of Lisbon.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer_400.jpg" alt="" width="400" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-9.118899610768436</longitude>
+				<latitude>38.25111863117362</latitude>
+				<altitude>0</altitude>
+				<range>693932.1714677661</range>
+				<tilt>0</tilt>
+				<heading>0.01707244241311807</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-9.141311507714093,38.71976936217926,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1434: Eanes sails beyond Cape Bojador</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1434:</b>  Gil Eanes, in service of Prince Henry, sails beyond Cape Bojador </font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-14.49780946098389,26.1177657389174,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1444: Da Ilha mounts slave-raiding expedition</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1444:</b> Lan&ccedil;arote da Ilha, on instructions from Prince Henry, mounts slave-raiding expedition to the islands of the Arguin Bank (Mauritania) and sells captives in Portugal.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-16.37246706589626,20.41122947649643,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1456: Cadamosto explores Cape Verde Islands</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1456:</b> Alvise Cadamosto, Venetian explorer in the service of Prince Henry, explores Cape Verde Islands and sails up Gambia River.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-23.18473931333808</longitude>
+				<latitude>11.99801405020944</latitude>
+				<altitude>0</altitude>
+				<range>2340071.283814331</range>
+				<tilt>0</tilt>
+				<heading>-3.544471518663741</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-23.81217979835832,15.79168526498879,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1461-62: Pedro de Sintra reaches Sierra Leone.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1461-62:</b> Pedro de Sintra reaches Sierra Leone.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-11.55324493136664</longitude>
+				<latitude>6.557549803127081</latitude>
+				<altitude>0</altitude>
+				<range>1052804.582797474</range>
+				<tilt>1.153308519254476e-013</tilt>
+				<heading>3.474633190341055</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-12.29594271523287,7.494141281753257,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1471: de Santarem and Escobar reach Guinea coast</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1471:</b> Jo&atilde;o de Santar&eacute;m and Pero Escobar reach gold-trading area of Guinea coast.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-10.62955259479275</longitude>
+				<latitude>8.796715012316501</latitude>
+				<altitude>0</altitude>
+				<range>2456038.099529005</range>
+				<tilt>0.8379168322174002</tilt>
+				<heading>-1.910188323532231</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-13.81207825120585,9.979779853482953,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1481: Construction of Sao Jorge da Mina</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1481:</b> Construction of Portuguese fort of S&atilde;o Jorge da Mina (Ghana).
+<p>
+<b>1637:</b> Dutch capture the fortress of S&atilde;o Jorge da Mina.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-4.874909091219213</longitude>
+				<latitude>3.386607065783324</latitude>
+				<altitude>0</altitude>
+				<range>2470239.988986657</range>
+				<tilt>0.7455456947354988</tilt>
+				<heading>-1.126525773701601</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-1.35051445265259,5.089922343189532,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1482-84: Diogo Cao encounters Kongo kingdom</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1482-84:</b> Diogo C&atilde;o voyages beyond equator and Congo River to Cape Santa Maria, encountering the Kongo kingdom.
+<p>
+<b>1491:</b> The king of Kongo is baptized as Jo&atilde;o I.
+<p>
+<b>1508:</b> Twelve Blue Friars of the Order of St. John the Apostle sent as missionaries to Kongo territory.
+<p>
+<b>1571:</b> Portuguese forces commanded by Francisco de Gouveia restore the king of Kongo to his throne after invasion by the Jaga people.
+<p>
+<b>1665:</b> Portuguese defeat Kongo army in the Battle of Mbwila (Angola), leading to the fragmentation of the Kongo kingdom. 
+
+
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>17.45009043971712</longitude>
+				<latitude>-4.445800837405725</latitude>
+				<altitude>0</altitude>
+				<range>2117911.298324027</range>
+				<tilt>2.005509559212199e-014</tilt>
+				<heading>-4.634564399324432</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>16.35475088845446,-5.364015328470114,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1487-8: Dias rounds the Cape of Good Hope</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1487-8:</b> Bartolomeu Dias rounds the Cape of Good Hope, sails far enough up the coast of southern Africa to return with news that the route to the Indies is open.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>21.76970473532997</longitude>
+				<latitude>-33.65134645359165</latitude>
+				<altitude>0</altitude>
+				<range>3249315.649217607</range>
+				<tilt>2.206785632770922e-005</tilt>
+				<heading>-1.893717675834921</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>20.51497995377215,-34.36864761824935,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1497-99: Gama sails from Lisbon to Calicut</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1497-99:</b> Vasco da Gama's fleet sails from Lisbon to Calicut, establishing the sea route to India.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>73.82016760229719</longitude>
+				<latitude>13.15198711372618</latitude>
+				<altitude>0</altitude>
+				<range>3760814.309018552</range>
+				<tilt>1.155495621382986e-012</tilt>
+				<heading>-0.5633136885416579</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>75.77395997706617,11.25309067792892,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1498: Gama stops at Mozambique, Mombasa, and Malindi</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1498:</b> Vasco da Gama stops at Mozambique, Mombasa, and Malindi on his first voyage to India.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>41.73457019698458</longitude>
+				<latitude>-5.675687278005142</latitude>
+				<altitude>0</altitude>
+				<range>1751195.191973067</range>
+				<tilt>2.206785634987931e-005</tilt>
+				<heading>-9.380404313702174</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>40.11658780998326,-3.060382814313777,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1499-1502: Voyages of Gaspar and Miguel Corte-Real to Labrador</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1499-1502:</b> Voyages of Gaspar and Miguel Corte-Real to Labrador.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-52.15513649256398</longitude>
+				<latitude>45.70651851842985</latitude>
+				<altitude>0</altitude>
+				<range>2093793.93458956</range>
+				<tilt>5.312349996291639e-013</tilt>
+				<heading>0.4399776492805715</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-52.74702363927608,47.5495718723655,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1500: Cabral lands near Porto Seguro</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1500:</b> Pedro Alvares Cabral and his fleet land on the Brazilian coast near Porto Seguro while en route to India and make contact with local Indians.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-39.08000192660291</longitude>
+				<latitude>-16.42999989226821</latitude>
+				<altitude>0</altitude>
+				<range>103751.2456435626</range>
+				<tilt>0</tilt>
+				<heading>-4.751360941478424e-014</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-39.05783325187129,-16.43462110552871,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1502: Vespucci enters Rio de Janeiro</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1500:</b> On New Year's Day, Amerigo Vespucci, Florentine navigator sailing in a Portuguese fleet commanded by Gonzalo Coelho, enters a harbor he calls Rio de Janeiro. In 1507, the cartographer Martin Waldseemuller proposes to name the new continent "America" on the basis of Vespucci's travel narratives.
+<p>
+<b>1565:</b> Governor Mem de Sa founds Rio de Janeiro.
+<p>
+<b>1567:</b> Portuguese forces destroy "France Antarctique," the French colony founded in 1565 on Guanabara Bay (Rio de Janeiro).
+<p>
+<b>1616</b> Final expulsion of the French from Brazil.</font></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-42.93888561890014</longitude>
+				<latitude>-22.94166191349924</latitude>
+				<altitude>0</altitude>
+				<range>291259.4972533416</range>
+				<tilt>2.065359217846108e-013</tilt>
+				<heading>-0.1004286425515313</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-43.22567287635864,-22.86640526868077,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1503: Portuguese establish first trading post at Cabo Frio</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1503:</b> Portuguese establish first feitoria (trading post) at Cabo Frio for commerce with the Indians in Brazil wood, which yields a red dye.
+<p>
+<b>1504:</b> French merchants start to send ships to Brazil to break into the dye wood trade, inaugurating a rivalry with the Portuguese that will last over a century.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-42.04000770198177</longitude>
+				<latitude>-22.89000023174896</latitude>
+				<altitude>0</altitude>
+				<range>101738.0316585094</range>
+				<tilt>0</tilt>
+				<heading>-2.587253731655642e-007</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-42.03944209031476,-22.89004031316647,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1503: Portuguese establish base at Cochin</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1503:</b> Portuguese establish base at Cochin, on India's western coast.
+<p>
+<b>1663:</b> Cochin falls to the Dutch.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>77.21833336316054</longitude>
+				<latitude>10.13634743941363</latitude>
+				<altitude>0</altitude>
+				<range>2175115.491168015</range>
+				<tilt>0</tilt>
+				<heading>0.2016961638943434</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>76.22339668790275,10.01100168759624,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1505: Portuguese establish fort at Sofala</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1505:</b> Portuguese establish fort at Sofala, on the East African coast. King Manuel declares the spice trade to be a royal monopoly.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>34.79295827776647</longitude>
+				<latitude>-19.07483966438591</latitude>
+				<altitude>0</altitude>
+				<range>3834422.005753092</range>
+				<tilt>0</tilt>
+				<heading>-0.0001779738338963886</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>35.01223017969824,-19.33068024719767,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1509: Diogo Lopes Sequeira reaches Malacca.</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1509:</b> Diogo Lopes Sequeira reaches Malacca.
+<p>
+<b>1511:</b> Afonso de Albuquerque captures Malacca, which becomes the center for the distribution of Indonesian spices as well as an eastern naval base.
+<p>
+<b>1529:</b> The Treaty of Zaragoza between Spain and Portugal affirms Portuguese control of the Moluccas/Spice Islands.
+<p>
+<b>1568:</b> Sultan of Aceh in Sumatra besieges Malacca but is repulsed.
+
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>99.91749061801846</longitude>
+				<latitude>1.365356131178639</latitude>
+				<altitude>0</altitude>
+				<range>1296980.351656951</range>
+				<tilt>0</tilt>
+				<heading>-0.06195189273601606</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>102.2622921177151,2.232041401323071,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1510: Portuguese take control of Goa</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1510:</b> The Portuguese, led by Governor Afonso de Albuquerque (1509-15) take control of Goa, which Albuquerque establishes as the Portuguese headquarters of the Estado da &Iacute;ndia (State of India).
+<p>
+<b>1542:</b> Francis Xavier, co-founder of the Society of Jesus, arrives in India; Goa becomes the Jesuits' hub east of the Cape of Good Hope.
+<p>
+<b>1560:</b> Inquisition established in Goa.<br></font></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>73.94855660585536</longitude>
+				<latitude>15.39124736788268</latitude>
+				<altitude>0</altitude>
+				<range>1312268.515880157</range>
+				<tilt>0</tilt>
+				<heading>4.539854434315411e-006</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>73.93089937853145,15.3772773529664,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1511-14: Fernandes journeys along Zambezi River</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1511-14:</b> Antonio Fernandes makes two journeys into the East African interior along the Zambezi River.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>24.06986994256974,-17.14307595897441,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1512: Abreu reaches Spice Islands</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1512:</b> Afonso de Albuquerque dispatches Antonio de Abreu and Francisco Serrao to sail to the Spice Islands; Abreu reaches the Banda Islands and Serrao, shipwrecked, reaches Ternate on local ships.
+<p>
+<b>1522:</b> Ferdinand Magellan's crew establishes trade in the Moluccas/Spice Islands of Ternate and Tidore. Portuguese build fort at Ternate.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>126.9867516517635</longitude>
+				<latitude>0.4106737652947003</latitude>
+				<altitude>0</altitude>
+				<range>371907.0974073946</range>
+				<tilt>0</tilt>
+				<heading>-0.0005559372274704341</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>127.3723748680777,0.7847509768612759,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1513: Alvares reaches the Pearl River</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1513:</b> Portuguese explorer Jorge Alvares reaches the Pearl River aboard a Malay ship.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.9275118625449</longitude>
+				<latitude>22.45772176287567</latitude>
+				<altitude>0</altitude>
+				<range>449212.3017354808</range>
+				<tilt>3.65818853662286e-012</tilt>
+				<heading>0.2237654371587526</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>113.6323270571847,22.74774733268657,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1515: Hormuz seized by the Portuguese</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1515:</b> Hormuz, in the Persian gulf, is seized by the Portuguese; the shah of Persia becomes a Portuguese ally.
+<p>
+<b>1623:</b> Hormuz falls to an Anglo-Persian coalition.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>56.45345186016566</longitude>
+				<latitude>26.89857338445482</latitude>
+				<altitude>0</altitude>
+				<range>1292584.304103663</range>
+				<tilt>0</tilt>
+				<heading>-4.637190111045971</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>56.33257119957764,27.22241973603126,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1517-18: King Manuel I sends an embassy to China</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="400" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle_400.jpg" alt="" width="400" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1517-18:</b> King Manuel I sends an embassy to China headed by Tome Pires, who reaches Beijing but fails to secure an audience with the Chinese emperor.
+<p>
+<b>1601:</b> Matteo Ricci settles in Beijing and establishes Jesuit mission.
+<p>
+<b>1611:</b> Jesuits in Beijing are asked by the Ming court to reform the Chinese calendar.
+<p>
+<b>1644:</b> Jesuit Adam Schall von Bell becomes director of the imperial astronomical bureau; Beijing falls to Manchu invaders from the north, who establish the Qing Dynasty.
+<p>
+<b>1651-57:</b> Schall von Bell establishes close relationship with Shunzhi emperor.
+<p>
+<b>1664:</b> Persecution of Jesuits in Beijing; Schall loses his office, and he and his assistant Ferdinand Verbiest are placed under house arrest.
+<p>
+<b>1669:</b> Verbiest proves the superiority of his astronomical calculations to those of the Chinese and is appointed director of the imperial astronomical bureau.
+<p>
+<b>1682:</b> Schall becomes vice president of the imperial Board of Works because of his success in casting cannon.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer_400.jpg" alt="" width="400" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>116.4411354772841</longitude>
+				<latitude>34.66089439561617</latitude>
+				<altitude>0</altitude>
+				<range>4065607.946603534</range>
+				<tilt>1.244848727019681e-008</tilt>
+				<heading>0.1790640836616876</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>116.3998338368759,39.92909587095666,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1518: Portuguese establish trade at Colombo</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1518:</b> The king of Kotte grants the Portuguese permission to build a fort and establish trade at Colombo on the island of Sri Lanka.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>78.20951609433382</longitude>
+				<latitude>7.612011538503736</latitude>
+				<altitude>0</altitude>
+				<range>1301517.2005012</range>
+				<tilt>0</tilt>
+				<heading>-0.2278908031054205</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>79.84904391602413,6.929228218302792,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1527: Settlement established at Liampo</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1527:</b> Jorge Cabral, captain-general of Malacca, begins to trade with Chinese ships, leading to a clandestine coastal trade with China that results in the establishment of unofficial Portuguese settlements, the most celebrated of which is Liampo (Ningbo).</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>121.7920557479258</longitude>
+				<latitude>30.14196126972607</latitude>
+				<altitude>0</altitude>
+				<range>940883.6711386208</range>
+				<tilt>0</tilt>
+				<heading>0.03079666832615246</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>121.5488230636833,29.87561873676139,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1530–32. Martin Afonso de Sousa founds Sao Vicente</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1532-36:</b> Martin Afonso de Sousa leads a colonizing mission to Brazil and founds the first permanent settlement, Sao Vicente, near the present city of Santos.
+<p>
+<b>1533:</b> Sousa sets up a sugar mill near Sao Vicente.
+<p>
+<b>1540s:</b> Brazilian sugar industry develops a reliance on the labor of African slaves.</font></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-46.3536950819556</longitude>
+				<latitude>-23.94110097827137</latitude>
+				<altitude>0</altitude>
+				<range>487405.547448379</range>
+				<tilt>0</tilt>
+				<heading>-0.09240287824564</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-46.38903642135012,-23.95958551331886,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1535: Diu falls to the Portuguese</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1535:</b> Diu falls to the Portuguese, securing another entrepot of Asian trade.
+<p>
+<b>1537:</b> The sultan of Gujarat, Bahadur Shah, drowns during negotiations with Portuguese Governor Nuno da Cunha, solidifying Portuguese control of Diu and marking the disintegration of sultinate of Gujarat.</font></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>70.92154446865659</longitude>
+				<latitude>20.71398542640471</latitude>
+				<altitude>0</altitude>
+				<range>868427.06551573</range>
+				<tilt>0</tilt>
+				<heading>1.945616193535496e-006</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>70.90958785341286,20.70730233531548,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1549: Francis Xavier establishes Jesuit mission at Kagoshima</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1549:</b> Francis Xavier establishes Jesuit mission at Kagoshima.
+<p>
+<b>1552:</b> Xavier returns to Goa; six other Jesuits come to Japan to continue the mission.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>130.5600242139352</longitude>
+				<latitude>31.58999883636434</latitude>
+				<altitude>0</altitude>
+				<range>101753.5040822218</range>
+				<tilt>4.2579742957936e-013</tilt>
+				<heading>-2.413265359391702e-006</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>130.5576802638572,31.58600540386024,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1549: De Sousa establishes capital at Salvador</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1549:</b> Tome de Sousa arrives in Bahia as governor-general of Brazil (1549-53) and establishes a capital at site of present-day Salvador. With his fleet are six Jesuit missionaries led by Manuel de Nobrega, beginning the evangelization of Brazil.
+<p>
+<b>1624:</b> Dutch troops conquer Salvador, but it is retaken by a Spanish-Portuguese force the following year.</font></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-38.52032094114956</longitude>
+				<latitude>-13.18712377716434</latitude>
+				<altitude>0</altitude>
+				<range>1002751.851555193</range>
+				<tilt>0</tilt>
+				<heading>-0.4290744748113103</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-38.4961500196186,-12.97840229658392,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1551-52: Turkish admiral Piri Reis sacks Muscat</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1551-52:</b> Turkish admiral Piri Reis sacks Muscat and lays siege to Hormuz but fails to capture it.
+<p>
+<b>1650:</b> Portuguese expelled from Muscat by sultan of the Yarubi dynasty.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>58.76715652523762</longitude>
+				<latitude>20.56725392102174</latitude>
+				<altitude>0</altitude>
+				<range>2022906.93852239</range>
+				<tilt>1.077138334681037e-013</tilt>
+				<heading>-0.4971060557690123</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>58.53741379229129,23.60418122206264,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1552: Francis Xavier dies on the island of Sanchuang</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1552:</b> Francis Xavier dies on the island of Sanchuang near Macao while attempting to enter China as a missionary.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.6306042963133</longitude>
+				<latitude>21.99098208470318</latitude>
+				<altitude>0</altitude>
+				<range>241749.2502856137</range>
+				<tilt>0.0001961691427441986</tilt>
+				<heading>-1.077177575544733</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>112.7897601481587,21.68675805910583,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1554: Sao Paulo founded by Jesuits</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1566:</b> Sao Paulo founded by Jesuits.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-45.80309592475829</longitude>
+				<latitude>-23.44535253615221</latitude>
+				<altitude>0</altitude>
+				<range>822726.5905999059</range>
+				<tilt>0</tilt>
+				<heading>-0.3143095671787831</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-46.49243221779631,-23.67231385006946,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1557: Portuguese settle in Macao</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="400" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle_400.jpg" alt="" width="400" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1547:</b> China's Ming rulers ban direct trade with Japan, allowing Portuguese merchants in the South China Sea to develop a triangular trade connecting Malacca, the Chinese coast, and Japan, based on Indonesian pepper, Chinese silk, and Japanese silver.
+<p>
+<b>1553:</b> Guangdong authorities grant Portuguese fleet captain Leonel de Souza the right to establish settlement on Macao, in exchange for taxation and customs duties.
+<p>
+<b>1557:</b> Portuguese settle in Macao.
+<p>
+<b>1565:</b> First Jesuits reach Macao.
+<p>
+<b>1578:</b> Father Alessandro Valiganano arrives in Macao as supervisor of East Asian Jesuits.
+<p>
+<b>1581:</b>Merchant community on Macao founds Senado da Camara, an elective administrative body designed to supervise civil affairs.
+<p>
+<b>1582:</b> Jesuit Matteo Ricci arrives in Macao.
+<p>
+<b>1586:</b> King Philip II (I of Portugal) grants Macao the rank and privileges of a self-governing city.
+<p>
+<b>1601-27:</b> First Dutch attack on Macao, followed by others in 1622 and 1627, leading the city to build extensive fortifications for defense.
+<p>
+<b>1670:</b> Portuguese mission led by Jesuit Manoel de Saldanha attempts to obtain recognition and trade priviliges from the Kangxi emperor; though no formal agreement is reached, Macao's situation is improved.
+<p>
+<b>1678:</b> Thanks to the Jesuits' excellent relationship with Kangxi emperor, their negotiations with the Qing lead to partial legalization of Macao's maritime trade.
+<p>
+<b>1679:</b> The emperor dispatches a group of inspectors to visit Macao and relay to him their impressions of the city. Their report is favorable; in November 1679, Macao receives an imperial edict ordering that its land trade with Guangzhou be fully legalized immediately.
+<p>
+<b>1680:</b> First Portuguese governor appointed to Macao.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer_400.jpg" alt="" width="400" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.3288575496553</longitude>
+				<latitude>22.29717620107111</latitude>
+				<altitude>0</altitude>
+				<range>1364584.953931425</range>
+				<tilt>0.0002885899727301669</tilt>
+				<heading>-0.04766817955502208</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>113.5234206620288,22.18122398472152,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1566: Emperor expels Jesuits from Kyoto</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1566:</b> Under pressure from Buddhists, the emperor expels Jesuit missionaries from Kyoto; they flee to Kyushu and Sakai.
+<p>
+<b>1569:</b> Jesuit missionaries allowed to return to Kyoto.
+<p>
+<b>1593:</b> Spanish Franciscan missionaries enter Japan from Manila and build churches in Kyoto and Osaka.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>135.7558554507408</longitude>
+				<latitude>34.84538308162934</latitude>
+				<altitude>0</altitude>
+				<range>200308.4575729648</range>
+				<tilt>1.003066823634317e-014</tilt>
+				<heading>0.003498413283889856</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>135.7487134601409,35.00889765456527,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1567: Portuguese traders arrive in Nagasaki</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="400" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle_400.jpg" alt="" width="400" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1567:</b> Portuguese traders arrive in Nagasaki.
+<p>
+<b>1571:</b> First Portuguese merchant ship arrives in Nagasaki.
+<p>
+<b>1597:</b> Nagasaki martyrs: twenty-six Japanese and foreign Christians crucified at Nagasaki by order of Hideyoshi; Hideyoshi issues order expelling all Christians except for those allowed to serve Portuguese community in Nagasaki. Most missionaries go into hiding and do not leave. Christian population estimated at about 300,000.
+<p>
+<b>1622:</b> Fifty-five Christian missionaries and converts executed in Nagasagki.
+<p>
+<b>1633:</b> Use of <i>fumi-e</i> to test belief in Christianity begins in Nagasaki.
+<p>
+<b>1636:</b> Portuguese merchants confined to artificial island of Dejima at Nagasaki.
+<p>
+<b>1637-8:</b> Peasants on Shimabara Peninsula near Nagasaki revolt against local daimyo; uprising turns into Christian revolt; 40,000 rebels barricade themselves in Hara castle, eventually surrendering to and slaughtered by shogun Tokugawa Iemitsu's troops.
+<p>
+<b>1639:</b> Portuguese merchants evicted from Dejima; Portuguese ships banned from Japan; all westerners except Dutch prohibited from entering Japan.
+<p>
+<b>1640:</b> Sixty-one members of Portuguese diplomatic mission from Macao sent to reopen relations are executed at Nagasaki.
+<p>
+<b>1641:</b> Dutch confined to Dejima Island.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer_400.jpg" alt="" width="400" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>129.8800182069332</longitude>
+				<latitude>32.75000556152941</latitude>
+				<altitude>0</altitude>
+				<range>41012.29496416971</range>
+				<tilt>9.209469598878158e-013</tilt>
+				<heading>-3.406893324970211e-007</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>129.8740378964395,32.75186029615033,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1573: Mughals conquer Gujarat</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1573:</b> Mughals conquer the western Indian region of Gujarat.
+<p>
+<b>1580:</b> The first Jesuit mission to the Mughal empire arrives at court of Emperor Akbar.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>72.58293283755634</longitude>
+				<latitude>19.7889753445987</latitude>
+				<altitude>0</altitude>
+				<range>1686947.557225521</range>
+				<tilt>1.254618984407419e-014</tilt>
+				<heading>-5.83732668504842</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>71.4818671812148,22.47772403133128,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1575: Portuguese establish base at Luanda</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1575:</b> Portuguese establish permanent base at Luanda, effectively beginning the colonization of Angola.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>13.24011824939498,-8.82132505325869,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1593: Construction on Fort Jesus begins</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1593:</b> Construction on Fort Jesus begins at Mombasa.
+<br><br>
+<b>1698:</b> Omani forces capture Fort Jesus.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>39.6815142494506,-4.071232287076945,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1605: Amboina falls to the Dutch</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1605:</b> Amboina, the spice island famous for the production of cloves, falls to the Dutch.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>127.8653748938487</longitude>
+				<latitude>-3.544754334566025</latitude>
+				<altitude>0</altitude>
+				<range>1018414.787026048</range>
+				<tilt>0</tilt>
+				<heading>0.01770224739862991</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>128.1546943963185,-3.650492250148774,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1609: Dutch East India Company sets up trading house in Hirado</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1609:</b> Dutch East India Company sets up trading house in Hirado.
+<p>
+<b>1614:</b> Shogun Ieyasu issues Christian Expulsion Edict prohibiting all Christian activity among Japanese and restricts foreign trade to Hirado and Nagasaki.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>129.5600097217607</longitude>
+				<latitude>33.36000725527524</latitude>
+				<altitude>0</altitude>
+				<range>9705.657564455847</range>
+				<tilt>0.0001697643507135156</tilt>
+				<heading>1.988573425262704e-005</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>129.5596904892348,33.35924543993587,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1619: Portuguese conquer Jaffna</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1619:</b> Portuguese conquer the kingdom of Jaffna, on Sri Lanka.
+<p>
+<b>1658:</b> Sri Lanka falls to the Dutch.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>78.67041806729813</longitude>
+				<latitude>8.167433447547076</latitude>
+				<altitude>0</altitude>
+				<range>993633.3344375687</range>
+				<tilt>1.035467898548156e-013</tilt>
+				<heading>-0.164785020708785</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>80.01003533961406,9.669324605577609,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1602: Dutch East India Company founded</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1602:</b> The Dutch East India Company is founded.
+<p>
+<b>1621:</b> Dutch West Indies Company founded in Amsterdam and given a monopoly on Dutch trade and conquest in America and Africa.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>3.495579212945263</longitude>
+				<latitude>46.46022723779723</latitude>
+				<altitude>0</altitude>
+				<range>3008967.468551436</range>
+				<tilt>7.014591788126638e-013</tilt>
+				<heading>-0.9061989634204164</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>4.892659628120896,52.37327902881134,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1630: Dutch fleet captures Recife and Olinda</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1630:</b> Dutch fleet captures Recife and Olinda, marking the start of a successful campaign to conquer northeastern Brazil; by 1641,Dutch forces are in control of the states of Maranhao, Ceara, Rio Grande do Norte, Paraiba, Itamaraca, Pernambuco, Alagoas, and Sergipe.
+<p>
+<b>1637-44:</b> Johan Maurits, count of Nassau-Siegen, arrives in Recife as governor of Dutch Brazil, accompanied by artists Frans Post and Albert Eckhout. He governs Dutch Brazil until 1644.
+<p>
+<b>1648-9:</b> Dutch armies defeated by Portuguese at Recife.
+<p>
+<b>1648-9:</b> Luso-Brazilian army captures Recife; the Dutch sign Treaty of Taborda, marking their withdrawal from Brazil.</font><br></td></tr><tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-33.57442633307752</longitude>
+				<latitude>-11.19019193206006</latitude>
+				<altitude>0</altitude>
+				<range>1796368.606204388</range>
+				<tilt>0</tilt>
+				<heading>-2.606661717796821</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-34.89877666695121,-8.121600323403678,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1652: Dutch East India Company settles Capetown</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1652:</b> Dutch East India Company settles Capetown at the Cape of Good Hope.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>18.49331180632157</longitude>
+				<latitude>-33.90219875513424</latitude>
+				<altitude>0</altitude>
+				<range>140760.0045976118</range>
+				<tilt>0</tilt>
+				<heading>-0.03580057983656071</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>18.42892142297565,-33.94897472337219,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1641-48: Dutch occupy Luanda and Benguela</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1641-48:</b> Dutch occupy Luanda and Benguela until they are expelled by a military expedition from Brazil.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>14.54490455913469</longitude>
+				<latitude>-11.05348428294097</latitude>
+				<altitude>0</altitude>
+				<range>1510341.845376639</range>
+				<tilt>2.289138789763853e-013</tilt>
+				<heading>-0.174411623762724</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>13.40506290669926,-12.57808942025492,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1685: Kangxi emperor authorizes the opening of Guangzhou</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1685:</b> Kangxi emperor authorizes the opening of Guangzhou to other foreigners, ending Macao's monopoly on local trade.</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>113.2880078879965</longitude>
+				<latitude>22.98301398923493</latitude>
+				<altitude>0</altitude>
+				<range>589431.3490378343</range>
+				<tilt>6.114924576018967e-010</tilt>
+				<heading>-0.01656991978617174</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>113.241867422416,23.10776558065776,20000</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>1693: Gold is discovered in Minas Gerais</name>
+			<Snippet maxLines="0"></Snippet>
+			<description><![CDATA[<table width="207" border="0" cellspacing="0" cellpadding="0">
+<tr><td><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/GE_chronologyTitle.jpg" alt="" width="207" height="32" border="0" /></td></tr>
+<tr><td><font size="3" face="Verdana" color="#000000"><br>
+<b>1693:</b> Gold is discovered in Minas Gerais.
+</font><br></td></tr>
+<tr><td><a href="http://www.asia.si.edu"><img src="C:/Dokumente und Einstellungen/SimonR/Lokale Einstellungen/Temp/graphics/chronology_footer.jpg" alt="" width="207" height="21" border="0" /></a></td></tr>
+</table>]]></description>
+			<LookAt>
+				<longitude>-44.86709041189916</longitude>
+				<latitude>-18.85229637591448</latitude>
+				<altitude>0</altitude>
+				<range>3421685.448681943</range>
+				<tilt>30.25108226583677</tilt>
+				<heading>-9.714337113714937</heading>
+			</LookAt>
+			<styleUrl>#chronology</styleUrl>
+			<Point>
+				<coordinates>-44.47857586077093,-21.04727627665723,20000</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

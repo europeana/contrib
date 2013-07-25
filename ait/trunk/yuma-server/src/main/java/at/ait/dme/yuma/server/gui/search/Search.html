@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>YUMA Annotation Server - Search</title>
+    <link href="css/search.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div id="container">
+      <img class="logo" src="images/yuma-logo.png" alt="YUMA Annotation Server" title="YUMA Annotation Server"/>
+      <form wicket:id="form">
+        <input class="searchfield" wicket:id="query" /><span class="searchbutton"><input type="submit" value="Search"/></span>
+      </form>
+      <p class="searchlinks">
+        <a wicket:id="link-timeline">Public Timeline</a>
+        <a wicket:id="link-advanced">Advanced Search</a>
+      </p>
+    </div>
+
+	<div id="header">
+		<a wicket:id="link-doc">View Documentation</a>
+		<a wicket:id="link-login">Admin</a>
+	</div>
+    
+	<div id="footer">
+		Copyright 2010 <a href="http://ait.ac.at">AIT Austrian Institute of Technology</a>
+		<a href="http://ait.ac.at">
+		  <img src="images/ait-logo.png" alt="AIT Austrian Institute of Technology" title="AIT Austrian Institute of Technology" />
+		</a>
+	</div>
+  </body>
+</html>

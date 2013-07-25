@@ -1,0 +1,64 @@
+The YUMA Annotation Server
+--------------------------
+
+WARNING: The YUMA Annotation Server is not yet completed. The documentation
+below is PRELIMINARY DEVELOPER DOC! And not yet suitable for end users!
+Please contact rainer.simon@ait.ac.at for further details.
+
+UPDATE: You can check out a sandbox instance of the YUMA Annotation Server at
+
+http://dme.ait.ac.at/yuma-server
+
+Some more online documentation (included in the server) can be found at 
+
+http://dme.ait.ac.at/yuma-server/doc
+
+TODOs
+-----
+
+- Split FormatHandler into two separate classes (for parsing and serialization).
+- Integrate the Europeana Annotation API as a 'backend'.
+- Implement OAC Model
+- REST authentication between client suite and server!
+- JSON and RDF export of list view contents (search results, feed pages)
+- Think of a decent solution for implementing SemanticTag's 'GeoLocation'.
+- Map view (once GeoLocation is done)
+- Think about a 'dump database' feature (in the admin section)
+- Last but not least: more & better unit tests. Also look into Wicket tooling for
+  Web tests.
+
+Requirements
+------------
+The YUMA Annotation Server requires Java 1.6, a Servlet container such as
+Tomcat 6, and a relational database such as Postgres 8.3. All configuration
+parameters are located in the web.xml.
+
+Alternatively, YUMA Server can also be run with a MongoDB NoSQL-DB backend.
+MongoDB implementation is not yet complete yet - for now it is recommended
+to stick to an RDBMS.
+
+Build
+-----
+YUMA Server is built with Ant. Use the default 'create-war' target to 
+build the .war file.
+
+After Deployment
+----------------
+After deployment, YUMA Server provides various Web pages and HTTP end-points.
+
+- A REST interface for annotation CRUD operations in JSON format is 
+  available at http://localhost:8080/yuma-server/api (or similar, depending
+  on your setup). For format documentation, please consult source code.
+  
+- Various annotation RSS feeds are available at 
+  http://localhost:8080/yuma-server/feeds
+  Consult source code for details and available feeds. 
+
+- The Web fronted is available at the root path
+  http://localhost:8080/yuma-server (or similar)
+  and provides access to annotation search.
+  
+- There are also Web pages for each available RSS feed. E.g. the public
+  timeline is available at
+  http://localhost:8080/pages/Timeline
+  Consult source code for details and further available pages.

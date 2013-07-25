@@ -1,0 +1,5 @@
+<module rename-to="yuma.image.core">
+	<inherits name="at.ait.dme.yuma.suite.apps.core.Core" />
+	<source path = "client"/>
+	<source path = "shared"/>    
+</module>

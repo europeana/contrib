@@ -1,0 +1,65 @@
+@prefix rdf:  		<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: 		<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  		<http://www.w3.org/2002/07/owl#> .
+@prefix xsd:		<http://www.w3.org/2001/XMLSchema#>.
+
+@prefix annotea: 	<http://www.w3.org/2000/10/annotation-ns#> .
+@prefix lemo: 		<http://lemo.mminf.univie.ac.at/annotation-core#> .
+
+<> a owl:Ontology;
+    rdfs:label "The LEMO Core Schema."@en;
+    rdfs:comment "This vocabulary represents the core vocabulary of the LEMO Annotation Framework."@en;
+    .
+
+lemo:Annotation a rdfs:Class;
+	rdfs:label "Annotation"@en;
+	rdfs:comment "Type of the annotation resource"@en;
+	rdfs:subClassOf annotea:Annotation;
+	.
+
+lemo:annotates a rdf:Property;
+	rdfs:label "annotates"@en;
+	rdfs:comment "Relates an annotation with the annotated resource"@en;
+	rdfs:subPropertyOf annotea:annotates;
+	rdfs:domain lemo:Annotation;
+	.
+
+lemo:author a rdf:Property;
+	rdfs:label "author"@en;
+	rdfs:comment "The author of an annotation"@en;
+	rdfs:subPropertyOf annotea:author;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:string;
+	.
+
+lemo:label a rdf:Property;
+	rdfs:label "label"@en;
+	rdfs:comment "A human readable description of an annotation"@en;
+	rdfs:subPropertyOf annotea:body;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:string;
+	.
+
+lemo:created a rdf:Property;
+	rdfs:label "created"@en;
+	rdfs:comment "The date and time when the annotation was created"@en;
+	rdfs:subPropertyOf annotea:created;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:dateTime;
+	.
+
+lemo:modified a rdf:Property;
+	rdfs:label "modified"@en;
+	rdfs:comment "The date and time when the annotation was modified"@en;
+	rdfs:subPropertyOf annotea:modified;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:dateTime;
+	.
+	
+lemo:fragment a rdf:Property;
+	rdfs:label "fragment"@en;
+	rdfs:comment "Addresses a specific portion in the annotated resource"@en;
+	rdfs:subPropertyOf annotea:context;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:anyURI;
+	.

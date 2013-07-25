@@ -1,0 +1,61 @@
+
+- unit testing
+  
+DONE:
+
+12.01.10
+- use different layout than standard flex layout
+- display a small shape icon in the annotation thread for annotations that do have a shape
+- UI improvements
+  - e.g. remove tabs, hide Debug
+- finish translating the interface (error messages, hovers, ...)
+
+08.01.10
+- display shapes in the video player only during their time fragment
+- clear the annotation canvas when a shape is deleted
+- colors for the graphical annotation
+
+
+18.12.09
+- finished refactoring the whole application to use a coherent UI event mechanism / use case mechanism
+- drag & drop of shapes
+
+01.12.09 (and the days before):
+- enhance the middleware communication layer to support shapes
+- display graphical annotation only during timespan of annotation
+- fix a number of bugs related to the UI and the selection mechanism. a lot of refactoring needs to be done to have a manageable code
+
+23.11.09
+- store graphical annotations in objects (annotation)
+- parse incoming mpeg21 string
+- build outgoing mpeg21 string
+
+20.11.09
+- modify the tools (rename to "renderer"?) so they can draw an annotation from an object
+- enhancing the annotation creation form
+- ellipsis shapes
+- making the shape creation behavior natural (handling cases when mouse leaves canvas, comes back in, etc.)
+
+19.11.09
+- getting annotation canvas to do something
+- rectangular shapes
+
+18.11.09
+- skeleton of graphical annotation canvas
+
+13.11.09
+- more internationalization
+
+12.11.09
+  - font of annotation Title, Comment text fields
+  - font for annotation comments
+  - internationalization
+  
+  
+
+RESOURCES
+- BlazeDS: flex to java
+  --> authentication mechanism
+      - administrator, roles, … ???
+
+- flex style explorer: http://examples.adobe.com/flex2/consulting/styleexplorer/Flex2StyleExplorer.html

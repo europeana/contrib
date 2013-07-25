@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Age of Exploration: Magellan&apos;s Circumnavigation of the World</name>
+	<open>1</open>
+	<description>The travels of Ferdinand Magellan.
+Line thickness represents size of crew.
+
+Dates from:
+http://en.wikipedia.org/wiki/Ferdinand_Magellan</description>
+	<Style id="style13">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style11">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>7</width>
+		</LineStyle>
+	</Style>
+	<Style id="style26">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style10">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style15">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>10</width>
+		</LineStyle>
+	</Style>
+	<Style id="style21">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style2">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style9">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style28">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style5">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style18">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style22">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style29">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style3">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style27">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style19">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style6">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style23">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/caution.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style12">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style14">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style1">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style4">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="style20">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style8">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="style16">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style25">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style17">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/ms/icons/sailing.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<Style id="style24">
+		<LineStyle>
+			<color>73ff0000</color>
+		</LineStyle>
+	</Style>
+	<Style id="style7">
+		<LineStyle>
+			<color>73ff0000</color>
+			<width>7</width>
+		</LineStyle>
+	</Style>
+	<Placemark>
+		<name>Seville Spain</name>
+		<description><![CDATA[August 10, 1519<br>Magellan departs with five ships: Trinidad, San Antonia, Concepcion, Vicoria, Santiago<br>]]></description>
+		<styleUrl>#style19</styleUrl>
+		<Point>
+			<coordinates>-6.017159,37.390411,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Departure</name>
+		<description><![CDATA[Sep. 20, 1519 <br>Set sail with ~270 men]]></description>
+		<styleUrl>#style22</styleUrl>
+		<Point>
+			<coordinates>-6.359881,36.791142,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Canary Islands</name>
+		<styleUrl>#style25</styleUrl>
+		<Point>
+			<coordinates>-18.500977,28.459032,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Equator</name>
+		<description>Nov 19, 1520</description>
+		<styleUrl>#style18</styleUrl>
+		<Point>
+			<coordinates>-29.410398,0.005492,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Rio De Janeiro, Brazil</name>
+		<description>12/13/1519</description>
+		<styleUrl>#style29</styleUrl>
+		<Point>
+			<coordinates>-43.117218,-23.045614,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Strait of Magellan</name>
+		<description><![CDATA[Aug. 24, 1520<br>Discovered passage and concluded they'd found the Northwest Passage. Magellan named the Pacific Ocean for its calm waters.<br>]]></description>
+		<styleUrl>#style3</styleUrl>
+		<Point>
+			<coordinates>-67.939453,-52.882389,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Entered the Pacific Ocean</name>
+		<description><![CDATA[Nov 28, 1520<br>Three ships returned to Spain.]]></description>
+		<styleUrl>#style16</styleUrl>
+		<Point>
+			<coordinates>-74.970703,-52.65639100000001,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Crossed the Equator</name>
+		<description>Feb 13, 1521</description>
+		<styleUrl>#style20</styleUrl>
+		<Point>
+			<coordinates>-165.9375,-0.17578,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Guam &amp; Marianas</name>
+		<description>March 6, 1521</description>
+		<styleUrl>#style10</styleUrl>
+		<Point>
+			<coordinates>145.145874,13.624632,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Homonhon, Philippines</name>
+		<description><![CDATA[March 16, 1521<br>150 Crewmen remain]]></description>
+		<styleUrl>#style1</styleUrl>
+		<Point>
+			<coordinates>125.79895,10.769904,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Cebu, Phillipines</name>
+		<description>Apr 7, 1521</description>
+		<styleUrl>#style14</styleUrl>
+		<Point>
+			<coordinates>123.596191,9.486990000000001,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Palawan, Philippines</name>
+		<description>May 2, 1521</description>
+		<styleUrl>#style13</styleUrl>
+		<Point>
+			<coordinates>120.388184,11.555379,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Magellan Killed</name>
+		<description><![CDATA[Apr 27, 1521<br><img style="max-width:250px" src="http://en.wikipedia.org/wiki/Image:Ferdinand_Magellan.jpg">]]></description>
+		<styleUrl>#style23</styleUrl>
+		<Point>
+			<coordinates>123.33252,8.863362,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Borneo</name>
+		<description>Jun 21, 1521</description>
+		<styleUrl>#style17</styleUrl>
+		<Point>
+			<coordinates>120.058594,2.28455,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Spice Islands</name>
+		<description><![CDATA[Nov 6, 1521<br>115 Crew remain<br>Trinidad captured by Portugese, damaged, abandoned.]]></description>
+		<styleUrl>#style27</styleUrl>
+		<Point>
+			<coordinates>131.835938,-5.615986,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Cape Verde</name>
+		<description><![CDATA[Jul 9, 1522<br>20 crewmen die enroute, 13 abandoned<br>]]></description>
+		<styleUrl>#style21</styleUrl>
+		<Point>
+			<coordinates>-23.049316,14.43468,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Return Home</name>
+		<description><![CDATA[Sep 6, 1522<br>18 men returned home]]></description>
+		<styleUrl>#style5</styleUrl>
+		<Point>
+			<coordinates>-6.285553,36.517361,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>Route - Seveille to Coast</name>
+		<styleUrl>#style28</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+-6.018448,37.390072,0 -6.023253,37.370975,0 -6.022223,37.339317,0 -6.01467,37.325397,0 -6.015700000000001,37.314747,0 -6.04351,37.295086,0 -6.059647,37.262302,0 -6.06308,37.251099,0 -6.056212,37.226776,0 -6.086426,37.207363,0 -6.100501,37.191502,0 -6.104964,37.176182,0 -6.107025,37.166336,0 -6.085052000000001,37.104752,0 -6.091575000000001,37.059284,0 -6.113547,37.03764,0 -6.154404000000001,37.024757,0 -6.188049,36.936443,0 -6.221352,36.901035,0 -6.255683,36.89225,0 -6.275253,36.90955,0 -6.340828,36.89637,0 -6.356277,36.841713,0 -6.353873999999999,36.8255,0 -6.342201,36.806259,0 -6.343918,36.796089,0 -6.35765,36.791965,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>Atlantic to Pacific</name>
+		<styleUrl>#style15</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+-6.41464,36.783989,0 -18.292219,28.671289,0 -29.816891,14.28566,0 -29.88279,0.17577,0 -36.80418,-20.447599,0 -42.1875,-23.66465,0 -42.868649,-23.322069,0 -47.8125,-25.938259,0 -48.405762,-28.72913,0 -51.81152000000001,-32.565331,0 -54.030762,-35.406952,0 -56.57959,-35.299431,0 -56.25,-37.840149,0 -61.523438,-40.178871,0 -60.62254,-39.622608,0 -62.77586,-41.722111,0 -64.27002,-44.119141,0 -66.46727799999999,-46.179829,0 -64.907211,-47.383469,0 -67.60984000000001,-52.375591,0 -67.95040899999999,-52.766209,0 -68.724953,-52.459351,0 -69.323708,-52.389,0 -69.52697000000001,-52.469379,0 -69.719223,-52.55963899999999,0 -70.15869100000001,-52.67971,0 -70.48278000000001,-52.71965,0 -70.988152,-53.952839,0 -71.273788,-53.949619,0 -71.94946299999999,-53.78117,0 -72.240601,-53.625092,0 -72.36145000000001,-53.55986,0 -72.487793,-53.55986,0 -72.64157899999999,-53.523979,0 -73.086517,-53.334148,0 -73.65782900000001,-53.008148,0 -74.564178,-52.66304,0 -74.943207,-52.66637,0 -74.959709,-52.663048,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Homonhon</name>
+		<styleUrl>#style12</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+144.316406,13.795405,0 125.639648,10.746968,0 125.397949,10.498613,0 125.38147,10.125709,0 125.205688,9.535748,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Spice Islands</name>
+		<styleUrl>#style26</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+119.816895,2.218684,0 126.046143,1.856365,0 127.716064,-4.631179,0 130.924072,-5.058113,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>back to Atlantic</name>
+		<styleUrl>#style8</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+131.000977,-5.17848,0 125.55175,-11.3077,0 69.060051,-17.476431,0 37.045891,-36.226551,0 17.907709,-36.49197,0 9.492179,-14.22178,0 -7.9541,-1.69164,0 -22.829578,14.32826,0 -22.719727,14.477233,0 -22.763672,14.349548,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Guam</name>
+		<styleUrl>#style11</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+-74.97069500000001,-52.589699,0 -166.025391,-0.26367,0 -179.472656,4.039617,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Cebu</name>
+		<styleUrl>#style2</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+125.202942,9.522206000000001,0 123.604431,9.478863000000001,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>battle route</name>
+		<styleUrl>#style4</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+123.571472,9.473444000000001,0 123.365479,9.199714,0 123.343506,8.955619,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>fled to Palawan</name>
+		<styleUrl>#style6</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+123.261108,8.890499,0 122.099304,9.251224000000001,0 120.385437,11.541925,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Borneo</name>
+		<styleUrl>#style9</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+120.379944,11.52847,0 119.707031,2.372368,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>to Spain</name>
+		<styleUrl>#style24</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+-22.763672,14.43468,0 -16.347656,25.878992,0 -6.372069,36.385914,0 </coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>Guam to 180 degree</name>
+		<styleUrl>#style7</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+145.634766,13.795405,0 179.736328,4.171115,0 </coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

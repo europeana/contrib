@@ -1,0 +1,103 @@
+body {
+	margin:0px;
+	padding:0px;
+	color:#000;
+	text-align:center;
+	font-family:"Verdana","Arial";
+	background-color:#fff;
+	width:100%;
+}
+
+form {
+	width:514px;
+	background-image:url('../images/search-ds.png');
+	background-repeat:no-repeat;
+	margin:0px auto 5px auto;
+	padding:15px 0px;
+}	
+
+#container {
+	padding-top:12%;
+	width:100%;
+	margin:0px auto 0px auto;	
+}
+
+.logo {
+	padding:0px 0px 10px 0px;
+}
+
+.searchfield {
+	font-size:14px;
+	padding:4px 8px 4px 8px;
+	margin:0px;
+	width:360px;
+	height:16px;
+	background-color:#fff;
+	border-width:1px 0px 1px 1px;
+	border-style:solid;
+	border-color:#000;
+}
+
+@-moz-document url-prefix() {
+    .searchfield {
+		position:relative;
+        top:1px;
+    }
+}
+
+.searchbutton {
+	position:relative;
+	top:1px;
+	background-image:url('../images/button.png');
+	padding:3px 10px 3px 10px;
+	margin:1px 0px 0px 0px;
+	background-color:#000;
+	border:1px solid #000;
+	cursor:pointer;
+}
+
+.searchbutton input {
+	background:none;
+	border:0px;
+	margin:0px;
+	padding:0px;
+	font-size:14px;
+	width:80px;
+	height:27px;
+	color:#fff;
+	cursor:pointer;
+}
+
+.searchlinks {
+	margin:0px auto 0px auto;
+	width:480px;
+	text-align:right;
+	font-size:9px;
+}
+
+a {
+	margin-left:5px;
+	color:#000;
+}
+
+a:visited {
+	color:#000;
+}
+
+#header {
+	position:absolute;
+	top:10px;
+	right:10px;
+	font-size:9px;
+}
+
+#footer {
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	font-size:9px;
+}
+
+#footer img {
+	border-width:0px;
+}

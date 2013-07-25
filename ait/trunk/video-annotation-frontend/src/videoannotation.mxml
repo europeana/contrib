@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:video="at.ac.arcs.dme.videoannotation.client.gui.video.*"	
+	xmlns:debug="at.ac.arcs.dme.videoannotation.client.gui.debug.*"
+	xmlns:annotation="at.ac.arcs.dme.videoannotation.client.gui.annotation.*"
+	>
+	
+	<mx:Metadata>[ResourceBundle("videoannotationIntl")]</mx:Metadata>   
+	<mx:Metadata>[ResourceBundle("videoannotation")]</mx:Metadata>   
+   
+	<mx:Style source="at/ac/arcs/dme/videoannotation/client/css/annotation.css" />
+   
+   
+	<!-- Internationalization -->
+	<mx:ToggleButtonBar id="languageBar" horizontalGap="5" itemClick="on_languageChanged(event);" toggleOnClick="true">
+		<mx:dataProvider>
+		<mx:Object icon="@Embed(source='at/ac/arcs/dme/videoannotation/client/images/gb.png')" />
+		<mx:Object icon="@Embed(source='at/ac/arcs/dme/videoannotation/client/images/de.png')" />
+		<mx:Object icon="@Embed(source='at/ac/arcs/dme/videoannotation/client/images/fr.png')" />
+		</mx:dataProvider>
+	</mx:ToggleButtonBar>
+   
+  <!-- <mx:TabNavigator id="tabNavigator" width="100%"	height="100%" creationPolicy="all" creationComplete="creationComplete()">
+  <mx:VBox label="{resourceManager.getString('videoannotationIntl', 'TAB_ANNOTATION')}" horizontalScrollPolicy="off" verticalScrollPolicy="on">
+	
+  -->
+	
+		<mx:Panel title="{resourceManager.getString('videoannotationIntl', 'TITLE_CLIENT')}" height="100%" width="100%" paddingTop="10" 
+			paddingBottom="10" paddingLeft="10" paddingRight="10" creationComplete="creationComplete()">
+        	<mx:HBox width="100%" height="100%" horizontalGap="100">
+
+				<mx:VBox>
+					<!-- the video player -->
+	        		<mx:Panel id="vPanel" title="{resourceManager.getString('videoannotationIntl', 'TITLE_PLAYER')}" width="100%">
+        	    		<mx:Canvas x="0" y="0" backgroundAlpha="0">
+		        		    <video:ExtVideoDisplay id="videoDisplay" autoPlay="false" metadataReceived="videoDisplay_metadataReceived(event);" />
+        	    	       	<annotation:AnnotationCanvas id="annotationCanvas" backgroundColor="#fafafa" backgroundAlpha="0" />
+                		</mx:Canvas>
+	    		        <video:AudioPlayer id="audioDisplay" autoPlay="false" metadataReceived="videoDisplay_metadataReceived(event);" />
+	       			</mx:Panel>
+	       			
+	       			<!-- create new annotation button -->
+	       			<mx:HBox>
+	       				<mx:Button id="newAnnoButton" label="{resourceManager.getString('videoannotationIntl', 'BUTTON_CREATE_ANNOTATION')}" click="on_newAnnotation()"/>			        	 			        					        	
+		        	</mx:HBox>
+		        	
+	       			<!-- the fragment list -->
+	       			<mx:Panel id="fragListPanel" title="{resourceManager.getString('videoannotationIntl', 'TITLE_FRAGMENTS')}" width="{vPanel.width}">
+	       				<mx:Canvas>
+		       				<mx:HBox left="{_player.playheadSlider.x}" >
+			       				<video:FragmentBarList id="fragmentList" width="{_player.playheadSlider.width}" height="100%" />
+			       			</mx:HBox>
+	       				</mx:Canvas>
+	       			</mx:Panel>
+				</mx:VBox>
+					
+	        	<!-- the annotations tree -->
+	        	<mx:VBox width="100%" height="100%">				
+	        		<mx:Panel id="annotationsPanel" width="100%" height="100%" title="{resourceManager.getString('videoannotationIntl', 'TITLE_COMMENTS')}" 
+	        			horizontalAlign="left" horizontalScrollPolicy="off" verticalScrollPolicy="off">	        		
+        				<mx:Tree id="annotationTree" width="98%" height="100%" dataProvider="{_presentationData}" 
+        					borderThickness="0"	variableRowHeight="true" styleName="annotationTree"      					
+        					itemRenderer="at.ac.arcs.dme.videoannotation.client.gui.annotation.AnnotationTreeItemRenderer" 	        					
+        					horizontalScrollPolicy="auto" verticalScrollPolicy="auto" />
+       				</mx:Panel>
+       			</mx:VBox>
+			</mx:HBox>
+		</mx:Panel>
+	
+		
+		<!-- is currently removed in onCreationComplete() -->	
+		<debug:DebugBox visible="false" id="_debugBox" />							
+	<!-- </mx:TabNavigator> -->
+    <mx:Script>
+      <![CDATA[
+          import mx.events.ResourceEvent;
+        import at.ac.arcs.dme.videoannotation.client.gui.debug.DebugBox;
+        import at.ac.arcs.dme.videoannotation.client.gui.button.SkipButton;
+        import mx.events.VideoEvent;
+        import at.ac.arcs.dme.videoannotation.client.event.UserEvent;
+      
+        import mx.events.ItemClickEvent;
+      	import at.ac.arcs.dme.videoannotation.client.event.ApplicationEvent;
+      	import at.ac.arcs.dme.videoannotation.client.gui.video.AudioPlayer;      	
+      	import at.ac.arcs.dme.videoannotation.client.gui.video.AbstractPlayer;
+      	import at.ac.arcs.dme.videoannotation.client.util.MiscUtil;    
+      	import at.ac.arcs.dme.videoannotation.client.event.AnnotationEvent;
+        import at.ac.arcs.dme.videoannotation.client.model.VideoAnnotation;
+	  	import at.ac.arcs.dme.videoannotation.client.service.AnnoteaServiceHttpService;
+	  	import at.ac.arcs.dme.videoannotation.client.service.CookieUtil;	  	
+        import at.ac.arcs.dme.videoannotation.client.util.HTTPParameters;
+        import at.ac.arcs.dme.videoannotation.client.controller.AnnotationController;
+        
+      	import mx.utils.ObjectUtil;      	
+      	import mx.managers.ToolTipManager;
+      	import mx.controls.Alert;      	      	
+      	import mx.events.MetadataEvent;
+        
+    	public var debugBox:DebugBox = null;
+    	
+    	// parameters which a read in as uri parameters
+    	[Bindable] private var urlParams:HTTPParameters = new HTTPParameters();
+
+    	private var keyFrameTimes:Array;
+    	[Bindable] public var _presentationData:Array;    	
+	
+    	private var metadata_received:Boolean = false;    
+    	[Bindable] private var _player:AbstractPlayer;
+		private var audio:Boolean = false;
+		
+		// mind that the order of elements matters since it is mapped to the index of the buttons above
+    	private var languages:Array = [ ['en_GB'], ['de_DE'], ['fr_FR'] ];
+    	
+    	
+    	
+    	// this mehtod is called right after the initialization of this component
+       	// here we set the event handlers programmaticaly and other things that might be customized
+       	private function creationComplete():void {       
+       		
+       		this.debugBox = _debugBox;
+       		
+       		getUrlParameters(false);       		
+       		//tabNavigator.removeChild(debugBox);
+       		
+       		// initialize interface
+       		_player = (audio)?audioDisplay:videoDisplay;
+       		_player.width=480;
+       		_player.height=(audio)?40:388; 
+       		videoDisplay.visible=!audio;
+       		audioDisplay.visible=audio;
+       		
+       		// video overlay for the annotation canvas
+       		overlayVideo();
+       		
+			ToolTipManager.showDelay = 0.1;
+
+       		
+       		if (urlParams.objectURL == null) {
+    			Alert.show(resourceManager.getString('videoannotationIntl', 'ERROR_NO_URL'));
+    			return;
+    		}
+    		metadata_received = false;
+    		
+    		if (_player.playing) _player.stop();
+    		if(urlParams.objectURL!=null) {
+    			urlParams.objectURL=decodeURI(decodeURIComponent(urlParams.objectURL));    			
+    			this._player.source=urlParams.objectURL;
+    		}  
+    		
+    		
+    		
+    		
+    		
+            // initialization of the controller and of event listeners specific to this class
+    		
+      		this.systemManager.addEventListener(ApplicationEvent.LOAD_DATA, handleLoadData);
+      		this.systemManager.addEventListener(UserEvent.CLICK_CANCEL_ANNOTATION, on_closeAnnotationForm);
+      		this.systemManager.addEventListener(UserEvent.SELECT_ANNOTATION_FRAGMENTBAR, on_selectFragmentTree);
+       		
+       		AnnotationController.getInstance().initController(this, debugBox, urlParams);
+       		AnnotationController.getInstance().initPlayer(_player);
+       		AnnotationController.getInstance().initFragmentBarList(fragmentList);
+            if(!audio) {
+           		AnnotationController.getInstance().initAnnotationCanvas(annotationCanvas);
+            }
+       		
+   	 		this._player.load();
+      		this._player.addEventListener(VideoEvent.PLAYHEAD_UPDATE, annotationCanvas.handlePlayHeadUpdate);
+    		this.systemManager.dispatchEvent(new ApplicationEvent(ApplicationEvent.LIST_ANNOTATION));
+   
+       	}
+    	
+		// we go for the url parameters in here
+		// we accept either calls directly to the swf file or html
+       	private function getUrlParameters(verbose:Boolean):void {
+       		var objectUrl:String = Application.application.parameters.objectUrl;
+       		if (objectUrl == null) objectUrl = MiscUtil.getHtmlParameter("objectURL");
+       		var user:String = Application.application.parameters.user;
+       		if (user == null) user = MiscUtil.getHtmlParameter("user");       		       		
+       		var db:String = Application.application.parameters.db;
+       		if (db == null) db = MiscUtil.getHtmlParameter("db");
+       		var telplusId:String = Application.application.parameters.id;
+       		if (telplusId == null) telplusId = MiscUtil.getHtmlParameter("id");
+       		if (verbose) Alert.show("objectUrl:"+objectUrl+" ,user:"+user+", id:"+id+" ,db:"+db);
+       		if (objectUrl == null) objectUrl = debugBox.videoUrl.text;
+       		if (user == null) user = "csa";
+       		
+       		urlParams.objectURL = objectUrl;
+       		urlParams.user = user;
+       		urlParams.db = db;
+       		urlParams.telplusId = telplusId;
+       		
+       		audio=MiscUtil.isAudio();
+       		
+       		//TODO security concept
+       		CookieUtil.setCookie("lemo_user",user,1);   		       	
+       	}
+    	
+    	
+    	
+    	
+    	
+    	/*********************************/
+	    /**    User-triggered events     */
+	    /*********************************/
+        
+        private function on_languageChanged(event:ItemClickEvent):void {
+            var newLocale:String = String(languages[languageBar.selectedIndex]);
+            
+            // Ensure that you are not loading the same resource module more than once.
+            if (resourceManager.getLocales().indexOf(newLocale) == -1) {
+                // Build the file name of the resource module.
+                var resourceModuleURL:String = "Resources_" + newLocale + ".swc";
+                trace(resourceModuleURL);
+                var eventDispatcher:IEventDispatcher = resourceManager.loadResourceModule(resourceModuleURL);
+                eventDispatcher.addEventListener(ResourceEvent.COMPLETE, handleResourceLoadingComplete);
+            } else {
+                handleResourceLoadingComplete(null);
+            }
+        }
+        
+        private function handleResourceLoadingComplete(event:ResourceEvent):void {
+            resourceManager.localeChain = languages[languageBar.selectedIndex];
+        }
+    	
+    	private function on_newAnnotation():void {
+            this.systemManager.dispatchEvent(new AnnotationEvent(AnnotationEvent.NEW, null, _player.playheadSlider.fragementFromTime, _player.playheadSlider.fragmentToTime));
+        }
+        
+        private function on_closeAnnotationForm(event:UserEvent):void {
+            annotationTree.selectedItem = null;
+        }
+        
+        private function on_selectFragmentTree(event:UserEvent):void {
+            annotationTree.selectedItem = event.annotation;
+        }
+        
+    	/**********************************************/
+	    /**    Methods for interface manipulation     */
+	    /**********************************************/
+       	
+    	private function updateFragmentBarList(presentationData:Array): void {
+    		fragmentList.removeAllChildren();
+      		addFragmentBars(presentationData);
+    	}
+    	
+    	private function addFragmentBars(annotations:Array):void {
+    		if(annotations==null) return;
+    		for each (var annotation:VideoAnnotation in annotations) {      			
+      			addFragmentBar(annotation);
+      			addFragmentBars(annotation.children);
+      		}
+    	}
+
+    	private function addFragmentBar(anno:VideoAnnotation):void {
+    		if (anno.videoFragment == null) return;
+    		fragmentList.addFragmentBar(anno);
+    	}
+       	
+    	private function overlayVideo():void {
+       		this.annotationCanvas.x = this.videoDisplay.x;
+       		this.annotationCanvas.y = this.videoDisplay.y;
+       		this.annotationCanvas.width = this.videoDisplay.width;
+       		this.annotationCanvas.height = this.videoDisplay.videoDisplayHeight;
+    	}
+
+    	/*******************************************************************************************************/
+	    /**    "Interface event methods" - method triggered by interface events, independently of the user     */
+	    /*******************************************************************************************************/
+        
+        // this function will be called whenever the videodisplay component receives a metadata update
+		// we check the metadata if there is any keyframe information present, if so we keep it
+		// for calculation of the closest frame to a certain fragment
+	   	private function videoDisplay_metadataReceived(evt:MetadataEvent):void {
+	   		if(!audio) {
+		   		metadata_received = true;
+	            var arr:Array = [];
+	            var item:String;
+	            var meta:Object = evt.info; // videoDisplay.metadata;
+	            var value:*;
+	            keyFrameTimes = null;
+	            for (item in meta) {
+	            	if (item.toString()=="keyframes") {
+	            		keyFrameTimes = meta[item].times;
+	            	}
+	
+	                if (ObjectUtil.isSimple(meta[item])) {
+	                    if (meta[item] is Array) {
+	                        value = "[Array]";
+	                    } else {
+	                        value = meta[item]
+	                    }
+	                    arr.push({name:item, value:value});
+	                }
+	            }
+	            arr.sortOn("name", Array.CASEINSENSITIVE);
+	            debugBox.dataGridMetaData.dataProvider = arr;
+	            debugBox.dataGridMetaData.visible = true;
+				debugBox.dataGridkeyframes.dataProvider = keyFrameTimes;
+				debugBox.dataGridkeyframes.visible = true;
+	   		}
+			fragmentList.maximum = _player.totalTime;
+			
+		}
+
+		private function handleLoadData(event:ApplicationEvent):void {
+ 	        this._presentationData = event.presentationData;
+     	    annotationTree.openItems=getAllNodes(event.presentationData);
+ 	        updateFragmentBarList(event.presentationData);
+		}
+     	
+     	private function getAllNodes(nodes:Array):Array {
+     		var allNodes:Array = new Array();;
+     		for each(var node:VideoAnnotation in nodes) {
+         		allNodes.push(node);         		
+         		addAllReplies(allNodes, node);	
+         	} 
+         	return allNodes;        	         	
+     	} 
+     	
+     	private function addAllReplies(nodes:Array, node:VideoAnnotation):void {
+     		for each(var reply:VideoAnnotation in node.children) {
+     			nodes.push(reply);
+     			addAllReplies(nodes,reply);
+     		}     		
+     	}
+  	  ]]>
+
+   </mx:Script>
+</mx:Application>

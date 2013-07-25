@@ -1,0 +1,58 @@
+<rdf:RDF
+    xmlns:lemo="http://lemo.mminf.univie.ac.at/annotation-core#"
+    xmlns:annotea="http://www.w3.org/2000/10/annotation-ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#">
+  <owl:Ontology rdf:about="">
+    <rdfs:comment xml:lang="en">This vocabulary represents the core vocabulary of the LEMO Annotation Framework.</rdfs:comment>
+    <rdfs:label xml:lang="en">The LEMO Core Schema.</rdfs:label>
+  </owl:Ontology>
+  <rdfs:Class rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#Annotation">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#Annotation"/>
+    <rdfs:comment xml:lang="en">Type of the annotation resource</rdfs:comment>
+    <rdfs:label xml:lang="en">Annotation</rdfs:label>
+  </rdfs:Class>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#modified">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#modified"/>
+    <rdfs:comment xml:lang="en">The date and time when the annotation was modified</rdfs:comment>
+    <rdfs:label xml:lang="en">modified</rdfs:label>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#fragment">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#context"/>
+    <rdfs:comment xml:lang="en">Addresses a specific portion in the annotated resource</rdfs:comment>
+    <rdfs:label xml:lang="en">fragment</rdfs:label>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#created">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#created"/>
+    <rdfs:comment xml:lang="en">The date and time when the annotation was created</rdfs:comment>
+    <rdfs:label xml:lang="en">created</rdfs:label>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#annotates">
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#annotates"/>
+    <rdfs:comment xml:lang="en">Relates an annotation with the annotated resource</rdfs:comment>
+    <rdfs:label xml:lang="en">annotates</rdfs:label>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#author">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#author"/>
+    <rdfs:comment xml:lang="en">The author of an annotation</rdfs:comment>
+    <rdfs:label xml:lang="en">author</rdfs:label>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/annotation-core#label">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2000/10/annotation-ns#body"/>
+    <rdfs:comment xml:lang="en">A human readable description of an annotation</rdfs:comment>
+    <rdfs:label xml:lang="en">label</rdfs:label>
+  </rdf:Property>
+</rdf:RDF>

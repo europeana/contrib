@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                            -->
+<!-- This is an example map image metadata file. Put this file  -->
+<!-- into the same (public Web) directory where your map file   -->
+<!-- is located and rename to <your-map-filename>.xml           -->
+<!-- The metadata will then be shown in the 'About' tab of the  -->
+<!-- map annotation tool.                                       -->
+<!--                                                            -->
+<map-metadata>
+	<!-- Mandatory! -->
+	<title>Universalis Cosmographia Secundum Ptholomaei Traditionem et Americi Vespucii Aliorum que Lustrationes</title>
+	
+	<!-- Mandatory! -->
+	<author>Martin Waldseem&#x00FC;ller</author>
+	
+	<!-- Mandatory -->
+	<date>1507</date>
+	
+	<source>Wikimedia Commons</source>
+	<description>
+	The Waldseem&#x00FC;ller map, Universalis Cosmographia, is a printed wall 
+	map of the world by German cartographer Martin Waldseem&#x00FC;ller, originally 
+	published in April 1507. It is known as the first map to use the name &quot;America&quot;.
+	The map is drafted on a modification of Ptolemy's second projection, expanded to 
+	accommodate the Americas and the high latitudes. A single copy of the map 
+	survives, presently housed at the Library of Congress in Washington, D.C. 
+	Waldseem&#x00FC;ller also created globe gores, printed maps designed to be cut out 
+	and pasted onto spheres to form globes of the Earth.
+	</description>
+	<thumbnail>http://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Waldseemuller_map.jpg/150px-Waldseemuller_map.jpg</thumbnail>
+	<link>http://commons.wikimedia.org/wiki/File:Waldseemuller_map.jpg</link>
+</map-metadata>

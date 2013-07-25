@@ -1,0 +1,13 @@
+This file describes a number of things necessary to be done before being able to run/develop this application.
+
+* create build.properties based on build.properties.template
+* modify FLEX_HOME in build.properties accordingly
+* Internationalization support
+	In order to have internationalization support for the application, you'll need to manually compile the appropriate locale bundles
+	for your Flex SDK. In order to do so, run
+
+	./copylocale en_US de_DE
+	./copylocale en_US fr_FR
+  
+	from your Flex SDK 'bin' directory.
+ 

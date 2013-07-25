@@ -1,0 +1,19 @@
+.gwt-SplitLayoutPanel {
+	background-color: #eeeeee;
+}
+
+.gwt-SplitLayoutPanel .gwt-SplitLayoutPanel-HDragger {
+	cursor: auto;
+  	border: 2px; 
+  	background-color: #aaaaaa;
+}
+
+.gwt-SplitLayoutPanel .gwt-SplitLayoutPanel-VDragger {
+	cursor: auto;
+ 	border: 2px;
+	background-color: #aaaaaa; 
+}
+
+.ait-GTVTextPanel {
+	padding: 10px;	
+}

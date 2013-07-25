@@ -1,0 +1,62 @@
+<http://dbpedia.org/resource/Alabama> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Alabama> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "33.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alabama> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-86.66666666666667"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alabama> <http://www.georss.org/georss/point> "33.0 -86.66666666666667"@en .
+<http://dbpedia.org/resource/Abraham_Lincoln> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Abraham_Lincoln> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "39.82333333333333"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Abraham_Lincoln> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-89.65583333333333"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Abraham_Lincoln> <http://www.georss.org/georss/point> "39.82333333333333 -89.65583333333333"@en .
+<http://dbpedia.org/resource/Alaska> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Alaska> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "64.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alaska> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-153.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alaska> <http://www.georss.org/georss/point> "64.0 -153.0"@en .
+<http://dbpedia.org/resource/Apollo_8> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Apollo_8> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "8.1"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Apollo_8> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-165.01666666666668"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Apollo_8> <http://www.georss.org/georss/point> "8.1 -165.01666666666668"@en .
+<http://dbpedia.org/resource/Apollo_11> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Apollo_11> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "0.6740805555555556"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Apollo_11> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "23.472969444444445"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Apollo_11> <http://www.georss.org/georss/point> "0.6740805555555556 23.472969444444445"@en .
+<http://dbpedia.org/resource/Aruba> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Aruba> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "12.316666666666666"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Aruba> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-70.01666666666667"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Aruba> <http://www.georss.org/georss/point> "12.316666666666666 -70.01666666666667"@en .
+<http://dbpedia.org/resource/Atlantic_Ocean> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Atlantic_Ocean> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Atlantic_Ocean> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-30.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Atlantic_Ocean> <http://www.georss.org/georss/point> "0.0 -30.0"@en .
+<http://dbpedia.org/resource/Alberta> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Alberta> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "54.5"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alberta> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-115.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alberta> <http://www.georss.org/georss/point> "54.5 -115.0"@en .
+<http://dbpedia.org/resource/Albania> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Albania> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "41.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Albania> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "20.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Albania> <http://www.georss.org/georss/point> "41.0 20.0"@en .
+<http://dbpedia.org/resource/Azerbaijan> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Azerbaijan> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "40.3"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Azerbaijan> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "47.7"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Azerbaijan> <http://www.georss.org/georss/point> "40.3 47.7"@en .
+<http://dbpedia.org/resource/Ankara> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Ankara> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "39.875"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Ankara> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "32.8333"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Ankara> <http://www.georss.org/georss/point> "39.875 32.8333"@en .
+<http://dbpedia.org/resource/Aegean_Sea> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Aegean_Sea> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "36.46666666666667"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Aegean_Sea> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "22.95"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Aegean_Sea> <http://www.georss.org/georss/point> "36.46666666666667 22.95"@en .
+<http://dbpedia.org/resource/Museum_of_Work> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Museum_of_Work> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "58.589166666666664"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Museum_of_Work> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "16.180055555555555"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Museum_of_Work> <http://www.georss.org/georss/point> "58.589166666666664 16.180055555555555"@en .
+<http://dbpedia.org/resource/Alfred_Nobel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Alfred_Nobel> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "59.356811111111114"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alfred_Nobel> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "18.01928611111111"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Alfred_Nobel> <http://www.georss.org/georss/point> "59.356811111111114 18.01928611111111"@en .
+<http://dbpedia.org/resource/Anatolia> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Anatolia> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "39.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Anatolia> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "32.0"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://dbpedia.org/resource/Anatolia> <http://www.georss.org/georss/point> "39.0 32.0"@en .
+<http://dbpedia.org/resource/Aberdeenshire> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.opengis.net/gml/_Feature> .
+<http://dbpedia.org/resource/Aberdeenshire> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "57.151"^^<http://www.w3.org/2001/XMLSchema#float> .

@@ -1,0 +1,59 @@
+<wicket:extend>
+	<p>
+	<img src="images/yuma-overview.png" alt="YUMA Architecture Overview" title="YUMA Architecture Overview" />
+	</p>
+	
+	<p>
+	The YUMA Annotation Server is the storage back-end of the YUMA Universal 
+	Media Annotation Framework. It can be deployed with a relational database
+	such as <a href="http://postgres.org">PostgreSQL</a>, or a 
+	<a href="http://mongodb.org">MongoDB</a> NoSQL database. The YUMA 
+	Annotation Server provides the following services:
+	</p>
+	
+	<ul>
+		<li>JSON REST API</li>
+		<li><!-- Indexing and -->Search</li>
+		<li>OpenSearch API</li>
+		<li>Linked Data interface (RDF/XML and TURTLE notation via HTTP content negotiation)</li>
+		<li>RSS feeds - annotation feeds on objects and users, reply feeds
+		on annotations</li>
+		<!--  li>Statistics and reporting</li -->
+	</ul>
+	
+	<h3>Configuration &amp; Deployment</h3>
+	<p>The YUMA Annotation Server is delivered as a Java Web application archive (.war) file.
+	This file can be deployed in any Java Servlet container that implements the Servlet 2.4 specification
+	such as Tomcat 5.5 (or higher). Furthermore, the YUMA Annotation Server requires access to a
+	<a href="http://community.jboss.org/wiki/SupportedDatabases" target="_blank">supported relational 
+	database backend</a>. Alternatively, YUMA Server can also be run with a MongoDB NoSQL database. 
+	Please note, however, that MongoDB support is experimental and available with limited functionality
+	only at the moment!</p>
+	
+	<p>Follow these steps to deploy the YUMA Server:</p>
+	<ul>
+		<li>Deploy the .war in your Servlet container.</li>
+		<li>Open the web.xml file, located in the /WEB-INF folder.</li>
+		<li>Adapt the configuration in the web.xml file. Modify the following parameters according to 
+		your environment:
+		
+		<ul>
+			<li><span class="code">server.base.url</span> - the externally visible base URL of your 
+			YUMA Server.</li>
+			<li><span class="code">suite.base.url</span> - the externally visible URL of a 
+			<a href="http://github.com/yuma-annotation/client-suite">YUMA Suite</a> installation.</li>
+			<li><span class="code">admin.username</span> and <span class="code">admin.password</span>
+			- username and password for the administration dashboard.</li>
+			<li><span class="code">configuration</span> - deployment configuration. Make sure this parameter
+			is set to 'deployment' when in production!</li>  
+		</ul>
+		</li>
+		<li>Furthermore, ensure that all database configuration parameters are correct.</li>
+		<li>Important: you may need to add the appropriate JDBC driver manually.
+		The driver .jar must be placed in the /WEB-INF/lib directory.</li>
+		<li>Create a database with the same name as configured in 
+		<span class="code">annotation.db.name</span>.</li>
+		<li>You may need to restart your Servlet container</li>
+	</ul>
+</wicket:extend>
+		

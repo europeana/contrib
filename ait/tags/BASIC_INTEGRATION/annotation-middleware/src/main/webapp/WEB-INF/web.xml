@@ -1,0 +1,163 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!--  the RESTeasy Client Framework doesn't work with the 
+		ThreadLocalResteasyProviderFactory so we turn off the deployment sensitive factory -->
+	<context-param>
+		<param-name>resteasy.use.deployment.sensitive.factory</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.base.url</param-name>
+		<param-value>http://dme.arcs.ac.at/annotation-middleware/Annotation/</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.body.base.url</param-name>
+		<param-value>http://dme.arcs.ac.at/annotation-middleware/Annotation/body/</param-value>
+	</context-param>
+	
+		<!--  make sure your database supports UTF8 encoding -->
+	<!--  HIBERNATE ANNOTATION DATABASE -->	
+	<context-param>
+		<param-name>annotation.db.impl</param-name>
+		<param-value>at.researchstudio.dme.annotation.db.hibernate.HibernateAnnotationDatabase</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.host</param-name>
+		<param-value>localhost</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.port</param-name>
+		<param-value>5432</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.name</param-name>
+		<param-value>europeana</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.user</param-name>
+		<param-value>europeana</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.pass</param-name>
+		<param-value>culture</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.dir</param-name>
+		<param-value></param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.flags</param-name>
+		<param-value></param-value>
+	</context-param>
+		
+	<context-param>
+		<param-name>annotation.db.lock.manager</param-name>
+		<param-value></param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.driver</param-name>
+		<param-value>org.postgresql.Driver</param-value>
+	</context-param>	
+	
+	<context-param>
+		<param-name>annotation.db.driver.protocol</param-name>
+		<param-value>jdbc:postgresql</param-value>
+	</context-param>	
+	
+	<!--  make sure your database supports UTF8 encoding -->
+	<!--  SESAME ANNOTATION DATABASE -->	
+	<!-- context-param>
+		<param-name>annotation.db.impl</param-name>
+		<param-value>at.researchstudio.dme.annotation.db.sesame.SesameAnnotationDatabase</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.host</param-name>
+		<param-value>localhost</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.port</param-name>
+		<param-value>5432</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.name</param-name>
+		<param-value>postgres</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.user</param-name>
+		<param-value>postgres</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.pass</param-name>
+		<param-value>postgres</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.dir</param-name>
+		<param-value>c:\tmp\sesame</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>annotation.db.flags</param-name>
+		<param-value></param-value>
+	</context-param>
+		
+	<context-param>
+		<param-name>annotation.db.lock.manager</param-name>
+		<param-value>at.researchstudio.dme.annotation.db.RdbmsAnnotationLockManager</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>annotation.db.driver</param-name>
+		<param-value>org.postgresql.Driver</param-value>
+	</context-param>	
+	
+	<context-param>
+		<param-name>annotation.db.driver.protocol</param-name>
+		<param-value>jdbc:postgresql</param-value>
+	</context-param-->	
+	
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ConfigServlet</servlet-name>
+		<servlet-class>at.researchstudio.dme.annotation.config.ConfigServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Resteasy</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- is used to display a list of FragmentBar components -->
+<!-- @author Stefan Pomajbik -->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+
+	<mx:Script>
+    <![CDATA[
+        import at.ac.arcs.dme.videoannotation.client.event.UserEvent;
+    	import mx.events.FlexEvent;
+    	import at.ac.arcs.dme.videoannotation.client.model.VideoAnnotation;
+
+    	private var _maximum:Number = 100;
+    	private var _barHeight:Number = 10;
+
+    	public function get maximum():Number {
+			return this._maximum;
+		}
+
+		public function set maximum(value:Number):void {
+			this._maximum = value;
+			this.updateBarMaximum(value);
+			this.invalidateProperties();
+			this.invalidateDisplayList();
+		}
+
+		private function updateBarMaximum(value:Number):void {
+			for each (var fBar:FragmentBar in this.getChildren()) {
+				fBar.maximum = value;
+				fBar.invalidateProperties();
+			}
+		}
+
+		public function set barHeight(value:Number):void {
+			this._barHeight = value;
+		}
+
+		public function setSelectedByRelated(object:*):void {
+			for each (var fBar:FragmentBar in this.getChildren()) {
+				fBar.selected = (fBar.relatedObject == object);
+				fBar.invalidateProperties();
+				this.invalidateDisplayList();
+			}
+			this.invalidateProperties();
+			this.invalidateDisplayList();
+		}
+
+		public function addFragmentBar(vAnnotation:VideoAnnotation):void {
+			var fBar:FragmentBar = new FragmentBar();
+    		fBar.relatedObject = vAnnotation;
+    		fBar.maximum=_maximum;
+    		fBar.height=_barHeight;
+    		fBar.width=this.width;
+    		fBar.setFragment(vAnnotation.videoFragment.timeFrom,vAnnotation.videoFragment.timeTo);
+			this.addChild(fBar);
+		}
+		
+        public function on_selectFragmentTree(e:UserEvent):void {
+       		setSelectedByRelated(e.annotation)
+    	}
+
+
+    ]]>
+   </mx:Script>
+
+</mx:VBox>

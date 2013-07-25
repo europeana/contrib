@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="yuma-server" default="create-war" basedir=".">	
+	<property name="src.dir" location="src/main/java" />
+	<property name="test.dir" location="src/test/java" />
+	<property name="report.dir" location="report" />
+	<property name="resources.dir" location="src/main/resources" />	
+	<property name="webapp.dir" location="src/main/webapp" />
+	<property name="classes.dir" location="${webapp.dir}/WEB-INF/classes" />
+	<property name="lib.dir" location="${webapp.dir}/WEB-INF/lib" />
+	<property name="lib.test.dir" location="lib" />
+	<property name="web.xml" location="${webapp.dir}/WEB-INF/web.xml" />
+					
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+	</target>
+	
+	<target name="compile-java" depends="clean">		
+		<mkdir dir="${classes.dir}"/>			
+		<javac destdir="${classes.dir}" includes="**/*.*" fork="true" debug="true">
+		 	<src path="${src.dir}" />
+		 	<src path="${test.dir}" />			 				
+		 	<classpath>
+		 	    <fileset dir="${lib.dir}">
+     					<include name="**/*.jar" />
+   				</fileset>
+		 	    <fileset dir="${lib.test.dir}">
+     					<include name="**/*.jar" />
+   				</fileset>
+		 	</classpath>
+		</javac>
+	 	<copy todir="${classes.dir}">
+	    	<fileset dir="${src.dir}">
+	      		<exclude name="**/*.java"/>
+	    	</fileset>
+	  </copy>
+	</target>
+	
+	<target name="test" depends="compile-java">		
+		<mkdir dir="${report.dir}"/>				
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" showoutput="yes">
+			<classpath>
+				<pathelement location="${resources.dir}" />								
+				<pathelement location="${src.dir}" />
+				<pathelement location="${classes.dir}" />						
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${lib.test.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest todir="${report.dir}">
+				<formatter type="xml" />
+				<fileset dir="${test.dir}">
+					<include name="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="create-war" depends="compile-java">
+		<copy todir="${classes.dir}">
+    		<fileset dir="${resources.dir}"/>
+  		</copy>		
+		<war destfile="yuma-server.war" webxml="${web.xml}">
+			<lib dir="${lib.dir}" />
+			<classes dir="${classes.dir}" excludes="**/bootstrap/** **/*Test*" />
+			<fileset dir="${webapp.dir}" excludes="**/WEB-INF/**" />
+		</war>
+	</target>
+</project>

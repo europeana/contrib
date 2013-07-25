@@ -1,0 +1,27 @@
+<!DOCTYPE module PUBLIC "//gwt-module/"
+        "http://google-web-toolkit.googlecode.com/svn/tags/2.1.0/distro-source/core/src/gwt-module.dtd">
+<module>
+
+    <!-- Inherit the core Web Toolkit stuff.                        -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.requestfactory.RequestFactory'/>
+
+    <!-- Inherit CSS based theme                                    -->
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+
+    <!-- Other inherited modules                                    -->
+    <inherits name='at.ait.dme.gwt.openlayers.OpenLayersBinding'/>
+    <inherits name="com.google.gwt.user.ClippedImage"/>
+
+    <!-- Specify the app entry point class.                         -->
+    <entry-point class='at.ac.ait.dme.gtv.client.Application'/>
+
+    <!-- Specify the application specific style sheet.              -->
+    <stylesheet src='Application.css'/>
+
+    <servlet path='/geoparser' class='at.ac.ait.dme.gtv.server.YahooPlacemakerGeoparserServiceImpl'/>
+
+    <servlet path='/downloadFeedback' class='at.ac.ait.dme.gtv.server.FeedbackDownloadServlet'/>
+
+
+</module>

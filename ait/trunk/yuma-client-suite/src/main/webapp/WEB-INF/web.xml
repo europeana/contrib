@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>	
+
+	<!--                              -->
+	<!--   Configuration Parameters   -->
+	<!--                              -->
+
+	<context-param>
+		<param-name>annotation.server.base.url</param-name>
+		<param-value>http://localhost:8080/yuma-server/</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>tag.server.url</param-name>
+		<param-value>http://localhost:8081/extras-tagserver/</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>authentication.keystore.dir</param-name>
+		<param-value>/opt/tomcat/webapps/yuma/keys</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sign.validity.period.seconds</param-name>
+		<param-value>28800</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>tiles.root.path</param-name>
+		 <param-value>C:/Workspaces/Yuma/client-suite/src/main/webapp/tilesets</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>gmaps.api.key</param-name>
+		<param-value>ABQIAAAAapqr3t_QNx5qoEDwcY3APxSHOYmJ0Gm-4W76tcH6UPz2tSaGORRKM04b8Aeh1YaavSss6bxsoNoZQQ</param-value>
+	</context-param>
+
+	<!-- Wicket Deployment Mode ('development' or  'deployment') -->
+
+	<context-param>
+         <param-name>configuration</param-name>
+         <param-value>development</param-value>
+	</context-param>
+
+	<!--                              -->
+	<!--   Servlet mappings           -->
+	<!--                              -->
+	
+	<servlet>
+		<servlet-name>annotation</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.core.server.annotation.AnnotationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>annotation</servlet-name>
+		<url-pattern>/annotation</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>auth</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.core.server.auth.AuthServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>auth</servlet-name>
+		<url-pattern>/auth</url-pattern>
+	</servlet-mapping>
+	
+    <servlet>
+        <servlet-name>tagging</servlet-name>
+        <servlet-class>at.ait.dme.yuma.suite.apps.core.server.tagging.TagServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>tagging</servlet-name>
+        <url-pattern>/tags</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ner</servlet-name>
+        <servlet-class>at.ait.dme.yuma.suite.apps.core.server.ner.NERServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ner</servlet-name>
+        <url-pattern>/ner</url-pattern>
+    </servlet-mapping>
+	
+	<servlet>
+		<servlet-name>geocoder</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.GeocoderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>geocoder</servlet-name>
+		<url-pattern>/geocoder</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>findplace</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.FindPlaceServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>findplace</servlet-name>
+		<url-pattern>/findplace</url-pattern>
+	</servlet-mapping>
+  		
+	<servlet>
+		<servlet-name>importkml</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.KMLConverterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>importkml</servlet-name>
+		<url-pattern>/importkml</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>tokml</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.ToKMLServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>tokml</servlet-name>
+		<url-pattern>/tokml</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>tileset</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.tileset.TilesetServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>tileset</servlet-name>
+		<url-pattern>/tileset</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>transformationServiceImpl</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.transformation.TransformationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>transformationServiceImpl</servlet-name>
+		<url-pattern>/transformation</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>mapMetadataServiceImpl</servlet-name>
+		<servlet-class>at.ait.dme.yuma.suite.apps.map.server.geo.MapMetadataServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mapMetadataServiceImpl</servlet-name>
+		<url-pattern>/metadata</url-pattern>
+	</servlet-mapping>	
+
+
+
+	<!--                                 -->
+	<!--   Restrict access to keystore   -->
+	<!--                                 -->
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>key store</web-resource-name>
+			<url-pattern>/keys/*</url-pattern>
+		</web-resource-collection>
+		<description>No Access</description>
+		<auth-constraint>
+			<role-name>restricted</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-role>
+		<description>NO Access</description>
+		<role-name>restricted</role-name>
+	</security-role>
+
+
+
+	<!--                                  -->
+	<!--   Wicket application filter      -->
+	<!--                                  -->
+	
+	<filter>
+		<filter-name>YUMASuite</filter-name>
+ 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>at.ait.dme.yuma.suite.framework.YUMASuite</param-value>
+ 		</init-param>
+ 	</filter>
+	<filter-mapping>
+		<filter-name>YUMASuite</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!--                           -->
+	<!--   Wicket session filter   -->
+	<!--                           -->
+	
+	<filter>
+		<filter-name>wicket.session.filter</filter-name>
+ 		<filter-class>org.apache.wicket.protocol.http.servlet.WicketSessionFilter</filter-class>
+		<init-param>
+			<param-name>filterName</param-name>
+			<param-value>YUMASuite</param-value>
+ 		</init-param>
+ 	</filter>
+	<filter-mapping>
+		<filter-name>wicket.session.filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<servlet>annotation</servlet>
+		<servlet>auth</servlet>
+	</filter-mapping>
+
+</web-app>

@@ -1,0 +1,68 @@
+The YUMA Media Annotation Client Suite
+--------------------------------------
+
+WARNING: The YUMA Annotation Client Suite is not yet completed. The documentation
+below is PRELIMINARY DEVELOPER DOC! And not yet suitable for end users!
+Please contact rainer.simon@ait.ac.at for further details.
+
+TODOs
+-----
+- Re-enable NER in the annotation edit form.
+- 'Show on Google Maps' should be improved (auto-zoom to shape, etc.)
+- Create a nicer icon for 'show on map'
+- There is a strange character encoding problem. (Try adding a a tag with an 
+  international character -> works -> reload the page -> character is messed up.)
+- Map drawing tools: 'place marker' feature!
+- Image tool: nice-up the colorpicker!
+- Image tool: the tool panel/colorpicker needs to be DETACHABLE (right now, when the
+  user wants to draw on the lower edge of the image, the panel slips off the screen and
+  is no longer reachable...)
+- JSON/SVG parsing is now in Core module. Refactor this! Base JSON parsing
+  needs to stay in Core. Media-specific parts + SVG parsing belong into
+  appropriate media module.
+- Split parsing/serializing functionality into two separate classes.
+- Clean up the services mess in the enrichment packages.
+- Clean up the map annotation tool packages. In particular, introduce a
+  package-by-feature structure for the services - and clean up services mess
+  in the .geo subpackage!
+- Finish the example pages.
+- Finish the landing page.
+- Move Userguide pages to Wicket.
+- Create developer doc pages.
+- Make sure everything from annotate.jsp, index.html and test.html is moved over
+  to Wicket and then delete those files.
+- Integrate Christians Auth-Token decoding code.
+- Geonames is CONSTANTLY down - create a DB-based solution with a local 
+  Geonames dump.
+- DBpedia lookup seems to have moved, changed endpoint, changed syntax (?)
+  Investigate - and think about a solution based on a local dump as well!
+- Controlled vocabulary tagging: see if this can be integrated. (Possibly makes
+  sense to integrate this with the DBpedia dump? "YUMA Tag Server"? -> Look into 
+  MOAT!)
+- Last but not least: we need more & better unit tests. Possibly some Web
+  tests, too. (Look into Wicket test tooling for this!)
+
+Requirements
+------------
+The YUMA Annotation Client Suite requires Java 1.6 and a Servlet container such as
+Tomcat 6. All configuration parameters are located in the web.xml.
+
+IMPORTANT: the YUMA Annotation Client Suite requires access to a running instance
+of the YUMA Annotation Server!
+
+Quick Start
+-----------
+Check out the YUMA Annotation Server project from 
+
+http://github.com/yuma-annotation/server
+
+Deploy the server on your Servlet container. Alternatively, the Annotation Server
+project includes an embedded Jetty. Start the Server with the "StartAnnotationServer"
+class located in /src/test/java/at/ait/dme/yuma/server/bootstrap. (Refer to the Server
+documentation for further details).
+
+Make sure all local path settings are correct in the Annotation Client Suite's 
+web.xml. 
+
+In Eclipse, you can launch the Client Suite application with the included 'Application.launch'
+launch config.

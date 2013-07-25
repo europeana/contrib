@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" label="Debug">
+   	<mx:Script>   	  	
+   	  	import at.ac.arcs.dme.videoannotation.client.service.AnnoteaService;
+   	 	import at.ac.arcs.dme.videoannotation.client.service.AnnoteaServiceHttpService;    
+   		import at.ac.arcs.dme.videoannotation.client.util.YouTubeUrlExtractor;
+   		import mx.collections.ArrayCollection;
+    	import mx.events.ListEvent;
+    	import mx.rpc.events.FaultEvent;     
+    	import mx.rpc.events.ResultEvent;
+    	import mx.core.Application;
+      	
+   		[Bindable] 
+   		private var youTubeUrlExtractor:YouTubeUrlExtractor = new YouTubeUrlExtractor();
+		private var annoteaService:AnnoteaService = new AnnoteaServiceHttpService();
+	   	private var rdf:Namespace = new Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+
+    	[Bindable] public var endpoints:ArrayCollection = new ArrayCollection(
+                [ {label:"http://localhost:8888/annotation-middleware/", data:1},
+                  {label:"http://dme.arcs.ac.at/annotation-middleware/", data:2} ]);
+        
+        [Bindable] public var videoUrls:ArrayCollection = new ArrayCollection(        
+    		[{label:"http://dme.arcs.ac.at/test5.flv", data:1}, 
+    		{label:"http://blip.tv/file/get/PATVIowaCity-BarackObamaInIowaCity876.flv", data:2},    		  
+    		  {label:"http://blip.tv/file/get/Digelog-MichaelJordanPart2363.flv", data:3},
+    		  {label:"http://media.49abcnews.com/video/2006/09/10/tennis.mov", data:4}]);
+          
+   	    private function getFLV() : void {
+    		youTubeUrlExtractor.convertToFLVUrl(this.youTubeURL.text);
+    	}
+    	
+    	public function log(message:String) : void {
+    		this.logMsg.text+=message;
+    	}
+    	
+    	public function rawData(rdata:String) : void {
+    		this.rawDataLog.text=rdata;
+    	}
+    	
+    	private function itemClickEvent(event:ListEvent):void {
+           	var annotationId:String = event.currentTarget.selectedItem.id;
+            annoteaService.serviceUrl=service_url.text;
+            annoteaService.findAnnotationById(annotationId,callbackFindAnnotationById);
+        }
+    	
+    	private function listAnnotations():void {
+    		annoteaService.serviceUrl=service_url.text;    		
+    		annoteaService.listAnnotations(Application.application.objectUrl,null,
+    			callbackListAnnotations);
+    	}
+
+    	private function deleteAnnotation():void {
+	      	var selectedAnnotationId:String = dataGrid.selectedItem.id;
+	    	annoteaService.serviceUrl=service_url.text;
+	    	annoteaService.deleteAnnotation(selectedAnnotationId,callbackDeleteAnnotation);
+    	}
+    	
+    	private function callbackListAnnotations(event:Event):void {
+    		rawData((event as ResultEvent).result.toString());         	
+    	}
+    	
+    	private function callbackDeleteAnnotation(event:Event):void {
+	    	if (event is ResultEvent) {
+	        	log("\ndelete annotation successful:"+ (event as ResultEvent).toString());
+	     	}  else if (event is FaultEvent) {
+	        	log("\ndelete annotation failed:"+ (event as FaultEvent).toString());	     		
+	        }	     	
+	   	}
+	   	
+	   	private function callbackFindAnnotationById(event:Event):void {
+     		if (event.type == ResultEvent.RESULT) {
+	         	var annoteaResultData:XMLList = new XMLList();
+	         	annoteaResultData = (event as ResultEvent).result.rdf::Description;	       
+	         	log("\nfind annotation by id successful:"+annoteaResultData.toString());	         	
+        	} else {
+     			log("\nfind annotation by id fault:"+(event as FaultEvent).toString());
+     		}
+     	}
+     
+	</mx:Script>
+   	<mx:HBox width="100%">
+    	<mx:VBox>
+			<mx:ComboBox id="service_url" width="600" height="20" dataProvider="{endpoints}"/>
+    		<mx:HBox>
+        		<mx:ComboBox id="videoUrl" editable="true" width="600" height="20" dataProvider="{videoUrls}"/>        		
+    		</mx:HBox>
+		</mx:VBox>
+		<mx:VBox width="100%">
+			<mx:HBox width="100%">
+				<mx:TextInput id="youTubeURL" width="100%"/>
+    	    	<mx:Button label="getFLV" click="getFLV()" />
+			</mx:HBox>
+			<mx:HBox width="100%">				
+    	    	<mx:TextArea id="youTubeFLVUrl" width="100%" height="20" 
+    	    		editable="true" selectable="true" wordWrap="false"
+    	    		text="{youTubeUrlExtractor.flvURL}"/>
+    	    </mx:HBox>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:HBox width="100%">
+		<mx:TextArea id="logMsg" width="100%" height="190" />
+		<mx:TextArea id="rawDataLog" width="100%" height="190" />
+	</mx:HBox>
+	
+	<mx:HBox width ="100%" height = "30%" >
+		<mx:DataGrid id="dataGridMetaData" width="80%" height ="100%" />
+		<mx:List id="dataGridkeyframes" width="20%" height ="100%" />
+	</mx:HBox>
+	<mx:DataGrid id="dataGrid" dataProvider="{Application.application.presentationData}" 
+		width="100%" height="30%" itemClick="itemClickEvent(event);"/>
+	
+	<mx:HBox width="50%">		
+		<mx:Button label="List Annotations" click="listAnnotations()" visible="false" />
+		<mx:Button label="Delete Annotation" click="deleteAnnotation()" visible="false"/>
+		<mx:Label text="Live={Application.application.videoDisplay.live.toString()}"/>
+		<mx:Label id="labelPHT" text="totalTime={Application.application.videoDisplay.totalTime},
+			 playheadTime={Application.application.videoDisplay.playheadTime}"/>
+		<mx:Label id="labelCuePoints" text=""/>
+	</mx:HBox>
+</mx:VBox> 

@@ -1,0 +1,32 @@
+to setup the project:
+
+.) create a web.xml in war/WEB-INF based on web.xml.template
+
+.) configure the annotation.middleware.base.url context param in web.xml or use
+   image-annotation-service.properties in at.researchstudio.dme.imageannotation.server.   
+	<context-param>
+		<param-name>annotation.middleware.base.url</param-name>
+		<param-value>http://localhost:8080</param-value>
+	</context-param>	
+
+.) to support server side zooming, add imagemagick and jmagick to the execution path 
+   (also note that imagemagick and jmagick  have to be in compatible versions. tested 
+    with imagemagick 6.3.9-6-Q16 and jmagick 6.3.9-Q16).
+    
+.) for the web site capture service, make sure cutycapt (http://cutycapt.sourceforge.net/) 
+   is on the path. start it with --auto-servernum. use xvfb on a machine w/o X.
+   
+.) for the image tileset provider service, make sure you have gdal2tiles working and on the
+   path. for windows install osgeo4w and the gdal16 and gdal16-python. take a look at 
+   /tools/generate-tiles.bat. also set OSGEO4W_ROOT.
+
+.) each GWT-RPC service uses it's own property file as fallback in case the corresponding
+   content parameters are not set. make sure to check these property files and adapt them
+   according to your environment.
+   
+.) launch configuration: 
+	- configure com.google.gwt.dev.DevMode as main class
+	- program arguments: -startupUrl test.html at.researchstudio.dme.imageannotation.Application -port 8888 -whitelist "^http[:][/][/]dme[.]arcs[.]ac[.]at"
+	- vm arguments: -Djava.library.path=lib -Xmx256M -Dfile.encoding=UTF-8
+	- class path: add src and test folder
+		

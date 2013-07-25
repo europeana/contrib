@@ -1,0 +1,186 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-family: verdana, arial;
+				background-image: url(images/bg-ait.gif);
+			}
+			
+			h1 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h2 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h3 {
+				padding-left: 2px;
+				font-size: 14px;
+			}
+			
+			a {
+				color: blue;
+				font-size: 12px;
+			}
+	
+			tr {
+				font-size: 12px;
+			}
+	
+			th {
+				background-color: #cccccc;
+				padding: 2px 6px 2px 6px;
+				margin: 1px;
+			}
+	
+			td {
+				background-color: #eeeeee;
+				padding: 4px 6px 4px 6px;
+				margin: 1px;
+			}
+	
+			.centered {
+				text-align: center;
+			}			
+		</style>
+	</head>
+	<body>
+		<img src="images/ait.gif" style="opacity:0.6;filter:alpha(opacity=60)">	
+		<br />
+		<h2>image annotation examples</h2>
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://www.lib.utexas.edu/maps/historical/vienna_1858.jpg&'+location.search.substring(1)">
+			Historic map of Vienna
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://dme.arcs.ac.at/annotation/data/E26986C.jpg&'+location.search.substring(1)">	
+			Habsburger
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://upload.wikimedia.org/wikipedia/commons/a/a0/Sydney_opera_house_and_skyline.jpg&'+location.search.substring(1)">
+			Sydney
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?authToken=2bda7e5d1a5cc8ebb3fd070b81d4dcd92c4c68b666436d1c3c5029d575dafef6335770fda5a1522bdb516077d38ee273e67e7019692a445bbdace05bae88aa66f46519c56c2cba6c6d9c84ac0e44c7c3ce74694e9e5042b1a054bd53bcacab03d1c265570dad9ebf226918d0d3ecb55840c490de3b3bcf1c836c2c533b017c7&appSign=7087ff85dade20fd9f32f76397340b8666df7bfe9495514c71bddf70508ecd3b8c54ffdc37e7f7a9bc12521d9240a05d7f69909f1a256cc31ef5c8e3f7a239464312ee949ede71866230b2b700380dfd00735d12054bf2f71be82c0b6e4da2b8b1551d961de45a1f433dfee8cfc2513cdd169326addd7fa71259d7f9f7ebb32d&objectURL=http://upload.wikimedia.org/wikipedia/commons/a/a0/Sydney_opera_house_and_skyline.jpg&'+location.search.substring(1)">
+			Sydney Sec
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa-test-1&objectURL=http://z.about.com/d/goeurope/1/0/5/3/padua_4.jpg&db=econnect&'+location.search.substring(1)">
+			Padua
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa-test-1&htmlURL=http://orf.at&db=econnect&'+location.search.substring(1)">
+			TV station web site: orf.at
+		</a>
+		<br />			
+		<a href="#" onclick="location.href='annotate.jsp?user=csa-test-1&htmlURL=http://derstandard.at&db=econnect&'+location.search.substring(1)">
+			Newspaper web site: derstandard.at
+		</a>
+		<br />	
+		<a href="#" onclick="location.href='annotate.jsp?id=http://test.arcs.ac.at/aus&user=csa1980&objectURL=http://www.destination360.com/australia-south-pacific/australia/images/s/australia-perth.jpg&db=tel&'+location.search.substring(1)">
+			Perth
+		</a>
+        <br />
+        <a href="#" onclick="location.href='annotate.jsp?user=csa&db=tel&objectURL=http://purl.pt/3464/2/cc-296-a_JPG/cc-296-a_JPG_24-C-R0072/cc-296-a_0001_1_p24-C-R0072.jpg&bbox=[46.3165841,19.4677734,36.2442731,3.95507812]&'+location.search.substring(1)">
+                Historic map with coordinates
+        </a>     
+        <br />
+        <a href=#" onclick="location.href='annotate.jsp?user=csa&db=tel&objectURL=http://purl.pt/1672/1/cc-96-v_JPG/cc-96-v_JPG_24-C-R0072/cc-96-v_0001_1_p24-C-R0072.jpg&bbox=[40.7190079,-6.0205078,36.1021085,-10.502929]&'+location.search.substring(1)">
+                Historic map with coordinates 2
+        </a>     
+        <br />
+        <a href="#" onclick="location.href='annotate.jsp?user=csa&db=tel&objectURL=http://purl.pt/1555/1/cc-347-p2_JPG/cc-347-p2_JPG_24-C-R0072/cc-347-p2_0001_1_p24-C-R0072.jpg&bbox=[18.812718,141.152344,-15.792254,90.878906]&'+location.search.substring(1)">
+                Historic map with coordinates 3
+        </a>     
+        <br /> 
+        
+		<h2>Map Annotation Examples</h2>
+		<table>
+			<tr>
+				<th>Map</th>
+				<th>Date of Creation</th>
+				<th>Size</th>
+				<th>Source</th>
+			</tr>
+			
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://www.nacis.org/data/world_map/map1/map1_type.jpg&'+location.search.substring(1)">Physical Map of the World</a></td>
+				<td class="centered">2008</td>
+				<td class="centered">17010 x 9720</td>
+				<td><a href="http://www.shadedrelief.com/world/index.html">Project Website</a></td>
+			</tr>
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://planets-project.arcs.ac.at/files/ct000342.tif&'+location.search.substring(1)">Map of the Americas, Diego Guiterrez</a></td>
+				<td class="centered">1562</td>
+				<td class="centered">10492 x 11908</td>
+				<td><a href="http://lcweb2.loc.gov/ammem/gmdhtml/gutierrz.html">Library of Congress</a></td>
+			</tr>
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://upload.wikimedia.org/wikipedia/commons/4/49/Hirschvogel_Map_Austria.jpg&'+location.search.substring(1)">Map of Upper Austria, Augustin Hirschvogel</a></td>
+				<td class="centered">1542</td>
+				<td class="centered">1414 x 1100</td> 
+				<td><a href="http://commons.wikimedia.org/wiki/File:Hirschvogel_Map_Austria.jpg">Wikimedia Commons</a></td>
+			</tr>
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://upload.wikimedia.org/wikipedia/commons/4/40/MacedonEmpire.jpg&'+location.search.substring(1)">Alexander the Great - Empire and Paths He Took</a></td>
+				<td class="centered">2006</td>
+				<td class="centered">2000 x 961</td> 
+				<td><a href="http://en.wikipedia.org/wiki/File:MacedonEmpire.jpg">Wikimedia Commons</a></td>
+			</tr>	
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://www.emersonkent.com/images/europe_14th_century.jpg&'+location.search.substring(1)">Historical Map of Europe during the 14th Century</a></td>
+				<td class="centered">1905</td>
+				<td class="centered">2233 x 1811</td> 
+				<td><a href="http://www.emersonkent.com/map_archive/europe_14th_century.htm">The Public Schools Historical Atlas</a></td>
+			</tr>	
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://planets-project.arcs.ac.at/files/E21.035.jpg&'+location.search.substring(1)">Eastern Mediterranean, Antonio Millo (?)</a></td>
+				<td class="centered">16th Century (2nd half)</td>
+				<td class="centered">5144 x 3543</td> 
+				<td><a href="http://www.onb.ac.at/sammlungen/karten/kartenzimelien/13.htm">Austrian National Library</a></td>
+			</tr>	
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://planets-project.arcs.ac.at/files/FKBQ.11.3.jpg&'+location.search.substring(1)">Hajji Ahmed Map</a></td>
+				<td class="centered">1560 (approx.)</td>
+				<td class="centered">14173 x 15354</td> 
+				<td><a href="http://onb.ac.at/">Austrian National Library</a></td>
+			</tr>	
+			<tr>
+				<td><a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=test&objectURL=http://upload.wikimedia.org/wikipedia/commons/e/ec/Waldseemuller_map.jpg&'+location.search.substring(1)">Waldseem&uuml;ller Map</a></td>
+				<td class="centered">1507</td>
+				<td class="centered">13500 x 7522</td> 
+				<td><a href="http://memory.loc.gov/cgi-bin/query/h?ammem/gmd:@field(NUMBER+@band(g3200+ct000725C))">Library of Congress</a></td>
+			</tr>	
+		</table>
+		        
+        <h2>Annotate an Online Image</h2>		
+		<form method="get" action="http://localhost:8888/annotate.jsp" onsubmit="this.elements['gwt.codesvr'].value=location.search.substring(1).split('=')[1]">
+	  		<label for="objectURL">URL: </label><input type="text" name="objectURL" id="objectURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />
+	  		<input type="hidden" name="gwt.codesvr"	value="" />  
+	  		<input type="submit" value="annotate" />
+	  	</form>
+	  	
+	  	<h2>Annotate an Online Map Image</h2>		
+		<form method="get" action="http://localhost:8888/annotate.jsp" onsubmit="this.elements['gwt.codesvr'].value=location.search.substring(1).split('=')[1]">
+	  		<input type="hidden" name="tileView" value="yes" />
+	  		<label for="objectURL">URL: </label><input type="text" name="objectURL" id="objectURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />
+	  		<input type="hidden" name="gwt.codesvr"	value="" /> 	  
+	  		<input type="submit" value="annotate" />	
+		</form>
+	  	
+	  	<h2>Annotate a Web Page</h2>		
+		<form method="get" action="http://localhost:8888/annotate.jsp" onsubmit="this.elements['gwt.codesvr'].value=location.search.substring(1).split('=')[1]">
+	  		<label for="htmlURL">URL: </label><input type="text" name="htmlURL" id="htmlURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />
+	  		<input type="hidden" name="gwt.codesvr"	value="" /> 	  
+	  		<input type="submit" value="annotate" />	
+	  	</form>							
+	</body>
+</html>

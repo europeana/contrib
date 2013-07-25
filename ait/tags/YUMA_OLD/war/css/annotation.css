@@ -1,0 +1,524 @@
+body {
+	background-image: url(../images/bg-ait.gif);
+}
+
+body,td,.a,div,.p {
+	font-family: arial;
+	font-size: 10px;
+}
+
+.imageFragment-controlpanel {
+	font-family: arial;
+	font-size: 10px;
+	border: 1px solid gray;
+	background-color: #ffffff;
+	filter: alpha(opacity = 80);
+	opacity: 0.8;
+	z-index: 500;
+}
+
+.imageFragment-controlpanel-label {
+	width: 60px;
+	font-family: arial;
+	font-size: 10px;
+}
+
+.imageFragment-controlpanel-color-preview {
+	width: 40px;
+	height: 15px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+.imageFragment-controlpanel-color-button {
+	margin-right: 5px;
+	margin-top: 5px;
+	align: right;
+}
+
+.imageFragment-controlpanel-radio-button {
+	font-family: arial;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+.imageAnnotation-user-guide {
+	font-size: 12px;
+}
+
+/* styles for the annotation tree node */
+.imageAnnotation-header {
+	margin-top: 0px;
+	height: 15px;
+}
+
+.imageAnnotation {
+	padding:6px;
+	margin-right: 4px;
+	background-color:#ffffff;
+	border: #ffffff solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.imageAnnotation-selected {
+	padding:6px;
+	margin-right: 4px;
+	background-color: #FFC800;
+	border: #AF8900 solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.imageAnnotation-search {
+	font-size: 12px;
+}
+
+.imageAnnotation-search-term {
+	font-family: arial;
+	font-size: 12px;
+}
+
+.imageAnnotation-header-user {
+	color: blue;
+	font-family: arial;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.imageAnnotation-header-date {
+	color: gray;
+	font-family: arial;
+	font-size: 10px;
+	padding-left: 5px;
+}
+
+.imageAnnotation-header-fragment {
+	background: url(../images/fragment-small.gif) no-repeat scroll 0px 2px;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	margin-left: 5px;
+}
+
+.imageAnnotation-header-map {
+	background: url(../images/earth.gif) no-repeat scroll 0px 0px;
+	margin-left: 5px;
+}
+
+.imageAnnotation-header-rate {
+	font-family: arial;
+	font-size: 11px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.imageAnnotation-header-rate-plus {
+	color: green;
+	font-family: arial;
+	font-size: 11px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.imageAnnotation-header-rate-minus {
+	color: red;
+	font-family: arial;
+	font-size: 11px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.imageAnnotation-header-rate-image-minus {
+	background: url(../images/thumb_down.gif) no-repeat scroll 0px;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	cursor: pointer;
+	margin-left: 5px;
+	height: 18px;
+}
+
+.imageAnnotation-header-rate-image-plus {
+	background: transparent url(../images/thumb_up.gif) no-repeat scroll 0px
+		;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	cursor: pointer;
+	margin-left: 5px;
+	height: 18px;
+}
+
+.imageAnnotation-header-flag-blue-image {
+	background: transparent url(../images/flag-blue.gif) no-repeat scroll
+		0px;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	cursor: pointer;
+	margin-left: 5px;
+	height: 18px;
+	width: 18px;
+	border: 0px solid gray;
+}
+
+.imageAnnotation-header-flag-red-image {
+	background: transparent url(../images/flag-red.gif) no-repeat scroll 0px
+		;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	cursor: pointer;
+	margin-left: 5px;
+	height: 18px;
+	width: 18px;
+	border: 0px solid gray;
+}
+
+.imageAnnotation-private-annotation-image {
+	background: transparent url(../images/lock1.gif) no-repeat scroll 0px;
+}
+
+.imageAnnotation-text {
+	font-family: arial;
+	font-size: 11px;
+}
+
+.imageAnnotation-title {
+	font-family: arial;
+	font-size: 11px;
+	font-weight: bold;
+	margin-top: 2px;
+}
+
+
+.imageAnnotation-action {
+	font-family: arial;
+	border-bottom: 1px dotted #0033CC;
+	color: #0033CC;
+	cursor: pointer;
+	text-decoration: none;
+	margin-right: 10px;
+	font-size: 10px;
+}
+
+.imageAnnotation-action-up-disabled {
+	border-bottom: 1px dotted gray;
+	color: gray;
+	cursor: text;
+}
+
+/* styles for the annotation composite */
+.imageAnnotation-composite {
+	font-family: arial;
+	font-size: 10px;
+	background-color: #ffffff;
+	z-index: 500;
+}
+
+.imageAnnotation-composite-loading {
+	border: 1px solid gray;
+	background-color: #ffffff;
+	cursor: wait;
+	color: gray;
+}
+
+.imageAnnotation-tree {
+}
+
+.imageAnnotation-button {
+	font-family: arial;
+	border-bottom: 1px dotted #0033CC;
+	color: #0033CC;
+	cursor: pointer;
+	margin-top: 15px;
+	margin-right: 10px;
+	margin-left: 5px;
+	margin-bottom: 15px;
+}
+
+.imageAnnotation-button-up-disabled {
+	border-bottom: 1px dotted gray;
+	color: gray;
+	cursor: text;
+}
+
+.imageAnnotation-add-annotation {
+	font-family: arial;
+	color: #15428B;
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 5px;
+	margin-left: 5px;
+	height: 20px;
+	float: left;
+}
+
+.imageAnnotation-help {
+	color: #0033CC;
+	float: right;
+	font-size: 11px;
+	padding: 3px;
+}
+
+.imageAnnotation-loading {
+	position: absolute;
+	left: 365px;
+	top: 5px;
+	width: 20px;
+	height: 20px;
+}
+
+.imageAnnotation-add-annotation-hint {
+	background-color: #E8E8E8;
+	color: #15428B;
+	font-family: arial;
+	font-size: 12px;
+	padding: 5px;
+	clear: both;
+}
+
+/* styles for the annotation form */
+.imageAnnotation-form {
+	z-index: 100;
+	background-color: #E8E8E8;
+	width: 345px;
+}
+
+.imageAnnotation-form-title {
+	height: 16px;
+	margin-left: 10px;
+	width: 300px;
+	font-family: arial;
+	font-size: 10px;
+	margin-top: 10px;
+	margin-bottom: 2px;
+}
+
+.imageAnnotation-form-label {
+	font-family: arial;
+	font-size: 10px;
+	margin-left: 5px;
+	margin-top: 10px;
+	width: 22px;
+}
+
+.imageAnnotation-form-radiobutton {
+	font-family: arial;
+	font-size: 10px;
+	padding: 4px 4px 3px 4px;
+}
+
+.imageAnnotation-form-text {
+	margin-left: 10px;
+	width: 300px;
+	font-family: arial;
+	font-size: 10px;
+	height: 80px;
+	margin-bottom: 5px;
+}
+
+.imageAnnotation-form-links {
+	margin-left: 10px;
+	padding-left: 10px;
+	width: 300px;
+	font-family: arial;
+	font-size: 10px;
+	margin-bottom: 5px;
+}
+
+.imageAnnotation-form-button {
+	border-bottom: 1px dotted #0033CC;
+	color: #0033CC;
+	cursor: pointer;
+	text-decoration: none;
+	margin-top: 2px;
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-bottom: 10px;
+}
+
+/* styles for the search result table */
+TABLE.sortableTable TD {
+	border-bottom: solid #93BEE2 0px;
+	BORDER-RIGHT: 0px solid #93BEE2;
+	border-left: 0px solid #93BEE2;
+	border-top: 0px solid #93BEE2;
+}
+
+.tableHeader {
+	font-family: tahoma, sans-serif;
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bold;
+	background: #33435A;
+}
+
+.headerStyle {
+	font-family: tahoma, sans-serif;
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bold;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.tableRowOdd {
+	font-family: tahoma, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background: #FFFFFF;
+}
+
+.tableRowEven {
+	font-family: tahoma, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background: #E8E8E8;
+}
+
+.imageAnnotation-searchresult-composite {
+	border: 1px solid gray;
+	background-color: #ffffff;
+	z-index: 99;
+}
+
+.imageAnnotation-popup-search {
+	z-index: 500;
+}
+
+.mapAnnotation-composite {
+	border: 1px solid gray;
+	background-color: #ffffff;
+	z-index: 50;
+}
+
+.mapAnnotation-kml {
+	font-family: tahoma, sans-serif;
+	font-size: 12px;
+	z-index: 100;
+}
+
+.imageAnnotation-popup-map {
+	z-index: 50;
+}
+
+.imageAnnotation-taglist {
+	margin:8px 0px 0px 0px;
+	padding:0px;
+}
+
+.imageAnnotation-taglist span {
+	font-size:12px;
+	font-family:"Verdana";
+	font-weight:bold;
+	padding:2px 4px 2px 4px;
+	margin:0px 3px 3px 0px;
+	border:1px solid #8DB2E3;
+	display:inline-block;
+	background-color:#CBD8E8;
+}
+
+.imageAnnotation-taglist span a {
+	color:#15428B;
+	text-decoration: none;
+}
+
+.imageAnnotation-taglist span:hover {
+	background-color: #ffffff;
+}
+
+.imageAnnotation-map {
+	z-index: 100;
+}
+
+/* overwrite gwt-dnd.css */
+.dragdrop-selected,.dragdrop-dragging,.dragdrop-proxy {
+	filter: alpha(opacity =   100) !important;
+	opacity: 1 !important;
+}
+
+.dragdrop-positioner {
+	border: 0px dashed #1E90FF !important; /* blue */
+}
+
+/* http://code.google.com/p/gwt-dnd/issues/detail?id=100 */
+.G15szij5I {
+	border: 0px dashed #1E90FF !important; /* blue */
+}
+
+
+/* Some overrides to the default Mosaic WindowPanel and TabPanel styles */
+.gwt-TabBarItem .tabMiddleCenterInner div {
+	font-family: "Myriad Pro", "Myriad Web", "Tahoma", "Helvetica", "Arial";
+	font-size: 11px;
+	color: #416AA3;
+	padding: 3px;
+}
+
+.gwt-TabBarItem-selected .tabMiddleCenterInner div {
+	font-weight: bold;
+}
+
+.gwt-GlassPanel {
+	background-color: #000 !important;
+	background-repeat: repeat;
+	overflow: hidden;
+	/* Override glass panel to 10% opacity (= 90% transparency) */
+	filter: alpha(opacity =   10) !important; /* IE */
+	opacity: 0.0 !important; /* non-IE */
+}
+
+.mosaic-WindowPanel .Resize-nw {
+	cursor: nw-resize;
+}
+
+.mosaic-WindowPanel .Resize-n {
+	cursor: n-resize;
+}
+
+.mosaic-WindowPanel .Resize-ne {
+	cursor: ne-resize;
+}
+
+.mosaic-WindowPanel .Resize-e {
+	cursor: e-resize;
+}
+
+.mosaic-WindowPanel .Resize-se {
+	cursor: se-resize;
+}
+
+.mosaic-WindowPanel .Resize-s {
+	cursor: s-resize;
+}
+
+.mosaic-WindowPanel .Resize-sw {
+	cursor: sw-resize;
+}
+
+.mosaic-WindowPanel .Resize-w {
+	cursor: w-resize;
+}
+
+.mosaic-WindowPanel .mosaic-ImageButton {
+        display: block;
+        cursor: default;
+
+        /*
+         * Unfortunately, in IE, border-color: transparent is rendered as black.
+         * We get around the border on hover displacement of content by adjusting
+         * the margin/padding at the same time.
+         */
+        border: 0px solid transparent;
+        margin: 1px;
+
+        width: 16px;
+        height: 16px;
+}
+
+.mosaic-Caption-text {
+        padding: 4px;
+        text-align: left !important;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        cursor: move;
+}
+

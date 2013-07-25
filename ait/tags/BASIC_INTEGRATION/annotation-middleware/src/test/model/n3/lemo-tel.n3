@@ -1,0 +1,20 @@
+@prefix rdf:  		<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: 		<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  		<http://www.w3.org/2002/07/owl#> .
+@prefix xsd:		<http://www.w3.org/2001/XMLSchema#>.
+
+@prefix lemo: 		<http://lemo.mminf.univie.ac.at/annotation-core#> .
+@prefix tel: 		<http://lemo.mminf.univie.ac.at/ann-tel#> .
+
+
+<> a owl:Ontology;
+    rdfs:label "The TEL-specific annotation vocabulary"@en;
+    rdfs:comment "This vocabulary represents a TEL-specific annotation profile of the LEMO core schema."@en;
+    .
+
+tel:scope a rdf:Property;
+	rdfs:label "scope"@en;
+	rdfs:comment "The scope of an annotation"@en;
+	rdfs:domain lemo:Annotation;
+	rdfs:range xsd:string;
+	.

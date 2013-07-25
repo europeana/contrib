@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<!-- Create a daily rolling file appender called image-annotation-frontend-log -->
+	<appender name="image-annotation-frontend-log"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log.path}/image-annotation-frontend.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{dd MMM yyyy HH:mm:ss} %-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Configure the root appender -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="image-annotation-frontend-log" />
+	</root>
+</log4j:configuration>

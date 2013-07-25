@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-family: verdana, arial;
+			}
+			
+			h1 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h2 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h3 {
+				padding-left: 2px;
+				font-size: 14px;
+			}
+			
+			a {
+				color: blue;
+				font-size: 12px;
+			}
+	
+			tr {
+				font-size: 12px;
+			}
+	
+			th {
+				background-color: #cccccc;
+				padding: 2px 6px 2px 6px;
+				margin: 1px;
+			}
+	
+			td {
+				background-color: #eeeeee;
+				padding: 4px 6px 4px 6px;
+				margin: 1px;
+			}
+	
+			.centered {
+				text-align: center;
+			}			
+		</style>
+	</head>
+	<body>
+		<h3>This page is just for testing purposes. It is not part of the actual application. The Image
+		Annotation Tool is meant to be invoked from within an existing portal. Click on the examples
+		below or provide a image URL to invoke the Image Annotation Tool.</h3>
+		<h1>image annotation examples</h1>
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://dme.arcs.ac.at/annotation/data/E26986C.jpg&db=econnect&'+location.search.substring(1)">
+			Family tree
+		</a>
+		<br />			
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg&db=econnect&'+location.search.substring(1)">
+            Lisbon
+        </a>
+     	<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://www.lib.utexas.edu/maps/historical/vienna_1858.jpg&db=econnect&'+location.search.substring(1)">
+			historic map of Vienna
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?user=csa&db=tel&objectURL=http://purl.pt/3464/2/cc-296-a_JPG/cc-296-a_JPG_24-C-R0072/cc-296-a_0001_1_p24-C-R0072.jpg%20%20&bbox=[46.3165841,19.4677734,36.2442731,3.95507812]&db=econnect&'+location.search.substring(1)">
+            historic map with bounding box
+        </a>
+        <br/>
+        <a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=csa1980&objectURL=http://centos.planets-project.arcs.ac.at/fcgi-bin/iipsrv.fcgi?Zoomify=/var/www/world_nip.ptif/&db=econnect&'+location.search.substring(1)">
+        	Hi-res shaded relief world map (17.010 x 9.720 pixel, 331 MByte)
+        </a>                     
+		<h1>annotate your own image</h1>		
+		<form method="get" action="http://dme.arcs.ac.at/image-annotation-frontend/annotate.jsp?user=test&db=econnect&'+location.search.substring(1)">
+	  		<label for="objectURL">URL: </label><input type="text" name="objectURL" id="objectURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />	  
+	  		<input type="submit" value="annotate" />
+	  </form>
+	
+	</body>
+</html>

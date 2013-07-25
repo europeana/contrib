@@ -1,0 +1,3 @@
+war.filename=video-annotation-frontend.war
+middleware.url=http://dme.arcs.ac.at/annotation-middleware/
+FLEX_HOME=path to your FLEX SDK

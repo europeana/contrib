@@ -1,0 +1,22 @@
+<rdf:RDF
+    xmlns:lemo="http://lemo.mminf.univie.ac.at/annotation-core#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rel="http://lemo.mminf.univie.ac.at/ann-relationship#">
+  <owl:Ontology rdf:about="">
+    <rdfs:comment xml:lang="en">This vocabulary defines the required concepts for annotations that represent a relationship between distinct annotations.</rdfs:comment>
+    <rdfs:label xml:lang="en">The LEMO Annotation Relationship Schema.</rdfs:label>
+  </owl:Ontology>
+  <rdfs:Class rdf:about="http://lemo.mminf.univie.ac.at/ann-relationship#Relationship">
+    <rdfs:subClassOf rdf:resource="http://lemo.mminf.univie.ac.at/annotation-core#Annotation"/>
+    <rdfs:comment xml:lang="en">A relationship between two annotated resources</rdfs:comment>
+    <rdfs:label xml:lang="en">Relationship</rdfs:label>
+  </rdfs:Class>
+  <rdf:Property rdf:about="http://lemo.mminf.univie.ac.at/ann-relationship#isLinkedTo">
+    <rdfs:domain rdf:resource="http://lemo.mminf.univie.ac.at/ann-relationship#Relationship"/>
+    <rdfs:comment xml:lang="en">The linking property between two annotated resources</rdfs:comment>
+    <rdfs:label xml:lang="en">is linked to</rdfs:label>
+  </rdf:Property>
+</rdf:RDF>

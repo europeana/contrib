@@ -1,0 +1,176 @@
+.header h1 {
+	width:600px;
+}
+
+.header .heading {
+	margin:0px;
+	padding:0px;
+	display:block;
+	float:left;
+}
+
+.header .feed-icon {
+	margin:-5px 0px 5px 0px;
+	width:28px;
+	height:28px;
+	padding:0px 3px;
+	display:block;
+	float:right;
+}
+
+.navigation {
+	width:600px;	
+}
+
+.navigation p {
+	padding:0px;
+	margin:0px;
+}
+
+.navigation .home {
+	padding-bottom:0px;
+}
+
+div.annotation {
+	margin:20px auto 10px auto;
+	width:600px;
+	line-height:16px;
+}
+
+table {
+	margin:10px 0px 25px 0px;
+	width:100%;
+	border-spacing:0px 2px;
+	empty-cells:show;
+}
+
+td {
+	text-align:left;
+	padding:5px;
+	margin:0px;
+	font-size:12px;
+}
+
+td.feedicon {
+	width:28px;
+	margin:0px;
+	padding:0px;
+}
+
+td.feedicon img {
+	float:left;
+}
+
+td.title{
+	width:62px;
+}
+
+td.title img {
+	padding:0px;
+	margin:0px;
+}
+
+td.label {
+	width:90px;
+	color:#000;
+	border-width:1px 0px 1px 1px;
+	border-style:solid;
+	border-color:#cecece;
+	background-color:#e2e2e2;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+td.content {
+	width:410px;
+	border-width:1px 1px 1px 0px;
+	border-style:solid;
+	border-color:#cecece;
+	-moz-border-radius-topright: 3px;
+	-moz-border-radius-bottomright: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+ul.tags {
+	padding:0px;
+	margin:0px;
+}
+
+li.tag {
+	display:inline;
+	padding:0px 5px 0px 0px;
+}
+
+td.no-border {
+	text-align:right;
+}
+
+a.btn-json, a.btn-rdf, a.btn-open-in-client, a.btn-open-media {
+	background-color:#f5f5f5;
+    border:1px solid #dedede;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;
+    color:#565656;
+    font-family:"Lucida Grande", "Verdana", "Arial";	
+	font-size:10px;
+	padding:2px 6px 3px 6px;
+	position:relative;
+	top:-1px;
+	left:5px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+a.btn-open-media {
+	margin:-1px 5px -4px 0px;
+	padding:1px 6px 3px 6px;
+	float:right;
+}
+
+a.btn-json:visited, a.btn-rdf:visited, a.btn-open-in-client:visited, a.btn-open-media:visited {
+    color:#565656;	
+}
+
+a.btn-json:hover {
+	background-color:#fbe3e4;
+    border:1px solid #fbc2c4;
+    color:#d12f19;
+    text-decoration:none;
+}
+
+a.btn-rdf:hover {
+    background-color:#E6EFC2;
+    border:1px solid #C6D880;
+    color:#529214;
+    text-decoration:none;    
+}
+
+a.btn-open-in-client:hover {
+    background-color:#dff4ff;
+    border:1px solid #c2e1ef;
+    color:#336699;
+    text-decoration:none;
+}
+
+a.btn-open-media:hover {
+    background-color:#dff4ff;
+    border:1px solid #c2e1ef;
+    color:#336699;
+    text-decoration:none;
+}
+
+a {
+	color:#790b1a;
+	text-decoration:none;
+}
+
+a:visited {
+	color:#790b1a;
+}
+
+a:hover {
+	text-decoration:underline;
+}

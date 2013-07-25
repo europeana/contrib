@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-family: verdana, arial;
+			}
+			
+			h1 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h2 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h3 {
+				padding-left: 2px;
+				font-size: 14px;
+			}
+			
+			a {
+				color: blue;
+				font-size: 12px;
+			}
+	
+			tr {
+				font-size: 12px;
+			}
+	
+			th {
+				background-color: #cccccc;
+				padding: 2px 6px 2px 6px;
+				margin: 1px;
+			}
+	
+			td {
+				background-color: #eeeeee;
+				padding: 4px 6px 4px 6px;
+				margin: 1px;
+			}
+	
+			.centered {
+				text-align: center;
+			}			
+		</style>
+	</head>
+	<body>
+		<h1>image annotation examples</h1>
+		<a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://upload.wikimedia.org/wikipedia/commons/a/a0/Sydney_opera_house_and_skyline.jpg&db=econnect&'+location.search.substring(1)">
+				Sydney
+		</a>
+		<br />
+		<a href="#" onclick="location.href='annotate.jsp?authToken=2bda7e5d1a5cc8ebb3fd070b81d4dcd92c4c68b666436d1c3c5029d575dafef6335770fda5a1522bdb516077d38ee273e67e7019692a445bbdace05bae88aa66f46519c56c2cba6c6d9c84ac0e44c7c3ce74694e9e5042b1a054bd53bcacab03d1c265570dad9ebf226918d0d3ecb55840c490de3b3bcf1c836c2c533b017c7&appSign=7087ff85dade20fd9f32f76397340b8666df7bfe9495514c71bddf70508ecd3b8c54ffdc37e7f7a9bc12521d9240a05d7f69909f1a256cc31ef5c8e3f7a239464312ee949ede71866230b2b700380dfd00735d12054bf2f71be82c0b6e4da2b8b1551d961de45a1f433dfee8cfc2513cdd169326addd7fa71259d7f9f7ebb32d&objectURL=http://upload.wikimedia.org/wikipedia/commons/a/a0/Sydney_opera_house_and_skyline.jpg%db=econnect&'+location.search.substring(1)">
+				Sydney Sec
+		</a>
+		<br />	
+		<a href="#" onclick="location.href='annotate.jsp?user=csa-test-1&objectURL=http://z.about.com/d/goeurope/1/0/5/3/padua_4.jpg&db=econnect&'+location.search.substring(1)">
+				Padua
+		</a>	
+		<br />	
+		<a href="#" onclick="location.href='annotate.jsp?id=http://test.arcs.ac.at/aus&user=csa1980&objectURL=http://www.destination360.com/australia-south-pacific/australia/images/s/australia-perth.jpg&db=econnect&'+location.search.substring(1)">
+				Perth
+		</a>
+		<br />	
+        <a href="#" onclick="location.href='annotate.jsp?id=whatever&user=csa1980&objectURL=http://upload.wikimedia.org/wikipedia/commons/7/77/Lissabon.jpg&db=econnect&'+location.search.substring(1)">
+                Lisbon
+        </a>
+        <br />
+        <a href="#" onclick="location.href='annotate.jsp?user=csa1980&id=http://tel123&objectURL=http://upload.wikimedia.org/wikipedia/commons/a/a0/Sydney_opera_house_and_skyline.jpg&db=econnect&'+location.search.substring(1)&db=econnect&'+location.search.substring(1)">
+                Sydney
+        </a>
+        <br />
+        <a href="#" onclick="location.href='annotate.jsp?user=csa1980&objectURL=http://www.lib.utexas.edu/maps/historical/vienna_1858.jpg&db=econnect&'+location.search.substring(1)">
+                historic map of Vienna
+        </a>
+        <br />  
+        <a href="#" onclick="location.href='annotate.jsp?user=csa&objectURL=http://purl.pt/3464/2/cc-296-a_JPG/cc-296-a_JPG_24-C-R0072/cc-296-a_0001_1_p24-C-R0072.jpg&bbox=[46.3165841,19.4677734,36.2442731,3.95507812]&db=econnect&'+location.search.substring(1)">
+                historic map with coordinates
+        </a>     
+        <br />        
+        <a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=csa1980&objectURL=http://centos.planets-project.arcs.ac.at/fcgi-bin/iipsrv.fcgi?Zoomify=/var/www/world_nip.ptif/&db=econnect&'+location.search.substring(1)">
+        		Hi-res shaded relief world map (17.010 x 9.720 pixel, 331 MByte)
+        </a> 
+        <br/>
+        
+        <a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=csa1980&objectURL=http://centos.planets-project.arcs.ac.at/fcgi-bin/iipsrv.fcgi?Zoomify=/var/www/world_gm.ptif/&db=econnect&'+location.search.substring(1)">
+        		Hi-res shaded relief world map (17.010 x 9.720 pixel, 261 MByte, Graphicsmagick version)
+        </a> 
+        <br/>
+        
+        <a href="#" onclick="location.href='annotate.jsp?tileView=yes&user=csa1980&objectURL=http://centos.planets-project.arcs.ac.at/fcgi-bin/iipsrv.fcgi?Zoomify=/var/www/world_im.ptif/&db=econnect&'+location.search.substring(1)">
+        		Hi-res shaded relief world map (17.010 x 9.720 pixel, 268 MByte, ImageMagick version)
+        </a> 
+        <br/>
+                          
+        <h1>annotate your own image</h1>		
+		<form method="get" action="http://localhost:8888/annotate.jsp?user=test&db=tel">
+	  		<label for="objectURL">URL: </label><input type="text" name="objectURL" id="objectURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />	  
+	  		<input type="submit" value="annotate" />
+	  	</form>						
+	</body>
+</html>

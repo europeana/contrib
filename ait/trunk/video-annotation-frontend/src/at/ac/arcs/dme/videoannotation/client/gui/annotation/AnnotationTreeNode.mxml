@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>	
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalGap="0" 
+	rollOver="onRollOver();" rollOut="onRollOut(event);" click="onClick(event);" >
+	
+	<mx:Script>
+    <![CDATA[
+        import at.ac.arcs.dme.videoannotation.client.event.UserEvent;
+        import at.ac.arcs.dme.videoannotation.client.event.ApplicationEvent;
+    	import at.ac.arcs.dme.videoannotation.client.event.AnnotationEvent;    
+    	import at.ac.arcs.dme.videoannotation.client.model.Scope;    	
+    	import at.ac.arcs.dme.videoannotation.client.model.VideoAnnotation;
+    	import at.ac.arcs.dme.videoannotation.client.gui.button.AnnotationPlayButton;
+    	import at.ac.arcs.dme.videoannotation.client.util.MiscUtil;
+    	import mx.core.Application;
+    	import mx.managers.PopUpManager;
+    	  
+    	[Bindable] private var _annotation:VideoAnnotation;
+    	[Bindable] private var _updateAndDeleteAllowed:Boolean;
+    	private var _playButton:AnnotationPlayButton;
+    	   
+    	public function set annotationData(annotation:VideoAnnotation):void {
+			_annotation = annotation;
+			if(_annotation!=null) {
+				_updateAndDeleteAllowed = (getUser()==_annotation.creator) && 
+  					((_annotation.children == null) || (_annotation.children.length==0));
+  			}		
+		}  	    	
+    	
+    	private function getUser():String {
+    		var user:String = Application.application.parameters.user;
+    		if (user == null) user = MiscUtil.getHtmlParameter("user");
+    		return user;
+    	}
+    	
+    	private function onRollOver():void {
+    		dispatchEvent(new UserEvent(UserEvent.SELECT_ANNOTATION_TREE, VideoAnnotation(_annotation)));    		
+    		if(_annotation.videoFragment!=null && _playButton == null) {
+    			_playButton = AnnotationPlayButton(PopUpManager.createPopUp(this, AnnotationPlayButton, false));
+    			_playButton.annotation=_annotation;
+    		}    		
+    	}  
+    	
+    	private function onRollOut(event:MouseEvent):void {
+			if(event.relatedObject!=_playButton) {	 
+				PopUpManager.removePopUp(_playButton);
+				_playButton = null;
+				
+			}			
+    	}   
+    	
+    	private function onClick(event:Event):void {    		
+    		if(event.target!=btnReply && event.target!=btnEdit && event.target!=btnDelete) {
+    			dispatchEvent(new UserEvent(UserEvent.CLICK_PLAY_FRAGMENT, 
+    				VideoAnnotation(_annotation)));
+    		} 	
+    	}	    	    	    	
+	]]>
+   </mx:Script>
+		
+	<mx:HBox horizontalGap="0">
+		<mx:Image source="@Embed('/at/ac/arcs/dme/videoannotation/client/images/shape_handles.png')" 
+			width="{(_annotation.videoFragment.shape == null || _annotation.videoFragment.shape.isNoShape)?0:16}" /> 		  		
+		<mx:Image source="@Embed('/at/ac/arcs/dme/videoannotation/client/images/lock.png')" 
+			width="{(_annotation.scope==Scope.PRIVATE)?16:0}" /> 		  		
+  		<mx:Label text="{_annotation.creator}" styleName="annotationHeaderUser"/>
+  		<mx:Label text="{_annotation.updateDate.getFormatedString('(M/D/YYYY K:NN A)')}" 
+	  		styleName="annotationHeaderDate"/>		
+	</mx:HBox>
+	
+ 	<mx:HBox>
+  		<mx:Label width="250" text="{_annotation.title}" styleName="annotationTitle"/>
+ 	</mx:HBox>
+ 	 	 	
+ 	<mx:HBox>		
+  		<mx:Text width="250" id="text" text="{_annotation.text}" styleName="annotationText"/>
+ 	</mx:HBox>
+ 	
+ 	<mx:HBox height="{(_annotation.videoFragment!=null)?20:0}">  		
+  		<mx:Label text="{_annotation.videoFragment.formattedTimeFrom}" />
+  		<mx:Label text="-" width="10" />
+  		<mx:Label text="{_annotation.videoFragment.formattedTimeTo}" />  		
+ 	</mx:HBox>
+ 	
+ 	<mx:HBox>
+  		<mx:Button id="btnReply" styleName="annotationAction" label="Reply"   			
+  			click="dispatchEvent(new UserEvent(UserEvent.CLICK_REPLY_ANNOTATION, _annotation))"/>  		
+  		<mx:Button id="btnEdit" styleName="annotationAction" label="Edit" 
+  			enabled="{_updateAndDeleteAllowed}" 
+  			click="dispatchEvent(new UserEvent(UserEvent.CLICK_EDIT_ANNOTATION, _annotation))"/>
+  		<mx:Button id="btnDelete" styleName="annotationAction" label="Delete"
+  			enabled="{_updateAndDeleteAllowed}" 
+  			click="dispatchEvent(new UserEvent(UserEvent.CLICK_DELETE_ANNOTATION, _annotation))"/>
+ 	</mx:HBox>
+</mx:VBox>

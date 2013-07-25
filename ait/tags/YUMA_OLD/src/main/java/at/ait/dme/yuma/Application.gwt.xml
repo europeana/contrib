@@ -1,0 +1,64 @@
+<module rename-to="yuma">
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	<inherits name='org.gwtwidgets.WidgetLibrary'/>    
+    <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+    <inherits name='com.google.gwt.json.JSON'/>  
+ 	<inherits name="com.google.gwt.maps.GoogleMaps"/>
+ 	
+ 	<inherits name='com.google.gwt.user.theme.aegean.Aegean'/>
+ 	
+ 	<inherits name='org.gwt.mosaic.Mosaic'/>
+	<inherits name='org.gwt.mosaic.actions.Actions' />
+ 	
+ 	<inherits name="at.ait.dme.gwt.openlayers.OpenLayersWrapper"/>
+       
+	<entry-point class='at.ait.dme.yuma.client.Application'/>
+  
+    <servlet path='/annotate.jsp' 
+    	class='org.apache.jasper.servlet.JspServlet' />
+    	
+	<servlet path='/annotate-tiled.jsp' 
+    	class='org.apache.jasper.servlet.JspServlet' />
+
+    <servlet path='/zoom' 
+  		class='at.ait.dme.yuma.server.image.ImageZoomServiceImpl'/>
+  
+    <servlet path='/imageannotation' 
+  		class='at.ait.dme.yuma.server.annotation.ImageAnnotationServiceImpl'/>
+    
+    <servlet path='/auth' 
+  		class='at.ait.dme.yuma.server.auth.AuthenticationServiceImpl'/>
+ 	
+  	<servlet path='/captureSite' 
+  		class='at.ait.dme.yuma.server.image.WebsiteCaptureServiceImpl'/>
+  
+  	<servlet path='/geocoder' 
+  		class='at.ait.dme.yuma.server.map.GeocoderServiceImpl'/>
+  
+  	<servlet path='/findplace' 
+  		class='at.ait.dme.yuma.server.map.FindPlaceServiceImpl'/>
+
+  	<servlet path='/importkml' 
+  		class='at.ait.dme.yuma.server.map.KMLConverterServlet'/>
+  		
+  	<servlet path='/tokml' 
+  		class='at.ait.dme.yuma.server.map.ToKMLServlet'/>
+  		
+  	<servlet path='/tileset' 
+  		class='at.ait.dme.yuma.server.image.ImageTilesetProviderServiceImpl'/>
+  		
+  	<servlet path='/transformation' 
+  		class='at.ait.dme.yuma.server.map.transformation.TransformationServiceImpl'/>	
+
+    <servlet path='/semanticenrichment' 
+        class='at.ait.dme.yuma.server.enrichment.SemanticEnrichmentServiceImpl'/>
+ 
+  	<extend-property name="locale" values="de"/>
+  	<extend-property name="locale" values="fr"/>
+  	
+  	<script src="http://maps.google.com/maps?gwt=1&amp;file=api&amp;v=2&amp;key=', {
+	    'dme.arcs.ac.at': 'ABQIAAAAapqr3t_QNx5qoEDwcY3APxQOTUCOOXOy3Y0KbgnegeNBXMKDUBQMks9UTACosFr8F2z3zIu2plEoBA',
+	    'dme.ait.ac.at': 'ABQIAAAAapqr3t_QNx5qoEDwcY3APxSHOYmJ0Gm-4W76tcH6UPz2tSaGORRKM04b8Aeh1YaavSss6bxsoNoZQQ'
+	  }[window.location.host],'" />	  	
+</module>

@@ -1,0 +1,64 @@
+<html>
+	<head>
+	<style>
+			body {
+				font-family: verdana, arial;
+			}
+			
+			h2 {
+				padding-left: 2px;
+				font-size: 16px;
+			}
+			
+			h3 {
+				padding-left: 2px;
+				font-size: 14px;
+			}
+			
+			a {
+				color: blue;
+			}			
+		</style>  		
+	</head>
+	<body>
+		<img src="ait.gif">
+		<br />
+		<h3>This page is just for testing purposes. It is not part of the actual application. The Audio/Video
+		Annotation Tool is meant to be invoked from within an existing portal. Click on the examples
+		below or provide a audio/video URL to invoke the Annotation Tool.</h3>
+		<h1>audio/video annotation examples</h1>
+		
+		<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/vienna-test.flv">
+			Flash video (Vienna)
+		</a>
+		<br />
+		<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/race1.flv">
+			Flash video (Mobile Scooter Race)
+		</a>
+		<br />
+		<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/speech.flv">
+			Flash video (Obama speech)
+		</a>
+		<br />
+		<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/test4.mp3&audio=true">
+            mp3 
+        </a>
+     	<br />
+     	<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/test7.mp3">
+            another mp3
+        </a>
+     	<br />
+     	<a href="videoannotation.html?user=csa&objectURL=http://dme.arcs.ac.at/test2.mp4">
+            mp4
+        </a>
+     	<br />     	
+		<h1>annotate your own video or audio (flv, mp4, mp3)</h1>		
+		<form method="get" action="videoannotation.html">
+	  		<label for="objectURL">URL: </label><input type="text" name="objectURL" id="objectURL">
+	  		<input type="hidden" name="user" value="test" />
+	  		<input type="hidden" name="db" value="tel" />	  
+	  		<input type="submit" value="annotate" />
+	  </form>
+	
+	</body>
+</html>

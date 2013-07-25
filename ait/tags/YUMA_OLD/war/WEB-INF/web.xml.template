@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+		<param-name>annotation.service.base.url</param-name>
+		<param-value>http://localhost:8983</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>authentication.keystore.dir</param-name>
+		<param-value>/opt/tomcat/webapps/yuma/keys</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sign.validity.period.seconds</param-name>
+		<param-value>28800</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>admin.page</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>website.capture.min.width</param-name>
+		<param-value>800</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>website.capture.target.path</param-name>
+		<param-value>/opt/tomcat/webapps/yuma/captures</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>tiles.root.path</param-name>
+		 <param-value>/opt/tomcat/webapps/yuma/tiles</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>tiles.generation.command</param-name>
+		<param-value>gdal2tiles -p raster</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>map.kml.outlier.threshold</param-name>
+		<param-value>3000</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>enrichmentServiceUrl</param-name>
+		<param-value>http://dme.arcs.ac.at/enrichmentService/</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>openCalaisLicenceID</param-name>
+		<param-value>5g58wjng8y3avpqubrnnhyn7</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>map.google.api.key</param-name>
+		<param-value>ABQIAAAAhScxmuV3ybzUgUXK5Hrc6BREhleYDHJKagFSHdQe6xjbhVCp5BSz22jHD-GiLjy3M2rOz689ph-BFg</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>jspServlet</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jspServlet</servlet-name>
+		<url-pattern>/yuma/annotate.jsp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>jspServlet</servlet-name>
+		<url-pattern>/yuma/annotate-tiled.jsp</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>imageannotation</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.annotation.ImageAnnotationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>imageannotation</servlet-name>
+		<url-pattern>/yuma/imageannotation</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>zoom</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.image.ImageZoomServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>zoom</servlet-name>
+		<url-pattern>/yuma/zoom</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>authentication</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.auth.AuthenticationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>authentication</servlet-name>
+		<url-pattern>/yuma/auth</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>websitecapture</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.image.WebsiteCaptureServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>websitecapture</servlet-name>
+		<url-pattern>/yuma/captureSite</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>geocoder</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.map.GeocoderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>geocoder</servlet-name>
+		<url-pattern>/yuma/geocoder</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>findplace</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.map.FindPlaceServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>findplace</servlet-name>
+		<url-pattern>/yuma/findplace</url-pattern>
+	</servlet-mapping>
+  
+    <servlet>
+        <servlet-name>semanticenrichment</servlet-name>
+        <servlet-class>at.ait.dme.yuma.server.enrichment.SemanticEnrichmentServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>semanticenrichment</servlet-name>
+        <url-pattern>/yuma/semanticenrichment</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+		<servlet-name>annotate</servlet-name>
+		<jsp-file>/yuma/annotate.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>annotate</servlet-name>
+		<url-pattern>/yuma/annotate</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>annotate-tiled</servlet-name>
+		<jsp-file>/yuma/annotate-tiled.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>annotate-tiled</servlet-name>
+		<url-pattern>/yuma/annotate-tiled</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>importkml</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.map.KMLConverterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>importkml</servlet-name>
+		<url-pattern>/yuma/importkml</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>tokml</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.map.ToKMLServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>tokml</servlet-name>
+		<url-pattern>/yuma/tokml</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>tileset</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.image.ImageTilesetProviderServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>tileset</servlet-name>
+		<url-pattern>/yuma/tileset</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>transformationServiceImpl</servlet-name>
+		<servlet-class>at.ait.dme.yuma.server.map.transformation.TransformationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>transformationServiceImpl</servlet-name>
+		<url-pattern>/yuma/transformation</url-pattern>
+	</servlet-mapping>
+
+	<!--  restrict access to key store -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>key store</web-resource-name>
+			<url-pattern>/keys/*</url-pattern>
+		</web-resource-collection>
+			<description>No Access</description>
+		<auth-constraint>
+			<role-name>restricted</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-role>
+		<description>NO Access</description>
+		<role-name>restricted</role-name>
+	</security-role>
+
+	<!-- restrict access to everyone except admin -->
+	<!-- security-constraint>
+		<web-resource-collection>
+			<web-resource-name>all</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>only admin</description>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Application</realm-name>
+	</login-config>
+
+	<security-role>
+		<description>only admin</description>
+		<role-name>admin</role-name>
+	</security-role-->
+</web-app>

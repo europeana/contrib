@@ -1,0 +1,84 @@
+<wicket:extend>	
+	<p>
+	YUMA is open source software, released under the 
+	<a href="http://ec.europa.eu/idabc/en/document/7774.html">European Union Public License EUPL</a>. 
+	You can get the source code from
+	<a href="http://www.github.com/yuma-annotation" target="_blank">the official home of
+	the YUMA Annotation Framework on github</a>.
+	</p>
+
+	<h3>Getting Started</h3>	
+	<p>
+	The YUMA Annotation Server
+	is built with <a href="http://ant.apache.org/">Apache Ant</a>. Use the default
+	'create-war' target to build the .war file.
+	</p>
+	
+	<p>
+	The project comes with an included starter class that will launch the project in an embedded
+	Jetty Web server <em>(version 6.1.26)</em>. This way, you can work interactively on the code 
+	in your IDE without the need to constantly re-build and re-deploy. Please ensure that
+	your IDE compiles the application classes to the <em>/src/main/webapp/WEB-INF/classes</em> 
+	directory. Then locate the class
+	</p>
+	
+	<p>
+	<span class="code">at.ait.dme.yuma.server.bootstrap.StartAnnotationServer</span>
+	</p>
+	
+	<p>
+	in the <em>/src/main/test</em> folder, and launch it as a Java application. 
+	Per default, the Jetty will launch on port 8080. The YUMA Annotation Server will
+	be available at 
+	<a href="http://localhost:8080/yuma-server">http://localhost:8080/yuma-server</a>. Modify
+	the settings in the starter class if you want a different port or application
+	root path. When developing, please note that changes in HTML templates 
+	and CSS will be effective immediately, while changes in Java classes require a 
+	restart of the Jetty before taking effect! 
+	</p>
+
+	<h3>Dependencies</h3>
+	<p>
+	In case you want to hack on the source code of the YUMA Annotation
+	Server, you may want to familiarize yourself with one or more of
+	its library dependencies:
+	<ul>
+	<li><a href="http://www.jboss.org/resteasy">RESTEasy</a>: JAX-RS implementation used for
+	the API controllers <em>(version 2.0.1.GA)</em></li>
+	<li><a href="http://www.hibernate.org/">Hibernate</a>: persistence framework for 
+	relational databases <em>(version 3.6.0.Final)</em></li>
+	<li><a href="http://jena.sourceforge.net/">Jena Semantic Web Framework</a>: used for RDF (de-)
+	serialization <em>(version 2.6.4)</em></li>
+	<li><a href="http://rome.dev.java.net/">Rome</a>: RSS feed generation <em>(version 1.0)</em></li>
+	<li><a href="http://wicket.apache.org/">Apache Wicket</a>: Web framework used for the GUI
+	<em>(version 1.4.14)</em></li>
+	</ul>
+	</p>
+	
+	<h3>Adding a New Input or Output Data Format</h3>
+	<p>
+	You can add new input and/or output formats to the YUMA annotation server by implementing 
+	a custom <span class="code">FormatHandler</span>, along with your own subclass of the 
+	<span class="code">AbstractAnnotationController</span>. FormatHandlers are responsible
+	for parsing and serializing data formats. AnnotationControllers expose these formats through
+	REST endpoints. You can find examples (for JSON, RDF, RSS, etc.) in the 
+	<span class="code">at.ait.dme.yuma.server.controller</span> package. Be sure to read the 
+	JavaDoc in the code (especially in the base classes) for instructions and hints!	 
+	</p>
+	
+	<h3>Adding Support for a New Storage Backend</h3>
+	<p>
+	You can add support for new types of storage backends by implementing your own custom
+	subclass of <span class="code">AbstractAnnotationDB</span>. Subclasses need to provide
+	a set of methods for basic CRUD and query operations. You will find examples in the
+	<span class="code">at.ait.dme.yuma.server.db</span> package.
+	</p>
+	
+	<p>
+	Please note that this is normally <strong>NOT</strong> required if you want to attach a
+	new relational database! If your database is among the 
+	<a href="http://community.jboss.org/wiki/SupportedDatabases" target="_blank">Hibernate-supported
+	databases</a>, you should only need to add the appropriate JDBC driver to the project, and edit
+	the Hibernate configuration in the web.xml file. 
+	</p>
+</wicket:extend>

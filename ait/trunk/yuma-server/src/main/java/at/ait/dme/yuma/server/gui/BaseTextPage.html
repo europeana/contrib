@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+	<head>
+		<title wicket:id="title">YUMA Annotation Server</title>
+		<link href="css/common.css" rel="stylesheet" type="text/css" />
+		<link href="css/text.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="header">
+			<h1 wicket:id="heading"></h1>
+		</div>
+		
+		<div class="navigation">
+			<ul>
+				<li wicket:id="navbar">
+					<a wicket:id="nav-item"><span wicket:id="nav-label"></span></a>
+				</li>	
+			</ul>
+			<p class="home"><a wicket:id="home">Home</a><p>
+			<br style="clear:both"/>
+		</div>
+	
+		<div class="content">
+			<wicket:child/>
+		</div>
+		
+	</body>
+</html>

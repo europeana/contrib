@@ -1,0 +1,254 @@
+body {
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+}
+
+.loadmask {
+	z-index:99999;
+	border:#90B2DF solid 1px;
+	background-color:#CBD8E9;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.loadmask .inner {
+	margin:3px;
+	padding:20px 80px 15px 80px;
+	text-align:center;
+	font-family:"Verdana";
+	font-size:12px;
+	background-color:white;
+	border:#8DB2E3 solid 1px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.loadmask .inner img {
+	margin-bottom:15px;
+}
+
+.mapPopup {
+	z-index:99999;
+	width:250px;
+	border:#90B2DF solid 1px;
+	background-color:#CBD8E9;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.mapPopup .title {
+	padding:3px 0px 2px 5px;
+	font-family:"Verdana";
+	font-size:11px;
+	font-weight:bold;
+}
+
+.mapPopup .title .close {
+	cursor:pointer;
+	margin-right:7px;
+	float:right;
+}
+
+.mapPopup .title .close div {
+	font-family:"Arial";
+	font-weight:bold;
+	font-size:12px;
+	color:#90B2DF;
+	text-decoration:none;
+}
+
+.mapPopup .inner {
+	margin:3px;
+	padding:7px;
+	font-family:"Verdana";
+	font-size:11px;
+	background-color:white;
+	border:#8DB2E3 solid 1px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.tooltip {
+	z-index: 99999;
+	padding: 3px 5px 3px 5px;
+	max-width: 40%;
+	color: #000000;
+	background-color: #ffff00;
+	border: 1px solid #000000;
+	font-family:arial;
+	font-size:11px;
+}
+
+#titlebar {
+	position: absolute;
+	top: 0px;
+	margin: 0px;
+	padding-top: 9px;
+	background-image: url(../images/titlebar-bg.png);
+	background-repeat: repeat-x;
+	
+	/* Mozilla ignores crazy MS image filters, so it will skip the following */
+  		filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src='images/titlebar-bg.png');
+  		
+	text-align: right;
+	width: 100%;
+	height: 58px;
+	z-index:92;
+}
+
+#titlebar ul {
+	list-style: none;
+	margin: 0px 10px 0px 0px;
+	padding: 0px;
+}
+
+#titlebar li {
+	float: right;
+}
+
+#titlebar a {
+	font: bold 11px/16px arial, helvetica, sans-serif;
+	display: block;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #849BBA;
+	font-weight: bold;
+	text-decoration: none;
+	color: #15428B;
+	background-color: #C6D4E4;
+	margin: 5px;
+	padding: 5px 10px 5px 10px;
+}
+
+#titlebar a:hover {
+	background-color: #D4E8FE;
+}
+
+.olControlMousePosition {
+  font-family: Verdana;
+  font-weight: bold;
+  color: black;
+  background-color: white;
+}
+
+.cp-Editor {
+	padding: 4px;
+	margin: 4px;
+}
+
+.cp-Editor-Label {
+	font-size:11px;
+	margin-left:5px;
+	margin-top:10px;
+	width:22px;
+}
+
+.cp-Editor-Field {
+	height:16px;
+	margin-left:11px;
+	width:280px;
+	font-family:arial;
+	font-size:10px;
+	margin-top:10px;	
+	margin-bottom:2px;	
+	border-width: 1px;
+	background-color: #fafafa;
+}
+
+.gwt-StackLayoutPanel {
+	border: 0px;
+}
+
+.gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader {
+	cursor: pointer;
+	cursor: hand;
+	background-color: #B6CEEE;
+	font-family: "Myriad Pro", "Myriad Web", "Tahoma", "Helvetica", "Arial";
+	font-size: 11px;
+	font-weight:bold;
+	color: #416AA3;
+	border-bottom:1px solid #8DB2E3;
+	padding: 8px;
+}
+
+.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent {
+	background-color:#ffffff;
+}
+
+.explore-PlaceSearch div.gwt-Label {
+	font-size:12px;
+	padding:3px;
+}
+
+.explore-PlaceSearch input.gwt-TextBox {
+	width: 220px;
+	margin:0px 8px 0px 8px;
+	border:1px solid black;
+}
+
+.explore-PlaceSearch button.gwt-Button {
+	font-size:10px;
+	margin-bottom:2px;
+}
+
+.explore-KMLOverlay table tr {
+	background-color: #FFFFFF;
+	border: #FFFFFF solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	display:block;
+}
+
+.explore-KMLOverlay table tr:hover {
+	background-color: #FFC800;
+	border: #AF8900 solid 1px;
+}
+
+.explore-KMLOverlay span.gwt-RadioButton {
+	margin:5px 0px 0px 8px;
+	display:block;
+}
+
+.explore-KMLOverlay span.gwt-InlineHTML {
+	padding:5px 10px 5px 10px;
+	display:block;
+}
+
+.explore-about {
+	padding:10px;
+}
+
+.explore-aboutThumbnail {
+	float:left;
+	padding: 3px 10px 10px 0px;
+}
+
+.explore-aboutTitle {
+	font-size:12px;
+	font-weight:bold;
+}
+
+.explore-aboutAuthor {
+	font-size:12px;
+}
+
+.explore-aboutDate {
+	font-size:12px;
+}
+
+.explore-aboutSource{
+	font-size:12px;
+	font-style:italic;
+	padding-bottom:15px;
+}
+
+.explore-aboutDescription {
+	font-size:12px;
+	clear:both;
+	padding-bottom:15px;
+}
+
+.explore-aboutLink {
+	font-size:12px;
+}

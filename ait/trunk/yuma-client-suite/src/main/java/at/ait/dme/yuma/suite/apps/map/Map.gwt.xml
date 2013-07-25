@@ -1,0 +1,7 @@
+<module rename-to="yuma.map">
+ 	<inherits name="at.ait.dme.gwt.openlayers.OpenLayersWrapper"/>
+	<inherits name="at.ait.dme.yuma.suite.apps.image.core.ImageCore" />    
+	<entry-point class='at.ait.dme.yuma.suite.apps.map.client.YumaMapClient'/>
+	<source path = "client"/>
+	<source path = "shared"/>	
+</module>

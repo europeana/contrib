@@ -1,0 +1,173 @@
+/* CSS styles for YUMA Core module                 */
+/* TODO refactor - move all the core stuff in here */
+
+.mosaic-Caption-text {
+	color:#416AA3;
+	font-family:"Myriad Pro","Myriad Web","Tahoma","Helvetica","Arial";
+	font-size: 11px;
+	padding-bottom:6px;
+}
+
+/* AnnotationPanel */
+.annotationPanel {
+	font-family: arial;
+	font-size: 10px;
+	background-color: #fff;
+}
+
+.imageAnnotation-tree {
+	width:100%;
+}
+
+/* AnnotationTreeNode */
+.imageAnnotation {
+	padding:6px;
+	background-color:#ffffff;
+	border: #ffffff solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.imageAnnotation-header-mapicon {
+	margin-top:1px;
+	margin-left:8px;
+	cursor: pointer;
+}
+
+.imageAnnotation-header-feedicon {
+	margin-top:2px;
+	margin-left:8px;
+	cursor: pointer;
+	visibility:hidden;
+}
+
+.imageAnnotation-selected .imageAnnotation-header-feedicon {
+	visibility:visible;
+}
+
+.imageAnnotation-actions {
+	padding-bottom:5px;
+}
+
+.imageAnnotation-selected {
+	padding:6px;
+	margin-right: 4px;
+	background-color: #FFC800;
+	border: #AF8900 solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.imageAnnotation-edit {
+	padding:6px;
+	background-color: #ffffff;
+	border: #ffffff solid 1px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	width:100%;
+}
+
+/* AnnotationEditForm */
+
+.globalAnnotationEditForm {
+	padding:0px 12px 4px 8px;
+}
+
+.annotationEditForm {
+	background-color:#dfe8f6;
+	border:1px solid #8db2e3; 
+	width:100%;
+	padding:5px 25px 0px 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 2px 2px 5px #777;
+	-webkit-box-shadow: 2px 2px 5px #777;
+	box-shadow: 2px 2px 5px #777;
+	margin-top:2px;
+	margin-bottom:5px;
+}
+
+.annotationEditForm-label {
+	font-family: arial;
+	font-size: 10px;
+	margin: 2px 0px 0px 2px;
+}
+
+.annotationEditForm-title-input {
+	margin:5px 2px;
+	padding:4px;
+	border:1px solid #8db2e3;
+	width:100%;
+	font-family: arial;
+	font-size: 12px;
+}
+
+.annotationEditForm-text-input {
+	margin:5px 2px;
+	padding:4px;
+	border:1px solid #8db2e3;
+	width: 100%;
+	height: 50px;
+	font-family: arial;
+	font-size: 12px;
+}
+
+.annotationEditForm-tag table {
+	padding:0px;
+	position:relative;
+	left:10px;
+	width:100%;
+	margin-bottom:5px;
+}
+
+.gwt-SuggestBoxPopup {
+    z-index:10001;
+}
+
+.annotationEditForm-tag-input {
+	position:relative;
+	left:-12px;
+	margin:5px 4px;
+	padding:4px;
+	width:100%;
+	border:1px solid #8db2e3;
+	font-family: arial;
+	font-size: 12px;
+}
+
+.annotationEditForm-tag .gwt-PushButton-up, 
+.annotationEditForm-tag .gwt-PushButton-up-hovering,
+.annotationEditForm-tag .gwt-PushButton-up-disabled, 
+.annotationEditForm-tag .gwt-PushButton-down, 
+.annotationEditForm-tag .gwt-PushButton-down-hovering,
+.annotationEditForm-tag .gwt-PushButton-down-disabled {
+	margin:5px 0px 5px 4px;
+	padding:5px;
+	position:relative;
+	left:2px;
+}
+
+.annotationEditForm-tag-btn-add, .annotationEditForm-tag-btn-browse {
+	text-align:center;
+}
+
+.annotationEditForm-tag-btn-delete {
+	position:relative;
+	left:-10px;
+	bottom:-8px;
+	cursor: pointer;
+}
+
+.vocabularyBrowser {
+	margin:2px;
+	background-color:#fff;
+	border:1px solid #8DB2E3;
+}
+
+.vocabularyBrowser-treeNode {
+	font-family:Arial;
+	font-size:12px;
+	padding-top:2px;
+	padding-bottom:3px;
+	height:17px;
+}

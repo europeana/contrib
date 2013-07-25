@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="yuma-suite" default="create-war" basedir=".">
+	
+	<property name="image.module.name" value="at.ait.dme.yuma.suite.apps.image.Image" />
+	<property name="map.module.name" value="at.ait.dme.yuma.suite.apps.map.Map" />
+	
+	<property name="src.dir" location="src/main/java" />
+	<property name="src.resources.dir" location="src/main/resources" />
+	
+	<property name="test.dir" location="src/test/java" />
+	<property name="test.resources.dir" location="src/test/resources" />
+
+	<property name="gwt.war.dir" location="src/main/webapp" />
+	<property name="web.inf.dir" location="${gwt.war.dir}/WEB-INF" />
+	<property name="classes.dir" location="${web.inf.dir}/classes" />
+	
+	<property name="compile.lib.dir" location="lib" />
+	<property name="deploy.lib.dir" location="${web.inf.dir}/lib" />
+
+	<property name="report.dir" location="report" />
+		
+	<property name="war.filename" value="yuma-suite.war" />
+
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+		<delete dir="${gwt.war.dir}/yuma.image"/>
+		<delete dir="${gwt.war.dir}/yuma.map"/>
+	</target>
+
+	<target name="add-license" depends="clean">
+		<loadfile property="license" srcFile="LICENSE.txt"/>
+		<replace dir="." includes="**/*.java" summary="true">
+			<not>
+				<contains text="* Copyright" />
+			</not>
+			<replacefilter 
+			    token="package ${root.package}" 
+			    value="${license}&#xa;&#xa;package ${root.package}" />
+		</replace>
+	</target>
+	
+	<target name="compile-java" depends="add-license">
+		<mkdir dir="${classes.dir}"/>
+
+		<javac destdir="${classes.dir}" includes="**/*.*" debug="true" fork="true" source="1.6">
+			<src path="${src.dir}" />
+			<src path="${test.dir}" />
+			<classpath>
+				<fileset dir="${compile.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${deploy.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="test" depends="compile-java">
+			<mkdir dir="${report.dir}"/>	
+			<junit printsummary="yes" haltonfailure="yes" fork="true">			
+				<jvmarg value="-Xmx1024M" />			
+				<classpath>
+					<pathelement location="${src.dir}" />
+					<pathelement location="${test.dir}" />
+					<pathelement location="${test.resources.dir}" />
+					<pathelement location="${classes.dir}" />												
+					<fileset dir="${compile.lib.dir}">
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="${deploy.lib.dir}">
+						<include name="*.jar" />
+					</fileset>
+				</classpath>
+				<batchtest todir="${report.dir}">
+					<formatter type="xml" />
+					<fileset dir="${test.dir}">
+						<include name="**/*Test*.java"/>
+					</fileset>
+				</batchtest>
+			</junit>
+		</target>
+	
+	<target name="compile-gwt-image" depends="compile-java">
+		<java classname="com.google.gwt.dev.Compiler" fork="true">
+			<jvmarg value="-Xmx256M" />
+			<arg value="-war" />
+			<arg value="${gwt.war.dir}" />
+			<arg value="${image.module.name}" />
+			<classpath>
+				<pathelement location="${src.dir}" />
+				<pathelement location="${src.resources.dir}" />
+				<pathelement location="${classes.dir}" />
+				<fileset dir="${compile.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="compile-gwt-map" depends="compile-java">
+		<java classname="com.google.gwt.dev.Compiler" fork="true">
+			<jvmarg value="-Xmx256M" />
+			<arg value="-war" />
+			<arg value="${gwt.war.dir}" />
+			<arg value="${map.module.name}" />
+			<classpath>
+				<pathelement location="${src.dir}" />
+				<pathelement location="${src.resources.dir}" />
+				<pathelement location="${classes.dir}" />
+				<fileset dir="${compile.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="create-war" depends="compile-gwt-image, compile-gwt-map">
+		<copy todir="${classes.dir}">
+    		<fileset dir="${src.resources.dir}"/>
+  		</copy>	
+		<war destfile="${war.filename}" webxml="${web.inf.dir}/web.xml">
+			<fileset dir="${gwt.war.dir}">
+				<exclude name="**/client/**" />
+ 				<exclude name="**/at/ait/dme/yuma/suite/test/**" />
+ 				<exclude name="**/*.gwt.xml" />
+ 				<exclude name="**/com/**" />
+				<exclude name="**/tilesets/*/**" />
+				<exclude name="**/.gitignore" />
+			</fileset>
+		</war>
+	</target>
+</project>

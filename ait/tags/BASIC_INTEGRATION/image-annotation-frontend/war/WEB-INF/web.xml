@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<context-param>
+		<param-name>annotation.middleware.base.url</param-name>
+		<param-value>http://localhost:8080</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>authentication.keystore.dir</param-name>
+		<param-value>/opt/tomcat/webapps/image-annotation-frontend/keys</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sign.validity.period.seconds</param-name>
+		<param-value>28800</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>annotation</servlet-name>
+		<servlet-class>at.researchstudio.dme.imageannotation.server.ImageAnnotationServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>annotation</servlet-name>
+		<url-pattern>/imageannotation/annotation</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>authentication</servlet-name>
+		<servlet-class>at.researchstudio.dme.imageannotation.server.AuthenticationServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>authentication</servlet-name>
+		<url-pattern>/imageannotation/auth</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>pipesadapter</servlet-name>
+		<servlet-class>at.researchstudio.dme.imageannotation.server.pipes.PipesAdapterServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>pipesadapter</servlet-name>
+		<url-pattern>/imageannotation/pipes</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>zoom</servlet-name>
+		<servlet-class>at.researchstudio.dme.imageannotation.server.ImageZoomServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>zoom</servlet-name>
+		<url-pattern>/imageannotation/zoom</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>jspServlet</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>jspServlet</servlet-name>
+		<url-pattern>/imageannotation/annotate.jsp</url-pattern>
+	</servlet-mapping>
+</web-app>

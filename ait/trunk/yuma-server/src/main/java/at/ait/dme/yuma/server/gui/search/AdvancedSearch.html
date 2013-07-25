@@ -1,0 +1,21 @@
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>YUMA Annotation Server - Advanced Search</title>
+    <link href="css/search.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div id="container">
+      <img class="logo" src="images/yuma-logo.png" alt="YUMA Annotation Server" title="YUMA Annotation Server"/>
+      <form wicket:id="form">
+        <input class="searchfield" wicket:id="query" /><br/>
+        <input type="checkbox" wicket:id="searchTitle" /> Search Annotation Title <br/>
+        <input type="checkbox" wicket:id="searchText" /> Search Annotation Text<br/>
+        <input type="checkbox" wicket:id="searchTags" /> Search Tags<br/>
+        <input type="checkbox" wicket:id="searchUser" /> Search Username<br/>
+        <input class="searchbutton" type="submit" value="Search"/>
+      </form>
+    </div>
+  </body>
+</html>

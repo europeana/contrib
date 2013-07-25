@@ -1,0 +1,4 @@
+<module rename-to="yuma.audio">
+ 	<inherits name="at.ait.dme.yuma.suite.apps.core.Core" />           
+	<entry-point class='at.ait.dme.yuma.suite.apps.audio.client.YumaAudioClient'/>
+</module>
