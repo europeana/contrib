@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+ <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+ 
+<script type="text/javascript" src="javascripts/form2js.js"></script>
+
+</head>
+<body>
+<div>
+<form accept-charset="UTF-8"  enctype="multipart/form-data" id="user_signin" method="post" >
+<fieldset class="inputs"><legend><span>Sign in </span></legend><ol>
+      <li class="string input required stringish" id="user_username_input"><label class=" label" for="user_username">Email</label><input id="user_username" maxlength="255" name="email" size="50" type="text" />
+
+      <li>
+        
+        <li class="password input optional stringish" id="user_password_input"><label class=" label" for="password">Password</label><input id="user_password" name="password" size="50" type="password" />
+
+</li>
+</ol></fieldset>
+<fieldset class="buttons">
+<input class="create" id="user_submit" name="commit" type="button" value="Login"/></li>
+<a href="./login.html">Cancel</a></fieldset> 
+</form>
+
+<div><input class="create" id="user_list" name="user_list" type="button" value="Get User list"/></li></div>
+
+</div> 
+<script type="text/javascript">
+
+
+
+(function($){
+   
+    
+	/*$.ajaxSetup({
+	      headers: {"X-Requested-With":"XMLHttpRequest"}
+	});*/
+	
+	
+    $("#user_submit").click(function (){
+    
+    	var formData = form2js('user_signin', '.', true,
+    			function(node)
+    			{
+    			if (node.id && node.id.match(/callbackTest/))
+    			{
+    			return { name: node.id, value: node.innerHTML };
+    			}
+    			});
+
+    			
+    	var dat=JSON.stringify(formData, null, '\t'); 
+    
+       $.ajax({
+            contentType : "application/json",
+            dataType : 'json',
+            type : "POST",
+            url : "../Users/login",
+            data : dat, //json serialization (like array.serializeArray() etc)
+            success : function(data) {
+                alert("User login successful.  \n\n" );
+                console.log(data);
+               // response
+            },
+            error : function(xhr) {
+                   alert('Status:'+xhr.status+', Error: ' + xhr.responseText); 
+            }
+        });
+        
+    })
+	
+      $("#user_list").click(function (){   
+
+       $.ajax({
+           contentType : "application/json",
+           dataType : 'json',
+           type : "GET",
+           url : "../Users/list",
+           success : function(data) {
+        	   alert("Success check your console log for json response" );
+               console.log(data);
+              
+              // response
+           },
+           error : function(xhr) {
+                  alert('Status:'+xhr.status+', Error: ' + xhr.responseText); 
+           }
+       });
+   
+  
+    })
+    	
+    
+})(jQuery);
+
+</script>
+  
+</body> 
+</html>
+
+
+    

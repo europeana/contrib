@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by cpard (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="PublishTransformationAction">
+		<xs:choice>
+			<xs:element name="PublishTransformationResponse" type="PublishTransformationResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="PublishTransformation" type="PublishTransformationAction"/>
+	<xs:complexType name="PublishTransformationResponse">
+		<xs:sequence>
+			<xs:element name="transformationId" type="xs:string"/>
+			<xs:element name="url" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateImportResponse">
+		<xs:sequence>
+			<xs:element name="importId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateImportCommand">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="repoxTableName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublicationResponse">
+		<xs:sequence>
+			<xs:element name="url" type="xs:anyURI"/>
+			<xs:element name="includedImport" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="importId"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublicationCommand">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="includedImports">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="importId" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublicationAction">
+		<xs:choice>
+			<xs:element name="PublicationCommand" type="PublicationCommand"/>
+			<xs:element name="PublicationResponse" type="PublicationResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="CreateImportAction">
+		<xs:choice>
+			<xs:element name="createImportCommand" type="CreateImportCommand"/>
+			<xs:element name="createImportResponse" type="CreateImportResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="CreateOrganizationAction">
+		<xs:choice>
+			<xs:element name="CreateOrganizationCommand" type="CreateOrganizationCommand"/>
+			<xs:element name="CreateOrganizationResponse" type="CreateOrganizationResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="CreateUserCommand">
+		<xs:sequence>
+			<xs:element name="userName" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+			<xs:element name="firstName" type="xs:string" minOccurs="0"/>
+			<xs:element name="lastName" type="xs:string" minOccurs="0"/>
+			<xs:element name="email" type="xs:string" minOccurs="0"/>
+			<xs:element name="phone" type="xs:string" minOccurs="0"/>
+			<xs:element name="organization" type="xs:string" minOccurs="0"/>
+			<xs:element name="jobRole" type="xs:string" minOccurs="0"/>
+			<xs:element name="systemRole" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="publisher"/>
+						<xs:enumeration value="annotator"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CreateImport" type="CreateImportAction"/>
+	<xs:element name="CreateOrganization" type="CreateOrganizationAction"/>
+	<xs:element name="CreateUser" type="CreateUserAction"/>
+	<xs:complexType name="ErrorResponse">
+		<xs:sequence>
+			<xs:element name="command" type="xs:string"/>
+			<xs:element name="errorMessage" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ImportExists" type="ImportExistsAction"/>
+	<xs:complexType name="ImportExistsResponse">
+		<xs:sequence>
+			<xs:element name="exists" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportExistsCommand">
+		<xs:sequence>
+			<xs:element name="importId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportExistsAction">
+		<xs:choice>
+			<xs:element name="ImportExistsCommand" type="ImportExistsCommand"/>
+			<xs:element name="ImportExistsResponse" type="ImportExistsResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="OrganizationExists" type="OrganizationExistsAction"/>
+	<xs:complexType name="OrganizationExistsAction">
+		<xs:choice>
+			<xs:element name="OrganizationExistsCommand" type="OrganizationExistsCommand"/>
+			<xs:element name="OrganizationExistsResponse" type="OrganizationExistsResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="OrganizationExistsResponse">
+		<xs:sequence>
+			<xs:element name="exists" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganizationExistsCommand">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="UserExists" type="UserExistsAction"/>
+	<xs:complexType name="UserExistsAction">
+		<xs:choice>
+			<xs:element name="UserExistsCommand" type="UserExistsCommand"/>
+			<xs:element name="UserExistsResponse" type="UserExistsResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="UserExistsResponse">
+		<xs:sequence>
+			<xs:element name="exists" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserExistsCommand">
+		<xs:sequence>
+			<xs:element name="userId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GetImports" type="GetImportsAction"/>
+	<xs:element name="GetTransformations" type="GetTransformationsAction"/>
+	<xs:element name="Publication" type="PublicationAction"/>
+	<xs:complexType name="CreateUserResponse">
+		<xs:sequence>
+			<xs:element name="userId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateOrganizationResponse">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateOrganizationCommand">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="userId" type="xs:string"/>
+			<xs:element name="englishName" type="xs:string"/>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="country" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetImportsAction">
+		<xs:choice>
+			<xs:element name="GetImportsCommand" type="GetImportsCommand"/>
+			<xs:element name="GetImportsResponse" type="GetImportsResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GetImportsResponse">
+		<xs:sequence>
+			<xs:element name="ImportId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetTransformationsAction">
+		<xs:choice>
+			<xs:element name="GetTransformationsCommand" type="GetTransformationsCommand"/>
+			<xs:element name="GetTransformationsResponse" type="GetTransformationsResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GetTransformationsResponse">
+		<xs:sequence>
+			<xs:element name="transformationId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetTransformationsCommand">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetImportsCommand">
+		<xs:sequence>
+			<xs:element name="organizationId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUserAction">
+		<xs:choice>
+			<xs:element name="CreateUserCommand" type="CreateUserCommand"/>
+			<xs:element name="CreateUserResponse" type="CreateUserResponse"/>
+			<xs:element name="error" type="ErrorResponse"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

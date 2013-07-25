@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		
+		<title>Europeana Search</title>
+
+ <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+ 
+<script type="text/javascript" src="javascripts/form2js.js"></script>
+<script type="text/javascript" src="javascripts/europeanasearch.js"></script>
+<script type="text/javascript" src="javascripts/jquery-ui-1.8.12.custom.min.js"></script>
+
+<link href="stylesheets/europeana.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div>
+
+	<div id="search">
+		<span class="europeana-logo"><img src="images/logo.png"/></span>
+		<span><input id="search-term" class="europeana-search-box" type="text"></input></span>
+		<span><select id="search-type" class="europeana-type-box">
+		<option value="">all</option>
+		<option value="IMAGE">image</option>
+		<option value="TEXT">text</option>
+		<option value="SOUND">sound</option>
+		<option value="VIDEO">video</option>
+		<option value="3D">3D</option>
+		</select></span>
+		<span><input id="search_submit" name="search" type="button" value="Search"></span>
+	</div>
+	<div id="results"></div>
+	</body>
+	<script type="text/javascript">
+
+(function($){
+	  $("#search_submit").click(function (){
+					europeana_search(1);})
+			
+})(jQuery);
+
+</script>
+</html>

@@ -1,0 +1,28 @@
+/*
+	add CSS customization here
+*/
+
+
+
+#header {
+	display: block;
+	position: relative;
+	background:#3C3C3C;
+	z-index: 0; 
+	padding:0;
+    width:75%;
+    margin: 0 auto;
+    min-width:1000px;
+}
+
+	
+
+#header_logo {
+	display: block;
+	position: relative;
+	height: 85px;
+	margin: 0px auto 0 auto;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+	z-index:-1;
+}

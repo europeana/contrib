@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<calculators>
+	<calculator>
+		<name>United Kingdom</name>
+		<language>English</language>
+		<location>UK.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+	<calculator>
+		<name>Netherlands</name>
+		<language>English</language>
+		<location>NL.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+	<calculator>
+		<name>Czech Republic</name>
+		<language>English</language>
+		<location>CZ.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+	<calculator>
+		<name>Spain</name>
+		<language>English</language>
+		<location>ES.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+	<calculator>
+		<name>France</name>
+		<language>English</language>
+		<location>FR.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+	<calculator>
+		<name>Italy</name>
+		<language>English</language>
+		<location>IT.xml</location>
+		<dataLocation></dataLocation>
+	</calculator>
+</calculators>

@@ -1,0 +1,165 @@
+body {
+	font-family: Verdana, Tahoma, Helvetica, Arial;
+	font-size: 80%;
+}
+
+#search {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ddd;
+	
+}
+
+#results {
+}
+
+.thumb-frame {
+    background-color: #999999;
+    height: 10em;
+    width: 13em;
+    line-height: 8em;
+    text-align: center;
+}
+.thumb-frame, .ellipsis {
+    border-bottom: 1px dotted #A0A0A0;
+    margin: 0.5em;
+    
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+#items {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+#items {
+    list-style: none outside none;
+    margin: 0;
+    width: 70%;
+}
+
+#items > div.li {
+    display: inline-block;
+    float: left !important;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    width: 30%;
+}
+
+#items > div.li {
+    text-align: left;
+}
+#items {
+    list-style: none outside none;
+}
+
+#preview {
+	border:1px solid #ccc;
+	background:#F7F4FB;
+	padding:20px;
+	float: right;
+	width: 300px;
+	margin: 10px;
+}
+
+#not-found {
+	border:1px solid #ccc;
+	background:#F7F4FB;
+	color:#3B2081;
+	font-size: 120%;
+	padding: 20px;
+	width: 90%;
+	margin: 20px auto;
+	text-align: center;
+}
+
+#not-found-term {
+		color:#8B2081;
+}
+
+.europeana-logo img {
+	height: 100px;
+	position: relative;
+	top: 2px;
+}
+
+.europeana-search-button {
+	border: 1px solid black;
+	background: #F7F4FB;
+	color: #3B2081;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	cursor: pointer;
+}
+
+.europeana-search-box {
+	width: 50%;
+	padding: 5px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.europeana-terms {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.europeana-pagination {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.europeana-pagination a {
+	padding-left: 10px;
+}
+
+.europeana-translation {
+	color: #aaa;
+	padding-left: 10px;
+}
+
+
+.europeana-small-thumbnail img {
+	height: 108px;
+	max-width: 120px;
+}
+
+.europeana-result {
+	padding: 10px;
+	height: 30px;
+	margin-left: 40px;
+}
+
+.europeana-description {
+	font-size: 80%;
+}
+
+.europeana-preview-title {
+	text-align: center;
+	font-size: 120%;
+	padding-bottom: 10px;
+}
+
+.europeana-preview-description {
+}
+
+.europeana-preview-thumbnail {
+	padding: 5px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+
+
+.preview{
+	display:inline-block; 
+	max-width:100px; 
+	overflow:hidden; 
+	text-overflow:ellipsis; 
+	white-space:nowrap;
+	cursor: pointer;
+	color: blue;
+}

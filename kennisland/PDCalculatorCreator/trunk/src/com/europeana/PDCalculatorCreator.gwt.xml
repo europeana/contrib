@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='pdcalculatorcreator'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+
+  <!-- Other module inherits                                      -->
+  <inherits name ="com.google.gwt.xml.XML"/> 
+  
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='com.europeana.client.PDCalculatorCreator'/>
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+
+</module>

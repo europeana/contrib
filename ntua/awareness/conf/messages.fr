@@ -1,0 +1,4 @@
+error="An unexpected error occurred. Please try again."
+missing="Missing parameter"
+exists="This value already exists"
+rangeerror="The parameters provided for the range produced an error"

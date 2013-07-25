@@ -1,0 +1,16 @@
+error=An unexpected error occurred. Please try again.
+apperror=An unexpected error occurred. Please try again.
+
+missing=Missing parameter
+exists=This value already exists
+rangeerror=The parameters provided for the range produced an error
+passnomatch=Password and password confirmation don't match
+errorsignin=Wrong username/password combination
+notfound=not found
+accountinactive=Your account is no longer active
+themedelerror= There are stories attached to this theme and it cannot be deleted.
+storynotfound= Story not found
+sobjectnotfound= Story object not found
+usernotfound= User not found
+themenotfound= Theme not found
+imagenotfound= Image not found

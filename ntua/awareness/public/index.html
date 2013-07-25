@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Europeana Storytelling</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]>
+	<link rel="stylesheet" type="text/css" href="stylesheets/ielt9.css">
+	<![endif]-->
+</head>
+<body>
+	<div class="background"><img></div>
+	
+	<div class="loader">loading</div>
+	<div class="container">
+		<div class="banner"><a data-bind="click:goHome"><img></a></div>
+		<div class="content">
+			<!-- toolbars -->
+			<div id="toolbarfiller" style="height:106px">
+			<div id="toolbars">
+				<div>
+					<div class="toolbar shadowed menu">
+						<ul class="toolbargroup"><li><span data-bind="text:translation().toolbar.theme">/theme</span>
+							<!-- ko if:themes -->
+							<select data-bind="options: themes, optionsText: 'title', value: selectedTheme"></select>
+							<!-- /ko -->
+						</ul>
+						<ul class="toolbargroup">
+							<li><span data-bind="text:translation().toolbar.language">/language</span> 
+								<!-- ko if:translation().languages -->
+								<select data-bind="options: translation().languages, optionsText: 'name', optionsValue: 'file', value: selectedLanguage"></select>
+								<!-- /ko -->
+						</ul>
+						<ul class="toolbargroup floatright">
+							<li><a href="#" data-bind="text:translation().toolbar.help, click:selectedPanel.bind($data, 'help')">/help</a></li>
+							<li><a href="#" data-bind="text:translation().toolbar.about, click:selectedPanel.bind($data, 'about')">/about</a></li>
+							<li><a href="#" data-bind="text:translation().toolbar.contact, click:selectedPanel.bind($data, 'contact')">/contact</a></li>
+							<!-- ko ifnot: loggedIn -->
+							<li><a href="#" class="register shadowed" data-bind="click: selectedPanel.bind($data, 'register'), text:translation().toolbar.register">/register</a></li>
+							<li class="last">
+								<a href="#" data-bind="click: showLoginPanel.bind($data, !showLoginPanel()), text:translation().toolbar.login, css: {active: showLoginPanel}">/login</a>
+								<ul id="loginpanel" class="shadowed" data-bind="visible:showLoginPanel">
+									<li>
+									<form data-bind="submit: login" enctype="multipart/form-data" method="POST">
+										<label for="login_email" data-bind="text:translation().toolbar.email">/user</label>
+										<input type="text" id="login_email" name="login_email">
+										<br>
+										<label for="login_password" data-bind="text:translation().toolbar.password">/password</label>
+										<input type="password" id="login_password" name="login_password">
+										<input type="submit" data-bind="value:translation().toolbar.loginButton" value="/login"/>
+									</form>
+								</ul>
+							</li>
+							<!-- /ko -->
+							<!-- ko if: loggedIn -->
+							<li class="last">
+								<a href="#" class="highlight" data-bind="text: user().username(), click:selectedPanel.bind($data, 'profile')">/profile</a>
+								<a href="/awareness/html/dspconsole/dashboard.html" target="_blank" class="highlight" data-bind="visible: user().role() == 'admin', text:translation().toolbar.adminlink">/admin</a>
+								<a href="#" class="highlight" data-bind="text: translation().toolbar.logout, click:logout">/logout</a>
+							</li>
+							<!-- /ko -->
+						</ul>
+					</div>
+					<div class="toolbar shadowed menu">
+						<ul class="toolbargroup">
+							<li>
+								<span data-bind="text:translation().toolbar.searchStories"></span> <input class="searchinput" data-bind="value:storyList.term" type="text"><button data-bind="click: storyList.searchStories, text:translation().toolbar.searchButton">/go</button> <button data-bind="click: storyList.clearSearch, text:translation().toolbar.clearButton">/clear</button>
+							</li>
+						</ul>
+						<!-- <ul class="toolbargroup">
+							<li><span data-bind="text:translation().toolbar.sortBy"></span></li>
+							<li><a href="#" data-bind="click:storyList.sortByProperty.bind($data, 'date'), css: {active: storyList.sortedBy() == 'date'}, text:translation().toolbar.sortNewest">/newest</a></li>
+							<li><a href="#" data-bind="click:storyList.sortByProperty.bind($data, 'title'), css: {active: storyList.sortedBy() == 'title'}, text:translation().toolbar.sortRead">/mostread</a></li>
+							<li><a href="#" data-bind="click:storyList.sortByProperty.bind($data, 'likes'), css: {active: storyList.sortedBy() == 'likes'}, text:translation().toolbar.sortLiked">/mostliked</a></li>
+						</ul> -->
+					</div>
+				</div>
+				<div data-bind="visible: loggedIn, if: loggedIn" class="clear">
+					<div class="toolbar shadowed menu toolbar_short toolbar_highlight">
+						<ul class="toolbargroup">
+							<li>
+								<div style="position:relative;z-index:6">
+									<span style="color:#fff;" data-bind="text:translation().toolbar.searchFiles"></span> <select style="width:100px" data-bind="options: objectSearcher.sourceList, optionsText: 'title', optionsValue: 'key', value: objectSearcher.source"></select> <input type="text" class="searchinput" data-bind="value: objectSearcher.term"><button data-bind="click: objectSearcher.searchFiles,text:translation().toolbar.searchButton">/go</button>
+								</div>
+								<ul id="searchpanel" style="z-index:1004" class="panel shadowed" data-bind="visible: objectSearcher.showSearchPanel">
+									<li>
+										<a href="#" class="close" style="margin-right:7px" data-bind="click: objectSearcher.showSearchPanel.bind($data, false)"></a>
+
+										<div class="searchresults clear">
+											<img src="images/loader.gif" data-bind="visible: !objectSearcher.searchCompleted()" style="margin-top:20%;margin-left:45%">
+											<div data-bind="foreach: objectSearcher.objectList">
+											<div class="searchresult">
+												<!-- ko if:$data instanceof StoryObject -->
+												<div class="gridcube storyobject" style="position:relative;margin:0" data-bind="click:showPreview, drag: {value: $data, dragOptions: {snap: '.objectdropper'}}, style: {backgroundImage:'url('+image()+')'}, css: objectType"></div>
+												<span data-bind="text:title"></span>
+												<!-- /ko -->
+												<!-- ko if:$data instanceof ForeignObject -->
+												<div class="gridcube object" style="position:relative;margin:0" data-bind="click:showPreview, drag: {value: $data, dragOptions: {snap: '.objectdropper'}}"><img data-bind="attr: {src: url}" style="width:auto;max-height:100%"></div>
+												<span data-bind="text:title"></span>
+												<!-- /ko -->
+											</div>
+											</div>
+										</div>
+										<div class="panelfooter">
+											<a class="navigation" href="#" style="float:left" data-bind="click:objectSearcher.changePage.bind($data, -1), visible:objectSearcher.hasPrevious()"><img src="images/arrow_left.png" valign="middle"></a>
+											<div class="panelfilter" data-bind="visible:objectSearcher.source() == 'europeana'">
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, ''), css: {active: objectSearcher.filter() == ''}, text:translation().searchpanel.filter.all">/all</a>
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, 'image'), css: {active: objectSearcher.filter() == 'image'}, text:translation().searchpanel.filter.images">/images</a>
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, 'video'), css: {active: objectSearcher.filter() == 'video'}, text:translation().searchpanel.filter.video">/video</a>
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, 'sound'), css: {active: objectSearcher.filter() == 'sound'}, text:translation().searchpanel.filter.sound">/sound</a>
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, 'text'), css: {active: objectSearcher.filter() == 'text'}, text:translation().searchpanel.filter.text">/3d</a>
+												<a href="#" data-bind="click: objectSearcher.filter.bind($data, '3d'), css: {active: objectSearcher.filter() == '3d'}, text:translation().searchpanel.filter.threedee">/3d</a>											
+											</div>
+											<a class="navigation" href="#" style="float:right" data-bind="click:objectSearcher.changePage.bind($data, 1), visible:objectSearcher.hasNext()"><img src="images/arrow_right.png" valign="middle"></a>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="toolbar_short" style="margin-right:7px">
+						<div class="toolbar shadowed menu toolbar_highlight" style="float:left;width:200px" data-bind="drop: {value: user().addObject, dropOptions: {accept:'.object, .storyobject'}}">
+							<ul class="toolbargroup">
+								<li>
+									<a href="" style="position:relative;z-index:2;font-weight:bold;background:url('images/mylibrary.png') no-repeat 100% 50%;padding-right:26px;display:inline-block;" href="" data-bind="click: user().showUserFilePanel.bind($data, true), text:translation().toolbar.myFiles">/mylibrary</a>
+									<ul id="userfilepanel" style="z-index:1003" class="panel shadowed" data-bind="visible: user().showUserFilePanel">
+										<li>
+											<a href="#" class="close" style="margin-right:7px" data-bind="click: user().showUserFilePanel.bind($data, false)"></a>
+											
+											<div class="searchresults clear" data-bind="drop: {value: user().addObject, dropOptions: {accept:'.object, .storyobject'}}, visible: user().fileFilter() == 'files'">
+												<img src="images/loader.gif" data-bind="visible: !user().didLoadObjects()" style="margin-top:20%;margin-left:45%">
+												<!-- ko if: user().didLoadObjects() -->
+												<div data-bind="foreach: user().objectsForPage">
+													<div class="searchresult">
+														<div class="gridcube userobject" style="position:relative;margin:0" data-bind="drag: {value: $data, dragOptions:{snap:'.objectdropper'}}, click:showPreview, style: {backgroundImage:'url('+image()+')'}, css: objectType"></div>
+														<span data-bind="text:title"></span>
+													</div>
+												</div>
+
+												<div class="searchresult" data-bind="drop: {value: user().removeObject, dropOptions:{accept:'.userobject'}}" style="position:absolute;right:7px;bottom:30px">
+													<img src="images/trash.png">
+													<span data-bind="text:translation().userfilepanel.deleteObject" style="width:80px;text-align:center;white-space:normal">/deleteobject</span>
+												</div>
+												<!-- /ko -->
+											</div>
+
+											<div class="searchresults clear" data-bind="visible: user().fileFilter() == 'stories'">
+												<img src="images/loader.gif" data-bind="visible: !user().didLoadStories()" style="margin-top:20%;margin-left:45%">
+												<!-- ko if: user().didLoadStories() -->
+												<div data-bind="foreach: user().storiesForPage">
+													<div class="searchresult">
+														<div class="gridcube userstory" data-bind="drag: {value: $data}, click:$root.storyList.selectedStory" style="position:relative;margin:0;background-image:url('images/cubes/cube_play.png')" ></div>
+														<span data-bind="text:title"></span>
+													</div>
+												</div>
+
+												<div class="searchresult" data-bind="drop: {value: user().removeStory, dropOptions:{accept:'.userstory'}}" style="position:absolute;right:7px;bottom:30px">
+													<img src="images/trash.png">
+													<span data-bind="text:translation().userfilepanel.deleteStory" style="width:80px;text-align:center">/deletestory</span>
+												</div>
+												<!-- /ko -->
+											</div>
+
+											<div class="panelfooter">
+												<a class="navigation" data-bind="click:user().changePage.bind($data, -1), visible:user().hasPrevious()" href="#" style="float:left"><img src="images/arrow_left.png" valign="middle"></a>
+												<div class="panelfilter">
+													<a href="#" data-bind="click: user().fileFilter.bind($data, 'files'), css: {active: user().fileFilter() == 'files'}, text:translation().userfilepanel.filter.files">/files</a>
+													<a href="#" data-bind="click: user().fileFilter.bind($data, 'stories'), css: {active: user().fileFilter() == 'stories'}, text:translation().userfilepanel.filter.stories">/stories</a>
+												</div>
+												<a class="navigation" data-bind="click:user().changePage.bind($data, 1), visible:user().hasNext()" href="#" style="float:right"><img src="images/arrow_right.png" valign="middle"></a>
+											</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<div class="toolbar shadowed menu toolbar_highlight" style="float:left;width:118px;margin-right:0px">
+							<ul class="toolbargroup">
+								<li>
+									<a href="" style="position:relative;z-index:2;font-weight:bold" data-bind="click: user().showUserUploadPanel.bind($data, true), text:translation().toolbar.addFile">/addfile</a>
+									<ul id="useruploadpanel" style="z-index:1004;left:-207px" class="panel shadowed" data-bind="visible: user().showUserUploadPanel">
+										<li>
+											<a href="#" class="close" style="margin-right:7px" data-bind="click: user().showUserUploadPanel.bind($data, false)"></a>
+											<div class="storyStep clear" style="height:351px">
+												<form accept-charset="UTF-8"  enctype="multipart/form-data" id="user_upload" method="POST" >
+													<input id="upload_title" name="upload_title" size="50" type="text" data-bind="attr:{placeholder:translation().userfilepanel.objectTitle}" placeholder="/Write your title here..." />
+											        <textarea name="upload_description" id="upload_description" style="height:100px;" data-bind="attr:{placeholder:translation().userfilepanel.objectDescription}" placeholder="/Write your description here..."></textarea>
+
+													<div id="uploadImage"></div>
+													<input type="hidden" id="uploadImage_upfile" name="uploadImage_upfile">
+													<input type="hidden" id="uploadImage_httpup" name="uploadImage_httpup">
+
+												    <a href="#" class="square_link shadowed" style="float:right;background:#02dde6;color:#000;" data-bind="text:translation().userfilepanel.saveUpload, click:user().uploadFile">/saveUpload</a>
+												</form>
+											</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="toolbar_last" class="toolbar shadowed menu toolbar_short toolbar_highlight">
+						<ul class="toolbargroup">
+							<li>
+								<a style="position:relative;z-index:4;font-weight:bold;font-size:1.2em;background:url('images/plus.png') no-repeat 100% 50%;padding-right:26px;display:inline-block;" href="" data-bind="click: storyBuilder.editStory.bind($data, null), text:translation().toolbar.createStory">/createstory</a>
+								<ul id="storypanel" style="z-index:1002" class="shadowed panel" data-bind="visible: storyBuilder.showStoryPanel">
+									<li>
+										<a href="#" class="close" style="margin-right:7px" data-bind="click: storyBuilder.showStoryPanel.bind($data, false)"></a>
+										
+										<div class="storyStep" data-bind="visible:storyBuilder.storyProgress()==1">
+											<input type="text" data-bind="value:storyBuilder.newStory().title, attr:{placeholder:translation().story.storyTitle}" placeholder="/Write your title here...">
+											<textarea data-bind="value:storyBuilder.newStory().descriptionFilter, attr:{placeholder:translation().story.storyDescription}" placeholder="/Write your main text here..."></textarea>
+											<input type="text" data-bind="value:storyBuilder.newStory().tagsAsString, attr:{placeholder:translation().story.storyTags}" placeholder="/Write your tags here separated by commas...">
+											<div>
+											<!-- ko if:themes -->
+											<span data-bind="text:translation().toolbar.theme">/theme</span>
+											<select style="width:80px;margin-right:7px" data-bind="options: themes, optionsText: 'title', optionsValue: 'id', value: storyBuilder.newStory().theme"></select>
+											<!-- /ko -->
+											<!-- ko if:translation().languages -->
+											<span data-bind="text:translation().toolbar.language">/language</span> 
+											<select style="width:80px" data-bind="options: translation().languages, optionsText: 'name', optionsValue: 'file', value: storyBuilder.newStory().language"></select>
+											<!-- /ko -->
+											</div>
+										</div>
+										<div class="storyStep" data-bind="visible:storyBuilder.storyProgress()==2">
+											<div id="storyBuilderGrid" style="height:204px; position:relative; " data-bind="with:storyBuilder.newStory()">
+												<div class="gridrow" style="top:96px;" data-bind="foreach: objects.slice(8,12)">
+													<!-- ko if:$data -->
+													<div class="gridcube" data-bind="click:showScriptPreview, drag: {value: $index()+8}, style:{left:10+$index()*55+'px',backgroundImage:'url('+image()+')'}, attr:{id:'objectId_'+id}"></div>
+													<!-- /ko -->
+													<!-- ko ifnot:$data -->
+													<div class="gridcube gridempty objectdropper" data-bind="text:$index()+9, style:{left:10+$index()*55+'px'}, drop: {value: $root.storyBuilder.insertStoryObject, dropOptions: {accept:'.storyobject, .userobject', tolerance: 'fit'}, objectIndex:$index()+8}"></div>
+													<!-- /ko -->
+												</div>
+												<div class="gridrow" style="top:48px">
+													<!-- ko foreach:objects.slice(4,5) -->
+														<!-- ko if:$data -->
+													<div class="gridcube" data-bind="click:showScriptPreview, drag:{value: $index()+4}, style: {left:38+$index()*55+'px',backgroundImage:'url('+image()+')'}, attr:{id:'objectId_'+id}"></div>
+														<!-- /ko -->
+														<!-- ko ifnot:$data -->
+														<div class="gridcube gridempty objectdropper" data-bind="text:$index()+5, style:{left:38+$index()*55+'px'}, drop: {value: $root.storyBuilder.insertStoryObject, dropOptions: {accept:'.storyobject, .userobject', tolerance: 'fit'}, objectIndex:$index()+4}"></div>
+														<!-- /ko -->
+													<!-- /ko -->
+													<div class="gridcube gridplay_on" style="left:93px"></div>
+													<!-- ko foreach:objects.slice(5,8) -->
+														<!-- ko if:$data -->
+													<div class="gridcube" data-bind="click:showScriptPreview, drag: {value: $index()+5}, style: {left:148+$index()*55+'px',backgroundImage:'url('+image()+')'}, attr:{id:'objectId_'+id}"></div>
+														<!-- /ko -->
+														<!-- ko ifnot:$data -->
+														<div class="gridcube gridempty objectdropper" data-bind="text:$index()+6, style:{left:148+$index()*55+'px'}, drop: {value: $root.storyBuilder.insertStoryObject, dropOptions: {accept:'.storyobject, .userobject', tolerance: 'fit'}, objectIndex:$index()+5}"></div>
+														<!-- /ko -->
+													<!-- /ko -->
+												</div>
+												<div class="gridrow" style="top:0px" data-bind="foreach: objects.slice(0,4)">
+													<!-- ko if:$data -->
+													<div class="gridcube" data-bind="click:showScriptPreview, drag: {value: $index()}, style: {left:(65+$index()*55)+'px',backgroundImage:'url('+image()+')'}, attr:{id:'objectId_'+id}"></div>
+													<!-- /ko -->
+													<!-- ko ifnot:$data -->
+													<div class="gridcube gridempty objectdropper" data-bind="text:$index()+1, style:{left:65+$index()*55+'px'}, drop: {value: $root.storyBuilder.insertStoryObject, dropOptions: {accept:'.storyobject, .userobject', tolerance: 'fit'}, objectIndex:$index()}"></div>
+													<!-- /ko -->
+												</div>
+											</div>
+
+											<div class="clear" style="width:100%" data-bind="with:storyBuilder.newStory">
+												<div data-bind="drop: {value:$root.storyBuilder.removeStoryObject, dropOptions: {accept:'.gridcube'}}" style="float:left;width:80px;text-align:center;line-height:14px">
+													<img src="images/trash.png">
+													<span data-bind="text:$root.translation().userfilepanel.removeFromStory" style="display:inline-block;white-space:normal">/deleteobject</span>
+												</div>
+												<a href="#" class="square_link shadowed publish_story" style="float:right;background:#02dde6;color:#000;" data-bind="visible:isPublishable(), text:$root.translation().storypanel.publish, click:publish">/publish</a>
+												<!-- ko if:!isPublishable() -->
+												<p style="float:right;width:120px;line-height:1.2em" data-bind="text:$root.translation().storypanel.unPublishable"></p>
+												<!-- /ko -->
+											</div>
+										</div>
+
+										<div class="panelfooter">
+											<a class="navigation" href="#" data-bind="visible:storyBuilder.storyProgress() == 2, click:storyBuilder.progressStory.bind($data, -1)" style="float:left"><img src="images/arrow_left.png" valign="middle"></a>
+											<div class="panelfilter">
+												<span data-bind="text:translation().storypanel.step">/step</span> <span data-bind="text:storyBuilder.storyProgress()"></span>/2
+											</div>
+											<a class="navigation" href="#" data-bind="visible:storyBuilder.storyProgress() == 1, click:storyBuilder.progressStory.bind($data, 1)" style="float:right"><img src="images/arrow_right.png" valign="middle"></a>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div id="toolbar_empty" class="toolbar shadowed menu toolbar_short"></div>
+				</div>
+			</div>
+			</div>
+			<!-- end toolbars -->
+
+			<div id="browser">
+				<!-- story object preview -->
+				<div id="object_preview" data-bind="visible:storyList.previewObject, if:storyList.previewObject">
+					<a href="#" class="close close_white" style="margin:0px" data-bind="click: storyList.previewObject.bind($data, null)"></a>
+					<p class="storytitle" data-bind="text:storyList.previewObject().title()">/title</p>
+
+					<!-- ko if:loggedIn() && !storyList.previewObject().isEditing() -->
+						<!-- ko if:!user().hasObject(storyList.previewObject()) -->
+						<a href="#" style="background:url('images/add.png') no-repeat 0 50%;padding-left:32px;display:inline-block;line-height:25px;color:#00dfe7;margin:7px 14px 7px 0" data-bind="click: user().addObject.bind($data, storyList.previewObject()), text:translation().userfilepanel.addToLibrary">/addtolibrary</a>
+						<!-- /ko -->
+						<!-- ko if:user().hasObject(storyList.previewObject()) && storyBuilder.showStoryPanel() && storyBuilder.storyProgress() == 2 -->
+						<a href="#" style="background:url('images/add.png') no-repeat 0 50%;padding-left:32px;display:inline-block;line-height:25px;color:#00dfe7;margin:7px 14px 7px 0" data-bind="click: storyBuilder.autoInsertStoryObject.bind($data, storyList.previewObject()), text:translation().userfilepanel.addToStory, visible:!storyBuilder.newStory().hasObject(storyList.previewObject())">/addtostory</a>
+						<!-- /ko -->
+						<!-- ko if:user().hasObject(storyList.previewObject()) -->
+						<a href="#" style="background:url('images/remove.png') no-repeat 0 50%;padding-left:32px;display:inline-block;line-height:25px;color:#f54617;margin:7px 14px 7px 0" data-bind="click: user().removeObject.bind($data, storyList.previewObject()), text:translation().userfilepanel.deleteObject">/deleteObject</a>
+						<!-- /ko -->
+						<!-- ko if:user().role() != 'contributor' -->
+						<br>
+						<a href="#" style="background:url('images/remove.png') no-repeat 0 50%;padding-left:32px;display:inline-block;line-height:25px;color:#f54617;margin:7px 14px 7px 0" data-bind="click: user().removeObjectEverywhere.bind($data, storyList.previewObject()), text:translation().userfilepanel.deleteObjectEverywhere">/deleteObjectEverywhere</a>
+						<!-- /ko -->
+					<!-- /ko -->
+
+					<!-- ko if:storyList.previewObject().isEditing() -->
+					<a href="#" style="background:url('images/remove.png') no-repeat 0 50%;padding-left:32px;display:inline-block;line-height:25px;color:#f54617;margin:7px 0" data-bind="click: storyBuilder.removeStoryObjectById.bind($data, storyList.previewObject().id), text:translation().userfilepanel.removeFromStory">/removeFromStory</a>
+					<!-- /ko -->
+
+					<div id="object_preview_player" data-bind="html:storyList.previewObject().content()">/content</div>
+					
+					<!-- ko if:!storyList.previewObject().isEditing() && storyList.previewObject().story && storyList.previewObject().story.id -->
+					<a href="#" class="openplayer" data-bind="click: storyList.selectedStory.bind($data, storyList.previewObject().story), text:translation().story.openPlayer">/openstory</a>
+					<!-- /ko -->
+
+					<p data-bind="text:storyList.previewObject().description, visible:!storyList.previewObject().isEditing()">/description</p>
+					<p data-bind="text:storyList.previewObject().scriptPart, visible:!storyList.previewObject().isEditing()">/script</p>
+					<!-- ko if:!storyList.previewObject().isEditing() && (storyList.previewObject().author()) -->
+					<p data-bind="text:translation().story.byAuthor+' '+storyList.previewObject().author()">/creator</p>
+					<!-- /ko -->
+					<textarea style="width:294px;height:50px" data-bind="value:storyList.previewObject().scriptFilter, visible:storyList.previewObject().isEditing()"></textarea>
+					<a href="#" class="button" data-bind="click: storyList.previewObject.bind($data, null), visible:storyList.previewObject().isEditing()">Save</a>
+					<!-- ko if:storyList.previewObject().dataProvider -->
+					<p data-bind="text:storyList.previewObject().dataProvider" class="source">/dataProvider</p>
+					<!-- /ko -->
+					<!-- ko if:storyList.previewObject().provider -->
+					<p data-bind="text:storyList.previewObject().provider" class="source">/provider</p>
+					<!-- /ko -->
+					<!-- ko if:storyList.previewObject().licenseArray -->
+					<p data-bind="foreach:storyList.previewObject().licenseArray"><a data-bind="attr:{href:$data}, text:$data"></a> </p>
+					<!-- /ko -->
+					<!-- ko if:storyList.previewObject().source && storyList.previewObject().source != 'localhost' -->
+					<a data-bind="visible:!storyList.previewObject().isEditing(), attr:{href: storyList.previewObject().source}, text:translation().story.viewobjectsource" target="_blank" class="source">/viewitem</a>
+					<!-- /ko -->
+				</div>
+				<!-- end story object preview -->
+
+				<!-- story player -->
+				<div id="player" class="shadowed" data-bind="visible:storyList.selectedStory,if:storyList.selectedStory">
+					<div class="titlebar black">
+						<a href="#" class="close close_white" style="margin-top:17px;" data-bind="click: storyList.selectedStory.bind($data, null)"></a>
+						<div class="playerinteraction">
+							<!-- ko if:storyList.selectedStory().canEdit() -->
+							<a href="#" data-bind="click:storyBuilder.editStory.bind($data, storyList.selectedStory()), text:translation().story.edit">/edit</a>
+							<!-- /ko -->
+							<!-- ko if:storyList.selectedStory().isPublished() -->
+							<div style="display:inline-block">
+								<a href="javascript:false;" class="share" data-bind="text:translation().interactionpanel.share" onclick="$('.sharepanel').toggle()">/share</a>
+								<div class="sharepanel">
+									<a href="#" data-bind="click:storyList.shareStory.bind($data, 'facebook')">Facebook</a>
+									<a href="#" data-bind="click:storyList.shareStory.bind($data, 'twitter')">Tweet</a>
+								</div>
+							</div>
+							<a href="#" data-bind="click: storyList.selectedStory().interactionPanel.bind($data, 'comment'), css: {active: storyList.selectedStory().interactionPanel() == 'comment'}"><img src="images/comment_small.png" valign="middle"> <span data-bind="text:storyList.selectedStory().comments().length+' '+translation().interactionpanel.comment">/comment</span></a>
+							<!-- /ko -->
+							<!-- <a href="#" data-bind="click: storyList.selectedStory().interactionPanel.bind($data, 'flag'), css: {active: storyList.selectedStory().interactionPanel() == 'flag'}, text:translation().interactionpanel.flag">/flag</a> -->
+						</div>
+						<p class="storytitle" data-bind="text:storyList.selectedStory().title()">/title</p>
+						<p class="storyauthor" data-bind="text:translation().story.byAuthor+' '+storyList.selectedStory().author()">author</p>
+					</div>
+					<div class="playercontent">
+						<div class="clear">
+							<div class="playercolumn shadowed_light grey" style="margin-right: 5px;">
+								<div style="min-height:180px;position: relative;" data-bind="with:storyList.selectedStory()">
+									<div class="gridrow" style="top:106px;" data-bind="foreach: objects.slice(8,12)">
+										<!-- ko if:$data -->
+										<div class="gridcube" data-bind="click:$parent.selectedObject, style: {left:10+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+										<!-- /ko -->
+										<!-- ko ifnot:$data -->
+										<div class="gridcube gridempty" data-bind="style: {left:10+$index()*55+'px'}"></div>
+										<!-- /ko -->
+									</div>
+									<div class="gridrow" style="top:58px">
+										<!-- ko foreach:objects.slice(4,5) -->
+											<!-- ko if:$data -->
+										<div class="gridcube" data-bind="click:$parent.selectedObject, style: {left:38+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+											<!-- /ko -->
+											<!-- ko ifnot:$data -->
+											<div class="gridcube gridempty" data-bind="style: {left:38+$index()*55+'px'}"></div>
+											<!-- /ko -->
+										<!-- /ko -->
+										<div class="gridcube gridplay_on" style="left:93px"></div>
+										<!-- ko foreach:objects.slice(5,8) -->
+											<!-- ko if:$data -->
+										<div class="gridcube" data-bind="click:$parent.selectedObject, style: {left:148+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+											<!-- /ko -->
+											<!-- ko ifnot:$data -->
+											<div class="gridcube gridempty" data-bind="style: {left:148+$index()*55+'px'}"></div>
+											<!-- /ko -->
+										<!-- /ko -->
+									</div>
+									<div class="gridrow" style="top:10px" data-bind="foreach: objects.slice(0,4)">
+										<!-- ko if:$data -->
+										<div class="gridcube" data-bind="click:$parent.selectedObject, style: {left:(65+$index()*55)+'px',backgroundImage:'url('+image()+')'}"></div>
+										<!-- /ko -->
+										<!-- ko ifnot:$data -->
+										<div class="gridcube gridempty" data-bind="style: {left:65+$index()*55+'px'}"></div>
+										<!-- /ko -->
+									</div>
+								</div>
+
+								<div style="font-family: Arial;font-size:1.2em" data-bind="if:loggedIn && storyList.selectedStory().canEdit()">
+									<a href="" style="position:relative;z-index:2;font-weight:bold;background: url('images/edit.png') no-repeat;padding-left: 40px;display:inline-block;line-height: 40px;" data-bind="click:storyBuilder.editStory.bind($data, storyList.selectedStory()), text:translation().story.edit">/edit</a>
+
+									<a href="" style="position:relative;z-index:2;font-weight:bold;background: url('images/delete.png') no-repeat;padding-left: 40px;display:inline-block;line-height: 40px;float:right" data-bind="click:user().removeStory.bind($data, storyList.selectedStory()), text:translation().userfilepanel.deleteStory">/delete</a>
+								</div>
+								<div class="mainstory">
+									<h1>Main story</h1>
+									<p data-bind="html:storyList.selectedStory().description().replace(/\n/g,'<br>')"></p>
+								</div>
+							</div>
+							<div class="playerInteractionPanel shadowed_light" data-bind="visible: storyList.selectedStory().interactionPanel() !== null" style="overflow-y:auto">
+								<a href="#" class="close" style="margin-top:7px;" data-bind="click: storyList.selectedStory().interactionPanel.bind($data, null)"></a>
+								
+								<!-- ko if:loggedIn -->
+<!-- 								<div class="subPanel" data-bind="visible: storyList.selectedStory().interactionPanel() == 'flag'">
+									<p data-bind="text:translation().interactionpanel.flagheader"></p>
+									<form data-bind="submit: storyList.selectedStory().flag" enctype="multipart/form-data" method="POST">
+										<textarea class="flagmessage" id="flagmessage"></textarea>
+										<input type="submit" class="floatright" data-bind="value:translation().sendButton" value="/send"/>
+									</form>
+								</div>
+ -->
+ 								<!-- /ko -->
+								<div class="subPanel" data-bind="visible: storyList.selectedStory().interactionPanel() == 'comment'">
+									<!-- ko ifnot:loggedIn -->
+									<p style="margin-bottom:21px" data-bind="text: translation().interactionpanel.notloggedin"></p>
+									<!-- /ko -->
+									<!-- ko if:loggedIn -->
+									<p data-bind="text:translation().interactionpanel.commentheader"></p>
+									<form class="clear" style="width:294px;margin-bottom:7px" data-bind="submit: storyList.selectedStory().addComment" enctype="multipart/form-data" method="POST">
+										<textarea class="flagmessage" id="commentmessage"></textarea>
+										<input type="submit" class="floatright" data-bind="value:translation().sendButton" value="/send"/>
+									</form>
+									<!-- /ko -->
+									<!-- ko foreach:storyList.selectedStory().comments() -->
+									<div>
+										<a href="#" class="close" style="background:url('images/remove.png');height:25px;width:25px" data-bind="visible:canRemove, click:$root.storyList.selectedStory().removeComment.bind($data)"></a>
+										<p style="font-size:0.8em" data-bind="text:dateFormated"></p>
+										<p style="font-weight:bold;margin-bottom:7px" data-bind="text:author()+':'"></p>
+										<p data-bind="text:text"></p>
+										<hr>
+									</div>
+									<!-- /ko -->
+								</div>
+								<!-- /ko -->
+							</div>
+							<!-- ko if:storyList.selectedStory().selectedObject() -->
+							<div class="playercolumn objectcolumn" data-bind="with:storyList.selectedStory().selectedObject()">
+								<span data-bind="html:content()"></span>
+								<p data-bind="text:title()">/title</p>
+								<!-- ko if:description -->
+								<p data-bind="text:description()">/description</p>
+								<!-- /ko -->
+								<p data-bind="html:scriptPart().replace(/\n/g,'<br>')"></p>
+								<br>
+								<!-- ko if:dataProvider -->
+								<p data-bind="text:dataProvider" class="source">/dataProvider</p>
+								<!-- /ko -->
+								<!-- ko if:provider -->
+								<p data-bind="text:provider" class="source">/provider</p>
+								<!-- /ko -->
+								<!-- ko if:source && source != 'localhost' -->
+								<a data-bind="attr:{href: source}, text:$root.translation().story.viewobjectsource" target="_blank" class="source">/viewitem</a>
+								<!-- /ko -->
+							</div>
+							<!-- ko if:storyList.selectedStory().findNextObject(1, false) && twoColumnPlayer() -->
+							<div class="playercolumn objectcolumn" data-bind="with:storyList.selectedStory().findNextObject(1, false)">
+								<span data-bind="html:content()"></span>
+								<p data-bind="text:title()">/title</p>
+								<!-- ko if:description -->
+								<p data-bind="text:description()">/description</p>
+								<!-- /ko -->
+								<p data-bind="html:scriptPart().replace(/\n/g,'<br>')"></p>
+								<br>
+								<!-- ko if:dataProvider -->
+								<p data-bind="text:dataProvider" class="source">/dataProvider</p>
+								<!-- /ko -->
+								<!-- ko if:provider -->
+								<p data-bind="text:provider" class="source">/provider</p>
+								<!-- /ko -->
+								<!-- ko if:source && source != 'localhost' -->
+								<a data-bind="attr:{href: source}, text:$root.translation().story.viewobjectsource" target="_blank" class="source">/viewitem</a>
+								<!-- /ko -->
+							</div>
+							<!-- /ko -->
+							<!-- /ko -->
+						</div>
+						<div class="playerfooter" data-bind="with:storyList.selectedStory()">
+							<div class="navbox">
+								<a class="navigation" href="#" data-bind="click:navigateSelectedObject.bind($data, -1), text:$root.translation().previous" style="float:left;background-image:url('images/arrow_left_player.png');padding-left:14px;background-position: 0 50%;">/previous</a>
+
+								<a class="navigation" href="#" data-bind="click:navigateSelectedObject.bind($data, 1), text:$root.translation().next" style="float:right;background-image:url('images/arrow_right_player.png');padding-right:14px;background-position: 100% 50%;">/next</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end story player -->
+
+				<!-- generic panel -->
+				<div id="genericpanel" class="shadowed" data-bind="if:genericPanel, visible:genericPanel" style="display:none;">
+					<a href="#" class="close" style="margin:7px 7px 0 0" data-bind="click: selectedPanel.bind($data, null)"></a>
+					<!-- ko if:genericPanel().columns -->
+						<div id="scroller">
+							<div class="clear" data-bind="foreach:genericPanel().columns, style: {width: genericPanel().columns.length * 326+'px'}">
+								<div class="column">
+									<h2 data-bind="text:title"></h2>
+									<span data-bind="html:body"></span>
+								</div>
+							</div>
+						</div>
+						<div class="panelfooter">
+							<a class="navigation" href="#" data-bind="click:genericPanelScroll.bind($data, -1)" style="float:left"><img src="images/arrow_left.png" valign="middle"></a>
+							<a class="navigation" href="#" data-bind="click:genericPanelScroll.bind($data, 1)" style="float:right"><img src="images/arrow_right.png" valign="middle"></a>
+						</div>
+					<!-- /ko -->
+					<!-- ko if:!genericPanel().columns -->
+						<div style="padding:7px;width:100%" class="clear">
+						<h2 data-bind="text:genericPanel().title"></h2>
+						<!-- ko if:selectedPanel() !== 'register' -->
+						<p data-bind="html:genericPanel().body"></p>
+						<!-- /ko -->
+						<!-- ko if:selectedPanel() == 'profile' -->
+						<form data-bind="submit: profile" enctype="multipart/form-data" method="POST" id="registerform">
+							<label for="profile_username" data-bind="text:translation().registerpanel.username">/username</label>
+							<input type="text" id="profile_username" name="username" data-bind="value:user().username">
+							<p class="help" data-bind="text:translation().registerpanel.usernamehelp">/usernamehelp</p>
+
+							<label for="profile_email" data-bind="text:translation().registerpanel.email">/email</label>
+							<input type="text" id="profile_email" name="email" data-bind="value:user().email">
+							<p class="help" data-bind="text:translation().registerpanel.emailhelp">/emailhelp</p>
+
+							<label for="profile_password" data-bind="text:translation().registerpanel.password">/password</label>
+							<input type="password" id="profile_password" name="password">
+							<p class="help" data-bind="text:translation().registerpanel.passwordhelp">/passwordhelp</p>
+
+							<label for="profile_passwordconfirmation" data-bind="text:translation().registerpanel.repeatpassword">/password</label>
+							<input type="password" id="profile_passwordconfirmation" name="password_confirmation">
+
+							<br><br>
+							<input style="width:auto" type="submit" data-bind="value:translation().toolbar.profileSaveButton" value="/saveProfile">
+						</form>
+						<!-- /ko -->
+						<!-- ko if:selectedPanel() == 'register' -->
+						<form data-bind="submit: register" enctype="multipart/form-data" method="POST" id="registerform">
+							<label for="register_username" data-bind="text:translation().registerpanel.username">/username</label>
+							<input type="text" id="register_username" name="username">
+							<p class="help" data-bind="text:translation().registerpanel.usernamehelp">/usernamehelp</p>
+
+							<label for="register_email" data-bind="text:translation().registerpanel.email">/email</label>
+							<input type="text" id="register_email" name="email">
+							<p class="help" data-bind="text:translation().registerpanel.emailhelp">/emailhelp</p>
+
+							<label for="register_password" data-bind="text:translation().registerpanel.password">/password</label>
+							<input type="password" id="register_password" name="password">
+							<p class="help" data-bind="text:translation().registerpanel.passwordhelp">/passwordhelp</p>
+
+							<label for="register_passwordconfirmation" data-bind="text:translation().registerpanel.repeatpassword">/password</label>
+							<input type="password" id="register_passwordconfirmation" name="password_confirmation">
+
+							<br><br>
+							<input style="width:auto" value="1" type="checkbox" id="register_acceptterms" name="register_acceptterms"><label style="display:inline" for="register_acceptterms" data-bind="html:translation().registerpanel.acceptterms">/acceptterms</label>
+
+							<br><br>
+							<input style="width:auto" type="submit" data-bind="value:translation().toolbar.registerButton" value="/register">
+						</form>
+						<!-- /ko -->
+						</div>
+					<!-- /ko -->
+				</div>
+				<!-- end generic panel -->
+
+				<img src="images/loader.gif" data-bind="visible: !storyList.searchCompleted()" style="margin-top: 10%;margin-left:45%;position: fixed;">
+				<div id="playerbg" data-bind="visible: storyList.selectedStory"></div>
+
+				<!-- stories -->
+				<div id="stories" data-bind="foreach: storyList.stories()">
+
+					<!-- storybox -->
+					<div class="storybox">
+						<div class="titlebar shadowed" data-bind="click:$root.storyList.selectedStory">
+							<p class="storycomments" data-bind="text: comments().length">/comments</p>
+							<p class="storytitle" style="max-width:280px;" data-bind="text: title"></p>
+							<p class="storyauthor" data-bind="text:$root.translation().story.byAuthor+' '+author()"></p>
+						</div>
+						<div class="story">
+							<!-- ko if:coverImage() --><img data-bind="attr: {src:coverImage().url}" width="100%"><!-- /ko -->
+
+							<div class="gridrow" style="top:106px;">
+								<!-- ko foreach:objects.slice(8,12) -->
+								<!-- ko if:$data -->
+								<div class="gridcube storyobject" data-bind="drag: {value: $data, dragOptions: {snap: '.objectdropper'}}, click:showPreview, style: {left:20+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+								<!-- /ko -->
+								<!-- /ko -->
+							</div>
+							<div class="gridrow" style="top:58px">
+								<!-- ko foreach:objects.slice(4,5) -->
+								<!-- ko if:$data -->
+							<div class="gridcube storyobject" data-bind="drag: {value: $data, dragOptions: {snap: '.objectdropper'}}, click:showPreview, style: {left:48+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+								<!-- /ko -->
+								<!-- /ko -->
+								<div class="gridcube gridplay" style="left:103px" data-bind="click:$root.storyList.selectedStory"></div>
+								<!-- ko foreach:objects.slice(5,8) -->
+								<!-- ko if:$data -->
+							<div class="gridcube storyobject" data-bind="drag: {value: $data, dragOptions: {snap: '.objectdropper'}}, click:showPreview, style: {left:158+$index()*55+'px',backgroundImage:'url('+image()+')'}"></div>
+								<!-- /ko -->
+								<!-- /ko -->
+							</div>
+							<div class="gridrow" style="top:10px" data-bind="foreach: objects.slice(0,4)">
+								<!-- ko if:$data -->
+								<div class="gridcube storyobject" data-bind="drag: {value: $data, dragOptions: {snap: '.objectdropper'}}, click:showPreview, style: {left:(75+$index()*55)+'px',backgroundImage:'url('+image()+')'}"></div>
+								<!-- /ko -->
+							</div>
+						</div>
+					</div>
+					<!-- end storybox -->
+				</div>
+				<!-- end stories -->
+			</div>
+		</div>
+		<!-- end content -->
+	</div>
+	<!-- end container -->
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--[if IE]>
+	<script type="text/javascript">$.ajaxSetup({ cache: false });</script>
+	<![endif]-->
+	<script src="javascripts/path.min.js"></script>
+	<script src="javascripts/knockout-2.2.1.js"></script>
+	<script src="javascripts/jquery.masonry.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script src="javascripts/jquery.ui.touch-punch.min.js"></script>
+	<script src="javascripts/fileuploader.js"></script>
+	<script src="javascripts/jquery.imagesloaded.min.js"></script>
+	<script src="javascripts/jquery.cookie.js"></script>
+	<script src="javascripts/app.js" charset="utf-8"></script>
+</body>
+</html>

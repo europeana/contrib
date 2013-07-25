@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+ <script type="text/javascript" src="javascripts/json2.js"></script>
+    <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.json-2.2.js"></script>
+     <script type="text/javascript" src="javascripts/fileuploader.js"></script>
+   <script type="text/javascript" src="jscolor/jscolor.js"></script>	
+
+  <link rel="stylesheet" type="text/css" href="stylesheets/fileuploader.css"/>  
+</head>
+<body>
+<div>
+<form accept-charset="UTF-8"  enctype="multipart/form-data" id="user_signin" method="post" >
+<fieldset class="inputs"><legend><span>Theme upload</span></legend><ul style="list-style:none; ">
+
+        <li id="title_input"><label class=" label" for="theme_title">Title</label><input id="title" name="title" size="50" type="text" />
+        
+        <li id="description_input"><label class=" label" for="theme_description">Description</label>
+        <textarea name="description" id="description"></textarea>
+        </li>  
+       <li>  Upload the wallpaper:    
+        <div id="uploadWall">  
+		    <noscript>          
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        
+		    </noscript>         
+		    </div>
+		    <input type="hidden" id="uploadWall_upfile" name="uploadWall_upfile">
+		     <input type="hidden" id="uploadWall_httpup" name="uploadWall_httpup">
+		    
+		   
+		    <div class="qq-uploader">
+		    <ul class="qq-upload-list"><li class="qq-upload-success"></li></ul>
+		    
+		    
+		    </div>
+		 </li>
+	     
+		 <li>  Upload the banner:     
+		 <div id="uploadBanner">  
+		    <noscript>          
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        
+		    </noscript>         
+		    </div>   
+		    <input type="hidden" id="uploadBanner_upfile" name="uploadBanner_upfile">
+		     <input type="hidden" id="uploadBanner_httpup" name="uploadBanner_httpup">
+		    
+		   
+		    <div class="qq-uploader">
+		    <ul class="qq-upload-list"><li class="qq-upload-success"></li></ul>
+		    
+		    </div>
+		 
+		 </li>
+	
+	    <li>  Upload the mini banner:     
+		 <div id="uploadMiniBanner">  
+		    <noscript>          
+		        <p>Please enable JavaScript to use file uploader.</p>
+		        
+		    </noscript>         
+		    </div>   
+		    <input type="hidden" id="uploadMiniBanner_upfile" name="uploadMiniBanner_upfile">
+		     <input type="hidden" id="uploadMiniBanner_httpup" name="uploadMiniBanner_httpup">
+		    
+		   
+		    <div class="qq-uploader">
+		    <ul class="qq-upload-list"><li class="qq-upload-success"></li></ul>
+		    
+		    </div>
+		 
+		 </li>
+		 <li>Select background color: <input name="themecolor" id="themecolor" class="color"></li>
+		    <li class="select input optional"><label class=" label" for="default theme">Default theme</label><select id="default_theme" name="default_theme">
+		    
+<option value="true">Yes</option>
+<option value="false">no</option></select>
+
+</li>
+     </ul></fieldset>
+<fieldset class="buttons">
+<input class="create" id="theme_submit" name="commit" type="button" value="Save"/>
+<a href="./theme.html">Cancel</a></fieldset> 
+</form>
+
+
+</div> 
+<script type="text/javascript">
+function createUploader(){            
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('uploadWall'),
+        action: '../FileReader/save',
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        sizeLimit: 4194304, /*4 MB*/
+        debug: true
+    });  
+    var uploader2 = new qq.FileUploader({
+        element: document.getElementById('uploadBanner'),
+        action: '../FileReader/save',
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        debug: true
+    });   
+    var uploader3 = new qq.FileUploader({
+        element: document.getElementById('uploadMiniBanner'),
+        action: '../FileReader/save',
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        debug: true
+    });   
+}
+
+	
+(function($) {
+	createUploader();
+    $("#theme_submit").click(function (){
+    
+    	var bool_value = $('#default_theme').val() == "true" ? true : false;
+    	console.log(bool_value);
+    	   $.ajax({
+    		   contentType : "application/json",
+               type:'POST',
+               url:'../Themes/save',
+               data: $.toJSON({title:$('#title').val(),
+            	   description:$('#description').val(), 
+            	   wallpaper:$('#uploadWall_upfile').val(),
+            	   wallpaperName:$('#uploadWall_httpup').val(),
+            	   banner:$('#uploadBanner_upfile').val(),
+            	   bannerName:$('#uploadBanner_httpup').val(),
+            	   minibanner:$('#uploadMiniBanner_upfile').val(),
+            	   minibannerName:$('#uploadMiniBanner_httpup').val(),
+            	   background:$('#themecolor').val(),
+            	   defaultTheme:bool_value
+    				}),
+               dataType:'json',
+                success:function (d) {
+                	
+                   $("body").append("<a href='previewtheme.html?"+d.id+"' target='blank'>Preview uploaded theme</a>");
+                   
+               },
+               error : function(xhr) {
+                   alert('Status:'+xhr.status+', Error: ' + xhr.responseText); 
+            }
+           });	   
+    	   
+      
+  
+    })
+    	
+   
+    
+})(jQuery);
+
+</script>
+
+</body> 
+</html>
+
+
+    

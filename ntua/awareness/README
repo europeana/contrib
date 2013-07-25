@@ -1,0 +1,46 @@
+
+
+To run the code locally:
+
+1. Make sure you have latest play! installed and running
+
+2. Create a new application in play: play new appname
+
+3. Copy the directories app, lib, conf, public from svn to the directory of your new application
+
+4. Go to your new application directory and run the application : playdir/appname>play run
+
+5. You can use the URIs from conf/routes file to test the application for example: 
+http://localhost:9000/awareness/digitalStories/list
+
+6. Dummy html pages are included in the public directory and can be accessed like this:
+
+http://localhost:9000/awareness/html/{filename}.html
+
+so  http://localhost:9000/awareness/html/register.html will take you to dummy register
+
+
+7. Europeana Search: First implementation (no filtering) using Europeana Search API v2.
+
+http://localhost:9000/awareness/html/search.html 
+
+8. For authorization purposes a play plugin is used. To activate it you must change your
+Build.scala file in the project folder of your app to replace the value of 'appDependancies'
+and 'main' so they look like this:
+
+Solr dependencies must also be added:  
+
+       val appDependencies = Seq(
+           "be.objectify" %% "deadbolt-2" % "1.1.2",
+           "org.apache.solr" % "solr-solrj" % "4.0.0"
+        )
+
+        val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
+          resolvers += Resolver.url("Objectify Play Repository", url("http://schaloner.github.com/releases/"))(Resolver.ivyStylePatterns)
+          
+        )
+ 
+ 
+ 9. application.conf under conf directory contains the field "application.baseUrl" which should be
+ updated to the server url (current value->localhost:9000) 
+ 

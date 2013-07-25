@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<calculators>
+	<calculator>
+		<name>Generic European</name>
+		<language>English</language>
+		<location>Generic European(English).xml</location>
+	</calculator>
+	<calculator>
+		<name>United Kingdom</name>
+		<language>English</language>
+		<location>United Kingdom (English).xml</location>
+	</calculator>
+	<calculator>
+		<name>Netherlands</name>
+		<language>English</language>
+		<location>Netherlands (English).xml</location>
+	</calculator>
+	<calculator>
+		<name>Norway</name>
+		<language>English</language>
+		<location>Norway (English).xml</location>
+	</calculator>
+</calculators>

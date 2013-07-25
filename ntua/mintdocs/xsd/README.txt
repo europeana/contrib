@@ -1,0 +1,1 @@
+Mint AMPQ message exchange definitions

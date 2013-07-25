@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+  	<link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+  
+  
+</head>
+<body>
+<div>
+<div class="background" id="background">loading</div>
+<div class="bannercontainer"><div class="banner" id="banner"></div></div>
+<div class="container"><div class="content">
+<div id="title"></div>
+<div id="description"></div>
+
+</div></div>	
+
+</div>
+<script type="text/javascript">
+
+(function($) {
+	var prmstr = window.location.search.substr(1);
+    	
+       console.log(prmstr); 
+       	
+ 	  $.ajax({
+            contentType : "application/json",
+            dataType : 'json',
+            type : "GET",
+            url : "../Themes/"+prmstr,
+            success: function(data){
+ 				
+ 				loadImage("background","../images/"+data.wallpaper);
+ 				var bannerholder=$("#banner");
+ 				loadImage("banner","../images/"+data.banner);
+ 				$('#title').append("Title:"+data.title);
+ 				$('#description').append("Description:"+data.description);
+ 				
+                
+ 			},
+             error : function(xhr) {
+                    alert('Status:'+xhr.status+', Error: ' + xhr.responseText); 
+             }
+         });
+
+ 	  
+ 	function loadImage(holder,imagesrc){  
+ 		var img = new Image();	
+ 	 $(img).load(function () {
+       // set the image hidden by default    
+       $(this).hide();
+       
+       var hdiv="#"+holder;
+       $(hdiv)
+         // then insert our image
+         .text('')
+         .append(this);
+     
+       // fade our image in to create a nice effect
+       $(this).fadeIn();
+     })
+     
+     // if there was an error loading the image, react accordingly
+     .error(function () {
+       // notify the user that the image could not be loaded
+     })
+     
+     // *finally*, set the src attribute of the new image to our image
+     .attr('src', imagesrc);
+    
+ 	}
+    
+})(jQuery);
+
+</script>
+
+</body> 
+</html>
+
+
+    

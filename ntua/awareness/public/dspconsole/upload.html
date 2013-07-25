@@ -1,0 +1,83 @@
+<form id="themefields">
+<div><label class="id-form">Theme title <font color="red">*</font></label><input type="text" name="title" id="title" class="inp-form text ui-widget-content ui-corner-all" /></div>
+<div><label class="id-form">Theme description <font color="red">*</font></label><textarea class="form-textarea text ui-widget-content ui-corner-all" name="description"/></textarea></div>
+<div><label class="id-form">Select background color <font color="red">*</font> </label><input  name="themecolor" id="themecolor" class="inp-form text ui-widget-content ui-corner-all"></div>
+<input type="hidden" name="wallpaper"/>
+<input type="hidden" name="wallpaperName"/>
+<input type="hidden" name="banner"/>
+<input type="hidden" name="bannerName"/>
+<input type="hidden" name="minibanner"/>
+<input type="hidden" name="minibannerName"/>
+</form>
+<div class="clear"></div>
+<form id="fileupload" action="../../FileReader/upload" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="span16 fileupload-buttonbar">
+            <div class="progressbar fileupload-progressbar"><div style="width:0%;"></div></div>
+            <span class="btn success fileinput-button">
+                <span>Add theme wallpaper</span>
+                <input type="file" name="files[]">
+            </span>            
+            <button type="button" class="btn danger delete">Delete selected</button>
+            <input type="checkbox" class="toggle">
+        </div>
+    </div>
+    <br>
+    <div style="font-size:0.9em;color:red;margin-bottom:10px;"> Suggested dimensions for wallpaper file: H:850px, W:1200px. Only .png, .jpg, .jpeg and .gif files allowed </div>
+    <div class="row">
+        <div class="span16">
+            <table class="zebra-striped"><tbody class="files"></tbody></table>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <br>
+</form>
+<form id="fileupload2" action="../../FileReader/upload" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="span16 fileupload-buttonbar">
+            <div class="progressbar fileupload-progressbar"><div style="width:0%;"></div></div>
+            <span class="btn success fileinput-button">
+                <span>Add theme banner</span>
+                <input type="file" name="files[]">
+            </span>            
+            <button type="button" class="btn danger delete">Delete selected</button>
+            <input type="checkbox" class="toggle">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="span16">
+            <table class="zebra-striped"><tbody class="files"></tbody></table>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <br>
+</form>
+ <form id="fileupload3" action="../../FileReader/upload" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="span16 fileupload-buttonbar">
+            <div class="progressbar fileupload-progressbar"><div style="width:0%;"></div></div>
+            <span class="btn success fileinput-button">
+                <span>Add theme mini banner</span>
+                <input type="file" name="files[]">
+            </span>            
+            <button type="button" class="btn danger delete">Delete selected</button>
+            <input type="checkbox" class="toggle">
+        </div>
+    </div>
+    <br>
+    <div style="font-size:0.9em;color:red;margin-bottom:10px;"> Suggested dimensions for mini banner file: H:123px, W:671px. Only .png, .jpg, .jpeg and .gif files allowed</div>
+    <div class="row">
+        <div class="span16">
+            <table class="zebra-striped"><tbody class="files"></tbody></table>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <br>
+</form>
+<div class="clear"></div>
+<div>
+<input class="form-submit" id="theme_submit" type="button" value="Save"/>
+<input class="form-reset" id="theme_reset" type="button" value="Reset">
+</div>
+    

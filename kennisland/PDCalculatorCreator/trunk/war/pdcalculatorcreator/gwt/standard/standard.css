@@ -1,0 +1,135 @@
+/**
+ * The file contains styles for GWT widgets in the PDC theme.
+ *
+ * In order to maintain cross-browser compatibility, the following syntax is
+ * used to create IE6 specific style rules:
+ *    .gwt-Widget {
+ *      property: rule applies to all browsers
+ *      -property: rule applies only to IE6 (overrides previous rule)
+ *    }
+ *    * html .gwt-Widget {
+ *      property: rule applies to all versions of IE
+ *    }
+ */
+
+#content td {
+	height: 35px;
+}
+
+.gwt-Button {
+   font-size:13px;
+   font-family:Arial,sans-serif;
+   background-color:#ffffff;
+   color:#000000;
+   border-style:solid;
+   border-width: 1px;
+   border-color:#000000;
+   margin-right: 7px;
+   height: auto;
+   vertical-align: middle;
+}
+
+.gwt-Button:hover {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+.gwt-Label {
+	font-style: italic;
+	padding-bottom: 25px;
+	padding-right: 15px;
+}
+
+.gwt-ListBox {
+   font-size:13px;
+   height: 20px;
+   font-family:Arial,sans-serif;
+   background-color:#ffffff;
+   color:#000000;
+   border-style:solid;
+   border-width:1px;
+   border-color:#000000;
+   margin-right: 5px;
+}
+
+.gwt-Image {
+	margin-left: 3px;
+}
+
+.QuestionLbl {
+	margin-right: 3px;
+}
+
+	#overlay{
+		display:none;
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		z-index:5000;
+		background-color:#000;
+		-moz-opacity: 0.8;
+		opacity:.80;
+		filter: alpha(opacity=50);
+	}
+   .gwt-DialogBox { 		
+    	position: fixed !important;
+		left: 260px !important;
+		z-index:9999 !important;
+		width:640px !important;
+		height:440px !important;
+		margin-top: -220px !important;
+		background:#ffffff !important;
+		text-align:left !important;
+		top: 50% !important;
+		-moz-box-shadow:0 0 18px #DDDDDD !important;
+		overflow: hidden !important;
+		padding-top: 25px;
+		padding-left: 20px;
+		padding-bottom: 15px;
+		padding-right: 20px;
+	}
+    .gwt-DialogBox .Caption {
+    
+		color: #22abd4;
+		font-size: 20px;
+		padding-bottom: 18px;
+    
+    }
+    
+    .gwt-DialogBox .gwt-HTML {
+    	overflow: auto;
+    	height: 310px;
+    }
+    
+    .gwt-DialogBox .infobox_content {
+    	padding-bottom: 30px;
+    	overflow: hidden !important;
+    }
+    
+    .gwt-DialogBox .infobox_footer {
+    	padding-bottom: 8px;
+    }
+    
+    
+    .gwt-DialogBox .dialogContent {  }
+    .gwt-DialogBox .dialogTopLeft {  }
+    .gwt-DialogBox .dialogTopLeftInner {  }
+    .gwt-DialogBox .dialogTopCenter {  }
+    .gwt-DialogBox .dialogTopCenterInner {  }
+    .gwt-DialogBox .dialogTopRight {  }
+    .gwt-DialogBox .dialogTopRightInner {  }
+    .gwt-DialogBox .dialogMiddle { }
+    .gwt-DialogBox .dialogMiddleLeft { }
+    .gwt-DialogBox .dialogMiddleLeftInner {  }
+    .gwt-DialogBox .dialogMiddleCenter { }
+    .gwt-DialogBox .dialogMiddleCenterInner { }
+    .gwt-DialogBox .dialogMiddleRight {  }
+    .gwt-DialogBox .dialogMiddleRightInner { }
+    .gwt-DialogBox .dialogBottomLeft {  }
+    .gwt-DialogBox .dialogBottomLeftInner {  }
+    .gwt-DialogBox .dialogBottomCenter {  }
+    .gwt-DialogBox .dialogBottomCenterInner {  }
+    .gwt-DialogBox .dialogBottomRight {  }
+    .gwt-DialogBox .dialogBottomRightInner { }

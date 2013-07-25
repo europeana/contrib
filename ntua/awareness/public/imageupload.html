@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+ <script type="text/javascript" src="javascripts/json2.js"></script>
+    <script type="text/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.json-2.2.js"></script>
+     <script type="text/javascript" src="javascripts/fileuploader.js"></script>
+   <script type="text/javascript" src="jscolor/jscolor.js"></script>	
+
+  <link rel="stylesheet" type="text/css" href="stylesheets/fileuploader.css"/>  
+</head>
+<body>
+<div>
+<form accept-charset="UTF-8"  enctype="multipart/form-data" id="user_signin" method="post" >
+<fieldset class="inputs"><legend><span>Image upload</span></legend><ul style="list-style:none; ">
+
+        <li id="title_input"><label class=" label" for="image_title">Title</label><input id="title" name="title" size="50" type="text" />
+        
+        <li id="description_input"><label class=" label" for="image_description">Description</label>
+        <textarea name="description" id="description"></textarea>
+        </li>  
+       <li>  Upload the image:    
+        <div id="uploadImage">  
+  		    <noscript>          
+  		        <p>Please enable JavaScript to use file uploader.</p>
+  		        
+  		    </noscript>         
+  		    </div>
+		    <input type="hidden" id="uploadImage_upfile" name="uploadImage_upfile">
+		     <input type="hidden" id="uploadImage_httpup" name="uploadImage_httpup">
+		    
+		   
+		    <div class="qq-uploader">
+  		    <ul class="qq-upload-list"><li class="qq-upload-success"></li></ul>
+		    
+		    
+		    </div>
+		 </li>
+	          </ul></fieldset>
+<fieldset class="buttons">
+<input class="create" id="image_submit" name="commit" type="button" value="Save"/>
+<a href="./uploadimage.html">Cancel</a></fieldset> 
+</form>
+
+
+</div> 
+<script type="text/javascript">
+function createUploader(){            
+    var uploader = new qq.FileUploader({
+        element: document.getElementById('uploadImage'),
+        action: '../FileReader/save',
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        sizeLimit: 4194304, /*4 MB*/
+        debug: true
+    });  
+  
+}
+
+	
+(function($) {
+	createUploader();
+    $("#image_submit").click(function (){
+    
+    	   $.ajax({
+    		   contentType : "application/json",
+               type:'POST',
+               url:'../StoryImages/save',
+               data: $.toJSON({title:$('#title').val(),
+            	   description:$('#description').val(), 
+            	   original:$('#uploadImage_upfile').val(),
+            	   originalName:$('#uploadImage_httpup').val(),
+            	   }),
+               dataType:'json',
+                success:function (d) {
+                   $("body").append("<a href='previewimage.html?"+d.storyImage+"' target='blank'>Preview uploaded image</a>");
+                   
+               },
+               error : function(xhr) {
+                   alert('Status:'+xhr.status+', Error: ' + xhr.responseText); 
+            }
+           });	   
+    	   
+      
+  
+    })
+    	
+   
+    
+})(jQuery);
+
+</script>
+
+</body> 
+</html>
+
+
+    
