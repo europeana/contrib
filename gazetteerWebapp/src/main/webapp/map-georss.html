@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>DIGMAP GeoRSS Display</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <script src="http://www.openlayers.org/dev/lib/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map, layer;
+        OpenLayers.ProxyHost = "/proxy/?url=";
+        function init(){
+            map = new OpenLayers.Map('map', {maxResolution:'auto'});
+            layer = new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0", {layers: 'basic'} );
+            map.addLayer(layer);
+            map.setCenter(new OpenLayers.LonLat(0, 0), 0);
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+        }
+        function addUrl() {
+            var urlObj = OpenLayers.Util.getElement('url');
+            var value = urlObj.value;
+            var parts = value.split("/");
+                var newl = new OpenLayers.Layer.GeoRSS( parts[parts.length-1], value);
+                map.addLayer(newl);
+            urlObj.value = "";
+        }
+    </script>
+  </head>
+  <body onload="init()">
+
+	<body>
+	<body class="bodymain">
+	<center><img src="DIGMAP_logo.png" /></center>
+
+	<table border="0">
+	<tr>
+	<td width="33%">&nbsp;</td>
+	<td width="33%">
+	<table width="600" border="0">
+	<tr>
+	<td>
+
+	<table class="tablemain">
+	    <tr>
+	        <td class="tableheader">
+	            DIGMAP GeoRSS Display
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="infobody"><center>
+	Display a GeoRSS feed over a map with the aid of the OpenLayers library.
+	        </center></td>
+	    </tr>
+	    <tr>
+	        <td class="infobody"><center>
+				  <div id="tags"></div>
+				  <div style="width:550; height:300" id="map"></div>
+	        </center></td>
+	    </tr>
+	</table>
+	</td>
+	</tr>
+	</table>
+	</td>
+	<td width="33%">&nbsp;</td>
+	</tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    <tr>
+	        <td height="8"></td>
+	    </tr>
+	</table>
+	
+	<form onsubmit="return false;">
+	    <table>
+	        <tr>
+	            <td width="33%">&nbsp;</td>
+	            <td width="33%">
+	                <table width="600">
+	                    <tr>
+	                        <td>
+	                            <table class="tablemain">
+	                                <tr>
+	                                    <td class="tableheader" colspan="2">
+	                                        Parse GeoRSS
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="tablekey">
+	                                        GeoRSS URL</td><td class="infobody"><input type="text" size="51" id="url" value="out-georss.xml" />
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                                <tr>
+	                                    <td height="8"></td>
+	                                </tr>
+	                            </table>
+	                            <table class="tablemain">
+	                                <tr>
+	                                    <td class="tablebody">
+	                                        <center>
+	                                            <input type="submit" onclick="addUrl(); return false;" value="Load Feed" onsubmit="addUrl(); return false;"/>
+	                                            <input type="reset" name="reset" value="Reset"/>
+	                                        </center>
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                        </td>
+	                    </tr>
+	                </table>
+	            </td>
+	            <td width="33%">&nbsp;</td>
+	        </tr>
+	    </table>
+	</form>
+	
+	
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
+

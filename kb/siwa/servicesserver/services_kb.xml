@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" encoding="utf-8"?><sd:services xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:tel="http://krait.kb.nl/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sd="http://www.theeuropeanlibrary.org/servicedescription" xsi:schemaLocation="http://www.theeuropeanlibrary.org/servicedescription ServiceDescription1.0.xsd">
+
+<sd:service>
+<dc:title>Babelfish</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://babelfish.yahoo.com/translate_txt?ei=UTF-8&amp;doit=done&amp;fr=bf-home&amp;intl=1&amp;tt=urltext&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:serviceLabel>Vertaal met Babelfish</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+<sd:trigger>description</sd:trigger>
+</sd:triggers>
+<dc:format>html</dc:format>
+<sd:accessType>POST</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>replaceText</sd:typeOfUse>
+<sd:parameters>
+  <sd:parameter name="urltext" type="field" operation="URLencode">_triggerValue</sd:parameter>
+  <sd:parameter name="lp" type="lookup">
+    <sd:keys>
+      <sd:key>_srcLang639_1</sd:key>
+      <sd:key>_userLang639_1</sd:key>
+    </sd:keys>
+    <sd:entries>
+      <sd:entry><sd:val>en</sd:val><sd:val>fr</sd:val><sd:val>en_fr</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>de</sd:val><sd:val>en_de</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>el</sd:val><sd:val>en_de</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>it</sd:val><sd:val>en_it</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>pt</sd:val><sd:val>en_pt</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>ru</sd:val><sd:val>en_ru</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>es</sd:val><sd:val>en_es</sd:val></sd:entry>
+      <sd:entry><sd:val>nl</sd:val><sd:val>en</sd:val><sd:val>nl_en</sd:val></sd:entry>
+      <sd:entry><sd:val>nl</sd:val><sd:val>fr</sd:val><sd:val>nl_fr</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>en</sd:val><sd:val>fr_en</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>de</sd:val><sd:val>fr_de</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>el</sd:val><sd:val>fr_el</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>it</sd:val><sd:val>fr_it</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>pt</sd:val><sd:val>fr_pt</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>nl</sd:val><sd:val>fr_nl</sd:val></sd:entry>
+      <sd:entry><sd:val>fr</sd:val><sd:val>es</sd:val><sd:val>fr_es</sd:val></sd:entry>
+      <sd:entry><sd:val>de</sd:val><sd:val>en</sd:val><sd:val>de_en</sd:val></sd:entry>
+      <sd:entry><sd:val>en</sd:val><sd:val>nl</sd:val><sd:val>en_nl</sd:val></sd:entry>
+      <sd:entry><sd:val>el</sd:val><sd:val>en</sd:val><sd:val>el_en</sd:val></sd:entry>
+      <sd:entry><sd:val>el</sd:val><sd:val>fr</sd:val><sd:val>el_fr</sd:val></sd:entry>
+      <sd:entry><sd:val>it</sd:val><sd:val>en</sd:val><sd:val>it_en</sd:val></sd:entry>
+      <sd:entry><sd:val>it</sd:val><sd:val>fr</sd:val><sd:val>it_fr</sd:val></sd:entry>
+      <sd:entry><sd:val>pt</sd:val><sd:val>en</sd:val><sd:val>pt_en</sd:val></sd:entry>
+      <sd:entry><sd:val>pt</sd:val><sd:val>fr</sd:val><sd:val>pt_fr</sd:val></sd:entry>
+      <sd:entry><sd:val>ru</sd:val><sd:val>en</sd:val><sd:val>ru_en</sd:val></sd:entry>
+      <sd:entry><sd:val>es</sd:val><sd:val>en</sd:val><sd:val>es_en</sd:val></sd:entry>
+      <sd:entry><sd:val>es</sd:val><sd:val>fr</sd:val><sd:val>es_fr</sd:val></sd:entry>
+    </sd:entries>
+  </sd:parameter>
+</sd:parameters>
+<sd:logo>http://www.yahoo.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>Google search</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://google.com/search?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Google zoeken</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="hl" type="fixed">nl</sd:parameter>
+<sd:parameter name="site" type="fixed"></sd:parameter>
+<sd:parameter name="meta" type="fixed"></sd:parameter>
+<sd:parameter name="btnG" type="fixed">Zoeken</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>*</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+<sd:extraCondition>_noHits</sd:extraCondition>
+</sd:extraConditions>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>Google images</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://images.google.com/images?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Zoek in Google Images</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+<sd:trigger>subject</sd:trigger>
+<sd:trigger>subject:person</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="svnum" type="fixed">10</sd:parameter>
+<sd:parameter name="hl" type="fixed">en</sd:parameter>
+<sd:parameter name="btnG" type="fixed">Search</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>KB Author Search</dc:title>
+<dc:identifier>http://zoeko.kb.nl/nl/search/boek/@AUTHOR@/1</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Zoek auteur op KB.nl</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="@AUTHOR@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.kb.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>Authors</dc:title>
+<dc:identifier>http://www.librarything.com/search_author.php?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Zoek auteur op Librarything.com</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>author</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:logo>http://www.librarything.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>LinkedIn Search</dc:title>
+<dc:identifier>http://www.linkedin.com/commonSearch?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Zoek op LinkedIn...</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="keywords" type="field">_triggerValue</sd:parameter>
+<sd:parameter name="type" type="fixed">people</sd:parameter>
+<sd:parameter name="pplSearchOrigin" type="fixed">GLHD</sd:parameter>
+<sd:parameter name="pageKey" type="fixed">home</sd:parameter>
+<sd:parameter name="search" type="fixed">Search</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+</sd:triggers>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.linkedin.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>Google translate</dc:title>
+<dc:identifier>http://ajax.googleapis.com/ajax/services/language/translate?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Vertaal door Google (vervangen)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="v" type="fixed" operation="maxlength=255">1.0</sd:parameter>
+<sd:parameter name="langpair" type="parts">
+	<sd:parmPart type="field">_srcLang639_1</sd:parmPart>
+	<sd:parmPart type="fixed">%7c</sd:parmPart>
+	<sd:parmPart type="field">_userLang639_1</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:fieldSpec>responseData.translatedText</sd:fieldSpec>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:accessType>JSON</sd:accessType>
+<sd:typeOfUse>replaceField</sd:typeOfUse>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<dc:title>Google translate</dc:title>
+<dc:identifier>http://ajax.googleapis.com/ajax/services/language/translate?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Vertaal door Google (alert)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="v" type="fixed" operation="maxlength=255">1.0</sd:parameter>
+<sd:parameter name="langpair" type="parts">
+	<sd:parmPart type="field">_srcLang639_1</sd:parmPart>
+	<sd:parmPart type="fixed">%7c</sd:parmPart>
+	<sd:parmPart type="field">_userLang639_1</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:fieldSpec>responseData.translatedText</sd:fieldSpec>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:accessType>JSON</sd:accessType>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+</sd:services>

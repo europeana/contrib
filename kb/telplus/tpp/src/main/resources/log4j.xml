@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+   <appender name="TPPAppender" class="org.apache.log4j.DailyRollingFileAppender">
+      <param name="File" value="./tpp.log" />
+      <param name="Append" value="true" />
+      <param name="DatePattern" value="'.'yyyy-MM-dd" />
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%d [%-5p] - %m (%F:%L)%n" />
+      </layout>
+   </appender>
+
+ 
+
+	<logger name="org.theeuropeanlibrary.telplus.tpp">
+		<level value="debug"/>
+		<appender-ref ref="TPPAppender"/>
+	</logger>
+	
+</log4j:configuration>

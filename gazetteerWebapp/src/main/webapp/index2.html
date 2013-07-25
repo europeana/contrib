@@ -1,0 +1,684 @@
+<head>
+    <title>DIGMAP Gazetteer Service</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<body class="bodymain">
+
+<table class="tablemain">
+    <tr>
+        <td class="tableheader">
+            DIGMAP Gazetteer Service
+        </td>
+    </tr>
+    <tr>
+        <td class="infobody">
+                         The gazetteer server is successfully deployed. 
+                         Use the forms on this page to test some queries against the gazetteer server.
+        </td>
+    </tr>
+</table>
+
+
+
+<form name="geoparser-dispatch1" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Get Capabilities
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;get-capabilities-request/&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+</form>
+
+<form name="geoparser-dispatch2" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by place name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;name-query operator="contains-phrase"
+        text="Albers Wash"/&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+</form>                    
+                    
+<form name="geoparser-dispatch3" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by place name and feature type
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="Albers Wash"/&gt;
+        &lt;class-query thesaurus="USGS Feature Type Thesaurus"
+          term="stream"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+</form>                   
+                    
+<form name="geoparser-dispatch4" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by place name and geographic region
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    xmlns:gml="http://www.opengis.net/gml"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="Albers Wash"/&gt;
+        &lt;footprint-query operator="overlaps"&gt;
+          &lt;gml:Box&gt;
+            &lt;gml:coordinates&gt;-110.69,34.65
+              -120.35,42.34&lt;/gml:coordinates&gt;
+          &lt;/gml:Box&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+ 
+ <form name="geoparser-dispatch5" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by place name and place status
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="Albers Wash"/&gt;
+        &lt;place-status-query status="former"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch6" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by feature type and geographic region
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    xmlns:gml="http://www.opengis.net/gml"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;class-query thesaurus="USGS Feature Type Thesaurus"
+          term="airport features"/&gt;
+        &lt;footprint-query operator="within"&gt;
+          &lt;gml:Box&gt;
+            &lt;gml:coordinates&gt;-120,35
+              -110,38&lt;/gml:coordinates&gt;
+          &lt;/gml:Box&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch7" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by feature identifier
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;identifier-query identifier="567"/&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch8" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by feature type and part-of reltionship
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;relationship-query relation="part of"
+          target-identifier="567"/&gt;
+        &lt;class-query thesaurus="ADL Feature Type Thesaurus"
+          term="cemeteries"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch9" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by feature type and part-of relationship
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;relationship-query relation="part of"
+          target-identifier="567"/&gt;
+        &lt;class-query thesaurus="ADL Feature Type Thesaurus"
+          term="cemeteries"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch10" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by place name and containement relationship
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-all-words"
+          text="cherokee"/&gt;
+        &lt;footprint-query operator="within"&gt;
+          &lt;identifier&gt;adlgaz-1-600-1c&lt;/identifier&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+<form name="geoparser-dispatch11" method="post" action="http://digmap2.ist.utl.pt:8080/gaz/gazetteer-server-proxy.cgi">
+    <table>
+        <tr>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">
+                <table width="600">
+                    <tr>
+                        <td>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tableheader">
+                                        XML Request - Query by debug feature
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tablebody">
+                                    <center><textarea rows="10" cols="69" name="request">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;  
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;identifier-query identifier="debug"/&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;extended&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</textarea></center>                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td height="8">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="tablemain">
+                                <tr>
+                                    <td class="tablebody">
+                                        <center>
+                                            <input type="submit" name="button" value="Run Query"/>
+                                            <input type="reset" name="reset" value="Reset"/>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>
+ </form>
+
+</body>
+</html>

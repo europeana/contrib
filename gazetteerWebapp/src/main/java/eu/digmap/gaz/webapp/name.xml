@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.1">
+    <query-request>
+        <gazetteer-query>
+            <name-query operator="equals" text=""/>
+        </gazetteer-query>
+        <report-format>extended</report-format>
+    </query-request>
+</gazetteer-service>

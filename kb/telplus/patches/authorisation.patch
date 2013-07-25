@@ -1,0 +1,12 @@
+Index: tpp/src/main/resources/authorisation.xml
+===================================================================
+--- tpp/src/main/resources/authorisation.xml	(revision 6876)
++++ tpp/src/main/resources/authorisation.xml	(working copy)
+@@ -6,6 +6,7 @@
+ 		<network>192.87.41</network>
+ 	</deny>
+ 	<allow>
++		<baseUrl>http://</baseUrl>
+ 		<baseUrl>http://www.theeuropeanlibrary.org</baseUrl>
+ 		<baseUrl>http://sruo.kb.nl/sru/sru.pl</baseUrl>
+ 		<baseUrl>http://srua.kb.nl/sru/sru.pl</baseUrl>

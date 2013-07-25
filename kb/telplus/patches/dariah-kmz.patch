@@ -1,0 +1,210 @@
+Index: README
+===================================================================
+--- README	(revision 12868)
++++ README	(working copy)
+@@ -9,4 +9,10 @@
+ directory "telplus/rcm/" and afterwards in "telplus/tpp"
+ 
+ You can also use "mvn jetty:run" in the directory "telplus/tpp" to
+-start the proxy directly from Maven.
+\ No newline at end of file
++start the proxy directly from Maven.
++
++Using tpp with KMZ files:
++Just add kmz=true as parameter to the HTTP request, as the following
++     /tpp/req?kmz=true&url=[url]
++Works for KMZ files with only one KML included.
++TODO Add GZIP support, as well as ZIP files using more than one KML file!
+Index: patches/sti.diff
+===================================================================
+--- patches/sti.diff	(revision 12868)
++++ patches/sti.diff	(working copy)
+@@ -2,7 +2,7 @@
+ ===================================================================
+ --- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(revision 6876)
+ +++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(working copy)
+-@@ -56,8 +56,12 @@
++@@ -56,7 +56,11 @@
+  	 */
+  	public int isAllowedUrl(String url) throws MalformedURLException {
+  		for (String baseUrl : allowedBaseUrls) {
+@@ -15,19 +15,4 @@
+ +				return ALLOWED;
+  			} else {
+  				// perhaps we didn't match because of explicit default port numbers?
+- 				String portlessUrl = url.replaceFirst(":(80|443)", "");
+-Index: tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java
+-===================================================================
+---- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(revision 6876)
+-+++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(working copy)
+-@@ -54,8 +54,8 @@
+- public class TPPServlet extends HttpServlet {
+- 
+- 	// Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--	private static final String PROPERTIES_FILE = "/conf/tpp/tpp.properties";
+--	private static final String AUTHORISATION_FILE = "/conf/tpp/authorisation.xml";
+-+	private static final String PROPERTIES_FILE = "/tpp.properties";
+-+	private static final String AUTHORISATION_FILE = "/authorisation.xml";
+- 	
+- 	private static final String LIABILITY_URI = "/liability";
+- 	private static final String LIABILITY_COOKIE = "liability-token";
++ 				String portlessUrl = url.replaceFirst(":(80|443)", "");Index: tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java
+===================================================================
+--- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(revision 12868)
++++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(working copy)
+@@ -56,8 +56,12 @@
+ 	 */
+ 	public int isAllowedUrl(String url) throws MalformedURLException {
+ 		for (String baseUrl : allowedBaseUrls) {
+-			if (url.startsWith(baseUrl)) { 
++			//A small hack to allow everything, should be replaced by RegExp
++			//5.4.2011 Christian Mahnke - UGOE
++			if (url.equals("*")) {
+ 				return ALLOWED;
++			} else if (url.startsWith(baseUrl)) { 
++				return ALLOWED;
+ 			} else {
+ 				// perhaps we didn't match because of explicit default port numbers?
+ 				String portlessUrl = url.replaceFirst(":(80|443)", "");
+Index: tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java
+===================================================================
+--- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(revision 12912)
++++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(working copy)
+@@ -1,5 +1,6 @@
+ package org.theeuropeanlibrary.telplus.tpp.web;
+ 
++import java.io.ByteArrayInputStream;
+ import java.io.File;
+ import java.io.IOException;
+ import java.io.OutputStream;
+@@ -21,6 +22,8 @@
+ import java.util.Properties;
+ import java.util.regex.Matcher;
+ import java.util.regex.Pattern;
++import java.util.zip.ZipEntry;
++import java.util.zip.ZipInputStream;
+ 
+ import javax.servlet.ServletException;
+ import javax.servlet.http.Cookie;
+@@ -54,8 +57,8 @@
+ public class TPPServlet extends HttpServlet {
+ 
+ 	// Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-	private static final String PROPERTIES_FILE = "/conf/tpp/tpp.properties";
+-	private static final String AUTHORISATION_FILE = "/conf/tpp/authorisation.xml";
++	private static final String PROPERTIES_FILE = "/tpp.properties";
++	private static final String AUTHORISATION_FILE = "/authorisation.xml";
+ 	
+ 	private static final String LIABILITY_URI = "/liability";
+ 	private static final String LIABILITY_COOKIE = "liability-token";
+@@ -214,6 +217,8 @@
+ 		// ref field used in the async protocol
+ 		String ref = req.getParameter("ref"); 
+ 		String url = req.getParameter("url");
++		// get kmz parameter
++		String kmz = req.getParameter("kmz");
+ 		String postData = "";
+ 		if (url == null) {
+ 			// in the asynchronous protocol url may be absent
+@@ -228,7 +233,7 @@
+ 			// to the POST body if this is a POST
+ 			Map<String, String[]> parameters = req.getParameterMap();
+ 			for (String key : parameters.keySet()) {
+-				if (!(key.equals("url") || (key.equals("ref") && useAsyncProtocol))) {
++				if (!(key.equals("url") || key.equals("kmz") || (key.equals("ref") && useAsyncProtocol))) {
+ 					for (String value : parameters.get(key)) {
+ 						if (method.equalsIgnoreCase(HTTPConnectionManager.POST)) {
+ 							postData += "&" + key + "=" + URLEncoder.encode(value, "UTF-8");
+@@ -363,6 +368,27 @@
+ 			headerFields.put("Content-Type", values);			
+ 		}
+ 			
++		// do unzip if kmz file parameter set to true
++		int extractedZipSize= 0;
++		if (kmz != null && kmz.equalsIgnoreCase("true")) {
++			logger.debug("KMZ file parameter detected: kmz=" + kmz);
++			extractedZipSize = doUnzip(outputStream, response);
++		}
++		else {			
++			outputStream.write(response.getBody());
++		}
++		// re-set content length and type if something was unzipped
++		if (extractedZipSize != 0) {
++			headerFields.remove("Content-Type");
++			List<String> values = new ArrayList<String>();
++			values.add("text/xml");
++			headerFields.put("Content-Type", values);
++			headerFields.remove("Content-Length");
++			values = new ArrayList<String>();
++			values.add(String.valueOf(extractedZipSize));
++			headerFields.put("Content-Length", values);
++			logger.debug("Re-set content length and type due to decompresion");
++		}
+ 		
+ 		// set response header fields
+ 		resp.setStatus(response.getStatus());
+@@ -381,8 +407,6 @@
+ 				}
+ 			}
+ 		}
+-		
+-		outputStream.write(response.getBody());
+ 	}
+ 	
+ 	
+@@ -534,6 +558,43 @@
+ 		return version;
+ 	}
+ 		
++	/*
++	 * does unzip the body of theResponse, writes directly to theOut
++	 */
++	private int doUnzip(OutputStream theOut, HTTPResponse theResponse)
++			throws IOException {
++
++		logger.debug("Decompressing");
++
++		// open the zip file and create the ZIP stream
++		logger.debug("Building up SLIP stream");
++		ZipInputStream in = new ZipInputStream(new ByteArrayInputStream(
++				theResponse.getBody()));
++
++		// read each entry from the ZipInputStream until no more entry found
++		// indicated by a null return value of the getNextEntry() method
++		ZipEntry entry;
++		int count = 0;
++		int size = 0;
++		int overall = 0;
++		while ((entry = in.getNextEntry()) != null) {
++			count++;
++			logger.debug("Decompressing '" + entry.getName() + "'");
++			byte[] buffer = new byte[4096];
++			while ((size = in.read(buffer, 0, buffer.length)) != -1) {
++				overall += size;
++				theOut.write(buffer, 0, size);
++			}
++		}
++		in.close();
++		logger.debug("Closing down SLIP stream, " + count + " entr"
++				+ (count != 1 ? "ies" : "y") + " processed (" + overall
++				+ " bytes)");
++		logger.debug("Decompression complete");
++		
++		return overall;
++	}
++
+ 	// Inner classes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ }
+Index: tpp/src/main/resources/authorisation.xml
+===================================================================
+--- tpp/src/main/resources/authorisation.xml	(revision 12868)
++++ tpp/src/main/resources/authorisation.xml	(working copy)
+@@ -6,6 +6,7 @@
+ 		<network>192.87.41</network>
+ 	</deny>
+ 	<allow>
++		<baseUrl>http://</baseUrl>
+ 		<baseUrl>http://www.theeuropeanlibrary.org</baseUrl>
+ 		<baseUrl>http://sruo.kb.nl/sru/sru.pl</baseUrl>
+ 		<baseUrl>http://srua.kb.nl/sru/sru.pl</baseUrl>

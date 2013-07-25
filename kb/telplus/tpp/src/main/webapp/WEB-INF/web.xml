@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<servlet>
+		<servlet-name>TPPServlet</servlet-name>
+		<servlet-class>org.theeuropeanlibrary.telplus.tpp.web.TPPServlet</servlet-class>
+	</servlet>
+	<!-- regular synchronous requests -->
+	<servlet-mapping>
+		<servlet-name>TPPServlet</servlet-name>
+		<url-pattern>/get</url-pattern>
+	</servlet-mapping>
+	<!-- URI for setting a special liability cookie -->
+	<servlet-mapping>
+		<servlet-name>TPPServlet</servlet-name>
+		<url-pattern>/liability</url-pattern>
+	</servlet-mapping>
+	<!-- asynchronous requests -->
+	<servlet-mapping>
+		<servlet-name>TPPServlet</servlet-name>
+		<url-pattern>/req</url-pattern>
+	</servlet-mapping>
+</web-app>

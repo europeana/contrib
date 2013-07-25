@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0068)http://www.alexandria.ucsb.edu/gazetteer/protocol/introduction.shtml -->
+<HTML><HEAD><TITLE>Gazetteer Protocol Introduction</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META content="MSHTML 6.00.2900.3199" name=GENERATOR></HEAD>
+<BODY text=black bgColor=white>
+<CENTER>
+<TABLE width=564>
+  <TBODY>
+  <TR>
+    <TD>
+      <P>&nbsp;</P>
+      <H2>Gazetteer Protocol Introduction</H2>
+      <HR noShade SIZE=3>
+
+      <P>This is a hands-on introduction to the <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/specification.html">ADL 
+      Gazetteer Protocol</A>. The forms below allow you to submit requests to, 
+      and observe responses from, two operational gazetteer protocol servers: 
+      the ADL Gazetteer and the ESRI Gazetteer. Only two of the three services 
+      defined by the protocol are demonstrated in this page, 
+      <CODE>get-capabilities</CODE> and <CODE>query</CODE>; a separate page of 
+      <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/test-forms.shtml">test 
+      forms</A> allows all protocol services to be exercised and debugged.</P>
+      <P>In the eight sample queries shown below, the query constraints can be 
+      changed (subject to the rules of the protocol's <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/specification.html#query-language">query 
+      language</A>, of course). For example, you can replace "<CODE>las 
+      vegas</CODE>" with "<CODE>santa barbara</CODE>". In queries that include a 
+      <EM>class</EM> constraint, the query must reference a term from a 
+      thesaurus associated with the gazetteer being queried. The sample queries 
+      below are intended for the ADL Gazetteer and thus reference terms from the 
+      <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/FeatureTypes/FTT_metadata.htm">ADL 
+      Feature Type Thesaurus</A>. To query the ESRI Gazetteer, change the 
+      thesaurus name in the query to "<CODE>ESRI-Type</CODE>" and use one of the 
+      following terms:</P>
+      <BLOCKQUOTE>
+        <TABLE cellSpacing=0 cellPadding=0>
+          <TBODY>
+          <TR>
+            <TH align=left>term</TH>
+            <TD>&nbsp;</TD>
+            <TD width=1 bgColor=black rowSpan=8></TD>
+            <TD>&nbsp;</TD>
+            <TH align=left>meaning</TH></TR>
+          <TR>
+            <TD colSpan=5>
+              <HR noShade SIZE=1>
+            </TD></TR>
+          <TR>
+            <TD><CODE>ALL</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>all feature types</TD></TR>
+          <TR>
+            <TD><CODE>AA</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>administrative areas</TD></TR>
+          <TR>
+            <TD><CODE>ZC</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>postal codes</TD></TR>
+          <TR>
+            <TD><CODE>CT</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>cities and towns</TD></TR>
+          <TR>
+            <TD><CODE>PI</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>points of interest</TD></TR>
+          <TR>
+            <TD><CODE>GL</CODE></TD>
+            <TD>&nbsp;</TD>
+            <TD>&nbsp;</TD>
+            <TD>geographic landmarks/features</TD></TR></TBODY></TABLE></BLOCKQUOTE>
+      <P>Send questions/comments to <A 
+      href="http://www.alexandria.ucsb.edu/~lhill/">http://www.alexandria.ucsb.edu/~lhill/</A>.</P>
+      <P>First, use the menu below to choose a gazetteer server. Or, manually 
+      enter the URL of a gazetteer server in the text field:</P>
+
+      <P>The following request asks the above-selected gazetteer server to 
+      return a statement of its <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/specification.html#capabilities">capabilities</A>. 
+      Press the "get capabilities" button to submit the request shown below. A 
+      slow response is likely due to the fact that this page must, for technical 
+      reasons, use a proxy to communicate with the server.</P>
+      <FORM action="gp"><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="get capabilities"><BR><TEXTAREA name=request rows=7 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;get-capabilities-request/&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/specification.html#reports">standard 
+      reports</A> for all <A 
+      href="http://www.alexandria.ucsb.edu/gazetteer/protocol/specification.html#gazetteer-model">gazetteer 
+      entries</A> that have a name that contains the phrase "<CODE>las 
+      vegas</CODE>".</P>
+      <FORM action="gp"><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="name query"><BR><TEXTAREA name=request rows=13 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;name-query operator="contains-phrase"
+        text="las vegas"/&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have a name that contains the phrase "<CODE>las 
+      vegas</CODE>", and 2) have the class "<CODE>airport features</CODE>".</P>
+      <FORM action="gp"><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> 
+      <INPUT type=submit value="name &amp; class query"><BR><TEXTAREA name=request rows=17 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="las vegas"/&gt;
+        &lt;class-query thesaurus="ADL Feature Type Thesaurus"
+          term="airport features"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have a name that contains the phrase "<CODE>las 
+      vegas</CODE>", and 2) overlap the region bounded by latitudes 
+      34°&nbsp;39'&nbsp;N and 42°&nbsp;20'&nbsp;24"&nbsp;N and longitudes 
+      113°&nbsp;41'&nbsp;24"&nbsp;W and 120°&nbsp;21'&nbsp;W. Note that 
+      geographic coordinates are expressed in signed decimal degrees in 
+      west/south/east/north order per the <A 
+      href="http://www.opengeospatial.org/docs/02-069.pdf">Geographic Markup 
+      Language (GML)</A> standard.</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="name &amp; footprint query"><BR><TEXTAREA name=request rows=22 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    xmlns:gml="http://www.opengis.net/gml"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="las vegas"/&gt;
+        &lt;footprint-query operator="overlaps"&gt;
+          &lt;gml:Box&gt;
+            &lt;gml:coordinates&gt;-120.35,34.65
+              -113.69,42.34&lt;/gml:coordinates&gt;
+          &lt;/gml:Box&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have a name that contains the phrase "<CODE>las 
+      vegas</CODE>", and 2) no longer exist.</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="name &amp; place status query"><BR><TEXTAREA name=request rows=16 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-phrase"
+          text="las vegas"/&gt;
+        &lt;place-status-query status="former"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have class "<CODE>airport features</CODE>", and 2) lie 
+      completely within the region bounded by latitudes 35°&nbsp;N and 
+      38°&nbsp;N and longitudes 118°&nbsp;W and 120°&nbsp;W.</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="class &amp; footprint query"><BR><TEXTAREA name=request rows=22 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    xmlns:gml="http://www.opengis.net/gml"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;class-query thesaurus="ADL Feature Type Thesaurus"
+          term="airport features"/&gt;
+        &lt;footprint-query operator="within"&gt;
+          &lt;gml:Box&gt;
+            &lt;gml:coordinates&gt;-120,35
+              -118,38&lt;/gml:coordinates&gt;
+          &lt;/gml:Box&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return a standard report for the gazetteer 
+      entry whose identifier is "<CODE>adlgaz-1-600-1c</CODE>". To query the 
+      ESRI Gazetteer, try an identifier such as "<CODE>600</CODE>".</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="identifier query"><BR><TEXTAREA name=request rows=12 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;identifier-query identifier="adlgaz-1-600-1c"/&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have the "<CODE>part of</CODE>" relationship to the entry 
+      identified by "<CODE>adlgaz-1-600-1c</CODE>", and 2) have class 
+      "<CODE>cemeteries</CODE>".</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="relationship &amp; class query"><BR><TEXTAREA name=request rows=17 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;relationship-query relation="part of"
+          target-identifier="adlgaz-1-600-1c"/&gt;
+        &lt;class-query thesaurus="ADL Feature Type Thesaurus"
+          term="cemeteries"/&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <P>The following query says: return standard reports for all gazetteer 
+      entries that 1) have a name that contains the word 
+      "<CODE>cherokee</CODE>", and 2) lie completely within the footprint of the 
+      entry identified by "<CODE>adlgaz-1-600-1c</CODE>".</P>
+      <FORM onsubmit=set_hidden_controls(this); 
+      action=gazetteer-server-proxy.cgi><INPUT type=hidden name=server> <INPUT 
+      type=hidden name=xsv> <INPUT type=submit value="name &amp; indirect footprint query"><BR><TEXTAREA name=request rows=18 cols=60>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;gazetteer-service
+    xmlns="http://www.alexandria.ucsb.edu/gazetteer"
+    version="1.2"&gt;
+  &lt;query-request&gt;
+    &lt;gazetteer-query&gt;
+      &lt;and&gt;
+        &lt;name-query operator="contains-all-words"
+          text="cherokee"/&gt;
+        &lt;footprint-query operator="within"&gt;
+          &lt;identifier&gt;adlgaz-1-600-1c&lt;/identifier&gt;
+        &lt;/footprint-query&gt;
+      &lt;/and&gt;
+    &lt;/gazetteer-query&gt;
+    &lt;report-format&gt;standard&lt;/report-format&gt;
+  &lt;/query-request&gt;
+&lt;/gazetteer-service&gt;
+</TEXTAREA> </FORM>
+      <HR noShade SIZE=1>
+
+      <ADDRESS><A href="http://www.alexandria.ucsb.edu/~gjanee/">Greg Janée
+      <SCRIPT type=text/javascript><!--
+var a = 'ixegbaa@j..naaeudlndcreeus';
+var b = '';
+var i = 3;
+do {
+    b += a.charAt(i);
+    i = (i+5) % a.length;
+} while (i != 3);
+document.write(' &lt;' + b + '&gt;');
+//--></SCRIPT>
+      </A> </ADDRESS>Last modified: <!--mtime-->2006-07-19 17:16<!--/mtime--> 
+  </TD></TR></TBODY></TABLE></CENTER></BODY></HTML>

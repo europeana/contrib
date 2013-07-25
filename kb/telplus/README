@@ -1,0 +1,12 @@
+This directory contains TTP, a XHR Proxy with advanced features like
+white listing. And RCM, a library to prevent misuse and DOS attacks
+against the proxy.
+
+For questions please contact Theo van Veen <theo.vanVeen@kb.nl>
+
+Installation:
+TTP requires RCM during compilation. Run "mvn install" first in the
+directory "telplus/rcm/" and afterwards in "telplus/tpp"
+
+You can also use "mvn jetty:run" in the directory "telplus/tpp" to
+start the proxy directly from Maven.

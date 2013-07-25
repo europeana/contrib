@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+ 
+<suite name="RCMTestSuite" verbose="1" >
+  <test name="UnitTests">
+    <groups>
+      <run>
+        <include name="unit" />
+      </run>
+    </groups>
+    <packages>
+ 	  <package name="org.theeuropeanlibrary.telplus.rcm.test.*" />
+    </packages>
+  </test>
+</suite>

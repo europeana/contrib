@@ -1,0 +1,164 @@
+body   { font-size: 80%; font-family: Verdana, Arial, Helvetica, sans-serif; background-image: url(../imgs/fundo.png); }
+table { font-size: 100%; }
+
+/* DIMGAP Logo / What Is? Section */
+div.whatis 				{ padding: 0px 10px 10px 5px; margin-left: 45px; margin-bottom: 5px; height:57px; text-align: right; }
+a.whatisText 			{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal; color: #000000; text-decoration: none; }
+
+
+/*  Color Bar */
+div.colorLine	{ background-image: url(../imgs/barra.jpg); height:5px; padding: 0px; margin: 0px; width: 100%; }
+div.space		{ float: none; width: 100%; padding-top: 0px; height: 2px; }
+
+/* DIGMAP Logo Green / Thumbnails */
+div.thumbnails { white-space: nowrap; }
+a.menu:link 	{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000000; text-decoration: none; }
+a.menu:visited { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000000; text-decoration: none; }
+a.menu:active  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #00CC66; text-decoration: none; }
+a.menu:hover   { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #FF6633; text-decoration: none; }
+
+/* DIGMAP Menu / Highlights */
+.menuBar 			{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; background-color:#bdd79e; color: #000000; text-decoration: none; white-space: nowrap; }
+.menuBarHighlight { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; background-color:#e7e7e7; color: #000000; text-decoration: none; white-space: nowrap; }
+div.search 			{ white-space: nowrap; height: 27px; vertical-align: bottom; }
+div.item 			{ white-space: nowrap; width: 100px; }
+div.subitem 		{ float:left; white-space: nowrap; padding-left: 30px; }
+
+hr.light				{ color: #eeeeee; }
+
+.menu1 				{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000000; }
+a.menu1:link 		{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000000; }
+a.menu1:visited 	{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #000000; }
+a.menu1:active  	{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #00CC66; }
+a.menu1:hover   	{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #FF6633; }
+
+div.imageHighlight	{ text-align: center; }
+a.menulink 				{ color: #000000; font-weight: bolder; }
+.texto-peqLeft 		{ font-family:  "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;font-size: 12px;	font-style: normal;	font-weight: normal;color: #000000;	text-decoration: none;	text-align: left; }
+.texto-peqRight 		{ font-family:  "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;font-size: 12px;	font-style: normal;	font-weight: normal;color: #000000;	text-align: right; }
+
+
+/* Footer */
+.footerText { color:#006699; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; } 
+.footerlink { text-decoration: none; color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; }
+
+
+
+
+.menudot { background-image: url(../imgs/dot-v.png); background-position: right; background-repeat: repeat-y }
+
+/* Text Headers */
+
+h1.text { font-size: 110%; padding: 0; margin: 0; font-weight: bold; background-color:#e7e7e7; color: #000000; text-decoration: none; white-space: nowrap; border-style: solid; border-width: 5; border-color: #e7e7e7; }
+
+div.h2 { font-size: 110%; background-color:#e7e7e7; color: #000000; text-decoration: none; white-space: nowrap; border-style: solid; border-width: 2; border-color: #e7e7e7; }
+
+
+.text 			{ color: #000000; }
+a.text:link 	{ color: #000000; }
+a.text:visited 	{ color: #000000; }
+a.text:active  	{ color: #00CC66; }
+a.text:hover   	{ color: #FF6633; }
+
+
+/* Search Result */
+
+.searchIndex   { font-weight: bold; padding-right: 6px; padding-left: 6px; padding-top: 3px; padding-bottom: 3px; font-size: 12px; vertical-align: top; color: #000000; background-color: #bdd79e; text-align: right; white-space: nowrap; }
+
+.tagTitle   { font-weight: bold; padding-right: 6px; padding-left: 6px; padding-top: 3px; padding-bottom: 3px; font-size: 12px; vertical-align: top; color: #000000; background-color: #bdd79e; text-align: right; white-space: nowrap; width:80px; }
+.tagContent { padding-right: 3px; padding-left: 3px; padding-top: 3px; padding-bottom: 3px; font-size: 12px; vertical-align: top; color: #000000; }
+
+
+.search_result {
+	width: 100%;
+}
+
+.search_result TH {
+	font-size: 12px; 
+    background-color: #8097b5;
+    color: white;
+}
+
+.search_result a:link 	{ color: #000000; }
+.search_result a:visited 	{ color: #000000; }
+.search_result a:active  	{ color: #00CC66; }
+.search_result a:hover   	{ color: #FF6633; }
+
+
+/* TABPANE */
+ul.tabpane {
+	float: left;
+	margin: 0;
+	padding: 0;
+	padding-left: 10pt;
+	list-style-type: none;
+	list-style-image: none;
+	height: 30px;
+}
+
+.tabpane li {
+	float: left;
+	margin-right: 4px;
+}
+
+.tabpane li a {
+	border-color: rgb(220,220,220);
+	border-style: solid;
+	border-width: 2px;
+	padding: 7px 10px;
+	width: auto;
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+	background: rgb(245,245,245);
+}
+
+.tabpane li a:hover {
+	background: #e7e7e7;
+}
+
+/* RECORD */
+
+FIELDSET a:link 	{ color: #000000; }
+FIELDSET a:visited 	{ color: #000000; }
+FIELDSET a:active  	{ color: #00CC66; }
+FIELDSET a:hover   	{ color: #FF6633; }
+
+
+.record TH {
+	width: 80px;
+	text-align: right;
+	vertical-align: top;
+	padding-right: 5;
+}
+
+.record TD {
+	vertical-align: top;
+	text-align: left;
+	padding-left: 5;
+	padding-right: 5;
+}
+
+
+
+
+
+/* List */
+
+.list TD {
+	background: rgb(245,245,245);
+	vertical-align: middle;
+	text-align: left;
+	padding-left: 5;
+	padding-right: 5;
+}
+
+.list TH {
+	background: rgb(220,220,220);
+	text-align: center;
+	vertical-align: middle;
+	padding-left: 5;
+	padding-right: 5;
+}

@@ -1,0 +1,26 @@
+Implementation guideline:
+
+In /siwa/
+---------
+siwa.js: change the main config (the first two variables)
+- siwaUrl: The absolute url to the .js files (normally http://[domain]/siwa/);
+- ssUrl: The absolute url to the servicesserver (normally http://[domain]/servicesserver/);
+
+cmenu.js: No changes required.
+cmenu.css: No changes required.
+
+proxy.js: depends on implementation. When using the proxy.php from the SIWA package, the
+var proxyUrl should be changed to the absolute url of the proxy.php (normally 
+http://[domain]/proxy/proxy.php). If another proxy implementation is used, this file should
+be rewritten, keeping the function names intact.
+
+In /proxy/
+----------
+When this proxy implementation is used, $currDomain should be changed to the right IP adress
+of the new host. When the proxy gets a request to fetch an URL on the same domain by using 
+the foreign ip address of the domain, the proxy will not be able to find it. $currDomain is
+used to replace the foreign IP address by localhost.
+
+In /servicesserver/
+-------------------
+No changes required.

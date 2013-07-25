@@ -1,0 +1,47 @@
+li.citem:hover {
+	background-color: #1a8bbf;
+	color: white;
+}
+
+div#cmenu {
+	display: block;
+	position: absolute;	
+	background-color: white;
+	color: black;
+	/*border: 2px solid #fd3ce3;*/
+	border: 2px solid black;
+	border-style: outset;	
+	cursor: default;	
+	text-align: left;
+	margin: 0px;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 5px;
+	padding-bottom: 5px;	
+	left: 50%;
+	top: 50%;
+	z-index: 999999; 
+	visibility: hidden;	
+}
+
+li.citem {
+	background-color: white;
+	padding-left: 5px;
+	padding-right: 5px;
+	cursor: hand;
+	cursor: pointer;
+	font-family: "Arial";
+}
+
+span.siwa {	
+	display: inline;	
+	cursor: hand;
+	cursor: pointer;	
+}
+
+span.siwa:hover {	
+	display: inline;	
+	cursor: hand;
+	cursor: pointer;	
+	background-color: #FFFFCC;
+}

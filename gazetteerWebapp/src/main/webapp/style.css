@@ -1,0 +1,183 @@
+/*
+ * Password Management Servlets (PWM)
+ *
+ * http://forge.novell.com/modules/xfmod/project/?pwm
+ *
+ *         Copyright © 2006 Novell, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+.bodymain {
+    background-color: white;
+    margin: 0;
+}
+
+.tablemain {
+    width: 100%;
+    border-width: 1px;
+    background-color: #babdb6;
+    margin: 1px;
+}
+
+.formhead {
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.2em;
+    background-color: #6b8899;
+    text-align: left;
+    text-indent: 0.5em;
+    letter-spacing: 0.1em;
+    vertical-align: middle;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.tableheader {
+    color: white;
+    background-color: #666699;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+    text-align: center;
+}
+
+.tablebody {
+    color: black;
+    font-size: 13px;
+    font-family: Arial;
+    background-color: white;
+    padding: 3px;
+}
+
+.infobody {
+    color: black;
+    padding: 3px;
+    font-size: 13px;
+    font-family: Arial;
+    background-color: white;
+}
+
+.tablekey {
+    font-size: 14px;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+    color: black;
+    text-decoration: none;
+    text-align: right;
+    background-color: #EDEEEC;
+    white-space: nowrap;
+    padding: 3px;
+    border: 1px;
+    max-width: 100%;
+    margin: 3px;
+    width: 150;
+}
+
+.tablecolumnkey {
+    font-size: 14px;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+    color: black;
+    text-decoration: none;
+    text-align: left;
+    background-color: #EDEEEC;
+    margin: 3px;
+    padding: 3px;
+}
+
+.formdescriptext {
+    color: #355263;
+    font-size: 0.8em;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.formeg {
+    color: #355263;
+    font-weight: bold;
+    font-size: 1.2em;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.smalltext {
+    font-size: 0.6em;
+    line-height: 1.2em;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.mediumtext {
+    font-size: 0.85em;
+    line-height: 1em;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.buttontext {
+    font-size: 0.65em;
+    font-weight: bold;
+    height: 25;
+    color: #4a4947;
+    background-color: #dfddd5;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular
+}
+
+.whitespace {
+    color: white;
+}
+
+.rule {
+    font-size: 0.1em;
+    background-color: #6b8899;
+}
+
+.error {
+    color: #FF0000;
+    font-weight: bold;
+    font-size: .90em;
+    text-align: center;
+    vertical-align: middle;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+}
+
+.notice {
+    color: #3149A5;
+    font-size: .80em;
+    text-align: center;
+    vertical-align: middle;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+}
+
+.success {
+    font-size: .80em;
+    text-align: center;
+    vertical-align: middle;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+}
+
+.footerbold {
+    color: #333333;
+    text-decoration: none;
+    font-size: 11px;
+    font-family: Arial;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.footertext {
+    color: #DDDDDD;
+    text-decoration: none;
+    font-size: 11px;
+    font-family: Arial;
+    white-space: nowrap;
+}

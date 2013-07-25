@@ -1,0 +1,107 @@
+span.menuitem {
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	font-size: 12pt;
+	font-family: verdana;
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid white;
+	cursor: pointer;
+}
+
+span.resetservs {
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	font-size: 12pt;
+	font-family: verdana;
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid white;
+	cursor: pointer;
+}
+
+span.menuitemsel {
+	color: black;
+	background-color: white;
+	font-weight: bold;
+	font-size: 12pt;
+	font-family: verdana;
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid white;
+}
+
+div#menutab {
+	background-color: black;
+	text-align: center;
+	height: 23px;
+	padding-top: 5px;
+}
+
+div#servicestab {
+	border: 1px solid black;
+	text-align: center;
+}
+
+div#edittab {
+    visibility: hidden;
+	border: 1px solid black;
+}
+
+div#regtab {
+    visibility: hidden;
+	border: 1px solid black;
+	text-align: center;	
+}
+
+div#loadtab {
+    visibility: hidden;
+	border: 1px solid black;
+	text-align: center;
+}
+
+div#jsonbox {
+	visibility: hidden;
+	display: none;
+}
+
+div.delservice {
+	cursor: pointer;
+}
+
+div.serventry:hover {
+	cursor: pointer;
+	color: blue;
+}
+
+table {
+    border: 1px solid #C0C0C0;
+    background-color: white;
+	margin-left: auto;
+	margin-right: auto;
+    font-family: Arial;
+    font-size: 10pt;
+}
+
+th {
+    border: 1px solid black;
+    text-align: center;
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+}
+
+tr.tr1 td {
+    background-color: #FFFFDE;
+}
+
+tr.tr2 td {
+    background-color: #FFFFAE;
+}
+
+td {
+    border: 1px solid black;
+    text-align: left;
+}

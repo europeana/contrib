@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- Schemas -->
+	
+	<bean id="eu.digmap.gaz.schemas" class="java.util.Vector"><constructor-arg><list>
+		<bean id="adlcs" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/adlcs/schema.xml"
+			/>
+		<bean id="adlgp" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/adlgp/schema.xml"
+			/>
+		<bean id="geonames" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/geo/schema.xml"
+			/>
+		<bean id="georss" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/georss/schema.xml"
+			/>
+		<bean id="gn" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/gn/schema.xml"
+			/>
+		<bean id="kml" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/kml/schema.xml"
+			/>
+		<bean id="mads" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/mads/schema.xml"
+			/>
+		<bean id="wfsg" class="eu.digmap.gaz.schemas.SchemaConfigImpl"
+			p:schema="eu/digmap/gaz/schemas/wfsg/schema.xml"
+			/>
+	</list></constructor-arg></bean>
+
+	<!-- Feature Type Thesaurus -->
+
+	<bean id="eu.digmap.gaz.thesaurus" class="eu.digmap.gaz.thesaurus.GazThesaurus">
+		<constructor-arg><list>
+			<value>eu/digmap/gaz/schemas/gaz/gaz.owl.xml</value>
+			<value>eu/digmap/gaz/thesaurus/ftt/ftt.classes.owl</value>
+			<value>eu/digmap/gaz/thesaurus/geo/geo.classes.owl</value>
+			<value>eu/digmap/gaz/thesaurus/gn/gn.classes.owl</value>
+			<value>eu/digmap/gaz/thesaurus/gn_pt/gn_pt.classes.owl</value>
+		</list></constructor-arg>
+	</bean>
+
+	<!-- DATABASE -->
+
+	<bean id="eu.digmap.gaz.database" class="eu.digmap.gaz.database.DatabaseImpl">
+		<constructor-arg>
+			<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+				<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/gaz_record"/>
+				<property name="username" value="gaz"/>
+				<property name="password" value="gaz"/>
+				<property name="minEvictableIdleTimeMillis" value="60000"/>
+			</bean>
+		</constructor-arg>
+		<constructor-arg value="http://www.digmap.eu/gazetteer/version1.0#"/>
+		<constructor-arg><list>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.digmap.eu/gazetteer/version1.0#" 
+				p:table="db_gaz"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.alexandria.ucsb.edu/gazetteer/ContentStandard/version3.2/" 
+				p:transformation="eu/digmap/gaz/schemas/adlcs/gaz2adlcs.xslt"
+				p:table="db_adlcs"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.alexandria.ucsb.edu/gazetteer" 
+				p:transformation="eu/digmap/gaz/schemas/adlgp/gaz2adlgp.xslt"
+				p:table="db_adlgp"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.geonames.org/ontology#" 
+				p:transformation="eu/digmap/gaz/schemas/geo/gaz2geo.xslt"
+				p:table="db_geonames"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.georss.org/georss" 
+				p:transformation="eu/digmap/gaz/schemas/georss/gaz2georss.xslt"
+				p:table="db_georss"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://xldb.di.fc.ul.pt/geo-net.owl#" 
+				p:transformation="eu/digmap/gaz/schemas/gn/gaz2gn.xslt"
+				p:table="db_gn"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://earth.google.com/kml/2.2" 
+				p:transformation="eu/digmap/gaz/schemas/kml/gaz2kml.xslt"
+				p:table="db_kml"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.loc.gov/mads/" 
+				p:transformation="eu/digmap/gaz/schemas/mads/gaz2mads.xslt"
+				p:table="db_mads"
+				/>
+			<bean class="eu.digmap.gaz.schemas.XSLTSchemaHandler"
+				p:namespace="http://www.opengis.net/wfs-g" 
+				p:transformation="eu/digmap/gaz/schemas/wfsg/gaz2wfsg.xslt"
+				p:table="db_wfsg"
+				/>
+		</list></constructor-arg>
+	</bean>
+
+	<!-- INDEX -->
+	<bean id="eu.digmap.gaz.index" class="eu.digmap.gaz.database.DatabaseIndexImpl">
+		<constructor-arg>
+			<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+				<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/gaz_index"/>
+				<property name="username" value="gaz"/>
+				<property name="password" value="gaz"/>
+				<property name="minEvictableIdleTimeMillis" value="60000"/>
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="eu.digmap.gaz.service.adlgp.query.QueryProcessorImpl"><constructor-arg><map>
+				<entry key="identifier-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.IdentityQuery"/>
+				</entry>
+				<entry key="name-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.NameQuery"/>
+				</entry>
+				<entry key="class-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.ClassQuery" p:thesaurus-ref="eu.digmap.gaz.thesaurus"/>
+				</entry>
+				<entry key="footprint-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.FootGeoQuery"/>
+				</entry>
+				<entry key="relationship-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.RelationQuery" p:thesaurus-ref="eu.digmap.gaz.thesaurus"/>
+				</entry>
+				<entry key="temporal-query">
+					<bean class="eu.digmap.gaz.service.adlgp.query.TemporalQuery"/>
+				</entry>
+			</map></constructor-arg></bean>
+		</constructor-arg>
+	</bean>
+
+	<!-- SERVICES -->
+	<bean id="eu.digmap.gaz.service.adlgp" class="eu.digmap.gaz.service.adlgp.GPInterfaceImpl">
+		<constructor-arg ref="eu.digmap.gaz.database"/>
+		<constructor-arg ref="eu.digmap.gaz.index"/>
+	</bean>
+
+	<bean id="eu.digmap.gaz.service.gp2oai" class="eu.digmap.gaz.service.oai.GP2OAI">
+		<constructor-arg ref="eu.digmap.gaz.database"/>
+		<constructor-arg ref="eu.digmap.gaz.service.adlgp"/>
+	</bean>
+
+	<bean id="eu.digmap.gaz.service.gp2atom" class="eu.digmap.gaz.service.atom.GP2Atom">
+		<constructor-arg ref="eu.digmap.gaz.database"/>
+		<constructor-arg ref="eu.digmap.gaz.service.adlgp"/>
+	</bean>
+
+</beans>

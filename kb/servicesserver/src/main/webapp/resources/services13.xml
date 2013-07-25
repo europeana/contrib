@@ -1,0 +1,1457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" encoding="utf-8"?>
+
+<sd:services xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:tel="http://krait.kb.nl/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sd="http://www.theeuropeanlibrary.org/servicedescription" xsi:schemaLocation="http://www.theeuropeanlibrary.org/servicedescription ServiceDescription1.0.xsd">
+
+<sd:service>
+<dc:title>TB Quoter</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://81.204.248.129/ec/services/quoter.php</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>TextEnhancer</sd:serviceType>
+<sd:serviceLabel>Quote this MDF (TB)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="qm" type="fixed">'</sd:parameter>
+<sd:parameter name="text" type="field" operation="URLEncode">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>replaceField</sd:typeOfUse>
+<sd:extraConditions>
+<sd:extraCondition></sd:extraCondition>
+</sd:extraConditions>
+</sd:service>
+
+<sd:service>
+<dc:title>TB Capitilizer</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://81.204.248.129/ec/services/capitilizer.php</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>TextCapitilizer</sd:serviceType>
+<sd:serviceLabel>Capitilize this MDF (TB)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>*</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="text" type="field" operation="URLEncode">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>replaceText</sd:typeOfUse>
+</sd:service>
+
+<sd:service>
+<dc:title>Follow Link</dc:title>
+<dc:identifier xsi:type="dcterms:URI">@url@</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>OpenURL</sd:serviceType>
+<sd:serviceLabel>Follow this Link</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>*</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="@url@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:extraConditions>
+<sd:extraCondition>http://</sd:extraCondition>
+</sd:extraConditions>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0014</sd:sidId>
+<dc:title>KB SFX server</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://portal.kb.nl:9003/sfx_local</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>OpenURL</sd:serviceType>
+<sd:serviceLabel>Link to related resources (KB)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:OpenURL</sd:trigger>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="sid" type="parts">
+     <sd:parmPart type="fixed">kb&amp;</sd:parmPart>
+     <sd:parmPart type="field" default="">identifier:OpenURL</sd:parmPart>
+   </sd:parameter>
+   <sd:parameter name="isbn" type="field">identifier:ISBN</sd:parameter>
+   <sd:parameter name="issn" type="field">identifier:ISSN</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0034</sd:sidId>
+<dc:title>Language Guesser</dc:title>
+<dc:identifier>http://legacy.xrce.xerox.com/cgi-bin/mltt/LanguageGuesser</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Guess Language by Xerox</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="Text" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:accessType>POST</sd:accessType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:serviceType>Identify</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0012</sd:sidId>
+<dc:title>Zoom service</dc:title>
+<dc:identifier>http://dev.theeuropeanlibrary.org/tpp?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>processImage</sd:serviceType>
+<sd:serviceLabel>Display image object with zoom functionality</sd:serviceLabel>
+<dc:description>Service that an image and crops to a specified window domensions. Parameters are winWidth:ww, winHeight:wh, width:w, height:h, scale:s. Automatic integration is restricted to fit the image in a window. Complete zoom functionality requires either hardcoding or an extra service providing the user interaction.</dc:description>
+<sd:triggers>
+	<sd:trigger>identifier:URI</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+	<sd:extraCondition field="_contentType">image</sd:extraCondition>
+</sd:extraConditions>
+<sd:parameters>
+	<sd:parameter name="img" type="field">_triggerValue</sd:parameter>
+	<sd:parameter name="ww" type="field">_windowWidth</sd:parameter>
+	<sd:parameter name="wh" type="field">_windowHeight</sd:parameter>
+</sd:parameters>
+<dc:format>image</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:typeOfUse>embed</sd:typeOfUse>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0013</sd:sidId>
+<dc:title>Highlight ANP images</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/tph/hl?colour=ffff00</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Highlight</sd:serviceType>
+<sd:serviceLabel>Show image with query terms highlighted</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+<sd:extraCondition field="identifier:URL">urn=anp:</sd:extraCondition>
+</sd:extraConditions>
+<sd:parameters>
+  <sd:parameter name="coords" type="parts">
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+    <sd:parmPart type="fixed">:ALTO</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="img" type="parts">
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+    <sd:parmPart type="fixed">:image</sd:parmPart>
+  </sd:parameter>
+<sd:parameter name="words" type="field">_query</sd:parameter>
+<sd:parameter name="format" type="fixed">ALTO&amp;scale=2.0</sd:parameter>
+</sd:parameters>
+<dc:format>image</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0035</sd:sidId>
+<dc:title>Show DNP articles</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/tpxslt/</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Transform</sd:serviceType>
+<sd:serviceLabel>Show text</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="xml" type="parts">
+    <sd:parmPart type="replace">/(.*?)resolver(.*?)$/</sd:parmPart>
+    <sd:parmPart type="field">identifier:URL</sd:parmPart>
+    <sd:parmPart type="replaceBy">$1resolver3a$2</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="xsl" type="fixed">http://www.xs4all.nl/~tvveen/mobile/sgdtekst.xsl</sd:parameter>
+  <sd:parameter name="query2" type="field">_query</sd:parameter>
+</sd:parameters>
+<sd:extraConditions>
+<sd:extraCondition field="identifier:URL">urn=ddd</sd:extraCondition>
+</sd:extraConditions>
+<dc:format>html</dc:format>
+<sd:typeOfUse>embed</sd:typeOfUse>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0037</sd:sidId>
+<dc:title>Show XML</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/tpp/get</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType/>
+<sd:serviceLabel>Show xml</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="url" type="parts">
+    <sd:parmPart type="replace">/(.*?)resolver(.*?)/</sd:parmPart>
+    <sd:parmPart type="field">identifier:URL</sd:parmPart>
+    <sd:parmPart type="replaceBy">$1resolver3a$2</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:extraConditions>
+<sd:extraCondition field="identifier:URL">urn=ddd:</sd:extraCondition>
+</sd:extraConditions>
+<dc:format>html</dc:format>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0038</sd:sidId>
+<dc:title>Show PDF</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/tpp/get</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType/>
+<sd:serviceLabel>Show pdf of newspaper</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="url" type="parts">
+    <sd:parmPart type="replace">/^(.*?)resolver(.*?)mpeg21:(.*?)$/</sd:parmPart>
+    <sd:parmPart type="field">identifier:URL</sd:parmPart>
+    <sd:parmPart type="replaceBy">$1resolver3a$2</sd:parmPart>
+    <sd:parmPart type="fixed">mpeg21:pdf#search=</sd:parmPart>
+    <sd:parmPart type="field">_query</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:extraConditions>
+<sd:extraCondition field="identifier:URL">urn=ddd:</sd:extraCondition>
+</sd:extraConditions>
+<dc:format>html</dc:format>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0002</sd:sidId>
+<dc:title>Image annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/image-annotation-frontend/annotate.jsp?db=tel</dc:identifier>
+<dc:type>service</dc:type>
+<dc:description>View existing image annotations in TEL database without login and without posibility to annotate.</dc:description>
+<sd:parameters>
+  <sd:parameter name="objectURL" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+<sd:trigger>annotates</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Annotate</sd:serviceType>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceLabel>Show annotations for this object</sd:serviceLabel>
+<dc:format>html</dc:format>
+</sd:service>
+
+<sd:service>
+<dc:title>Image annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/portal/en/authenticate.html?authToken=app=TELplus,user=@username@,keyType=public,keyLocation=http%3A%2F%2Fdme.arcs.ac.at%2Fimage-annotation-frontend%2Fpk&amp;appSign=app=TELplus,appSign=@seconds@,keyType=private&amp;url=http%3A%2F%2Fdme.arcs.ac.at%2Fimage-annotation-frontend%2Fannotate.jsp%3FauthToken%3D%40authToken%40%26appSign%3D%40appSign%40%26objectURL=@objectURL@</dc:identifier>
+<dc:type>service</dc:type>
+<sd:parameters>
+  <sd:parameter name="@objectURL@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Annotate</sd:serviceType>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceLabel>Create annotation (after login)</sd:serviceLabel>
+<dc:format>html</dc:format>
+</sd:service>
+
+<sd:service>
+<dc:title>Image annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/annotation-middleware/tp/annotations/@URL@?db=TEL</dc:identifier>
+<dc:type>service</dc:type>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+<sd:trigger>identifier</sd:trigger>
+<sd:trigger>annotates</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="@URL@" type="field" substitute="true" operation="doubleEncode">_triggerValue</sd:parameter>
+  <sd:parameter name="result-count-type" type="fixed">getJsonResponse</sd:parameter>
+</sd:parameters>
+<sd:accessType>JSON</sd:accessType>
+<sd:serviceType>Search</sd:serviceType>
+<sd:serviceLabel>Check for annotations for this object (json)</sd:serviceLabel>
+<sd:invocation>option</sd:invocation>
+<sd:fieldSpec unitName="unitName">numberOfHits</sd:fieldSpec>
+<sd:typeOfUse>alertIfResultCount</sd:typeOfUse>
+<sd:nextService>http://dme.arcs.ac.at/image-annotation-frontend/annotate.jsp?amp;db=tel&amp;</sd:nextService>
+<dc:format>json</dc:format>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0004</sd:sidId>
+<dc:title>Check annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/annotation-middleware/annotations/@URL@?db=TEL</dc:identifier>
+<dc:type>service</dc:type>
+<dc:description>Check if there are annotations for a specific object via an HTTP request. The result is an RDF response. The number of annotations is obtained from the numer of occurences of the a:annotates tag.</dc:description>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="@URL@" type="field" substitute="true" operation="doubleEncode">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceType>Search</sd:serviceType>
+<sd:serviceLabel>Check for annotations for this object</sd:serviceLabel>
+<sd:invocation>option</sd:invocation>
+<fieldSpec>a:annotates</fieldSpec>
+<sd:typeOfUse>alertOccurrences</sd:typeOfUse>
+<sd:nextService>http://dme.arcs.ac.at/image-annotation-frontend/annotate.jsp?amp;db=tel&amp;</sd:nextService>
+<dc:format>html</dc:format>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0006</sd:sidId>
+<dc:title>SGD Image highlighter</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://www.kbresearch.nl/tph/hl?colour=ffff00</dc:identifier>
+<dc:type>service</dc:type>
+<dc:descripton>Service to highlight words in an image based on the coordinates of the words in the image. Syntax: img=the image;coords=file with coodinates;format=format of the coordinates (SGD or ALTO);color=color of highlight;scale=scale factor between coordinates and image resoltion. The image and coordinates are usually obtained from a file with structural metadata (MPEG21 DIDL or METS). Using this service description automatically requires the application to have a notion of the parameters.</dc:descripton>
+<sd:serviceType>highlight</sd:serviceType>
+<sd:serviceLabel>Highlight query terms</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>url</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+<sd:extraCondition field="identifier:URL">SGD:sgd</sd:extraCondition>
+</sd:extraConditions>
+<sd:parameters>
+<sd:parameter name="coords" type="parts">
+<sd:parmPart type="replace">/(.*?)FULLTEXT(.*?)tekst(.*?)/</sd:parmPart>
+<sd:parmPart type="field">_triggerValue</sd:parmPart>
+<sd:parmPart type="replaceBy">$1COORDINATEN$2coordinaten$3</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="img" type="parts">
+<sd:parmPart type="replace">/(.*?)FULLTEXT(.*?)tekst_(.*?).xml/</sd:parmPart>
+<sd:parmPart type="field">_triggerValue</sd:parmPart>
+<sd:parmPart type="replaceBy">$1JPEG$2$3.jpg</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="words" type="field">_query</sd:parameter>
+<sd:parameter name="format" type="fixed">SGD</sd:parameter>
+<sd:parameter name="scale" type="fixed">2.08</sd:parameter>
+</sd:parameters>
+<dc:format>image</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0016</sd:sidId>
+<dc:title>Google fulltext</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://book.google.com/?as_brr=1</dc:identifier>
+<dc:type>service</dc:type>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceType>Search</sd:serviceType>
+<sd:serviceLabel>Check for availability of fulltext in Google</sd:serviceLabel>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>displayWhenText:&gt;Volledige weergave&lt;</sd:typeOfUse>
+<dc:format>html</dc:format>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0039</sd:sidId>
+<dc:title>Google books</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://book.google.com/</dc:identifier>
+<dc:type>service</dc:type>
+<sd:triggers>
+<sd:trigger>identifier:OCLC</sd:trigger>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="vid" type="parts">
+    <sd:parmPart type="fixed">OCLC</sd:parmPart>
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceType>Search</sd:serviceType>
+<sd:serviceLabel>Search in Google books</sd:serviceLabel>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<dc:format>html</dc:format>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0015</sd:sidId>
+<dc:title>TEL OpenURL server</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://search.theeuropeanlibrary.org/portal/en/telopenurl.html</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>xOpenURL</sd:serviceType>
+<sd:serviceLabel>Link to European Library resolver</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:OpenURL</sd:trigger>
+<sd:trigger>identifier:ISBN</sd:trigger>
+<sd:trigger>identifier:ISSN</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="sid" type="parts">
+     <sd:parmPart type="fixed">tel&amp;</sd:parmPart>
+     <sd:parmPart type="field" default="">identifier:OpenURL</sd:parmPart>
+   </sd:parameter>
+   <sd:parameter name="isbn" type="field">identifier:ISBN</sd:parameter>
+   <sd:parameter name="issn" type="field">identifier:ISSN</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<dc:title>Librarything Search</dc:title>
+<dc:identifier>http://www.librarything.com/search_works.php</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Search on Librarything.com</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:logo>http://www.librarything.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0017</sd:sidId>
+<dc:title>Freetranslation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://ets.freetranslation.com/</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:serviceLabel>Translate to your language by 'Freetranslation'</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>caption</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="srctext" type="field">_triggerValue</sd:parameter>
+  <sd:parameter name="language" type="parts">
+    <sd:parmPart type="field">_srcLangFull</sd:parmPart>
+    <sd:parmPart type="fixed">/</sd:parmPart>
+    <sd:parmPart type="field">_userLangFull</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="sequence" type="fixed">core</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>POST</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>replaceField</sd:typeOfUse>
+<sd:logo>http://www.freetranslation.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0005</sd:sidId>
+<dc:title>Babelfish</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://babelfish.yahoo.com/translate_txt</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:serviceLabel>Translate to prefered language by Babelfish</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+<sd:trigger>description</sd:trigger>
+</sd:triggers>
+<dc:format>html</dc:format>
+<sd:accessType>POST</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>replaceText</sd:typeOfUse>
+<sd:parameters>
+	<sd:parameter name="ei" type="fixed">UTF-8</sd:parameter>
+	<sd:parameter name="doit" type="fixed">done</sd:parameter>	
+	<sd:parameter name="fr" type="fixed">bf-home</sd:parameter>
+	<sd:parameter name="intl" type="fixed">1</sd:parameter>
+	<sd:parameter name="tt" type="fixed">urltext</sd:parameter>
+	<sd:parameter name="urltext" type="field">_triggerValue</sd:parameter>
+	<sd:parameter name="lp" type="lookup">
+	<sd:keys>
+		<sd:key>_srcLang639_1</sd:key>
+		<sd:key>_userLang639_1</sd:key>
+	</sd:keys>
+	<sd:entries>
+		<sd:entry><sd:val>en</sd:val><sd:val>fr</sd:val><sd:val>en_fr</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>de</sd:val><sd:val>en_de</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>el</sd:val><sd:val>en_de</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>it</sd:val><sd:val>en_it</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>pt</sd:val><sd:val>en_pt</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>ru</sd:val><sd:val>en_ru</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>es</sd:val><sd:val>en_es</sd:val></sd:entry>
+		<sd:entry><sd:val>nl</sd:val><sd:val>en</sd:val><sd:val>nl_en</sd:val></sd:entry>
+		<sd:entry><sd:val>nl</sd:val><sd:val>fr</sd:val><sd:val>nl_fr</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>en</sd:val><sd:val>fr_en</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>de</sd:val><sd:val>fr_de</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>el</sd:val><sd:val>fr_el</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>it</sd:val><sd:val>fr_it</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>pt</sd:val><sd:val>fr_pt</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>nl</sd:val><sd:val>fr_nl</sd:val></sd:entry>
+		<sd:entry><sd:val>fr</sd:val><sd:val>es</sd:val><sd:val>fr_es</sd:val></sd:entry>
+		<sd:entry><sd:val>de</sd:val><sd:val>en</sd:val><sd:val>de_en</sd:val></sd:entry>
+		<sd:entry><sd:val>en</sd:val><sd:val>nl</sd:val><sd:val>en_nl</sd:val></sd:entry>
+		<sd:entry><sd:val>el</sd:val><sd:val>en</sd:val><sd:val>el_en</sd:val></sd:entry>
+		<sd:entry><sd:val>el</sd:val><sd:val>fr</sd:val><sd:val>el_fr</sd:val></sd:entry>
+		<sd:entry><sd:val>it</sd:val><sd:val>en</sd:val><sd:val>it_en</sd:val></sd:entry>
+		<sd:entry><sd:val>it</sd:val><sd:val>fr</sd:val><sd:val>it_fr</sd:val></sd:entry>
+		<sd:entry><sd:val>pt</sd:val><sd:val>en</sd:val><sd:val>pt_en</sd:val></sd:entry>
+		<sd:entry><sd:val>pt</sd:val><sd:val>fr</sd:val><sd:val>pt_fr</sd:val></sd:entry>
+		<sd:entry><sd:val>ru</sd:val><sd:val>en</sd:val><sd:val>ru_en</sd:val></sd:entry>
+		<sd:entry><sd:val>es</sd:val><sd:val>en</sd:val><sd:val>es_en</sd:val></sd:entry>
+		<sd:entry><sd:val>es</sd:val><sd:val>fr</sd:val><sd:val>es_fr</sd:val></sd:entry>
+	</sd:entries>
+	</sd:parameter>
+</sd:parameters>
+<sd:logo>http://www.yahoo.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0007</sd:sidId>
+<dc:title>Google search</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://google.com/search?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Google search</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="hl" type="fixed">nl</sd:parameter>
+<sd:parameter name="site" type="fixed"></sd:parameter>
+<sd:parameter name="meta" type="fixed"></sd:parameter>
+<sd:parameter name="btnG" type="fixed">Zoeken</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>_query</sd:trigger>
+<sd:trigger>*</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+<sd:extraCondition>_noHits</sd:extraCondition>
+</sd:extraConditions>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0008</sd:sidId>
+<dc:title>Google images</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://images.google.com/images?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Search in Google images</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+<sd:trigger>subject</sd:trigger>
+<sd:trigger>subject:person</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="svnum" type="fixed">10</sd:parameter>
+<sd:parameter name="hl" type="fixed">en</sd:parameter>
+<sd:parameter name="btnG" type="fixed">Search</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0033</sd:sidId>
+<dc:title>VIAF identities</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://viaf.org/search?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Find identity in VIAF</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="query" type="field">cql.any+all+"_triggerValue"</sd:parameter>
+<sd:parameter name="version" type="fixed">1.1</sd:parameter>
+<sd:parameter name="maximumRecords" type="fixed">100</sd:parameter>
+<sd:parameter name="operation" type="fixed">searchRetrieve</sd:parameter>
+<sd:parameter name="stylesheet" type="fixed">xsl/results.xsl</sd:parameter>
+<sd:parameter name="sortKeys" type="fixed">holdingscount</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://viaf.org/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0018</sd:sidId>
+<dc:title>Youtube</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://youtube.com/results?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Find videos in Youtube</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>subject</sd:trigger>
+<sd:trigger>subject:person</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="search_query" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0040</sd:sidId>
+<dc:title>Geonames</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://www.geonames.org/search.html?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Locate</sd:serviceType>
+<sd:serviceLabel>Locate on map</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>coverage</sd:trigger>
+<sd:trigger>spatial</sd:trigger>
+<sd:trigger>spatial:creation</sd:trigger>
+<sd:trigger>subject:location</sd:trigger>
+<sd:trigger>publisher</sd:trigger>
+<sd:trigger>location</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+	<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0041</sd:sidId>
+<dc:title>Google maps</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://maps.google.com?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Locate</sd:serviceType>
+<sd:serviceLabel>Locate on Google maps</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>spatial:Point</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="q" type="parts">
+    <sd:parmPart type="field">_north</sd:parmPart>
+    <sd:parmPart type="fixed">,</sd:parmPart>
+    <sd:parmPart type="field">_east</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<dc:title>Request item at KB</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://opc4.kb.nl/DB=1/PPN?PPN=@PPN@</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Request</sd:serviceType>
+<sd:serviceLabel>Request item</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>recordIdentifier:URI</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="@PPN@" substitute="true" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0029</sd:sidId>
+<dc:title>Amazon book search</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://www.amazon.com/exec/obidos/isbn=@isbn@</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Search in Amazon</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="@isbn@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0009</sd:sidId>
+<dc:title>Cepstral Text to Speech</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://demos.cepstral.com/cepstral/demos/demo.cgi/cepstral.wav?rate=170;pitch=1;effect=none;submit=Synthesize+the+Text;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>TextToSpeech</sd:serviceType>
+<sd:serviceLabel>Say it</sd:serviceLabel>
+<dc:description>Service that converts text to speech in different languages. For using this service one has to ask the owner of this service for permission.</dc:description>
+<sd:triggers>
+	<sd:trigger>title</sd:trigger>
+	<sd:trigger>_text</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+	<sd:parameter name="content" type="field">_triggerValue</sd:parameter>	
+	<sd:parameter name="voice" type="lookup">		
+		<sd:keys>			
+			<sd:key>_srcLang639_1</sd:key>
+		</sd:keys>
+		<sd:defaultVal>Allison</sd:defaultVal>
+		<sd:entries>
+			<sd:entry>
+				<sd:val>en</sd:val>
+				<sd:val>Allison</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>fr</sd:val>
+				<sd:val>Isabelle</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>it</sd:val>
+				<sd:val>Vittoria</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>de</sd:val>
+				<sd:val>Katrin</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>nl</sd:val>
+				<sd:val>Katrin</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>sp</sd:val>
+				<sd:val>Marta</sd:val>
+			</sd:entry>
+			<sd:entry>
+				<sd:val>pt</sd:val>
+				<sd:val>Marta</sd:val>
+			</sd:entry>
+		</sd:entries>	
+	</sd:parameter>
+	<sd:parameter name="sid" type="sessionId"/>
+</sd:parameters>
+<sd:sessionURL>http://demos.cepstral.com/cepstral/demos/demo.cgi/cepstral.wav</sd:sessionURL>
+<dc:format>audio</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://cepstral.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0010</sd:sidId>
+<dc:title>Amazon Frontpage image</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://images.amazon.com/images/P/@isbn@.01._AA240_SCLZZZZZZZ_.jpg</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Thumbnail</sd:serviceType>
+<sd:serviceLabel>See coverpage</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+<sd:extraCondition field="language">eng</sd:extraCondition>
+</sd:extraConditions>
+<sd:parameters>
+<sd:parameter name="@isbn@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>image</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0011</sd:sidId>
+<dc:title>Elsevier Frontpage image</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://www1.elsevier.com/catalogue/covers/store/issn/@issn@.gif</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Thumbnail</sd:serviceType>
+<sd:serviceLabel>See journal front page</sd:serviceLabel>
+<sd:triggers>
+	<sd:trigger>isPartOf:ISSN</sd:trigger>
+</sd:triggers>
+<sd:extraConditions>
+	<sd:extraCondition field="publisher">Elsevier</sd:extraCondition>
+</sd:extraConditions>
+<sd:parameters>
+   <sd:parameter name="@issn@" type="field" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>image</dc:format>
+<sd:typeOfUse>thumbnail</sd:typeOfUse>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0019</sd:sidId>
+<dc:title>Interglot</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://www.interglot.com/interglotresult.php?&amp;SrcLang=2&amp;DstLang=1&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Translation</sd:serviceType>
+<sd:serviceLabel>Translate your query by Interglot</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>_query</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="word" type="field">_query</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0042</sd:sidId>
+<dc:title>KB resolver</dc:title>
+<dc:identifier>http://resolver.kb.nl/resolve?urn=</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Resolve</sd:serviceType>
+<sd:serviceLabel>Get this object</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URN</sd:trigger>
+<sd:trigger>identifier:DOI</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="urn" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>unknown</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0020</sd:sidId>
+<dc:title>Flickr</dc:title>
+<dc:identifier>http://flickr.com/search/?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Search in Flickr</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>_query</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="q" type="field">_query</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0021</sd:sidId>
+<dc:title>Getty</dc:title>
+<dc:identifier>http://www.getty.edu/vow/TGNServlet?english=Y&amp;place=&amp;page=1&amp;nation=&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Search in Getty thesaurus</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>spatial</sd:trigger>
+<sd:trigger>spatial:creation</sd:trigger>
+<sd:trigger>subject:location</sd:trigger>
+<sd:trigger>publisher</sd:trigger>
+<sd:trigger>originPlace</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="find" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0022</sd:sidId>
+<dc:title>Google Dictionary</dc:title>
+<dc:identifier>http://translate.google.com/translate_dict?hl=en/translate_dict?&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Google Dictionary</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>_query</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="q" type="field">_query</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0043</sd:sidId>
+<dc:title>SZTAKI Dictionary</dc:title>
+<dc:identifier>http://szotar.sztaki.hu/dict_search.php?L=HUN:ENG:EngHunDict&amp;M=2&amp;C=1&amp;A=1&amp;T=1</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceType>Dictionary</sd:serviceType>
+<sd:serviceLabel>Translate to Hungarian</sd:serviceLabel>
+<sd:parameters>
+   <sd:parameter name="W" type="field">_query</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>_query</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0044</sd:sidId>
+<dc:title>Hungarian authors</dc:title>
+<dc:identifier>http://regi.pim.hu/Online/adattar/mei.php?mit1=Név&amp;valt=kereses&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Info</sd:serviceType>
+<sd:serviceLabel>Hungarian authors</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+   <sd:parameter name="ertek1" type="field">_query</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0023</sd:sidId>
+<dc:title>Geonames</dc:title>
+<dc:identifier>http://ws.geonames.org/cities?@@</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Geospatial</sd:serviceType>
+<sd:serviceLabel>Find most relevant cities</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>spatial:Point</sd:trigger>
+<sd:trigger>spatial:Box</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="north" type="field">_north</sd:parameter>
+  <sd:parameter name="south" type="field">_south</sd:parameter>
+  <sd:parameter name="west" type="field">_west</sd:parameter>
+  <sd:parameter name="east" type="field">_east</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:fieldSpec>/geonames/geoname/name</sd:fieldSpec>
+<sd:typeOfUse>createSearchList</sd:typeOfUse>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0024</sd:sidId>
+<dc:title>Geonames</dc:title>
+<dc:identifier>http://ws.geonames.org/searchJSON?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:parameters>
+  <sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+  <sd:parameter name="callback" type="callBack" />
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>spatial</sd:trigger>
+<sd:trigger>spatial:creation</sd:trigger>
+<sd:trigger>subject:location</sd:trigger>
+<sd:trigger>publisher</sd:trigger>
+<sd:trigger>originPlace</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Test</sd:serviceType>
+<sd:serviceLabel>Find related places</sd:serviceLabel>
+<dc:format>json</dc:format>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:fieldSpec>geonames[*].name</sd:fieldSpec>
+<sd:typeOfUse>createSearchList</sd:typeOfUse>
+<sd:accessType>JSON</sd:accessType>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0025</sd:sidId>
+<dc:title>Old maps</dc:title>
+<dc:identifier>http://dev.theeuropeanlibrary.org/vga/sru/sru.pl?x-collection=TELplus_O&amp;</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Search</sd:serviceType>
+<sd:parameters>
+  <sd:parameter name="query" type="parts">
+    <sd:parmPart type="fixed">((northlimit&gt;</sd:parmPart>
+    <sd:parmPart type="field">_north</sd:parmPart>
+    <sd:parmPart type="fixed">) and (southlimit&lt;</sd:parmPart>
+    <sd:parmPart type="field">_north</sd:parmPart>
+    <sd:parmPart type="fixed">) and (eastlimit&gt;</sd:parmPart>
+    <sd:parmPart type="field">_east</sd:parmPart>
+    <sd:parmPart type="fixed">) and (westlimit&lt;</sd:parmPart>
+    <sd:parmPart type="field">_east</sd:parmPart>
+    <sd:parmPart type="fixed">))</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>spatial:Point</sd:trigger>
+<sd:trigger>spatial</sd:trigger>
+</sd:triggers>
+<sd:serviceLabel>Find old maps with this location</sd:serviceLabel>
+<sd:accessType>SRU</sd:accessType>
+<sd:typeOfUse>search</sd:typeOfUse>
+<sd:invocation>option</sd:invocation>
+<sd:serviceTypeSpecificParameters>
+<sd:brfFormat>dcx</sd:brfFormat>
+<sd:fullFormat>dcx</sd:fullFormat>
+</sd:serviceTypeSpecificParameters>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0027</sd:sidId>
+<dc:title>Google translate</dc:title>
+<dc:identifier>http://ajax.googleapis.com/ajax/services/language/translate?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Translate by Google (replace)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="v" type="fixed" operation="maxlength=255">1.0</sd:parameter>
+<sd:parameter name="langpair" type="parts">
+	<sd:parmPart type="field">_srcLang639_1</sd:parmPart>
+	<sd:parmPart type="fixed">%7c</sd:parmPart>
+	<sd:parmPart type="field">_userLang639_1</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+<sd:parameter name="callback" type="fixed">getJsonResponse</sd:parameter>
+</sd:parameters>
+<sd:fieldSpec>responseData.translatedText</sd:fieldSpec>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:accessType>JSON</sd:accessType>
+<sd:typeOfUse>replaceField</sd:typeOfUse>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0026</sd:sidId>
+<dc:title>Google translate</dc:title>
+<dc:identifier>http://ajax.googleapis.com/ajax/services/language/translate?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Translate by Google (alert)</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+<sd:parameter name="v" type="fixed" operation="maxlength=255">1.0</sd:parameter>
+<sd:parameter name="langpair" type="parts">
+	<sd:parmPart type="field">_srcLang639_1</sd:parmPart>
+	<sd:parmPart type="fixed">%7c</sd:parmPart>
+	<sd:parmPart type="field">_userLang639_1</sd:parmPart>
+</sd:parameter>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+<sd:parameter name="callback" type="fixed">getJsonResponse</sd:parameter>
+</sd:parameters>
+<sd:fieldSpec>responseData.translatedText</sd:fieldSpec>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:accessType>JSON</sd:accessType>
+<sd:serviceType>Translate</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+<sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0028</sd:sidId>
+<dc:title>Analyse text</dc:title>
+<dc:identifier>http://dev.theeuropeanlibrary.org/tpta/analyse?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Search suggestions (text analyser)</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="text" type="field" operation="URLEncode">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>description</sd:trigger>
+<sd:trigger>abstract</sd:trigger>
+<sd:trigger>_text</sd:trigger>
+<sd:trigger>title</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:typeOfUse>createSearchList</sd:typeOfUse>
+<sd:fieldSpec>location|person|organisation</sd:fieldSpec>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Analyse</sd:serviceType>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0030</sd:sidId>
+<dc:title>Map timeline</dc:title>
+<dc:identifier>http://dme.arcs.ac.at/map-timeline-browser/FrontEndServlet?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Map on Google maps</sd:serviceLabel>
+<sd:parameters>
+  <sd:parameter operation="stylesheet" name="records" type="field">_service</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>_service=Historical Maps</sd:trigger>
+<sd:trigger>_service=Old maps</sd:trigger>
+</sd:triggers>
+<sd:accessType>POST</sd:accessType>
+<sd:stylesheet>http://dme.arcs.ac.at/telplus/telplus_records.xsl</sd:stylesheet>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:serviceType>Locate</sd:serviceType>
+</sd:service>
+
+<sd:service>
+<dc:title>Map timeline (all)</dc:title>
+<dc:identifier>http://dme.arcs.ac.at/map-timeline-browser</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Show all on Google maps</sd:serviceLabel>
+<sd:parameters>
+  <sd:parameter>_none</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>_service=Historical Maps</sd:trigger>
+<sd:trigger>_service=Old maps</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Locate</sd:serviceType>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0045</sd:sidId>
+<dc:title>Related subjects</dc:title>
+<dc:identifier>http://www.kbresearch.nl/related/subject/?tr=subject.xsl&amp;rows=1&amp;wt=xslt</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Show related subjects</sd:serviceLabel>
+<sd:parameters>
+  <sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>subject</sd:trigger>
+<sd:trigger>subject:Brinkman</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>createSearchList</sd:typeOfUse>
+<sd:fieldSpec>/result/related_subject</sd:fieldSpec>
+</sd:service>
+
+<sd:service>
+<dc:title>Authors</dc:title>
+<dc:identifier>http://www.librarything.com/search_author.php?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Search author on Librarything.com</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>author</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:logo>http://www.librarything.com/favicon.ico</sd:logo>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0031</sd:sidId>
+<dc:title>Co-authors</dc:title>
+<dc:identifier>http://www.kbresearch.nl/related/author/?sort=has_published_work desc&amp;rows=1&amp;wt=xslt&amp;tr=relations.xsl&amp;</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Show more co-authors</sd:serviceLabel>
+<sd:parameters>
+  <sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>contributor</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>createSearchList</sd:typeOfUse>
+<sd:fieldSpec>/result/coauthor</sd:fieldSpec>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0047</sd:sidId>
+<dc:title>Twitter</dc:title>
+<dc:identifier>http://twitter.com/statuses/update.xml?</dc:identifier>
+<dc:format>xml</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Add related URL in Twitter</sd:serviceLabel>
+<sd:parameters>
+   <sd:parameter name="status" type="parts">
+    <sd:parmPart type="fixed">#isbn #</sd:parmPart>
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+    <sd:parmPart type="fixed"> #relatesTo </sd:parmPart>
+    <sd:parmPart type="field">_url</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:accessType>POST</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0048</sd:sidId>
+<dc:title>Twitter</dc:title>
+<dc:identifier>http://search.twitter.com/search?</dc:identifier>
+<dc:format>html</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Find related URLs in Twitter (HTML)</sd:serviceLabel>
+<sd:parameters>
+	<sd:parameter name="q" type="parts">
+		<sd:parmPart type="fixed">%23isbn %23</sd:parmPart>
+		<sd:parmPart type="field">_triggerValue</sd:parmPart>
+	</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:accessType>GET</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0049</sd:sidId>
+<dc:title>Twitter</dc:title>
+<dc:identifier>http://search.twitter.com/search.json?</dc:identifier>
+<dc:format>json</dc:format>
+<dc:type>service</dc:type>
+<sd:serviceLabel>Find related URLs in Twitter (JSON)</sd:serviceLabel>
+<sd:parameters>
+	<sd:parameter name="q" type="parts">
+		<sd:parmPart type="fixed">%23isbn %23</sd:parmPart>
+		<sd:parmPart type="field">_triggerValue</sd:parmPart>
+	</sd:parameter>
+	<sd:parameter name="callback" type="callBack">getJsonResponse</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:ISBN</sd:trigger>
+</sd:triggers>
+<sd:accessType>JSON</sd:accessType>
+<sd:invocation>option</sd:invocation>
+<sd:serviceType>Relate</sd:serviceType>
+<sd:typeOfUse>addToField</sd:typeOfUse>
+<sd:callBackParameter>callback</sd:callBackParameter>
+<sd:fieldSpec>results[*].text</sd:fieldSpec>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0003</sd:sidId>
+<dc:title>Related annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/annotation-middleware/annotations/linkedAnnotations/@URL@?db=TEL</dc:identifier>
+<dc:type>service</dc:type>
+<dc:description>Check if there are annotations for a specific object via a JSON request. The output is only the number of hits and the unitName.</dc:description>
+<sd:parameters>
+	<sd:parameter name="@URL@" type="field" operation="doubleEncode" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+	<sd:trigger>identifier:URI</sd:trigger>
+	<sd:trigger>identifier:URL</sd:trigger>
+	<sd:trigger>identifier</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Annotate</sd:serviceType>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceLabel>Check linked annotations for this object</sd:serviceLabel>
+<sd:typeOfUse>alertOccurrences</sd:typeOfUse>
+<sd:fieldSpec>a:annotates</sd:fieldSpec>
+<dc:format>xml</dc:format>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0051</sd:sidId>
+<dc:title>Related annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/annotation-middleware/annotations/linkedAnnotations/@URL@?db=TEL</dc:identifier>
+<dc:type>service</dc:type>
+<sd:parameters>
+<sd:parameter name="@URL@" type="field" operation="doubleEncode" substitute="true">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Annotate</sd:serviceType>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceLabel>Add linked annotations to this object</sd:serviceLabel>
+<sd:fieldSpec>a:annotates</sd:fieldSpec>
+<sd:typeOfUse>addToField</sd:typeOfUse>
+<dc:format>xml</dc:format>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0052</sd:sidId>
+<dc:title>Related annotation</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/portal/en/authenticate.html?authToken=app=TELplus,user=@username@,keyType=public,keyLocation=http%3A%2F%2Fdme.arcs.ac.at%2Fimage-annotation-frontend%2Fpk&amp;appSign=app=TELplus,appSign=@seconds@,keyType=private&amp;url=http%3A%2F%2Fdme.arcs.ac.at%2Fimage-annotation-frontend%2Fannotate.jsp%3FauthToken%3D%40authToken%40%26appSign%3D%40appSign%40%26</dc:identifier>
+<dc:type>service</dc:type>
+<sd:parameters>
+  <sd:parameter name="objectURL" type="parts">
+    <sd:parmPart type="field" operation="doubleencode">_url</sd:parmPart>
+    <sd:parmPart type="fixed">%26id=</sd:parmPart>
+    <sd:parmPart type="field" operation="doubleencode">_triggerValue</sd:parmPart>
+  </sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>identifier:URI</sd:trigger>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Annotate</sd:serviceType>
+<sd:accessType>GET</sd:accessType>
+<sd:serviceLabel>Create linked annotation (after login)</sd:serviceLabel>
+<dc:format>html</dc:format>
+</sd:service>
+
+<sd:service>
+<dc:title>AIT Keyword Extractor</dc:title>
+<dc:identifier>http://dme.arcs.ac.at/keyword-extractor-demo/cloud.jsp?max=80&amp;lang=EN&amp;</dc:identifier>
+<dc:format>HTML</dc:format>
+<dc:type>Service</dc:type>
+<sd:serviceLabel>Create a tag cloud</sd:serviceLabel>
+<sd:parameters>
+<sd:parameter name="text" type="field">_triggerValue</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>abstract</sd:trigger>
+</sd:triggers>
+<sd:accessType>POST</sd:accessType>
+<sd:serviceType>Info</sd:serviceType>
+<sd:invocation>option</sd:invocation>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+</sd:service>
+
+<sd:service>
+<dc:title>Show text</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dme.arcs.ac.at/telplus/humanReadableEcho?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType/>
+<sd:serviceLabel>Test SIWA 1.4</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:parameters>
+  <sd:parameter name="xml" type="parts">
+    <sd:parmPart type="replace">/(.*?)resolver(.*?)$/</sd:parmPart>
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+    <sd:parmPart type="replaceBy">$1resolver3a$2</sd:parmPart>
+    <sd:parmPart type="prompt">Here comes the prompt value:</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="xsl" type="fixed">http://www.kbresearch.nl/tpportal/sgdtekst.xsl</sd:parameter>
+  <sd:parameter name="query2" type="field">_query</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<dc:title>Show image</dc:title>
+<dc:identifier xsi:type="dcterms:URI">http://dev.theeuropeanlibrary.org/tpp/get?url=http://services2a.kb.nl/ics/Converter?id=http://resolver3a.kb.nl/topath?</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType/>
+<sd:serviceLabel>Show image of the page</sd:serviceLabel>
+<sd:triggers>
+<sd:trigger>identifier:URL</sd:trigger>
+</sd:triggers>
+<sd:inputParameter />
+<sd:parameters>
+  <sd:parameter name="urn" type="parts">
+    <sd:parmPart type="replace">/(.*?)urn=(.*?)mpeg21:(.*?)$/</sd:parmPart>
+    <sd:parmPart type="field">_triggerValue</sd:parmPart>
+    <sd:parmPart type="replaceBy">$2</sd:parmPart>
+    <sd:parmPart type="fixed">mpeg21:p00</sd:parmPart>
+    <sd:parmPart type="field">page</sd:parmPart>
+    <sd:parmPart type="fixed">:image</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="s" type="fixed">.33&amp;x=0&amp;y=0&amp;w=2000&amp;h=2000</sd:parameter>
+</sd:parameters>
+<dc:format>html</dc:format>
+<sd:invocation>option</sd:invocation>
+</sd:service>
+
+<sd:service>
+<sd:sidId>0032</sd:sidId>
+<dc:title>Service Integration Descriptions</dc:title>
+<dc:identifier>http://dev.theeuropeanlibrary.org/vga/sru/sru.pl?recordSchema=dcx&amp;maximumRecords=10&amp;startRecord=1&amp;x-collection=TELplus_O&amp;x-base=type=service</dc:identifier>
+<dc:type>service</dc:type>
+<sd:serviceType>Search</sd:serviceType>
+<sd:parameters>
+  <sd:parameter name="query" type="parts">
+    <sd:parmPart type="fixed">sd:trigger all </sd:parmPart>
+    <sd:parmPart type="field">_triggerName</sd:parmPart>
+  </sd:parameter>
+  <sd:parameter name="stylesheet" type="fixed">http://dev.theeuropeanlibrary.org/sidregistry/servRegistryList.xsl</sd:parameter>
+</sd:parameters>
+<sd:triggers>
+<sd:trigger>title</sd:trigger>
+<sd:trigger>creator</sd:trigger>
+<sd:trigger>subject</sd:trigger>
+<sd:trigger>*</sd:trigger>
+</sd:triggers>
+<sd:serviceType>Search</sd:serviceType>
+<sd:serviceLabel>Find more services...</sd:serviceLabel>
+<sd:accessType>GET</sd:accessType>
+<sd:typeOfUse>linkOnly</sd:typeOfUse>
+<sd:invocation>option</sd:invocation>
+<sd:behavior>_newWindow</sd:behavior>
+<sd:serviceTypeSpecificParameters>
+<sd:brfFormat>dcx</sd:brfFormat>
+<sd:fullFormat>dcx</sd:fullFormat>
+</sd:serviceTypeSpecificParameters>
+</sd:service>
+</sd:services>

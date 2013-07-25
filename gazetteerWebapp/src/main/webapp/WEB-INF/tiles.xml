@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+-->
+
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="layout" template="site/layout.ftl">
+		<put-attribute name="title"			value="site.title"/>
+		<put-attribute name="header"		value="/site/header.ftl"/>
+		<put-attribute name="page"			value="/site/empty.ftl"/>
+		<put-attribute name="footer"		value="/site/footer.ftl"/>
+		<put-attribute name="map"			value=""/>
+        <put-attribute name="menu" 			value="/site/menu.ftl"/>
+	</definition>
+
+	<definition name="homepage" extends="layout">
+		<!--
+		<put-attribute name="page"			value="/site/homepage.ftl"/>
+        -->
+    </definition>
+
+	<definition name="urn" extends="layout">
+        <put-attribute name="page" value="/site/urn.ftl"/>
+    </definition>
+
+	<definition name="gp" extends="layout">
+        <put-attribute name="page" value="/site/gp.ftl"/>
+    </definition>
+
+	<definition name="oai" extends="layout">
+        <put-attribute name="page" value="/site/oai.ftl"/>
+    </definition>
+
+	<definition name="gpoai" extends="layout">
+        <put-attribute name="page" value="/site/gpoai.ftl"/>
+    </definition>
+
+	<definition name="feature" extends="layout">
+        <put-attribute name="page" value="/site/feature.ftl"/>
+		<put-attribute name="map"  value="onload='load()' onunload='GUnload()'"/>
+    </definition>
+
+	<definition name="search" extends="layout">
+        <put-attribute name="page" value="/site/search.ftl"/>
+    </definition>
+
+
+	<definition name="sources" extends="layout">
+        <put-attribute name="page" value="/site/sources.ftl"/>
+    </definition>
+
+	<definition name="source.upload" extends="layout">
+        <put-attribute name="page" value="/site/ds.upload.ftl"/>
+    </definition>
+
+	<definition name="source.upload.success" extends="layout">
+        <put-attribute name="page" value="/site/ds.upload.success.ftl"/>
+    </definition>
+
+
+	<definition name="schemas" extends="layout">
+        <put-attribute name="page" value="/site/schemas.ftl"/>
+    </definition>
+
+	<definition name="thesaurus" extends="layout">
+        <put-attribute name="page" value="/site/thesaurus.ftl"/>
+    </definition>
+
+	<definition name="thesaurus.page" extends="layout">
+        <put-attribute name="page" value="/site/thesaurus.page.ftl"/>
+    </definition>
+
+<!--
+
+	<definition name="place" extends="layout">
+		<put-attribute name="scripts"		value="/site/script.gmaps.ftl"/>
+		<put-attribute name="map"			value="onload='load()' onunload='GUnload()'"/>
+        <put-attribute name="page"			type="template" value="/site/place.ftl"/>
+        <put-attribute name="menu" value="location"/>
+    </definition>
+
+	<definition name="contact" extends="layout">
+		<put-attribute name="menu" value="contact"/>
+    </definition>
+
+	<definition name="product" extends="layout">
+        <put-attribute name="page" type="template" value="/site/product.ftl"/>
+        <put-attribute name="menu" value="product"/>
+    </definition>
+
+	<definition name="product.related" template="site/frame.product.related.ftl"/>
+
+	<definition name="product.categories" template="site/frame.product.category.ftl"/>
+
+	<definition name="products" extends="layout">
+        <put-attribute name="page" type="template" value="/site/products_thumb.ftl"/>
+        <put-attribute name="menu" value="product"/>
+    </definition>
+
+	<definition name="products_list" extends="layout">
+        <put-attribute name="page" type="template" value="/site/products.list.ftl"/>
+        <put-attribute name="menu" value="product"/>
+    </definition>
+
+	<definition name="products_thumb" extends="layout">
+        <put-attribute name="page" type="template" value="/site/products.thumb.ftl"/>
+        <put-attribute name="menu" value="product"/>
+    </definition>
+    
+  -->
+
+</tiles-definitions>

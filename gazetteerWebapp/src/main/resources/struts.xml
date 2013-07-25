@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.multipart.maxSize" value="1000000000"/>
+    <!--
+    <constant name="struts.ui.theme" value="my" />
+    -->
+
+    <package name="gaz" extends="tiles-default">
+		<interceptors>
+	        <interceptor-stack name="defaultStack">
+	            <interceptor-ref name="exception"/>
+	            <interceptor-ref name="alias"/>
+	            <interceptor-ref name="servletConfig"/>
+	            <interceptor-ref name="prepare"/>
+	            <interceptor-ref name="i18n">
+	            	<param name="parameterName">locale</param>
+	            </interceptor-ref>
+	            <interceptor-ref name="chain"/>
+	            <interceptor-ref name="debugging"/>
+	            <interceptor-ref name="profiling"/>
+	            <interceptor-ref name="scopedModelDriven"/>
+	            <interceptor-ref name="modelDriven"/>
+	            <interceptor-ref name="fileUpload"/>
+	            <interceptor-ref name="checkbox"/>
+	            <interceptor-ref name="staticParams"/>
+	            <interceptor-ref name="params">
+	              <param name="excludeParams">dojo\..*</param>
+	            </interceptor-ref>
+	            <interceptor-ref name="conversionError"/>
+	            <interceptor-ref name="validation">
+	                <param name="excludeMethods">input,back,cancel,browse</param>
+	            </interceptor-ref>
+	            <interceptor-ref name="workflow">
+	                <param name="excludeMethods">input,back,cancel,browse</param>
+	            </interceptor-ref>
+	        </interceptor-stack>
+		</interceptors>
+
+
+        <action name="*" class="eu.digmap.gaz.webapp.GazSupport">
+            <result type="tiles">{1}</result>
+        </action>
+
+        <action name="thesaurus.page" class="eu.digmap.gaz.webapp.ThesaurusSupport">
+            <result type="tiles">thesaurus.page</result>
+        </action>
+
+        <action name="feature" class="eu.digmap.gaz.webapp.FeatureSupport">
+            <result type="tiles">feature</result>
+        </action>
+
+        <action name="search" class="eu.digmap.gaz.webapp.NameSearchSupport">
+            <result type="tiles">search</result>
+        </action>
+
+    </package>
+
+</struts>

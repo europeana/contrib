@@ -1,0 +1,20 @@
+<!-- authorisation rules for TPP -->
+<authorisation xmlns="http://www.theeuropeanlibrary.org/telplus/tpp/authorisation">
+	<deny>
+		<domain>kb.nl</domain>
+		<network>192.87.31</network>
+		<network>192.87.41</network>
+	</deny>
+	<allow>
+		<baseUrl>http://www.theeuropeanlibrary.org</baseUrl>
+		<baseUrl>http://sruo.kb.nl/sru/sru.pl</baseUrl>
+		<baseUrl>http://srua.kb.nl/sru/sru.pl</baseUrl>
+		<baseUrl>http://serviceso.kb.nl/</baseUrl>
+		<baseUrl>http://services.kb.nl/</baseUrl>
+		<baseUrl>http://portal.kb.nl:9003</baseUrl>
+		<baseUrl>http://dev.theeuropeanlibrary.org</baseUrl>
+		<baseUrl>http://opc4.kb.nl</baseUrl>
+		<baseUrl>http://resolver.kb.nl</baseUrl>
+		<baseUrl>http://resolvero.kb.nl</baseUrl>
+	</allow>
+</authorisation>

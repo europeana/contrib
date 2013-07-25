@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" encoding="utf-8"?>
+
+<sd:services xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:tel="http://krait.kb.nl/"
+             xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:sd="http://www.theeuropeanlibrary.org/servicedescription"
+             xsi:schemaLocation="http://www.theeuropeanlibrary.org/servicedescription ServiceDescription1.0.xsd">
+	
+	<sd:service>
+        <dc:title>Thomas</dc:title>
+        <dc:identifier xsi:type="dcterms:URI"></dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Search</sd:serviceType>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceLabel>Thomas</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>*</sd:trigger>
+            <sd:trigger>creator</sd:trigger>
+            <sd:trigger>subject</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter type="field" name="query">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://www.europeana.eu/portal/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Europeana</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://www.europeana.eu/portal/brief-doc.html?</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Search</sd:serviceType>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceLabel>Search in Europeana</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>title</sd:trigger>
+            <sd:trigger>creator</sd:trigger>
+            <sd:trigger>subject</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter type="field" name="query">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://www.europeana.eu/portal/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>WorldCat</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://www.worldcat.org/webservices/catalog/search/opensearch?</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Search</sd:serviceType>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceLabel>Search in WorldCat</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>title</sd:trigger>
+            <sd:trigger>creator</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter name="q" type="field">_triggerValue</sd:parameter>
+            <sd:parameter name="wskey" type="field">70TXFB7mVrJTXY4q955MhWLmvXDInoOPPRlLDlKfV4qNUvJEt7ZYljfn5JL35FAlLFlsWxUInH7D3ihJ</sd:parameter>
+        </sd:parameters>
+
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://worldcat.org/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Search in VIAF</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://viaf.org/search?</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Info</sd:serviceType>
+        <sd:serviceLabel>Search in VIAF</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>creator</sd:trigger>
+
+            <sd:trigger>contributor</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter name="query" type="field">local.names+all+"_triggerValue"</sd:parameter>
+            <sd:parameter name="version" type="fixed">1.1</sd:parameter>
+            <sd:parameter name="maximumRecords" type="fixed">100</sd:parameter>
+            <sd:parameter name="operation" type="fixed">searchRetrieve</sd:parameter>
+            <sd:parameter name="stylesheet" type="fixed">xsl/results.xsl</sd:parameter>
+            <sd:parameter name="sortKeys" type="fixed">holdingscount</sd:parameter>
+        </sd:parameters>
+
+        <dc:format>html</dc:format>
+        <sd:accessType>GET</sd:accessType>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://viaf.org/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Image annotation</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://search.tel.ulcc.ac.uk/annotation-middleware/tp/annotations/@URL@?db=TEL</dc:identifier>		
+        <dc:type>service</dc:type>
+        <sd:triggers>
+            <sd:trigger>annotates</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+			<sd:parameter name="@URL@" type="field" substitute="true" operation="doubleEncode">_triggerValue</sd:parameter>
+			<sd:parameter name="result-count-type" type="fixed">getJsonResponse</sd:parameter>
+		</sd:parameters>
+		<sd:accessType>JSON</sd:accessType>
+        <sd:serviceType>Search</sd:serviceType>
+        <sd:serviceLabel>Check for annotations for this object (json)</sd:serviceLabel>
+        <sd:invocation>option</sd:invocation>
+        <sd:fieldSpec unitName="unitName">numberOfHits</sd:fieldSpec>
+        <sd:typeOfUse>alertIfResultCount</sd:typeOfUse>
+        <dc:format>json</dc:format>
+        <sd:logo>http://www.tel.ulcc.ac.uk/portal/siwa/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Image annotation</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">
+            http://search.tel.ulcc.ac.uk/image-annotation-frontend/annotate.jsp?amp;db=tel&amp;</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:parameters>
+            <sd:parameter name="objectURL" type="field">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <sd:invocation>option</sd:invocation>
+        <sd:triggers>
+            <sd:trigger>identifier:URI</sd:trigger>
+            <sd:trigger>identifier:URL</sd:trigger>
+            <sd:trigger>annotates</sd:trigger>
+        </sd:triggers>
+        <sd:serviceType>Annotate</sd:serviceType>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceLabel>Show annotations for this object</sd:serviceLabel>
+        <sd:logo>http://www.tel.ulcc.ac.uk/portal/siwa/favicon.ico</sd:logo>
+        <dc:format>html</dc:format>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Image annotation</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://search.tel.ulcc.ac.uk/portal/en/authenticate.html?authToken=app=TELplus,user=@username@,keyType=public,keyLocation=http%3A%2F%2Fsearch.tel.ulcc.ac.uk%2Fimage-annotation-frontend%2Fpk&amp;appSign=app=TELplus,appSign=@seconds@,keyType=private&amp;url=http%3A%2F%2Fsearch.tel.ulcc.ac.uk%2Fimage-annotation-frontend%2Fannotate.jsp%3FauthToken%3D%40authToken%40%26appSign%3D%40appSign%40%26objectURL=@objectURL@</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:parameters>
+            <sd:parameter name="@objectURL@" type="field" substitute="true">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <sd:triggers>
+            <sd:trigger>identifier:URI</sd:trigger>
+            <sd:trigger>identifier:URL</sd:trigger>
+            <sd:trigger>annotates</sd:trigger>
+        </sd:triggers>
+        <sd:serviceType>Annotate</sd:serviceType>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceLabel>Create annotation (after login)</sd:serviceLabel>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://www.tel.ulcc.ac.uk/portal/siwa/favicon.ico</sd:logo>
+        <dc:format>html</dc:format>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Image highlighter</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://search.tel.ulcc.ac.uk/tph/hl?colour=ffcccc</dc:identifier>
+        <dc:type>service</dc:type>
+        <dc:descripton>Service to highlight words in an image based on the coordinates of the words in the image.
+            Syntax: img=the image;coords=file with coodinates;format=format of the coordinates (SGD or ALTO);color=color
+            of highlight;scale=scale factor between coordinates and image resoltion. The image and coordinates are
+            usually obtained from a file with structural metadata (MPEG21 DIDL or METS). Using this service description
+            automatically requires the application to have a notion of the parameters.
+        </dc:descripton>
+        <sd:serviceType>highlight</sd:serviceType>
+
+        <sd:serviceLabel>Highlight query terms</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>url</sd:trigger>
+            <!--    <sd:trigger>vdksummary</sd:trigger>    -->
+        </sd:triggers>
+        <!--<sd:extraConditions>-->
+            <!--<sd:extraCondition field="dc:identifier">SGD:sgd</sd:extraCondition>-->
+            <!--&lt;!&ndash;<sd:extraCondition field="identifier:URL">SGD:sgd</sd:extraCondition>&ndash;&gt;-->
+        <!--</sd:extraConditions>-->
+        <sd:parameters>
+            <sd:parameter name="coords" type="parts">
+                <sd:parmPart type="replace">/(.*?)FULLTEXT(.*?)tekst(.*?)/</sd:parmPart>
+                <sd:parmPart type="field">_triggerValue</sd:parmPart>
+                <sd:parmPart type="replaceBy">$1COORDINATEN$2coordinaten$3</sd:parmPart>
+
+            </sd:parameter>
+            <sd:parameter name="img" type="parts">
+                <sd:parmPart type="replace">/(.*?)FULLTEXT(.*?)tekst_(.*?).xml/</sd:parmPart>
+                <sd:parmPart type="field">_triggerValue</sd:parmPart>
+                <sd:parmPart type="replaceBy">$1JPEG$2$3.jpg</sd:parmPart>
+            </sd:parameter>
+            <sd:parameter name="words" type="field">_query</sd:parameter>
+            <sd:parameter name="format" type="fixed">SGD</sd:parameter>
+            <sd:parameter name="scale" type="fixed">2.08</sd:parameter>
+        </sd:parameters>
+        <sd:logo>http://www.tel.ulcc.ac.uk/portal/siwa/favicon.ico</sd:logo>
+        <dc:format>image</dc:format>
+
+        <sd:accessType>GET</sd:accessType>
+        <sd:invocation>option</sd:invocation>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Highlight ANP images</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://search.tel.ulcc.ac.uk/tph/hl?colour=ffcccc&amp;</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Highlight</sd:serviceType>
+        <sd:serviceLabel>Show image with query terms highlighted</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>identifier:URL</sd:trigger>
+        </sd:triggers>
+
+        <sd:extraConditions>
+            <sd:extraCondition field="identifier:URL">urn=anp:</sd:extraCondition>
+        </sd:extraConditions>
+        <sd:parameters>
+            <sd:parameter name="coords" type="parts">
+                <!--<sd:parmPart type="field">_triggerValue</sd:parmPart>-->
+                <sd:parmPart type="field">identifier:URL</sd:parmPart>
+                <sd:parmPart type="fixed">:ALTO</sd:parmPart>
+            </sd:parameter>
+            <sd:parameter name="img" type="parts">
+
+                <!--<sd:parmPart type="field">_triggerValue</sd:parmPart>-->
+                <sd:parmPart type="field">identifier:URL</sd:parmPart>
+                <sd:parmPart type="fixed">:image</sd:parmPart>
+            </sd:parameter>
+            <sd:parameter name="words" type="field">_query</sd:parameter>
+            <sd:parameter name="format" type="fixed">ALTO&amp;scale=2.0</sd:parameter>
+        </sd:parameters>
+        <dc:format>image</dc:format>
+        <sd:accessType>GET</sd:accessType>
+        <sd:invocation>option</sd:invocation>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Suggestions</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://search.tel.ulcc.ac.uk/tpxslt/?</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType/>
+        <sd:serviceLabel>Search suggestions</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>description</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter name="xml" type="parts">
+                <sd:parmPart type="fixed">http://search.tel.ulcc.ac.uk/tpta/analyse?text=</sd:parmPart>
+                <sd:parmPart type="field" operation="URLEncode">_triggerValue</sd:parmPart>
+            </sd:parameter>
+            <sd:parameter name="xsl" type="fixed">http://www.tel.ulcc.ac.uk/portal/siwa/textanalyser.xsl</sd:parameter>
+        </sd:parameters>
+        <dc:format>html</dc:format>
+        <sd:typeOfUse>linkOnly</sd:typeOfUse>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://www.tel.ulcc.ac.uk/portal/siwa/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Google books</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://book.google.com/?</dc:identifier>
+
+        <dc:type>service</dc:type>
+        <sd:triggers>
+
+            <sd:trigger>identifier:ISBN</sd:trigger>
+            <sd:trigger>identifier:OCLC</sd:trigger>
+        </sd:triggers>
+        <sd:parameters>
+            <sd:parameter type="field" name="isbn">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <sd:accessType>GET</sd:accessType>
+        <sd:serviceType>Search</sd:serviceType>
+        <sd:serviceLabel>Search in Google books</sd:serviceLabel>
+        <sd:invocation>option</sd:invocation>
+        <sd:typeOfUse>linkOnly</sd:typeOfUse>
+
+        <dc:format>html</dc:format>
+        <sd:logo>http://www.google.nl/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Amazon book search</dc:title>
+        <dc:identifier xsi:type="dcterms:URI">http://www.amazon.co.uk/gp/search/ref=sr_adv_b/?</dc:identifier>
+        <dc:type>service</dc:type>
+        <sd:serviceType>Info</sd:serviceType>
+        <sd:serviceLabel>Search in Amazon</sd:serviceLabel>
+        <sd:triggers>
+            <sd:trigger>identifier:ISBN</sd:trigger>
+
+        </sd:triggers>
+
+        <sd:parameters>
+            <sd:parameter type="field" name="field-isbn">_triggerValue</sd:parameter>
+        </sd:parameters>
+        <dc:format>html</dc:format>
+        <sd:accessType>GET</sd:accessType>
+        <sd:invocation>option</sd:invocation>
+        <sd:logo>http://www.amazon.co.uk/favicon.ico</sd:logo>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Map timeline</dc:title>
+        <dc:identifier>http://dme.arcs.ac.at/map-timeline-browser/FrontEndServlet?</dc:identifier>
+        <dc:format>html</dc:format>
+        <dc:type>service</dc:type>
+        <sd:serviceLabel>Map on Google maps</sd:serviceLabel>
+        <sd:inputParameter operation="stylesheet">records</sd:inputParameter>
+        <sd:triggers>
+            <sd:trigger>_service=Historical Maps</sd:trigger>
+            <sd:trigger>_service=Old maps</sd:trigger>
+        </sd:triggers>
+        <sd:accessType>POST</sd:accessType>
+        <sd:stylesheet>http://dme.arcs.ac.at/telplus/telplus_records.xsl</sd:stylesheet>
+        <sd:invocation>option</sd:invocation>
+        <sd:typeOfUse>linkOnly</sd:typeOfUse>
+        <sd:serviceType>Locate</sd:serviceType>
+    </sd:service>
+
+    <sd:service>
+        <dc:title>Map timeline (all)</dc:title>
+
+        <dc:identifier>http://dme.arcs.ac.at/map-timeline-browser</dc:identifier>
+        <dc:format>html</dc:format>
+        <dc:type>service</dc:type>
+        <sd:serviceLabel>Show all on Google maps</sd:serviceLabel>
+        <sd:inputParameter>_none</sd:inputParameter>
+        <sd:triggers>
+            <sd:trigger>_service=Historical Maps</sd:trigger>
+            <sd:trigger>_service=Old maps</sd:trigger>
+        </sd:triggers>
+        <sd:accessType>GET</sd:accessType>
+
+        <sd:invocation>option</sd:invocation>
+        <sd:serviceType>Locate</sd:serviceType>
+    </sd:service>
+
+
+</sd:services>

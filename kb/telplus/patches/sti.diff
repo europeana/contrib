@@ -1,0 +1,33 @@
+Index: tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java
+===================================================================
+--- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(revision 6876)
++++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/AuthorisationManager.java	(working copy)
+@@ -56,8 +56,12 @@
+ 	 */
+ 	public int isAllowedUrl(String url) throws MalformedURLException {
+ 		for (String baseUrl : allowedBaseUrls) {
+-			if (url.startsWith(baseUrl)) { 
++			//A small hack to allow everything, should be replaced by RegExp
++			//5.4.2011 Christian Mahnke - UGOE
++			if (url.equals("*")) {
+ 				return ALLOWED;
++			} else if (url.startsWith(baseUrl)) { 
++				return ALLOWED;
+ 			} else {
+ 				// perhaps we didn't match because of explicit default port numbers?
+ 				String portlessUrl = url.replaceFirst(":(80|443)", "");
+Index: tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java
+===================================================================
+--- tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(revision 6876)
++++ tpp/src/main/java/org/theeuropeanlibrary/telplus/tpp/web/TPPServlet.java	(working copy)
+@@ -54,8 +54,8 @@
+ public class TPPServlet extends HttpServlet {
+ 
+ 	// Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-	private static final String PROPERTIES_FILE = "/conf/tpp/tpp.properties";
+-	private static final String AUTHORISATION_FILE = "/conf/tpp/authorisation.xml";
++	private static final String PROPERTIES_FILE = "/tpp.properties";
++	private static final String AUTHORISATION_FILE = "/authorisation.xml";
+ 	
+ 	private static final String LIABILITY_URI = "/liability";
+ 	private static final String LIABILITY_COOKIE = "liability-token";

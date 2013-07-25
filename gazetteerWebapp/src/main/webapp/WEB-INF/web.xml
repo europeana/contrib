@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<web-app 
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-app_2_4.xsd"
+    version="2.4">
+
+  <display-name>Europeana Gazetteer</display-name>
+
+
+	<welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+	<!-- DIGMAP GAZ -->
+	<context-param>
+      <param-name>eu.digmap.gaz.config</param-name>
+      <param-value>gaz.install.xml</param-value>
+    </context-param>
+
+	<listener>
+		<listener-class>eu.digmap.gaz.service.GazServletInitializer</listener-class>
+	</listener>
+
+	<!-- Struts 2 -->
+
+	<filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <listener>
+        <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+    </listener>
+
+  	<servlet>
+    	<servlet-name>JspSupportServlet</servlet-name>
+    	<servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
+    	<load-on-startup>1</load-on-startup>
+  	</servlet>
+
+	<!-- Compress Service Comunication 
+	<filter>
+		<filter-name>ZipFilter</filter-name>
+		<filter-class>com.osmoticweb.gzipfilter.GZIP2WayFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ZipFilter</filter-name>
+		<url-pattern>/services/*</url-pattern>
+	</filter-mapping> -->
+
+
+	<!-- ADL-GP Servlet -->
+	<servlet>
+		<servlet-name>GP2GPServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.adlgp.GP2GPServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GP2GPServlet</servlet-name>
+		<url-pattern>/services/gp</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- ADL-GP 2 OAI Servlet -->
+
+	<servlet>
+		<servlet-name>GP2OAIServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.oai.GP2OAIServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GP2OAIServlet</servlet-name>
+		<url-pattern>/services/gp2oai</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- ADL-GP 2 ATOM Servlet -->
+
+	<servlet>
+		<servlet-name>GP2AtomServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.atom.GP2AtomServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GP2AtomServlet</servlet-name>
+		<url-pattern>/services/gp2atom</url-pattern>
+	</servlet-mapping>
+
+
+	
+	
+	<!-- Get 2 GP Servlet -->
+
+	<servlet>
+		<servlet-name>Get2GPServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.adlgp.Get2GPServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Get2GPServlet</servlet-name>
+		<url-pattern>/services/get</url-pattern>
+	</servlet-mapping>
+
+	<!-- Get 2 OAI Servlet -->
+
+	<servlet>
+		<servlet-name>Get2OAIServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.oai.Get2OAIServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Get2OAIServlet</servlet-name>
+		<url-pattern>/services/get2oai</url-pattern>
+	</servlet-mapping>
+
+	<!-- Get 2 Atom Servlet -->
+
+	<servlet>
+		<servlet-name>Get2AtomServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.atom.Get2AtomServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Get2AtomServlet</servlet-name>
+		<url-pattern>/services/get2atom</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- URN Servlet -->
+
+	<servlet>
+		<servlet-name>URNServlet</servlet-name>
+	    <servlet-class>eu.digmap.gaz.service.urn.URNServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>URNServlet</servlet-name>
+		<url-pattern>/services/urn</url-pattern>
+	</servlet-mapping>
+
+</web-app>

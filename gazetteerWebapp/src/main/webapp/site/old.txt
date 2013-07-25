@@ -1,0 +1,20 @@
+
+		
+		
+		
+		<tr>
+			<td rowspan="3" align="center" valign="top"><img src="style/imgs/map.png" width="90"/></td>
+			<td style="width: 80px; height:0%" class="tagTitle"><b>Name :</b></td>
+			<td style="width: 100%; height:0%" class="tagContent"><a href="${page}"><@renderName/><#if alts[0]??>, <@renderAltNames/></#if></a></td>
+			<td rowspan="3" width="0px" align="center" valign="middle">
+				<img style="margin:10; padding:10pt;"src="http://digmap1.ist.utl.pt:8080/mitra/imgs/6.jpg">
+			</td>
+		</tr>
+		<tr>
+			<#assign geo=feature["gaz:hasFootprint"]!>
+			<#if geo[0]??><td class="tagTitle" style="height:0%">Location</td><td style="height:0%" class="tagContent"><@renderGeometry/></td>
+			<#else>
+			<td class="tagTitle"></td><td class="tagContent"></td>
+			</#if>
+		</tr>
+		<tr><td style="height:100%" class="tagTitle" colspan="2"><img src="style/imgs/dot.png"/></td></tr>
