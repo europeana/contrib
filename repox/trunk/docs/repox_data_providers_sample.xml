@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataProviders xmlns="http://repox.ist.utl.pt/schemas/dataProviders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://repox.ist.utl.pt/schemas/dataProviders repox_data_providers.xsd ">
+	<dataProvider id="bnp" name="National Library of Portugal" country="PT">
+		<dataSource id="bnp_bnd" name="National Digital Libary">
+			<oaiPmhDataSource>
+				<baseUrl>http://oai.bn.pt/servlet/OAIHandler</baseUrl>
+				<set>bnd</set>
+				<metadataPrefix>tel</metadataPrefix>
+				<fullHarvestPeriodicity>none</fullHarvestPeriodicity>
+				<IncrementalHarvestPeriodicity>weekly</IncrementalHarvestPeriodicity>
+			</oaiPmhDataSource>
+			<export>
+				<fileSystemLocation>/solr/collections/bnp_bnd</fileSystemLocation>
+				<periodicity>weekly</periodicity>
+			</export>
+		</dataSource>
+	</dataProvider>
+	<dataProvider id="nll" name="National Library of Lithuania" country="LT">
+		<dataSource id="nll_catalogue" name="Catalogue of the National Library of Lithuania">
+			<oaiPmhDataSource>
+				<baseUrl>http://193.219.130.61:8080/oaicatnbdb/OAIHandler</baseUrl>
+				<set></set>
+				<metadataPrefix>telap</metadataPrefix>
+				<metadataFormatId>tel</metadataFormatId>
+				<fullHarvestPeriodicity>yearly</fullHarvestPeriodicity>
+				<IncrementalHarvestPeriodicity>monthly</IncrementalHarvestPeriodicity>
+			</oaiPmhDataSource>
+			<export>
+				<fileSystemLocation>/solr/collections/nll_catalogue</fileSystemLocation>
+				<periodicity>monthly</periodicity>
+			</export>
+		</dataSource></dataProvider></dataProviders>

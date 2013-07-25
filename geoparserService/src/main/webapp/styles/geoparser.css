@@ -1,0 +1,48 @@
+a			{ color: #000000; }
+a:link 		{ color: #000000; }
+a:visited 	{ color: #000000; }
+a:active  	{ color: #00CC66; }
+a:hover   	{ color: #FF6633; }
+
+
+hr.separatorBar {
+	height:3px;
+	padding: 0px;
+	margin: 0px;
+	border-style: none;
+	color: #BDD79E;
+	background-color: #BDD79E;
+}
+
+.tablemain {
+    width: 600px;
+    border-width: 1px;
+    background-color: #babdb6;
+    margin: 1px;
+}
+
+.tableheader {
+    color: black;
+    background-color: #BDD79E;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+    text-align: center;
+}
+
+.tablebody {
+    color: black;
+    font-size: 13px;
+    font-family: Arial;
+    background-color: white;
+    padding: 3px;
+}
+
+.infobody {
+    color: black;
+    padding: 3px;
+    font-size: 13px;
+    font-family: Arial;
+    background-color: white;
+}

@@ -1,0 +1,8 @@
+<sip-creator-extension>
+  <entrypoint>eu.europeana.sip.licensing.gui.LicenseSelectionTool</entrypoint>
+  <name>License Selection Tool</name>
+  <vendor>Europeana</vendor>
+  <author>Serkan Demirel</author>
+  <url>http://www.europeanalabs.eu</url>
+  <description>Selecting licenses.</description>
+</sip-creator-extension>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright 2007 EDL FOUNDATION
+  ~
+  ~ Licensed under the EUPL, Version 1.0 or as soon they
+  ~ will be approved by the European Commission - subsequent
+  ~ versions of the EUPL (the "Licence");
+  ~ you may not use this work except in compliance with the
+  ~ Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~
+  ~ http://ec.europa.eu/idabc/eupl
+  ~
+  ~ Unless required by applicable law or agreed to in
+  ~ writing, software distributed under the Licence is
+  ~ distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.
+  ~ See the Licence for the specific language governing
+  ~ permissions and limitations under the Licence.
+  -->
+
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!--this file is only used while generating the DDL. persistence.xml is used in deployment. -->
+<hibernate-configuration>
+    <session-factory>
+        <!--<property name="hibernate.connection.url">jdbc:postgresql:Repox2Sip</property>-->
+        <!--<property name="hibernate.connection.username">europeana</property>-->
+        <!--<property name="hibernate.connection.password">culture</property>-->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.use_sql_comments">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</property>
+    </session-factory>
+</hibernate-configuration>

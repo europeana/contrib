@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<users>
+    <user>
+        <userName>admin</userName>
+        <pass>$2a$10$5PhUbuulq4IB1M5ajzobte/yBWvVptPyVrUkpSep1YP7YRD1CGNeC</pass>
+        <role>ADMIN</role>
+        <email>repoxist@gmail.com</email>
+        <pageSize>15</pageSize>
+        <language>en</language>
+    </user>
+</users>

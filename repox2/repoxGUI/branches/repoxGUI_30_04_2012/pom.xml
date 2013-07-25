@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>repox</groupId>
+    <artifactId>REPOX</artifactId>
+    <version>2.0.17</version>
+    <packaging>war</packaging>
+
+    <organization>
+        <name>Instituto Superior Técnico</name>
+        <url>http://www.ist.utl.pt</url>
+    </organization>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--<gxt.version>2.2.0</gxt.version>-->
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                        </configuration>
+                        <goals>
+                            <goal>compile</goal>
+                            <!--<goal>generateAsync</goal>-->
+                            <!--<goal>test</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>digmap3</id>
+            <name>digmap3-snapshots</name>
+            <url>http://digmap3.ist.utl.pt:8080/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>digmap3</id>
+            <name>digmap3-releases</name>
+            <url>http://digmap3.ist.utl.pt:8080/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>maven-repositories</id>
+            <url>http://mvnrepository.com</url>
+        </repository>
+        <repository>
+            <id>central OSS Repository</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <!--<repository>-->
+            <!--<id>local-repo</id>-->
+            <!--<url>file://${basedir}/local-repo</url>-->
+        <!--</repository>-->
+        <repository>
+            <id>IST</id>
+            <name>IST repository</name>
+            <url>http://digmap3.ist.utl.pt:8080/artifactory/libs-release-local</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--REPOX Core Libs-->
+        <dependency>
+            <groupId>pt.ist</groupId>
+            <artifactId>repoxCore</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>pt.ist</groupId>-->
+            <!--<artifactId>repoxEudml</artifactId>-->
+            <!--<version>2.0.0</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>pt.ist</groupId>
+            <artifactId>repoxEuropeana</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+        <!--Ext GWT Libs-->
+        <dependency>
+            <groupId>gxt</groupId>
+            <artifactId>gxt</artifactId>
+            <version>2.2.5</version>
+            <classifier>gwt22</classifier>
+        </dependency>
+
+        <!--GWT Core Libs-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.4.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>2.4.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--XML Parse Libs-->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <!--Calendar Libs-->
+        <dependency>
+            <groupId>com.bradrydzewski</groupId>
+            <artifactId>gwt-cal</artifactId>
+            <version>0.9.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.allen-sauer.gwt.dnd</groupId>
+            <artifactId>gwt-dnd</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+        <!--Password Gen Lib-->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.3m</version>
+        </dependency>
+        <!--RSS Lib-->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>

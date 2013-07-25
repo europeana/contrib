@@ -1,0 +1,197 @@
+-------------------------------------------------------------------------------
+TODO PRIORITÁRIO:
+-------------------------------------------------------------------------------
+* TEL: importação D.S. na UI (pensar updates)
+* TEL: bug scheduling (Noruega fica sempre com 3 pendentes: http://repox.ist.utl.pt/repox1.4.3/scheduler/Scheduler.action)
+
+* EuropeanaLocal:  Neste momento temos apenas um EAD que corresponde ao "Cabido da Sé do Porto" que está em 
+		http://pesquisa.adporto.pt/cravfrontoffice/default.aspx?page=regShow&searchMode=bs&ID=479289
+
+	* Coverage ver se as datas dão
+	* Título repetido em vez de concatenados; melhor ainda, usar o isPartOf para não ter de repetir os títulos
+	* Consideramos que ou todos os nós e folhas do arquivo são registos ou apenas o nó raíz e as folhas (depois vemos o que faz mais sentido)
+	* Em qualquer dos casos anteriores cada nó replica toda a informação para cima dos títulos dos nós anteriores
+	* Informação a extrair de cada nó (//did):
+		.Datas (<unitdate datechar="criacao_final" certainty="yes">1441-04-28</unitdate>
+                  <unitdate datechar="criacao_inicial" certainty="yes">1441-04-28</unitdate>)
+		.título <unittitle
+		.código referência(concatenar aos anteriores com / - serve para nós apenas): <unitid countrycode="PT" repositorycode="ADPRT">DIO/CABIDO
+		.identificador (URL)
+		.URL documento digital se houver
+		.URL thumbnail se houver
+	* Exemplo de folha com documento digitalizado:http://pesquisa.adporto.pt/cravfrontoffice/default.aspx?page=regShow&ID=481562&searchMode=bs
+	* ver sacado HTTrack defaultf8a6.html:5
+	  .linha URL: Mirrored from pesquisa.adporto.pt/cravfrontoffice/default.aspx?page=regShow&ID=481562&searchMode=bs by
+	  .linhas URL Thumbnail (é o img) e Documento:
+						<a name="a1" href="#a1" onClick=onTop('./ODDisplay.aspx?DigitalObjectID=15270&FileID=_514149','img_window')>Documentos (1)</a>
+						<a name="a2" href="#a2" onClick=onTop('./WebSearch/ODDisplay.aspx?DigitalObjectID=15270&FileID=_514149','img_window')><img src='./WebSearch/ShowFile.aspx?DigitalObjectID=15270&FileID=514149&Type=1'/></a>
+	O que queremos da parte do ADP é para cada nó do arquivo (na exportação no EAD ou numa tabela/excel):
+		.código referência;
+		.URL página;
+		.URL documento digital (se houver);
+		.URL thumbnail (se houver)
+* Testar Z39.50: http://zzz.porbase.org/view/searchForm.do (PORBASE)
+-------------------------------------------------------------------------------
+
+
+* EUROPEANA *
+* spring framework for dependency injection
+* building a war file: mvn clean package -Dmaven.test.skip=true
+* Maven: actualizar dependências (adicionadas mais dependências às REPOX libs; actualizado xalan.jar)
+* Maven: pôr a funcionar
+* http://europeanalabs.eu/wiki/DesignRepoxDatabase
+* Preencher https://europeanalabs.eu/wiki/Project (ProjectREPOX)
+
+2009-11-26 10:57:42,548 ERROR Thread-40 pt.utl.ist.repox.dataProvider.DataSource.startIngest(DataSource.java:215) -
+java.util.ConcurrentModificationException
+        at java.util.Hashtable$Enumerator.next(Hashtable.java:1031)
+        at pt.utl.ist.repox.statistics.RecordCountManager.saveRecordCounts(RecordCountManager.java:96)
+        at pt.utl.ist.repox.statistics.RecordCountManager.removeDataSourceCounts(RecordCountManager.java:230)
+        at pt.utl.ist.repox.dataProvider.DataSource.emptyRecords(DataSource.java:397)
+        at pt.utl.ist.repox.marc.DataSourceDirectoryImporter.ingestRecords(DataSourceDirectoryImporter.java:93)
+        at pt.utl.ist.repox.dataProvider.DataSource.startIngest(DataSource.java:204)
+        at pt.utl.ist.repox.task.IngestDataSource.run(IngestDataSource.java:67)
+        at java.lang.Thread.run(Thread.java:619)
+* registos apagados guardam metadados, pelo menos não devia mostrar por OAI-PMH (está no spec)
+* guardar o histórico de disponibilidade dos Data Sources - mais urgente guardar a última vez que o servidor esteve disponível
+* criar update.sh 
+	1: unzip -q repox.war -d ~/repoxbackup
+	2: wget http://repox.ist.utl.pt/repoxwebapp.war
+	3: unzip -q repoxwebapp.war -d ~/repoxtemp
+	4: rm repoxwebapp.war
+	5: cp ~/repoxbackup/WEB-INF/classes/log4j.properties ~/repoxbackup/WEB-INF/classes/oaicat.properties ~/repoxbackup/WEB-INF/classes/configuration.properties ~/repoxtemp/WEB-INF/classes
+	6: cp ~/repoxbackup/WEB-INF/applicationContext-security.xml ~/repoxtemp/WEB-INF/
+	7: rm repox.war
+	8: zip -q -r repox.war ~/repoxtemp/*
+	9: rm -rf ~/repoxtemp
+
+DEPOIS: log4j.properties -> log.txt por omissão, mudar para pasta específica
+DEPOIS: Aplicar transformações na exportação de registos (neste momento apenas exporta no formato original, e vai haver casos em que o tel vai recolher em marcxchange e vai exportar em TEL)
+DEPOIS: aliases para formatos metadados
+DEPOIS: export the record URN and full URL of the server on ExportToFilesystem <record
+	    .TEL: For naming the files we do not use any other special characters than letters and numbers. These are examples: a0309_NUK_home-and-world.xml, a0132_KB_catalogue.xml, a0398_NBKM_Albymika1.xml, a0270_BNE_carteles_guerraCivil.xml so basically it is <TEL CollectionID>_<Library>_<Name of the set>.xml.
+DEPOIS: Formato exportação do REPOX não é reconhecido como formato de importação
+DEPOIS:
+- Ver data source e apagar scheduled task salta para o ecran das tasks em vez de ficar no ecran onde estava.
+- O botao de "Test OAI-PMH" dava jeito estar também no ecran de visualizaçã da data source. E  já agora o icon da disponibilidade também. 
+
+-------------------------------------------------------------------------------
+TODO EXTERNO:
+-------------------------------------------------------------------------------
+* REPOX escalável para centenas/milhares de Data Providers/Data Sources
+	.Scheduled Tasks no calendário - arranjar forma de mostrar calendário semanal/mensal com dezenas de recolhas por dia
+* Ordenação por país, Data Provider, agendamentos, erros, etc. (filtro está feito, é preciso implementar os DataProviderSorter, ver DataProviderPageable)
+* Estatísticas como o TEL pediu (faltam coisas do lado deles)
+	.objectos digitais
+	.por protocolo (quando houver Z39.50 - aliás já há por tipo de Data Source e o Z39.50 é o 3º depois do Directory Importer e OAI-PMH)
+	.agendamentos de recolhas (diário/semanal/x em x meses, x=1-12) -> É o que estou a fazer agora
+	.desempenho de recolhas (resultado: OK, ERROS, FALHOU; duração; tamanho; nº registos importados)
+* Repositório ON/OFF - segurança ao nível da colecção por IP
+* API para sincronização de repositório (discutir com TEL/Europeana)
+* Ingesting e mapeamentos parceiros da EuropeanaLocal
+* Installer para Linux - ver o IzPack\repoxunix\jetty-6.1.11\bin\installService.sh e adaptar para RedHat (Tel)
+* Completar Provenance - guardar histórico e rever datas (agora é uma data 'fits all') http://www.openarchives.org/OAI/2.0/guidelines-provenance.htm
+* Data Source - email para System Administrator (Tel - útil no caso de querermos chatear alguém com servidor em baixo?)
+* Email diário/semanal com um diagnóstico das estatísticas/problemas (actualmente apenas email imediatamente após recolha)
+* Mudanças completas dos registos (MUITO ineficiente a forma correcta em OAI-PMH de mostrar tudo o que foi apagado):
+	.Problema1 IDGenerated - não há forma de saber se os registos já existem, é preciso importar tudo sempre
+	.Problema2 apagar tudo - houve um erro qualquer e apaga-se tudo o que lá estava
+	.Solução - se ninguém sacou nada, não é preciso guardar histórico =)
+	         - ignorar histórico mas ter um RSS do REPOX para sets "dirty", i.e. que precisam de recolha completa
+			 - mandar mudar o OAI-PMH, que isto é um problema do protocolo =)
+	.Solução2 - registos deleted durante x tempo, depois apaga-se (não gosto desta solução, bd cheia de lixo, vários deletes grandes e é o caos)
+-------------------------------------------------------------------------------
+TODO INTERNO:
+-------------------------------------------------------------------------------
+* Criar instalação REPOX "off site". Para isso é preciso:
+	.Data Source FTP/HTTP (HTTP seria necessário estruturar o parsing: sacar os links; ou os links com regexp ex: *.xml)
+	.Contas utilizadores com acesso a tudo (administrador) / granularidade 1..* D.P. (instituição)
+	.Servidor FTP Win: http://filezilla-project.org/ ; Linux vsftpd: http://vsftpd.beasts.org/ (ver Active/Passive/Anonymous FTP)
+	.VANTAGEM: eles põem o FTP/HTTP deles a funcionar e o resto é tudo do nosso lado, não há upgrades/instalações/correcções múltiplas do REPOX
+* IDExtracted no MarcXchange/ISO2709 por omissão (tem de ser com Javascript porque é uma dropdown)
+* Passar página do REPOX para o wiki (não fiz ainda porque queria estrutrar em várias páginas e com sub-header e não consegui)
+	.http://repox.ist.utl.pt -> http://dis.ist.utl.pt/dlwiki/doku.php
+	.secções para projecto TELplus; EuropeanaLocal; EuropeanaConnect
+* Estilo CSS IST em vez do actual tipo Tel
+* Creation Date/Update Date no Data Provider e Data Source
+* saveXML e loadXML nos DataSource em vez de instanceof no DataProviderManager (aliás caçar os instanceof todos não era má ideia)
+* Retirar todas as utilizações de classes directamente nos jsps, procurar por [== 'pt.utl.ist.] nos .jsp
+	.problema: se alterarmos nome ou localização das classes falha silenciosamente nos jsps (e refactorizações no eclipse ignoram jsps)
+	.solução: refactorizar de forma a usar métodos que dêem o nome das classes ou qualquer coisa do género nos ActionBeans
+* Melhorar Tasks: ligar aos logs?
+* Passar configuração Tasks para XML
+* Permitir ScheduledTasks com granularidade de 1 mês
+* Passar todos os Managers para Singletons (e assim retirar a dependência idiota do RepoxContextUtil.blablabla)
+* Bug: namespace no caso de mapeamento para tel_ap se se usar uma tag 'tel' no destino
+* Apagar Data Source não pára recolhas
+-------------------------------------------------------------------------------
+Ideias/eventualmente:
+-------------------------------------------------------------------------------
+* Mostrar diagnóstico do sistema
+	.apontar onde há coisas que devem ser corrigidas administrativamente e poder filtrar
+	.mostrar histórico de recolhas/evolução do sistema; era interessante mostrar gráficos usando o http://code.google.com/apis/chart
+	.guardar tamanho [bytes] dos registos/BD para haver noção da dimensão da BD (gráficos também era giro)
+	.filtros: erros recolha; erros Data Source
+* Juntar instalação da pesquisa ao REPOX (falar com o Jorge)
+* Juntar Metadata Registry e usar API para aceder aos mapeamentos e ter cache local destes
+* Detecção de duplicados por tamanho/digest/rolling digest
+* TEL-AP - suporte e validação
+* Registo Operações utilizador
+* Sacar PORBASE por Z39.50 (5GB)
+* Pôr cores a dizer:se foi: 1ª recolha; é n-ésima recolha na interface; última recolha não recolheu nada; recolhido mas 0 registos total
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+FEITO:
+-------------------------------------------------------------------------------
+
+* agendamentos de recolhas (diário/semanal/x em x meses, x=1-12)
+* ver se é possível pôr o id do registo como parâmetro na XSLT
+* Exportar registos em lotes (de 1000 registos, por exemplo)
+	<exportedRecords set="" batchsize="" total=""><record id="" timestamp="" deleted=""><metadata>...</metadata></record></exportedRecords>
+* updates de OAI-PMH continua da última recolha mesmo que tenha falhado...
+	.Se tiver crashado a meio, continua de onde tinha parado
+	.Se não sacar nada ou a recolha der vazia escreve a data de sincronização, o que impossibilita ir buscar coisas anteriores, mas limpar tudo/recolha completa resolve isso
+* criar link para testar ListRecords de um set (link para o testOAI-PMH.jsp)
+* removida autenticação JAAS- Autenticação do JAAS configuravel sem dependencia do servidor aplicacional
+	.removido: jsp-api.jar do repox entra em conflito com o tomcat, remover do lib do repox para instalar no tomcat
+* não é possível parar scheduledTasks
+* scheduled task que falhou não pára e não deixa remover da lista (seria de estar a testar failTime? já substituí por testar o estado)
+* updates de OAI-PMH não verifica ID, adiciona em vez de substituir, pelo menos a contagem, confirmar se é só isso
+     .testei com ID Generated, dá asneira se não fizer recolha completa porque não são marcados registos anteriores que foram todos limpos
+	 .O problema era no updateRecords do AccessPointMSQL que não apagava registos se fosse IDGenerated, DataSourceOai é IDGenerated
+* carregar no link de servidores OAI-PMH para ele verificar se estão a funcionar
+* Bug: XSLT enviados são gravados como UTF-8 independentemente do formato de origem -> ver MapMetadataActionBean.submitXsltFile (devia funcionar!!!)
+* TEL: Data Source Z39.50
+nfreire Z39.50:
+O que fiz foi implementar três classes que implementam os três métodos de recolha que descrevemos no deliverable.
+Cada classe implementa dois métodos: fullHarvest() e incrementalHarvest(Date lastIngest),
+mas só um dos métodos (por timestamp) é que suporta o incremental harvest.
+A data source "Z39.50" deve então ter as seguintes opções de configuração:
+- Harvest method ("Date/time last modified", "By control number-local (from provided list)", "By control number-local (sequential number)")
+- Server address
+- Server port
+- Database
+- Username (opcional)
+- Password (opcional)
+- Character set
+- Record syntax ("unimarc" ou "usmarc")
+Para o método "Date/time last modified":
+- Earliest date
+Para o método "By control number-local (from provided list)"
+- Path to file containing the control numbers  (deve estar explicado algures que o ficheiro deve ter um identificador por linha)
+Para o método "By control number-local (sequential number)"
+- Maximum control number to harvest (opcional) (deve estar explicado algures que este número deve ser superior ao identificador máximo existente actualmente para que sejam recolhidos futuros novos registos)
+
+O código está simples e deves perceber o que utilizar facilmente. Mas se tiveres dúvidas, avisa.
+Vai ser necessário actualizar o nmafCore do repox para este que vai no projecto.
+
+O prazo para ter isto no REPOX pode ser dia 12 de Dezembro, para eu depois testar na semana seguinte.

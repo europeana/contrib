@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="repox" default="war" basedir=".">
+	<property name="repox.version" value="1.4.5"/>
+	<property name="repox.source" value="../src" />
+	<property name="repox.classes" value="../target/classes" />
+	<property name="repox.webinf" value="${repox.source}/main/webapp/WEB-INF" />
+	<property name="repox.libs" value="D:/Projectos/repoxlibs" />
+	<property name="installer.dir" value="D:/Projectos/repoxInstallers/IzPack" />
+    <property file="${repox.source}/main/resources/configuration.properties" />
+
+	<target name="war" depends="compile" description="Create REPOX War File">
+        <war encoding="UTF-8" destfile="${jetty.dir}/webapps/repox.war" webxml="${repox.webinf}/web.xml">
+        	<fileset dir="${repox.source}/main/webapp/">
+        		<include name="WEB-INF/decorators.xml"/>
+        		<include name="WEB-INF/applicationContext-security.xml"/>
+                <include name="WEB-INF/springmvc-servlet.xml"/>
+        		<include name="WEB-INF/tld/*"/>
+        	</fileset>
+
+    		<fileset dir="${repox.source}/main/webapp/">
+    			<include name="documentation/**/*"/>
+    			<include name="jsp/**/*"/>
+    		</fileset>
+        	<lib dir="${repox.libs}"/>
+			<classes dir="${repox.classes}"/>
+            <manifest id="${repox.version}"/>
+		</war>
+	</target>
+
+	<target name="installers" depends="compile" description="Create REPOX Installer">
+
+		<!-- REPOX Webapp Installer -->
+		<echo message="Create REPOX Webapp Installer"/>
+
+		<delete dir="${installer.dir}/repoxwebapp/repox/WEB-INF/classes" />
+		<copy overwrite="true" todir="${installer.dir}/repoxwebapp/repox/WEB-INF/classes">
+			<fileset dir="${repox.classes}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxwebapp/repox/WEB-INF/lib">
+			<fileset dir="${repox.libs}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxwebapp/repox/jsp">
+			<fileset dir="${repox.source}/main/webapp/jsp" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxwebapp/repox/documentation">
+			<fileset dir="${repox.source}/main/webapp/documentation" includes="**/*"/>
+		</copy>
+        <copy overwrite="true" todir="${installer.dir}/repoxwebapp/repox/WEB-INF/tld">
+			<fileset dir="${repox.source}/main/webapp/WEB-INF/tld" includes="**/*"/>
+		</copy>
+
+		<copy overwrite="true"
+					file="${repox.webinf}/decorators.xml"
+					tofile="${installer.dir}/repoxwebapp/repox/WEB-INF/decorators.xml" />
+		<copy overwrite="true"
+					file="${repox.webinf}/web.xml"
+					tofile="${installer.dir}/repoxwebapp/repox/WEB-INF/web.xml" />
+
+		<!-- REPOX Upgrade Windows/Unix -->
+		<echo message="Create REPOX Upgrade Windows/Unix"/>
+		<delete dir="${installer.dir}/repoxupgrade" />
+		<copy overwrite="true" todir="${installer.dir}/repoxupgrade/WEB-INF/classes/pt">
+			<fileset dir="${repox.classes}/pt" includes="**/*"/>
+		</copy>
+        <copy overwrite="true" todir="${installer.dir}/repoxupgrade/WEB-INF/classes/eu">
+			<fileset dir="${repox.classes}/eu" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxupgrade/WEB-INF/classes/org">
+			<fileset dir="${repox.classes}/org" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxupgrade/jsp">
+			<fileset dir="${repox.source}/main/webapp/jsp" includes="**/*"/>
+		</copy>
+
+		<!-- REPOX Windows -->
+		<echo message="Create REPOX Windows Installer"/>
+		<delete dir="${installer.dir}/repox/jetty/webapps/repox" />
+		<copy overwrite="true" todir="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/classes">
+			<fileset dir="${repox.classes}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/lib">
+			<fileset dir="${repox.libs}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repox/jetty/webapps/repox/jsp">
+			<fileset dir="${repox.source}/main/webapp/jsp" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repox/jetty/webapps/repox/documentation">
+			<fileset dir="${repox.source}/main/webapp/documentation" includes="**/*"/>
+		</copy>
+        <!-- copy tld folder -->
+        <copy overwrite="true" todir="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/tld">
+			<fileset dir="${repox.source}/main/webapp/WEB-INF/tld" includes="**/*"/>
+		</copy>
+
+		<copy overwrite="true"
+					file="${repox.webinf}/decorators.xml"
+					tofile="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/decorators.xml" />
+		<copy overwrite="true"
+					file="${installer.dir}/repox/parseables/applicationContext-security.xml.base"
+					tofile="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/applicationContext-security.xml.base" />
+		<copy overwrite="true"
+					file="${repox.webinf}/web.xml"
+					tofile="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/web.xml" />
+
+
+		<!-- REPOX Unix -->
+		<echo message="Create REPOX Unix Installer"/>
+		<delete dir="${installer.dir}/repoxunix/jetty/webapps/repox" />
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/classes">
+			<fileset dir="${repox.classes}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/lib">
+			<fileset dir="${repox.libs}" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/jetty/webapps/repox/jsp">
+			<fileset dir="${repox.source}/main/webapp/jsp" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/jetty/webapps/repox/documentation">
+			<fileset dir="${repox.source}/main/webapp/documentation" includes="**/*"/>
+		</copy>
+        <!-- copy tld folder -->
+        <copy overwrite="true" todir="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/tld">
+			<fileset dir="${repox.source}/main/webapp/WEB-INF/tld" includes="**/*"/>
+		</copy>
+
+		<copy overwrite="true"
+					file="${repox.webinf}/decorators.xml"
+					tofile="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/decorators.xml" />
+		<copy overwrite="true"
+					file="${repox.webinf}/applicationContext-security.xml"
+					tofile="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/applicationContext-security.xml" />
+		<copy overwrite="true"
+					file="${repox.webinf}/web.xml"
+					tofile="${installer.dir}/repoxunix/jetty/webapps/repox/WEB-INF/web.xml" />
+
+		<!-- Copy Source Code -->
+		<echo message="Copy Source Code"/>
+		<!-- REPOX Windows -->
+		<delete dir="${installer.dir}/repox/src" />
+		<copy overwrite="true" todir="${installer.dir}/repox/src/src">
+			<fileset dir="${repox.source}" includes="**/*"/>
+		</copy>
+
+		<!-- REPOX Unix -->
+		<delete dir="${installer.dir}/repoxunix/src" />
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/src/src">
+			<fileset dir="${repox.source}" includes="**/*"/>
+		</copy>
+
+		<!-- Copy Default Transformations -->
+		<echo message="Copy default Transformations"/>
+		<!-- REPOX Windows -->
+		<delete dir="${installer.dir}/repox/configuration" />
+		<copy overwrite="true" todir="${installer.dir}/repox/configuration">
+			<fileset dir="${repox.source}/main/resources/metadataTransformations" includes="**/*"/>
+		</copy>
+
+		<copy overwrite="true"
+			file="${installer.dir}/repox/configuration.properties.bak"
+			tofile="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/classes/configuration.properties" />
+
+		<copy overwrite="true"
+			file="${installer.dir}/repox/oaicat.properties.bak"
+			tofile="${installer.dir}/repox/jetty/webapps/repox/WEB-INF/classes/oaicat.properties" />
+
+		<copy overwrite="true" file="${repox.source}/main/resources/countries.txt" tofile="${installer.dir}/repox/configuration/countries.txt" />
+
+		<!-- REPOX Unix -->
+		<delete dir="${installer.dir}/repoxunix/configuration" />
+		<copy overwrite="true" todir="${installer.dir}/repoxunix/configuration">
+			<fileset dir="${repox.source}/main/resources/metadataTransformations" includes="**/*"/>
+		</copy>
+		<copy overwrite="true" file="${repox.source}/main/resources/countries.txt" tofile="${installer.dir}/repoxunix/configuration/countries.txt" />
+
+	</target>
+
+	<target name="compile" description="compile REPOX">
+		<mkdir dir="${repox.classes}"/>
+        <javac encoding="ISO8859-1"
+        	deprecation="true"
+        	srcdir="${repox.source}"
+        	destdir="${repox.classes}"
+        	includes="**/*.java"
+        	nowarn="true"
+        	debug="true" >
+            <classpath>
+                <fileset dir="${repox.libs}">
+                    <include name="**.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy overwrite="true" flatten="true" todir="${repox.classes}">
+			<fileset dir="${repox.source}" includes="**/*.xml"/>
+		</copy>
+        <copy overwrite="true" flatten="true" todir="${repox.classes}">
+            <fileset dir="${repox.source}" includes="**/*.sh"/>
+        </copy>
+        <copy overwrite="true" flatten="true" todir="${repox.classes}">
+			<fileset dir="${repox.source}" includes="**/*.properties"/>
+		</copy>
+    </target>
+
+</project>

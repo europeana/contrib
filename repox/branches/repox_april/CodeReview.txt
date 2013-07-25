@@ -1,0 +1,39 @@
+2009-12-03
+Comments by Diogo Reis <diogo.menareis@ist.utl.pt>
+
+Done:
+* The package "nmaf" refers to Nuno's name.  package should be pt.utl.ist
+* nmafCore.jar must be removed (relevant source code copied here)
+* Many usages of Hashtable: should be Map/HashMap
+* What is "WireIt"?  Looks like an entire project, but packed inside WEB-INF/jsp -> Javascript lib for visual mapping of metadata
+* repox.tld should not be in source tree.. should be in WEB-INF? -> is now in WEB-INF/tld/repox.tld
+* DataSource.importRecord(..) is used nowhere -> deleted
+* DataSource.sendEmail() should use templating to compose email
+
+
+REPOX Code Review
+Gerald de Jong <geralddejong@gmail.com>
+
+First Look, 2009-11-30:
+
+* Properties files are currently in "resources" but contain Windows paths.  must be developer-configured, with only
+  template committed to svn.
+
+* The to do file is written in Portuguese
+
+* Much use is made of "throws Exception" rather than more specific exceptions
+
+* Much use is made of the DOM API, which is very cumbersome.  XStream recommended for config files.
+
+* DOM is used in RecordSplitter etc: much memory usage, should use SAX/StAX
+
+* Much work done for scheduling jobs => look at http://quartz.sourceforge.net/javadoc/org/quartz/CronTrigger.html
+
+* Much use made of java.util.Calendar => look at http://joda-time.sourceforge.net/
+
+* Stripes web framework. From stripes homepage: "Others, like WebWork 2 and Spring-MVC are much better"
+
+* DataProviderManagerTest, TaskFileHelperTest, TaskManagerTest, ScheduledTaskTest succeed, but
+  produce ERROR stacktraces.  Can't be right.
+  
+* DatabaseAccess creates tables on the fly!  Is there not a better way to model the data?

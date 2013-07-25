@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+    <persistence-unit name="europeana">
+        <!--<provider>org.hibernate.ejb.</provider>-->
+        <class>eu.europeana.repox2sip.models.DataSet</class>
+        <class>eu.europeana.repox2sip.models.Aggregator</class>
+        <class>eu.europeana.repox2sip.models.Provider</class>
+        <class>eu.europeana.repox2sip.models.Request</class>
+        <class>eu.europeana.repox2sip.models.MetadataRecord</class>
+    </persistence-unit>
+</persistence>

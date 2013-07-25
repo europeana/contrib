@@ -1,0 +1,227 @@
+/*
+ * Copyright 2007 EDL FOUNDATION
+ *
+ * Licensed under the EUPL, Version 1.0 or? as soon they
+ * will be approved by the European Commission - subsequent
+ * versions of the EUPL (the "Licence");
+ * you may not use this work except in compliance with the
+ * Licence.
+ * You may obtain a copy of the Licence at:
+ *
+ * http://ec.europa.eu/idabc/eupl
+ *
+ * Unless required by applicable law or agreed to in
+ * writing, software distributed under the Licence is
+ * distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied.
+ * See the Licence for the specific language governing
+ * permissions and limitations under the Licence.
+ */
+
+@import "http://www.europeana.eu/portal/css/epf-common.css";
+
+body, html {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: small;
+    width: 100%;
+    height: 100%;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+.europeana-TimelineDialogBox {
+    background-color: #87cefa;
+    border: 4px solid gray;
+}
+
+.period-initial {
+    opacity: 0.4;
+    font-size: 20px;
+}
+
+.gwt-Label-activated {
+    border: 2px solid black;
+    background-color: #a9a9a9;
+    color: black;
+}
+
+.status-label {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    background: purple;
+    padding: 4px 4px 4px 4px;
+}
+
+.mouse-cursor {
+    cursor: pointer;
+}
+
+.timeline-item-title {
+    font-family: sans-serif;
+    font-size: 16px;
+    color: black;
+}
+
+.timeline-item-description {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: gray;
+}
+
+.timeline-item-date {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: black;
+}
+
+.invisible {
+    opacity: 0.0;
+}
+
+.carousel-cell {
+    text-align: center;
+}
+
+.carousel-image {
+    border: 3px solid #708090;
+}
+
+.centralize {
+/*vertical-align: middle;*/
+}
+
+.reset-position {
+    position: absolute;
+    left: 0;
+}
+
+.item-preview {
+    opacity: 0.5;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    background-color: gray;
+    width: 200px;
+    height: 287px;
+}
+
+.period-tooltip {
+    height: 80px;
+    position: absolute;
+    bottom: 0;
+    background-color: #a9a9a9;
+    color: white;
+    border-top: solid gray;
+}
+
+.header-status {
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    background-color: #a9a9a9;
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+    border-bottom: solid gray;
+}
+
+.footer-status {
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    background-color: #a9a9a9;
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+    border-top: solid gray;
+}
+
+.header-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+.scrollbar {
+    background-color: #d3d3d3;
+}
+
+.tooltip {
+    background: url("Tooltip.png") no-repeat;
+    width: 110px;
+    height: 60px;
+}
+
+.tooltip-text {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: black;
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.tooltip-item {
+    background-color: black;
+    color: white;
+}
+
+.thumbnail {
+    background: #d3d3d3;
+    width: 200px;
+    height: 290px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.Timeline {
+    border-bottom: solid 0.1px;
+}
+
+.Loading {
+    background: url("Loading.gif") no-repeat transparent;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.Open {
+    background: url("Open.png") no-repeat;
+}
+
+.CarouselFlow {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+}
+
+.image {
+    position: absolute;
+}
+
+.ErrorMessage {
+    border: solid #d3d3d3 2px;
+    background-color: gray;
+    font-family: sans-serif;
+}
+
+.active {
+    border: solid 2px red;
+}
+
+.gwt-SplitLayoutPanel {
+}
+
+.CarouselFlow {
+}
+
+.gwt-Label {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: gray;
+    padding: 10px 10px 10px 10px;
+}

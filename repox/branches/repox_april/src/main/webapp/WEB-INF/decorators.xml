@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<decorators defaultdir="/jsp/decorators">
+	<excludes>
+        <pattern>*terminals.jsp*</pattern>
+    </excludes>
+	
+    <decorator name="main" page="main.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+    <decorator name="printable" page="printable.jsp"/>
+</decorators>

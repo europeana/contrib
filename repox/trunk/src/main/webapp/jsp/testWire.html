@@ -1,0 +1,170 @@
+<html>
+	<head>
+		<title>Test Wire Stuff</title>
+		<!-- YUI -->
+<!-- 		
+		<link rel="stylesheet" type="text/css" href="WireIt/lib/yui/fonts/fonts-min.css" />
+		<link rel="stylesheet" type="text/css" href="WireIt/lib/yui/reset/reset-min.css" />
+-->
+
+		<script type="text/javascript" src="WireIt/lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+		<script type="text/javascript" src="WireIt/lib/yui/dragdrop/dragdrop-min.js"></script>
+		
+		<!-- Excanvas -->
+		<!--[if IE]><script type="text/javascript" src="WireIt/lib/excanvas.js"></script><![endif]-->
+		
+		<!-- WireIt -->
+		<script type="text/javascript" src="WireIt/js/WireIt.js"></script>
+		<script type="text/javascript" src="WireIt/js/Wire.js"></script>
+		<script type="text/javascript" src="WireIt/js/Terminal.js"></script>
+		<link rel="stylesheet" type="text/css" href="WireIt/css/WireIt.css" />
+		
+		<style>
+			div.blockBox { /* WireIt */
+				position: absolute;
+				z-index: 5;
+				opacity: 0.8;
+				/* Others */
+				width: 50px;
+				height: 380px;
+				background-color: rgb(255, 200, 200);
+			}
+			
+			div.WireIt-Terminal {
+				margin: 20px 8px;
+			}
+			
+			#blockTop div.WireIt-Terminal,#blockBottom div.WireIt-Terminal {
+				margin: 8px;
+				float: left;
+			}
+		</style>
+		<script>
+		var side1List = [];
+		var side2List = [];
+			
+		window.onload = function() {
+			var messages = {
+				key1: "val"
+			}
+			var bl = YAHOO.util.Dom.get('blockLeft');
+			var br = YAHOO.util.Dom.get('blockRight');
+						 
+			for( var i = 0 ; i < 8 ; i++) {
+				side1List.push(new WireIt.Terminal(bl, {direction: [1,0], offsetPosition:[0,i*40], ddConfig: {type: 'side1', allowedTypes: 'side2'}}));
+				side2List.push(new WireIt.Terminal(br, {direction: [-1,0], offsetPosition:[0,i*40], ddConfig: {type: 'side2', allowedTypes: 'side1'}}));
+			}
+			
+		};
+		
+/*		function popup() {
+			alert('start');
+			var connectedTerminals = side1List[0].getConnectedTerminals();
+			for(var i = 0 ; i < connectedTerminals.length; i++) {
+				alert("connectedTerminals: x - " + connectedTerminals[i].getXY()[0] + "connectedTerminals: y - " + connectedTerminals[i].getXY()[1]);
+				for(var j = 0;  j < side2List.length; j++) {
+					//alert("side2List: x - " + side2List[j].getXY()[0] + "side2List: y - " + side2List[j].getXY()[1]);
+					if(connectedTerminals[i] == side2List[j]) {
+						alert('connectedTerminal pos: ' + j);
+					}
+				}
+			}
+			
+			//fazer a iteração contrária por causa das direcções das setas
+			for(var i = 0 ; i < side2List.length; i++) {
+				if(side2List[i].getConnectedTerminals().indexOf(side1List[0]) != -1) {
+					alert('connectedTerminal pos: ' + i);
+				}
+			}
+			
+			
+			alert('end');
+		}
+*/
+		function compareNumbers(a, b)
+		{
+		  return a - b;
+		}
+		
+		function popup() {
+			var resultConnections = new Array(side1List.length);
+			
+			for(var i = 0 ; i < side1List.length; i++) {
+				var currentResultConnections = [];
+				
+				var connectedTerminals = side1List[i].getConnectedTerminals();
+				for(var j = 0;  j < connectedTerminals.length; j++) {
+					for(var k = 0; k < side2List.length; k++) {
+						if(connectedTerminals[j] == side2List[k]) {
+							currentResultConnections.push(k);
+						}
+					}
+				}
+				
+				for(var j = 0 ; j < side2List.length; j++) {
+					if(side2List[j].getConnectedTerminals().indexOf(side1List[i]) != -1) {
+						currentResultConnections.push(j);
+					}
+				}
+				
+				resultConnections[i] = currentResultConnections.sort(compareNumbers);
+			}
+			
+			var resultString = 'RESULTING CONNECTIONS: ';
+			for(var i = 0 ; i < resultConnections.length; i++) {
+				resultString += 'Node [' + i + ']: '; 
+				for(var j = 0;  j < resultConnections[i].length; j++) {
+					resultString += resultConnections[i][j] + ';';
+				}
+				resultString += '\n';
+			}
+			alert(resultString);
+		}
+		
+		</script>
+	</head>
+	
+	<body>
+		<p style="margin: 10px;">Tentar fazer drag'n drop nos terminais. Clicar na tesoura para remover wires.</p>
+		
+		<table>
+			<tr>
+				<td align="right">
+					<div style="position: relative; height: 380px; width: 350px;">
+						<font style="position: absolute; top:28px; right: 2px;">Coisas da esquerda 1</font>
+						<font style="position: absolute; top:68px; right: 2px;">Coisas da esquerda 2</font>
+					</div>
+				</td>
+				<td>
+					<div style="position: relative; height: 380px; width:300px;">
+						<div id='blockLeft' class="blockBox" style="position: absolute; width: 50px; height: 380px;"></div>
+						<div id='blockRight'  class="blockBox"  style="position: absolute; width: 50px; height: 380px; left: 250px;"></div>
+					</div>
+				</td>
+				<td align="left">
+					<div style="position: relative; height: 380px; width:350px;">
+						<font style="position: absolute; top:28px; left: 2px;">Coisas da direita 1</font>
+						<font style="position: absolute; top:68px; left: 2px;">Coisas da direita 2</font>
+					</div>
+				</td>
+			</tr>
+			<tr><td colspan="3" align="center"><input type="button" onclick="javascript:popup()" name="Submit" value="Submit" /></td><tr>
+		</table>
+		
+<!-- 		
+		<div style="position: relative; height: 380px;">
+			<div id='blockLeft' class="blockBox" style="position: absolute; width: 50px; height: 380px; left: 450px;"></div>
+			<div id='blockRight'  class="blockBox"  style="position: absolute; width: 50px; height: 380px; left: 650px;"></div>
+			<div style="clear: both;"></div>
+		</div>
+ -->		
+		
+		
+		<!-- 
+		<form action="/mapMetadata/MapMetadata.action" acceptcharset="UTF-8">
+			<b>XSLT</b>
+			<b>Transformation Result (with sample)</b>
+		</form> 
+		 -->
+	</body>
+</html>

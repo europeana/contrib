@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagramm>
+  <classes>
+    <class fqn="eu.europeana.repox2sip.models.DataSet" x="489.07916666666665" y="532.0" />
+    <class fqn="eu.europeana.repox2sip.models.RequestStatus" x="736.0791666666667" y="572.0" />
+    <class fqn="eu.europeana.repox2sip.models.MetadataRecord" x="550.25" y="1124.0" />
+    <class fqn="eu.europeana.repox2sip.models.MetadataRecordStatus" x="245.35000000000002" y="888.0" />
+    <class fqn="eu.europeana.repox2sip.models.Aggregator" x="655.7" y="0.0" />
+    <class fqn="eu.europeana.repox2sip.models.DataSetType" x="20.0" y="296.0" />
+    <class fqn="eu.europeana.repox2sip.models.ImporterStrategy" x="249.0" y="276.0" />
+    <class fqn="eu.europeana.repox2sip.models.Request" x="549.35" y="898.0" />
+    <class fqn="eu.europeana.repox2sip.models.Provider" x="643.0" y="216.0" />
+    <class fqn="eu.europeana.repox2sip.models.ProviderType" x="353.7" y="0.0" />
+  </classes>
+  <packages />
+  <edges>
+    <edge source="eu.europeana.repox2sip.models.MetadataRecord" target="eu.europeana.repox2sip.models.MetadataRecordStatus" relationship="TO_ONE">
+      <point x="-53.75" y="-123.0" />
+      <point x="604.0" y="1094.0" />
+      <point x="465.35" y="1094.0" />
+      <point x="88.0" y="83.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSet" target="eu.europeana.repox2sip.models.DataSet" relationship="DEPENDENCY">
+      <point x="-82.8" y="143.0" />
+      <point x="509.77916666666664" y="838.0" />
+      <point x="469.07916666666665" y="838.0" />
+      <point x="469.07916666666665" y="675.0" />
+      <point x="-103.5" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Request" target="eu.europeana.repox2sip.models.RequestStatus" relationship="DEPENDENCY">
+      <point x="112.91666666666674" y="-73.0" />
+      <point x="797.7666666666668" y="868.0" />
+      <point x="1011.0791666666667" y="868.0" />
+      <point x="110.0" y="103.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Provider" target="eu.europeana.repox2sip.models.ProviderType" relationship="TO_ONE">
+      <point x="-81.25" y="-113.0" />
+      <point x="659.25" y="196.0" />
+      <point x="484.7" y="196.0" />
+      <point x="0.0" y="73.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Request" target="eu.europeana.repox2sip.models.DataSet" relationship="TO_ONE">
+      <point x="-67.75" y="-73.0" />
+      <point x="617.1" y="868.0" />
+      <point x="592.5791666666667" y="868.0" />
+      <point x="0.0" y="143.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.MetadataRecord" target="eu.europeana.repox2sip.models.Request" relationship="TO_MANY">
+      <point x="-17.916666666666742" y="-123.0" />
+      <point x="639.8333333333333" y="1104.0" />
+      <point x="630.65" y="1104.0" />
+      <point x="-54.200000000000045" y="73.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSet" target="eu.europeana.repox2sip.models.Request" relationship="TO_MANY">
+      <point x="82.80000000000007" y="143.0" />
+      <point x="675.3791666666667" y="868.0" />
+      <point x="707.4333333333333" y="868.0" />
+      <point x="22.583333333333258" y="-73.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Request" target="eu.europeana.repox2sip.models.MetadataRecord" relationship="TO_MANY">
+      <point x="54.200000000000045" y="73.0" />
+      <point x="739.0500000000001" y="1104.0" />
+      <point x="711.5" y="1104.0" />
+      <point x="53.75" y="-123.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.MetadataRecord" target="eu.europeana.repox2sip.models.MetadataRecord" relationship="DEPENDENCY">
+      <point x="0.0" y="123.0" />
+      <point x="657.75" y="1390.0" />
+      <point x="530.25" y="1390.0" />
+      <point x="530.25" y="1247.0" />
+      <point x="-107.5" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSet" target="eu.europeana.repox2sip.models.DataSetType" relationship="DEPENDENCY">
+      <point x="-90.5625" y="-143.0" />
+      <point x="502.01666666666665" y="512.0" />
+      <point x="114.5" y="512.0" />
+      <point x="0.0" y="33.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Provider" target="eu.europeana.repox2sip.models.DataSet" relationship="TO_MANY">
+      <point x="39.0" y="113.0" />
+      <point x="779.5" y="502.0" />
+      <point x="657.2666666666667" y="502.0" />
+      <point x="64.6875" y="-143.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSet" target="eu.europeana.repox2sip.models.ImporterStrategy" relationship="DEPENDENCY">
+      <point x="-12.9375" y="-143.0" />
+      <point x="579.6416666666667" y="482.0" />
+      <point x="544.0" y="482.0" />
+      <point x="118.0" y="53.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSet" target="eu.europeana.repox2sip.models.Provider" relationship="TO_ONE">
+      <point x="38.8125" y="-143.0" />
+      <point x="631.3916666666667" y="492.0" />
+      <point x="740.5" y="492.0" />
+      <point x="0.0" y="113.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Provider" target="eu.europeana.repox2sip.models.Aggregator" relationship="TO_ONE">
+      <point x="-16.25" y="-113.0" />
+      <point x="724.25" y="196.0" />
+      <point x="719.3" y="196.0" />
+      <point x="-42.400000000000006" y="73.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.RequestStatus" target="eu.europeana.repox2sip.models.RequestStatus" relationship="DEPENDENCY">
+      <point x="-110.0" y="103.0" />
+      <point x="791.0791666666667" y="798.0" />
+      <point x="716.0791666666667" y="798.0" />
+      <point x="716.0791666666667" y="675.0" />
+      <point x="-165.0" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Aggregator" target="eu.europeana.repox2sip.models.Provider" relationship="DEPENDENCY">
+      <point x="42.39999999999998" y="73.0" />
+      <point x="804.0999999999999" y="196.0" />
+      <point x="789.25" y="196.0" />
+      <point x="48.75" y="-113.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.MetadataRecordStatus" target="eu.europeana.repox2sip.models.MetadataRecordStatus" relationship="DEPENDENCY">
+      <point x="-88.0" y="83.0" />
+      <point x="289.35" y="1074.0" />
+      <point x="225.35000000000002" y="1074.0" />
+      <point x="225.35000000000002" y="971.0" />
+      <point x="-132.0" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.ProviderType" target="eu.europeana.repox2sip.models.ProviderType" relationship="DEPENDENCY">
+      <point x="-87.33333333333331" y="73.0" />
+      <point x="397.3666666666667" y="166.0" />
+      <point x="333.7" y="166.0" />
+      <point x="333.7" y="73.0" />
+      <point x="-131.0" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.DataSetType" target="eu.europeana.repox2sip.models.DataSetType" relationship="DEPENDENCY">
+      <point x="-63.0" y="33.0" />
+      <point x="51.5" y="382.0" />
+      <point x="0.0" y="382.0" />
+      <point x="0.0" y="329.0" />
+      <point x="-94.5" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Aggregator" target="eu.europeana.repox2sip.models.Aggregator" relationship="DEPENDENCY">
+      <point x="-84.8" y="73.0" />
+      <point x="676.9" y="166.0" />
+      <point x="635.7" y="166.0" />
+      <point x="635.7" y="73.0" />
+      <point x="-106.0" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Request" target="eu.europeana.repox2sip.models.Request" relationship="DEPENDENCY">
+      <point x="-108.4" y="73.0" />
+      <point x="576.45" y="1064.0" />
+      <point x="529.35" y="1064.0" />
+      <point x="529.35" y="971.0" />
+      <point x="-135.5" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.ImporterStrategy" target="eu.europeana.repox2sip.models.ImporterStrategy" relationship="DEPENDENCY">
+      <point x="-118.0" y="53.0" />
+      <point x="308.0" y="402.0" />
+      <point x="229.0" y="402.0" />
+      <point x="229.0" y="329.0" />
+      <point x="-177.0" y="-0.0" />
+    </edge>
+    <edge source="eu.europeana.repox2sip.models.Provider" target="eu.europeana.repox2sip.models.Provider" relationship="DEPENDENCY">
+      <point x="-78.0" y="113.0" />
+      <point x="662.5" y="462.0" />
+      <point x="623.0" y="462.0" />
+      <point x="623.0" y="329.0" />
+      <point x="-97.5" y="-0.0" />
+    </edge>
+  </edges>
+  <settings isCamel="false" isColorManagerEnabled="true" isFieldsVisible="true" isConstructorsVisible="false" isMethodsVisible="false" isShowDependencies="true" isShowInnerClasses="true" isVcsFilterEnabled="false" defaultVisibility="all" layout="Hierarchic Group" isPropertiesVisible="false" zoom="0.7671568627450981" x="660.3833865814696" y="539.1565495207668" />
+  <SelectedNodes>
+    <node fqn="eu.europeana.repox2sip.models.MetadataRecordStatus" />
+  </SelectedNodes>
+</ClassDiagramm>
+

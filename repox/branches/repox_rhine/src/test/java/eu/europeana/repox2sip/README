@@ -1,0 +1,8 @@
+To run tests configure dataSource in /main/resources/repox2sip-application-context.xml.
+
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="org.postgresql.Driver"/>      <-----------------
+        <property name="jdbcUrl" value="jdbc:postgresql:Repox2Sip"/>      <-----------------
+        <property name="user" value="europeana"/>                         <-----------------
+        <property name="password" value="culture"/>                       <-----------------
+</bean>

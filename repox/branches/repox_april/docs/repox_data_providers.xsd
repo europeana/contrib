@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://repox.ist.utl.pt/schemas/dataProviders" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:rdp="http://repox.ist.utl.pt/schemas/dataProviders">
+
+
+    <annotation>
+    	<documentation>This is a schema for importing data providers and the respective data sources into REPOX.
+
+Status: draft
+</documentation></annotation>
+    <element name="dataProviders" type="rdp:dataProviderListType"></element>
+    
+    <complexType name="dataProviderType">
+    	<sequence>
+    		<element name="dataSource" type="rdp:dataSourceType"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="id" type="string"></attribute>
+    	<attribute name="name" type="string"></attribute>
+    	<attribute name="country" type="rdp:ISO3166CountryCodeType" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="dataProviderListType">
+    	<sequence>
+    		<element name="dataProvider" type="rdp:dataProviderType" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="oaiPmhDataSourceDetailsType">
+    	<sequence>
+    		<element name="baseUrl" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="set" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="metadataPrefix" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="metadataFormatId" type="string" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>The identifier of this metatada format in Repox. In most cases this is the same as the metadataPrefix, but some data providers may use different metadataPrefixes to refer to the same metadata format. For example, to refer to the TEL-AP format, libraries use several metadata prefixes: tel, telap, dc_tel, etc.</documentation>
+    			</annotation></element>
+    		<element name="fullHarvestPeriodicity" type="rdp:periodicityType" maxOccurs="1" minOccurs="0"></element>
+    		<element name="IncrementalHarvestPeriodicity" type="rdp:periodicityType" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="dataSourceType">
+    	<sequence>
+    		<element name="oaiPmhDataSource"
+    			type="rdp:oaiPmhDataSourceDetailsType" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="export" type="rdp:exportType" maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation></documentation>
+    			</annotation></element>
+    	</sequence>
+    	<attribute name="id" type="string"></attribute>
+    	<attribute name="name" type="string"></attribute>
+    </complexType>
+
+    <complexType name="exportType">
+    	<sequence>
+    		<element name="fileSystemLocation" type="string"
+    			maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>A location in the file system of the server where REPOX is installed, to which repox will export the metadata records.</documentation>
+                </annotation>
+    		</element>
+    		<element name="periodicity" type="rdp:periodicityType"></element>
+    	</sequence>
+    </complexType>
+
+    <simpleType name="periodicityType">
+    	<restriction base="string">
+    		<enumeration value="daily"></enumeration>
+    		<enumeration value="weekly"></enumeration>
+    		<enumeration value="monthly"></enumeration>
+    		<enumeration value="everyThreeMonths"></enumeration>
+    		<enumeration value="everySixMonths"></enumeration>
+    		<enumeration value="yearly"></enumeration>
+    		<enumeration value="none"></enumeration>
+    	</restriction>
+    </simpleType>
+    
+    
+    <simpleType name="ISO3166CountryCodeType">
+  <annotation>
+        <documentation xml:lang="en">
+            The country code is coded according to ISO 3166 country code 
+    	</documentation>
+  </annotation>
+    <restriction base="token">
+      <pattern value="[a-zA-Z]{2}"/>
+    </restriction>
+  </simpleType>
+    
+</schema>
