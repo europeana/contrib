@@ -128,7 +128,7 @@
 	</build>
 
 	<properties>
-		<lucene.version>4.0.0-BETA</lucene.version>
+		<lucene.version>4.0.0</lucene.version>
 		<solr.version>4.0.0</solr.version>
 		<jdkLevel>1.5</jdkLevel>
 		<jetty.version>6.1.18</jetty.version>

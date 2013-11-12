@@ -184,8 +184,7 @@ public class BM25FBooleanTermQuery extends Query {
 				) throws IOException {
 
 			return context.reader().termDocsEnum(
-					null, field,
-					new Term(field, term.text()).bytes());
+					new Term(field, term.text()));
 
 		}
 
