@@ -10,19 +10,26 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>${lucene.version}</version>
-<!-- 			<type>jar</type> -->
-<!-- 			<scope>compile</scope> -->
-<!-- 			<exclusions> -->
-<!-- 				<exclusion> -->
-<!-- 					<artifactId>org.apache.solr</artifactId> -->
-<!-- 					<groupId>solr-core</groupId> -->
-<!-- 				</exclusion> -->
-<!-- 				<exclusion> -->
-<!-- 					<artifactId>jackrabbit-standalone</artifactId> -->
-<!-- 					<groupId>org.apache.jackrabbit</groupId> -->
-<!-- 				</exclusion> -->
-<!-- 			</exclusions> -->
+			<!-- <type>jar</type> -->
+			<!-- <scope>compile</scope> -->
+			<!-- <exclusions> -->
+			<!-- <exclusion> -->
+			<!-- <artifactId>org.apache.solr</artifactId> -->
+			<!-- <groupId>solr-core</groupId> -->
+			<!-- </exclusion> -->
+			<!-- <exclusion> -->
+			<!-- <artifactId>jackrabbit-standalone</artifactId> -->
+			<!-- <groupId>org.apache.jackrabbit</groupId> -->
+			<!-- </exclusion> -->
+			<!-- </exclusions> -->
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-codecs</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
 
 
 		<dependency>
@@ -44,8 +51,14 @@
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-test-framework</artifactId>
-			<version>4.0.0-BETA</version>
+			<version>4.0.0</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.6</version>
 		</dependency>
 
 		<dependency>
@@ -73,17 +86,17 @@
 			<version>2.5.6</version>
 		</dependency>
 
-	<dependency>
-		<groupId>ch.qos.logback</groupId>
-		<artifactId>logback-classic</artifactId>
-		<version>0.9.29</version>
-	</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>0.9.29</version>
+		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.lucene</groupId> -->
-<!-- 			<artifactId>lucene-core</artifactId> -->
-<!-- 			<version>4.0.0-BETA</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.lucene</groupId> -->
+		<!-- <artifactId>lucene-core</artifactId> -->
+		<!-- <version>4.0.0-BETA</version> -->
+		<!-- </dependency> -->
 
 
 
