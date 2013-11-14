@@ -93,6 +93,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
@@ -133,7 +134,8 @@
 		<jdkLevel>1.5</jdkLevel>
 		<jetty.version>6.1.18</jetty.version>
 		<http.port>8080</http.port>
-	</properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<!-- <repositories> -->
 	<!-- <repository> -->
