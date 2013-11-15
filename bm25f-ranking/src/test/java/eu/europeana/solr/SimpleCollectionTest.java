@@ -42,14 +42,12 @@ public class SimpleCollectionTest {
 	public static void runSolrInstance() throws SolrServerException,
 			IOException {
 		instance = new SimpleCollectionSolrInstance();
-		instance.setSolrdir(new File("./src/test/resources/solr/simple-collection"));
+		instance.setSolrdir(new File(
+				"./src/test/resources/solr/simple-collection"));
 		instance.deleteByQuery("*:*");
-		
+
 		index(instance);
 	}
-	
-	
-	
 
 	// index a small collection of 3 documents, just to test if the scores
 	// are computed correctly
@@ -81,37 +79,37 @@ public class SimpleCollectionTest {
 		tester.add(doc);
 		tester.commit();
 	}
-	
-	private static SolrDocumentList getResults(String query) throws SolrServerException{
-		System.out.println("QUERY "+query);
+
+	private static SolrDocumentList getResults(String query)
+			throws SolrServerException {
+		System.out.println("QUERY " + query);
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
-		q.set("defType","bm25f");
-	    q.setRows(10); 
-	    QueryResponse qr = instance.query(q);
-	    //Map<String, String> explainmap = qr.getExplainMap();
-	    return qr.getResults();
+		q.set("defType", "bm25f");
+		q.setRows(10);
+		QueryResponse qr = instance.query(q);
+		// Map<String, String> explainmap = qr.getExplainMap();
+		return qr.getResults();
 	}
-	
-	private static Map<String, Object> explain(String query) throws SolrServerException{
-		System.out.println("QUERY "+query);
+
+	private static Map<String, Object> explain(String query)
+			throws SolrServerException {
+		System.out.println("QUERY " + query);
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
-		q.set("defType","bm25f");
-	    q.setRows(10); 
-	    QueryResponse qr = instance.query(q);
-	    Map<String, Object> explainmap = qr.getDebugMap();
-	    return explainmap;
+		q.set("defType", "bm25f");
+		q.setRows(10);
+		QueryResponse qr = instance.query(q);
+		Map<String, Object> explainmap = qr.getDebugMap();
+		return explainmap;
 	}
-	
-	
-	
+
 	@Test
 	public void testResults() {
 		try {
 			SolrDocumentList results = getResults("leonardo");
 			assertEquals(3, results.size());
-//			// check if the status is not corrupted
+			// // check if the status is not corrupted
 			results = getResults("leonardo");
 			assertEquals(3, results.size());
 			results = getResults("vinci");
@@ -124,12 +122,12 @@ public class SimpleCollectionTest {
 			assertEquals(1, results.size());
 			results = getResults("vinci");
 			assertEquals(4, results.size());
-			 results = getResults("picasso vinci");
+			results = getResults("picasso vinci");
 			assertEquals(1, results.size());
 			results = getResults("picasso vinci leonardo");
 			assertEquals(0, results.size());
 			results = getResults("description:leonardo vinci");
-			assertEquals(1, results.size());
+			assertEquals(3, results.size());
 			results = getResults("vinci -picasso");
 			assertEquals(3, results.size());
 			results = getResults("leonardo -picasso");
@@ -141,34 +139,33 @@ public class SimpleCollectionTest {
 		} catch (SolrServerException e) {
 			fail(e.toString());
 		}
-		
+
 	}
-	
+
 	@Test
 	public void testScores() throws SolrServerException {
-			
-			System.out.println(explain("picasso"));
+
+		System.out.println(explain("picasso"));
 	}
-	
-	
-//	@Test
-//	public void testResults() {
-//		try {
-//			SolrDocumentList results = getResults("leonardo");
-//			assertEquals(3, results.size());
-//			// check if the status is not corrupted
-//			results = getResults("leonardo");
-//			assertEquals(3, results.size());
-//			results = getResults("vinci");
-//			assertEquals(3, results.size());
-//			results = getResults("test");
-//			assertEquals(1, results.size());
-//			results = getResults("ThisTermIsNotInTheIndexMuahahah");
-//			assertEquals(0, results.size());
-//		} catch (SolrServerException e) {
-//			fail(e.toString());
-//		}
-//		
-//	}
+
+	// @Test
+	// public void testResults() {
+	// try {
+	// SolrDocumentList results = getResults("leonardo");
+	// assertEquals(3, results.size());
+	// // check if the status is not corrupted
+	// results = getResults("leonardo");
+	// assertEquals(3, results.size());
+	// results = getResults("vinci");
+	// assertEquals(3, results.size());
+	// results = getResults("test");
+	// assertEquals(1, results.size());
+	// results = getResults("ThisTermIsNotInTheIndexMuahahah");
+	// assertEquals(0, results.size());
+	// } catch (SolrServerException e) {
+	// fail(e.toString());
+	// }
+	//
+	// }
 
 }

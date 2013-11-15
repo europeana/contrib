@@ -53,6 +53,7 @@ public class BM25FParserPlugin extends QParserPlugin {
 
 	@SuppressWarnings("unchecked")
 	public void init(NamedList args) {
+		
 //		BM25FParameters bmParams = new BM25FParameters();
 //		if (args != null) {
 //			float k1 = (Float) args.get("k1");

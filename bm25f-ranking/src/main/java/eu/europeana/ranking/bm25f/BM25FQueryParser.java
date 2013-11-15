@@ -55,7 +55,7 @@ public class BM25FQueryParser extends QParser {
 
 	public static final String DEFAULT_FIELD = SolrFields.getInstance().getDefaultField();
 	String qstr;
-	String queryField;
+	//String queryField;
 
 	/**
 	 * @param qstr
@@ -70,14 +70,14 @@ public class BM25FQueryParser extends QParser {
 		
 		String query = req.getParams().get("q");
 		
-		
-		queryField = StringUtils.split(query,":").length>1?StringUtils.split(query,":")[0]:DEFAULT_FIELD;
+		// WAT? 
+		//queryField = StringUtils.split(query,":").length>1?StringUtils.split(query,":")[0]:DEFAULT_FIELD;
 	}
 
 	
 	@Override
 	public Query parse() throws ParseException {
-			SolrQueryParser parser = new SolrQueryParser(this, queryField);
+			SolrQueryParser parser = new SolrQueryParser(this, DEFAULT_FIELD);
 			Query q = parser.parse(qstr);
 		//		if (q instanceof DisjunctionMaxQuery ){
 //			return new BM25FQuery((DisjunctionMaxQuery)q);
@@ -98,7 +98,6 @@ public class BM25FQueryParser extends QParser {
 			bm25fQuery.add(new BooleanClause(tq, Occur.MUST));
 			return bm25fQuery;
 		}
-		
 		return q;
 	}
 		
