@@ -1,0 +1,434 @@
+<?xml version="1.0"  standalone="yes"?>
+<rdf:RDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.w3.org/1999/02/22-rdf-syntax-ns# ../../../../../../../../corelib/corelib-solr-definitions/src/main/resources/eu/EDM-INTERNAL.xsd"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+ xmlns:edm="http://www.europeana.eu/schemas/edm/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1"
+ xmlns:rdaGr2="http://rdvocab.info/ElementsGr2"
+ xmlns:owl="http://www.w3.org/2002/07/owl#"
+ xmlns:crm="http://www.cidoc-crm.org/rdfs/cidoc_crm_v5.0.2_english_label.rdfs#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:ore="http://www.openarchives.org/ore/terms/"
+ xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+ xmlns:xalan="http://xml.apache.org/xalan"
+ xmlns:dcterms="http://purl.org/dc/terms/">
+  <edm:ProvidedCHO rdf:about="#UEDIN:214">
+    <owl:sameAs rdf:resource="http://CHO-owl-sameAs.eu"/>
+  </edm:ProvidedCHO>
+  <edm:ProvidedCHO rdf:about="http://hdl.handle.net/10978/0F3716A7-DB96-403F-ADDE-399D29E34937">
+    <owl:sameAs rdf:resource="http://CHO-owl-sameAs.eu"/>
+  </edm:ProvidedCHO>
+  <edm:ProvidedCHO rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149"/>
+  <edm:ProvidedCHO rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_2"/>
+  <edm:ProvidedCHO rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_3"/>
+  <edm:ProvidedCHO rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_4"/>
+  <edm:WebResource rdf:about="http://www.mimo-db.eu/media/UEDIN/VIDEO/0032195v.mpg">
+    <dc:description xml:lang="it">Performance with Buccin Trombone </dc:description>
+    <dc:format>MPG format</dc:format>
+    <dc:rights>WebResource - dc:rights</dc:rights>
+    <dc:source>video tape</dc:source>
+    <dcterms:conformsTo>WebResource - dcterms:conformsTo</dcterms:conformsTo>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <dcterms:extent>10 minutes</dcterms:extent>
+    <dcterms:hasPart rdf:resource="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_2">WebResource - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:isFormatOf>WebResource - dcterms:isFormatOf</dcterms:isFormatOf>
+    <dcterms:issued>WebResource - dcterms:issued</dcterms:issued>
+    <edm:isNextInSequence rdf:resource="http://WebResource-edm-isNextInSequence.eu"/>
+    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+  </edm:WebResource>
+  <edm:WebResource rdf:about="http://www.mimo-db.eu/media/UEDIN/AUDIO/0032195s.mp3">
+    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+  </edm:WebResource>
+  <edm:WebResource rdf:about="http://hdl.handle.net/10978/F475B1DF-116F-4723-AC7A-26A5FEB48367">
+    <dc:description xml:lang="it">WebResource - dc:description</dc:description>
+    <dc:format>PDF</dc:format>
+    <dc:rights>WebResource - dc:rights</dc:rights>
+    <dc:source>paper</dc:source>
+    <dcterms:conformsTo>WebResource - dcterms:conformsTo</dcterms:conformsTo>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <dcterms:extent>1 page</dcterms:extent>
+    <dcterms:hasPart rdf:resource="http://hdl.handle.net/10978/34A75D74-C2D3-42B0-9693-4554741CAB75"/>
+    <dcterms:isFormatOf>WebResource - dcterms:isFormatOf</dcterms:isFormatOf>
+    <dcterms:issued>WebResource - dcterms:issued</dcterms:issued>
+    <edm:isNextInSequence
+      rdf:resource="http://hdl.handle.net/10978/8606F855-C04D-4BE3-A17C-300F7B8A526F"/>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </edm:WebResource>
+  <edm:WebResource
+    rdf:about="http://www.gahetna.nl/collectie/archief/inventaris/index/eadid/3.01.01/node/c01%3A4.c02%3A2.c03%3A0">
+    <dc:description xml:lang="it">WebResource - dc:description</dc:description>
+    <dc:format>JPG</dc:format>
+    <dc:rights>WebResource - dc:rights</dc:rights>
+    <dc:source>paper</dc:source>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </edm:WebResource>
+  <edm:WebResource rdf:about="http://proxy.handle.net/10648/93fea66f-027a-48c7-88ee-413a897f4b55">
+    <dc:description xml:lang="it">WebResource - dc:description</dc:description>
+    <dc:format>JPG</dc:format>
+    <dc:source>paper</dc:source>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </edm:WebResource>
+  <edm:WebResource rdf:about="http://proxy.handle.net/10648/369f0d09-0f04-4aa1-b711-0e06c941c5a3">
+    <dc:description xml:lang="it">WebResource - dc:description</dc:description>
+    <dc:format>JPG</dc:format>
+    <dc:source>paper</dc:source>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </edm:WebResource>
+  <edm:WebResource rdf:about="http://proxy.handle.net/10648/1b3e3658-2d08-48ca-87e9-b428c3804547">
+    <dc:description xml:lang="it">WebResource - dc:description</dc:description>
+    <dc:format>JPG</dc:format>
+    <dc:source>paper</dc:source>
+    <dcterms:created rdf:resource="http://www.example.com/time/1930">2010</dcterms:created>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </edm:WebResource>
+  <edm:Agent rdf:about="http://www.mimo-db.eu/InstrumentMaker/Corporation/194">
+    <skos:prefLabel xml:lang="fr">Courtois neveu aÃ®nÃ©</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Courtois</skos:altLabel>
+    <skos:altLabel xml:lang="en">Augte. Courtois aÃ®nÃ©</skos:altLabel>
+    <skos:note>Agent - skos:note</skos:note>
+    <dc:date>Circa 1930CHO - dc:dateAgent - dc:date</dc:date>
+    <dc:identifier>#UEDIN:214000000106521492149.22149.32149.4Agent - dc:identifier</dc:identifier>
+    <edm:begin>fl a 1803</edm:begin>
+    <edm:end>fl a 1862</edm:end>
+    <edm:hasMet>CHO - edm:hasMetCHO - edm:hasMetAgent - edm:hasMet</edm:hasMet>
+    <edm:isRelatedTo>CHO - edm:isRelatedToCHO - edm:isRelatedToAgent - edm:isRelatedTo</edm:isRelatedTo>
+    <owl:sameAs rdf:resource="http://Agent-owl-sameAs.eu"/>
+  </edm:Agent>
+  <edm:Agent rdf:about="http://hdl.handle.net/agent/example">
+    <skos:prefLabel>Agent - skos:altLabel</skos:prefLabel>
+    <skos:altLabel>Agent - skos:altLabel</skos:altLabel>
+    <skos:note>Agent - skos:note</skos:note>
+    <dc:date>Circa 1930CHO - dc:dateAgent - dc:date</dc:date>
+    <dc:identifier>#UEDIN:214000000106521492149.22149.32149.4Agent - dc:identifier</dc:identifier>
+    <edm:begin>Agent - edm:begin</edm:begin>
+    <edm:end>Agent - edm:end</edm:end>
+    <edm:hasMet>CHO - edm:hasMetCHO - edm:hasMetAgent - edm:hasMet</edm:hasMet>
+    <edm:isRelatedTo>CHO - edm:isRelatedToCHO - edm:isRelatedToAgent - edm:isRelatedTo</edm:isRelatedTo>
+    <owl:sameAs rdf:resource="http://Agent-owl-sameAs.eu"/>
+  </edm:Agent>
+  <edm:Place rdf:about="http://sws.geonames.org/3017382/">
+    <wgs84:lat xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">46</wgs84:lat>
+    <wgs84:long xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">2</wgs84:long>
+    <wgs84:alt xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">23423.456456</wgs84:alt>
+    <skos:prefLabel xml:lang="en">France</skos:prefLabel>
+    <skos:altLabel xml:lang="it">Francia</skos:altLabel>
+    <skos:note>Probably in Paris</skos:note>
+    <dcterms:hasPart>Place - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:isPartOf rdf:resource="http://hdl.handle.net/10978/64394402-522A-4E0F-98AB-FB13FC7FAF76">collection de Buccin TromboneCollection of speechesCollection of speechesEurope</dcterms:isPartOf>
+    <owl:sameAs rdf:resource="http://Place-owl-sameAs.eu"/>
+  </edm:Place>
+  <edm:Place rdf:about="http://sws.geonames.org/3017382/">
+    <wgs84:lat xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">46</wgs84:lat>
+    <wgs84:long xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">2</wgs84:long>
+    <wgs84:alt xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">1000.1</wgs84:alt>
+    <skos:prefLabel xml:lang="en">France</skos:prefLabel>
+    <skos:altLabel xml:lang="it">Francia</skos:altLabel>
+    <skos:note>Probably in Paris</skos:note>
+    <dcterms:hasPart>Place - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:isPartOf rdf:resource="http://hdl.handle.net/10978/64394402-522A-4E0F-98AB-FB13FC7FAF76">collection de Buccin TromboneCollection of speechesCollection of speechesEurope</dcterms:isPartOf>
+    <owl:sameAs rdf:resource="http://Place-owl-sameAs.eu"/>
+  </edm:Place>
+  <edm:TimeSpan rdf:about="http://www.example.com/time/1930">
+    <skos:prefLabel>1930</skos:prefLabel>
+    <skos:altLabel xml:lang="en">20th century</skos:altLabel>
+    <skos:note>TimeSpan - skos:note</skos:note>
+    <dcterms:hasPart>TimeSpan - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:isPartOf>TimeSpan - dcterms:isPartOf</dcterms:isPartOf>
+    <edm:begin>1930-01-01</edm:begin>
+    <edm:end>1930-12-31</edm:end>
+    <owl:sameAs rdf:resource="http://TimeSpan-owl-sameAs.eu"/>
+  </edm:TimeSpan>
+  <edm:TimeSpan rdf:about="http://hdl.handle.net/timeSpan/example">
+    <skos:prefLabel>TimeSpan - skos:altLabel</skos:prefLabel>
+    <skos:altLabel>TimeSpan - skos:altLabel</skos:altLabel>
+    <skos:note>TimeSpan - skos:note</skos:note>
+    <dcterms:hasPart>TimeSpan - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:isPartOf>TimeSpan - dcterms:isPartOf</dcterms:isPartOf>
+    <owl:sameAs rdf:resource="http://TimeSpan-owl-sameAs.eu"/>
+  </edm:TimeSpan>
+  <skos:Concept rdf:about="http://www.mimo-db.eu/InstrumentsKeywords/4378">
+    <skos:prefLabel xml:lang="en">Buccin</skos:prefLabel>
+    <skos:prefLabel xml:lang="fr">Buccin</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Buccin</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Buccin</skos:prefLabel>
+    <skos:prefLabel xml:lang="sv">Buccin</skos:prefLabel>
+    <skos:prefLabel xml:lang="it">Buccin-trombone</skos:prefLabel>
+    <skos:altLabel>Concept - skos:altLabel</skos:altLabel>
+    <skos:broader rdf:resource="http://Concept-skos-narrower.eu"/>
+    <skos:narrower rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+    <skos:related rdf:resource="http://www.mimo-db.eu/HornbostelAndSachs/356"/>
+    <skos:broadMatch rdf:resource="http://Concept-skos-broadMatch.eu"/>
+    <skos:narrowMatch rdf:resource="http://Concept-skos-narrowMatch.eu"/>
+    <skos:relatedMatch rdf:resource="http://Concept-skos-relatedMatch.eu"/>
+    <skos:exactMatch rdf:resource="http://Concept-skos-exactMatch.eu"/>
+    <skos:closeMatch rdf:resource="http://Concept-skos-closeMatch.eu"/>
+    <skos:note>Concept - skos:note</skos:note>
+    <skos:notation>Concept - skos:notation</skos:notation>
+    <skos:inScheme rdf:resource="http://www.mimo-db.eu/InstrumentsKeywords/"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://www.mimo-db.eu/HornbostelAndSachs/356">
+    <skos:prefLabel xml:lang="en">423.22 Labrosones with slides</skos:prefLabel>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://www.mimo-db.eu/InstrumentsKeywords/4370">
+    <skos:prefLabel>Trumpets</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://www.mimo-db.eu/InstrumentsKeywords/"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://hdl.handle.net/concept/example">
+    <skos:prefLabel>Concept - skos:prefLabel</skos:prefLabel>
+    <skos:altLabel>Concept - skos:altLabel</skos:altLabel>
+    <skos:narrower rdf:resource="http://Concept-skos-narrower.eu"/>
+    <skos:broadMatch rdf:resource="http://Concept-skos-broadMatch.eu"/>
+    <skos:narrowMatch rdf:resource="http://Concept-skos-narrowMatch.eu"/>
+    <skos:relatedMatch rdf:resource="http://Concept-skos-relatedMatch.eu"/>
+    <skos:exactMatch rdf:resource="http://Concept-skos-exactMatch.eu"/>
+    <skos:closeMatch rdf:resource="http://Concept-skos-closeMatch.eu"/>
+    <skos:note>Concept - skos:note</skos:note>
+    <skos:notation>Concept - skos:notation</skos:notation>
+  </skos:Concept>
+  <ore:Aggregation rdf:about="http://www.mimo-db.eu/UEDIN/214">
+    <edm:aggregatedCHO rdf:resource="#UEDIN:214"/>
+    <edm:dataProvider>University of Edinburgh</edm:dataProvider>
+    <edm:hasView rdf:resource="http://www.mimo-db.eu/media/UEDIN/VIDEO/0032195v.mpg"/>
+    <edm:hasView rdf:resource="http://www.mimo-db.eu/media/UEDIN/AUDIO/0032195s.mp3"/>
+    <edm:hasView rdf:resource="http://www.mimo-db.eu/media/UEDIN/IMAGE/0032195c.jpg"/>
+    <edm:isShownAt rdf:resource="http://www.mimo-db.eu/UEDIN/214"/>
+    <edm:isShownBy rdf:resource="http://www.mimo-db.eu/media/UEDIN/IMAGE/0032195c.jpg"/>
+    <edm:object rdf:resource="http://www.mimo-db.eu/media/UEDIN/IMAGE/0032195c.jpg"/>
+    <edm:provider>MIMO - Musical Instrument Museums Online</edm:provider>
+    <dc:rights>aggregation - dc:rights</dc:rights>
+    <edm:rights rdf:resource="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+    <edm:ugc>true</edm:ugc>
+  </ore:Aggregation>
+  <ore:Aggregation rdf:about="10978/0F3716A7-DB96-403F-ADDE-399D29E34937">
+    <edm:aggregatedCHO
+      rdf:resource="http://hdl.handle.net/10978/0F3716A7-DB96-403F-ADDE-399D29E34937"/>
+    <edm:dataProvider>Confederazione Generale Italiana del Lavoro</edm:dataProvider>
+    <edm:hasView rdf:resource="http://hdl.handle.net/10978/F475B1DF-116F-4723-AC7A-26A5FEB48367"/>
+    <edm:isShownAt rdf:resource="http://hdl.handle.net/10978/01BBC96F-FEB2-4159-B25B-03C5F86D242D"/>
+    <edm:isShownBy
+      rdf:resource="http://hdl.handle.net/10978/F475B1DF-116F-4723-AC7A-26A5FEB48367?locatt=view:level2"/>
+    <edm:object
+      rdf:resource="http://hdl.handle.net/10978/F475B1DF-116F-4723-AC7A-26A5FEB48367?locatt=view:level2"/>
+    <edm:provider>Hope</edm:provider>
+    <dc:rights>aggregation - dc:rights</dc:rights>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </ore:Aggregation>
+  <ore:Aggregation rdf:about="http://purl.org/collections/apenet/aggregation-3_01_01-5-5_3-2149">
+    <edm:aggregatedCHO rdf:resource="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149"/>
+    <edm:dataProvider>Nationaal Archief</edm:dataProvider>
+    <edm:isShownAt
+      rdf:resource="http://www.gahetna.nl/collectie/archief/inventaris/index/eadid/3.01.01/node/c01%3A4.c02%3A2.c03%3A0"/>
+    <edm:object rdf:resource="http://na.memorix.nl/oai2/?image=na:col1:dat515829:00004000131.jpg"/>
+    <edm:provider>APEnet</edm:provider>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </ore:Aggregation>
+  <ore:Aggregation
+    rdf:about="http://purl.org/collections/apenet/apenet:aggregation-3_01_01-5-5_3-2149-2149_2">
+    <edm:aggregatedCHO
+      rdf:resource="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_2"/>
+    <edm:dataProvider>Nationaal Archief</edm:dataProvider>
+    <edm:isShownAt rdf:resource="http://proxy.handle.net/10648/93fea66f-027a-48c7-88ee-413a897f4b55"/>
+    <edm:object rdf:resource="http://na.memorix.nl/oai2/?image=na:col1:dat515829:00004000132.jpg"/>
+    <edm:provider>APEnet</edm:provider>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </ore:Aggregation>
+  <ore:Aggregation
+    rdf:about="http://purl.org/collections/apenet/aggregation-3_01_01-5-5_3-2149-2149_3">
+    <edm:aggregatedCHO
+      rdf:resource="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_3"/>
+    <edm:dataProvider>Nationaal Archief</edm:dataProvider>
+    <edm:isShownAt rdf:resource="http://proxy.handle.net/10648/369f0d09-0f04-4aa1-b711-0e06c941c5a3"/>
+    <edm:object
+      rdf:resource="http://images.memorix.nl/naa/thumb/188x188/6cfb24e2-bccd-4fbc-a3b1-f42e3d4b8710.jpg"/>
+    <edm:provider>APEnet</edm:provider>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </ore:Aggregation>
+  <ore:Aggregation
+    rdf:about="http://purl.org/collections/apenet/aggregation-3_01_01-5-5_3-2149-2149_4">
+    <edm:aggregatedCHO
+      rdf:resource="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_4"/>
+    <edm:dataProvider>Nationaal Archief</edm:dataProvider>
+    <edm:isShownAt rdf:resource="http://proxy.handle.net/10648/1b3e3658-2d08-48ca-87e9-b428c3804547"/>
+    <edm:object rdf:resource="http://na.memorix.nl/oai2/?image=na:col1:dat515829:00004000134.jpg"/>
+    <edm:provider>APEnet</edm:provider>
+    <edm:rights rdf:resource="http://www.europeana.eu/rights/rr-f/"/>
+  </ore:Aggregation>
+  <ore:Proxy rdf:about="#UEDIN:214">
+    <dc:contributor>CHO - dc:contributor</dc:contributor>
+    <dc:coverage>CHO - dc:coverage</dc:coverage>
+    <dc:creator>Courtois neveu aÃ®nÃ©</dc:creator>
+    <dc:date>Circa 1930</dc:date>
+    <dc:description>Technical description: Brass; ligature fitting on bell section at joint; stockings on main slides. Bell with one coil, angled to face forwards. Repair History: Main slide possibly not original (tenon of slide section of joint is tapered, bell section joint for cylindrical tenon).</dc:description>
+    <dc:format>CHO - dc:format </dc:format>
+    <dc:identifier>#UEDIN:214</dc:identifier>
+    <dc:language>N/A</dc:language>
+    <dc:publisher>CHO - dc:publisher </dc:publisher>
+    <dc:relation>CHO - dc:relation </dc:relation>
+    <dc:rights>CHO - dc:rights</dc:rights>
+    <dc:source>CHO - dc:source</dc:source>
+    <dc:subject>music</dc:subject>
+    <dc:subject>ivory</dc:subject>
+    <dc:subject>steel</dc:subject>
+    <dc:title>Buccin trombone. Nominal pitch: B?.</dc:title>
+    <dc:type rdf:resource="http://www.mimo-db.eu/InstrumentsKeywords/4378"/>
+    <dc:type rdf:resource="http://www.mimo-db.eu/HornbostelAndSachs/356"/>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:conformsTo>CHO - dcterms:conformsTo</dcterms:conformsTo>
+    <dcterms:created/>
+    <dcterms:extent>CHO - dcterms:extent</dcterms:extent>
+    <dcterms:hasFormat>CHO - dcterms:hasFormat</dcterms:hasFormat>
+    <dcterms:hasPart>CHO - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:hasVersion>CHO - dcterms:hasVersion</dcterms:hasVersion>
+    <dcterms:isFormatOf>CHO - dcterms:isFormatOf</dcterms:isFormatOf>
+    <dcterms:isPartOf>collection de Buccin Trombone</dcterms:isPartOf>
+    <dcterms:isReferencedBy>CHO - dcterms:isReferencedBy</dcterms:isReferencedBy>
+    <dcterms:isReplacedBy>CHO - dcterms:isReplacedBy</dcterms:isReplacedBy>
+    <dcterms:isRequiredBy>CHO - dcterms:isRequiredBy</dcterms:isRequiredBy>
+    <dcterms:issued>CHO - dcterms:issued</dcterms:issued>
+    <dcterms:issued>1931</dcterms:issued>
+    <dcterms:isVersionOf>CHO - dcterms:isVersionOf</dcterms:isVersionOf>
+    <dcterms:medium>copper</dcterms:medium>
+    <dcterms:medium>ivory</dcterms:medium>
+    <dcterms:provenance>CHO - dcterms:provenance</dcterms:provenance>
+    <dcterms:references>CHO - dcterms:references</dcterms:references>
+    <dcterms:replaces>CHO - dcterms:replaces</dcterms:replaces>
+    <dcterms:requires>vdcterms:requires</dcterms:requires>
+    <dcterms:spatial>France</dcterms:spatial>
+    <dcterms:spatial>Amsterdam</dcterms:spatial>
+    <dcterms:tableOfContents>CHO - dcterms:tableOfContents</dcterms:tableOfContents>
+    <dcterms:temporal>CHO - dcterms:temporal</dcterms:temporal>
+    <edm:currentLocation rdf:resource="http://dummylocation.com"/>
+    <edm:hasMet>CHO - edm:hasMet</edm:hasMet>
+    <edm:hasType>CHO - edm:hasType</edm:hasType>
+    <edm:incorporates rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isDerivativeOf rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isNextInSequence rdf:resource=""/>
+    <edm:isRelatedTo>CHO - edm:isRelatedTo</edm:isRelatedTo>
+    <edm:isRepresentationOf rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isSimilarTo
+      rdf:resource="http://www.europeana.eu/portal/record/09102/0E7F90A47D31DED526827F41F62B2C20B4522B12.html"/>
+    <edm:isSuccessorOf rdf:resource="http://CHO-edm-isSuccessorOf.eu"/>
+    <edm:realizes rdf:resource="http://CHO-edm-realizes.eu"/>
+    <edm:type>IMAGE</edm:type>
+  </ore:Proxy>
+  <ore:Proxy rdf:about="http://hdl.handle.net/10978/0F3716A7-DB96-403F-ADDE-399D29E34937">
+    <dc:contributor>CHO - dc:contributor</dc:contributor>
+    <dc:coverage>CHO - dc:coverage</dc:coverage>
+    <dc:creator>CHO - dc:creator</dc:creator>
+    <dc:date>CHO - dc:date</dc:date>
+    <dc:description>Nomina della delegazione per la visita in Urss</dc:description>
+    <dc:description>Premio di liberazione</dc:description>
+    <dc:description>pagine, 2</dc:description>
+    <dc:format>CHO - dc:format </dc:format>
+    <dc:identifier>0000001065</dc:identifier>
+    <dc:language>ita</dc:language>
+    <dc:publisher>CHO - dc:publisher </dc:publisher>
+    <dc:relation>CHO - dc:relation </dc:relation>
+    <dc:rights>CHO - dc:rights</dc:rights>
+    <dc:source>CHO - dc:source</dc:source>
+    <dc:subject>politics</dc:subject>
+    <dc:subject>Urss</dc:subject>
+    <dc:title>Verbale del 30 giugno 1945</dc:title>
+    <dc:type>item</dc:type>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:conformsTo>CHO - dcterms:conformsTo</dcterms:conformsTo>
+    <dcterms:created>30.06.1945</dcterms:created>
+    <dcterms:extent>pagine, 2</dcterms:extent>
+    <dcterms:hasFormat>CHO - dcterms:hasFormat</dcterms:hasFormat>
+    <dcterms:hasPart>CHO - dcterms:hasPart</dcterms:hasPart>
+    <dcterms:hasVersion>CHO - dcterms:hasVersion</dcterms:hasVersion>
+    <dcterms:isFormatOf>CHO - dcterms:isFormatOf</dcterms:isFormatOf>
+    <dcterms:isPartOf>Collection of speeches</dcterms:isPartOf>
+    <dcterms:isPartOf/>
+    <dcterms:isReferencedBy>CHO - dcterms:isReferencedBy</dcterms:isReferencedBy>
+    <dcterms:isReplacedBy>CHO - dcterms:isReplacedBy</dcterms:isReplacedBy>
+    <dcterms:isRequiredBy>CHO - dcterms:isRequiredBy</dcterms:isRequiredBy>
+    <dcterms:issued>CHO - dcterms:issued</dcterms:issued>
+    <dcterms:issued>1931</dcterms:issued>
+    <dcterms:isVersionOf>CHO - dcterms:isVersionOf</dcterms:isVersionOf>
+    <dcterms:medium>paper</dcterms:medium>
+    <dcterms:provenance>CGIL</dcterms:provenance>
+    <dcterms:references>CHO - dcterms:references</dcterms:references>
+    <dcterms:replaces>CHO - dcterms:replaces</dcterms:replaces>
+    <dcterms:requires>vdcterms:requires</dcterms:requires>
+    <dcterms:spatial>Italia</dcterms:spatial>
+    <dcterms:tableOfContents>CHO - dcterms:tableOfContents</dcterms:tableOfContents>
+    <dcterms:temporal>CHO - dcterms:temporal</dcterms:temporal>
+    <edm:currentLocation rdf:resource="http://CHO-edm-currentLocation.eu"/>
+    <edm:hasMet>CHO - edm:hasMet</edm:hasMet>
+    <edm:hasType>CHO - edm:hasType</edm:hasType>
+    <edm:incorporates rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isDerivativeOf rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isNextInSequence rdf:resource=""/>
+    <edm:isRelatedTo>CHO - edm:isRelatedTo</edm:isRelatedTo>
+    <edm:isRepresentationOf rdf:resource="http://CHO-edm-isRepresentationOf.eu"/>
+    <edm:isSimilarTo rdf:resource="http://CHO-edm-isSuccessorOf.eu"/>
+    <edm:isSuccessorOf rdf:resource="http://CHO-edm-isSuccessorOf.eu"/>
+    <edm:realizes rdf:resource="http://CHO-edm-realizes.eu"/>
+    <edm:type>TEXT</edm:type>
+  </ore:Proxy>
+  <ore:Proxy rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149">
+    <dc:creator>Graaf van Holland</dc:creator>
+    <dc:description>1 deel</dc:description>
+    <dc:identifier>2149</dc:identifier>
+    <dc:language>dutch</dc:language>
+    <dc:source>Nationaal Archief, Den Haag</dc:source>
+    <dc:title>'Remissorium Philippi'; index op de grafelijke registers door Pieter van Renesse van Beoostenzwene tot 1440; met afschrift van inv. nr. 2117.</dc:title>
+    <dc:type>item</dc:type>
+    <dcterms:alternative>Context information: Inventaris van het archief van de Graven van Holland, 1189-1581 (ca. 1650) &gt;&gt; Graven van Holland Graven van Holland &gt;&gt; STUKKEN BETREFFENDE DE ZORG VOOR HET ARCHIEF &gt;&gt; Indexen</dcterms:alternative>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:hasPart/>
+    <dcterms:hasPart/>
+    <dcterms:hasPart/>
+    <dcterms:isPartOf>Collection of speeches</dcterms:isPartOf>
+    <dcterms:isPartOf/>
+    <dcterms:spatial>Netherlands</dcterms:spatial>
+    <edm:type>TEXT</edm:type>
+  </ore:Proxy>
+  <ore:Proxy rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_2">
+    <dc:creator>Graaf van Holland</dc:creator>
+    <dc:identifier>2149.2</dc:identifier>
+    <dc:language>dutch</dc:language>
+    <dc:source>Nationaal Archief, Den Haag</dc:source>
+    <dc:title>'Remissorium Philippi'; index op de grafelijke registers door Pieter van Renesse van Beoostenzwene tot 1440; met afschrift van inv. nr. 2117. &gt;&gt; Pagina 2</dc:title>
+    <dc:type>item</dc:type>
+    <dcterms:alternative>Context information: Inventaris van het archief van de Graven van Holland, 1189-1581 (ca. 1650) &gt;&gt; Graven van Holland Graven van Holland &gt;&gt; STUKKEN BETREFFENDE DE ZORG VOOR HET ARCHIEF &gt;&gt; Indexen</dcterms:alternative>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:isPartOf/>
+    <dcterms:spatial>Netherlands</dcterms:spatial>
+    <edm:isNextInSequence rdf:resource=""/>
+    <edm:type>TEXT</edm:type>
+  </ore:Proxy>
+  <ore:Proxy rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_3">
+    <dc:creator>Graaf van Holland</dc:creator>
+    <dc:identifier>2149.3</dc:identifier>
+    <dc:language>dutch</dc:language>
+    <dc:source>Nationaal Archief, Den Haag</dc:source>
+    <dc:title>'Remissorium Philippi'; index op de grafelijke registers door Pieter van Renesse van Beoostenzwene tot 1440; met afschrift van inv. nr. 2117. &gt;&gt; Pagina 3</dc:title>
+    <dc:type>item</dc:type>
+    <dcterms:alternative>Context information: Inventaris van het archief van de Graven van Holland, 1189-1581 (ca. 1650) &gt;&gt; Graven van Holland Graven van Holland &gt;&gt; STUKKEN BETREFFENDE DE ZORG VOOR HET ARCHIEF &gt;&gt; Indexen</dcterms:alternative>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:isPartOf/>
+    <dcterms:spatial>Netherlands</dcterms:spatial>
+    <edm:isNextInSequence rdf:resource=""/>
+    <edm:type>TEXT</edm:type>
+  </ore:Proxy>
+  <ore:Proxy rdf:about="http://purl.org/collections/apenet/physical-3_01_01-5-5_3-2149_4">
+    <dc:creator>Graaf van Holland</dc:creator>
+    <dc:identifier>2149.4</dc:identifier>
+    <dc:language>dutch</dc:language>
+    <dc:source>Nationaal Archief, Den Haag</dc:source>
+    <dc:title>'Remissorium Philippi'; index op de grafelijke registers door Pieter van Renesse van Beoostenzwene tot 1440; met afschrift van inv. nr. 2117. &gt;&gt; Pagina 4</dc:title>
+    <dc:type>item</dc:type>
+    <dcterms:alternative>Context information: Inventaris van het archief van de Graven van Holland, 1189-1581 (ca. 1650) &gt;&gt; Graven van Holland Graven van Holland &gt;&gt; STUKKEN BETREFFENDE DE ZORG VOOR HET ARCHIEF &gt;&gt; Indexen</dcterms:alternative>
+    <dcterms:alternative> THIS IS A TEST OBJECT </dcterms:alternative>
+    <dcterms:isPartOf/>
+    <dcterms:spatial>Netherlands</dcterms:spatial>
+    <edm:isNextInSequence rdf:resource=""/>
+    <edm:type>TEXT</edm:type>
+  </ore:Proxy>
+</rdf:RDF>
