@@ -82,7 +82,7 @@ public class SimpleCollectionTest {
 
 	private static SolrDocumentList getResults(String query)
 			throws SolrServerException {
-		System.out.println("QUERY " + query);
+		System.out.println("query performed: " + query);
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
 		q.set("defType", "bm25f");
@@ -95,7 +95,7 @@ public class SimpleCollectionTest {
 
 	private static Map<String, Object> explain(String query)
 			throws SolrServerException {
-		System.out.println("QUERY " + query);
+		System.out.println("query performed " + query);
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
 		q.set("debug", "results");
