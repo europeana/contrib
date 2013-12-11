@@ -18,8 +18,6 @@ package org.apache.lucene.search;
 import java.io.IOException;
 
 import org.apache.lucene.index.DocsEnum;
-import org.apache.lucene.index.Fields;
-import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.search.BM25FBooleanTermQuery.BM25FTermWeight;
 import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
 
@@ -48,9 +46,12 @@ public class BM25FTermScorer extends Scorer {
 		super(bm25fTermWeight);
 		this.scorers = scorers;
 		this.docsEnums = docs;
+		for (DocsEnum de : docs) {
+			System.out.println("madonna cagna " + de);
+		}
 		idf = bm25fTermWeight.idf;
 		k1 = bm25fTermWeight.k1;
-		
+
 	}
 
 	public int getFieldFreq(int field) throws IOException {
@@ -63,8 +64,6 @@ public class BM25FTermScorer extends Scorer {
 	public float score() throws IOException {
 		float acum = 0;
 
-		
-		
 		for (int i = 0; i < scorers.length; i++) {
 			if (docsEnums[i] == null || scorers[i] == null)
 				continue;
@@ -97,11 +96,11 @@ public class BM25FTermScorer extends Scorer {
 
 	@Override
 	public int nextDoc() throws IOException {
-	
+
 		if (!initializated) {
 			this.initializated = true;
 			if (this.init()) {
-				
+
 				return this.docId;
 			} else {
 
@@ -109,7 +108,7 @@ public class BM25FTermScorer extends Scorer {
 			}
 
 		}
-		
+
 		int min = NO_MORE_DOCS;
 		for (int i = 0; i < this.docsEnums.length; i++) {
 			if (docsEnums[i] == null || scorers[i] == null)
@@ -118,14 +117,12 @@ public class BM25FTermScorer extends Scorer {
 			if (this.docsEnums[i].docID() == docId) {
 				this.docsEnums[i].nextDoc();
 
-					
 			}
 			min = Math.min(min, this.docsEnums[i].docID());
-			
 
 		}
 		docId = min;
-		
+
 		return docId;
 
 	}

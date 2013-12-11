@@ -52,16 +52,17 @@ public class BM25FSimilarity extends Similarity {
 
 	public BM25FSimilarity() {
 		logger.info("no defaults");
-		params = BM25FParameters.getInstance();
+	}
+
+	public void setBM25FParams(BM25FParameters bm25fparams) {
+		params = bm25fparams;
+
 		boosts = params.getBoosts();
 		lengthBoosts = params.getbParams();
 		k1 = params.getK1();
-
 	}
-	
-	
-	
-	public String[] getFields(){
+
+	public String[] getFields() {
 		return params.getFields();
 	}
 
@@ -193,37 +194,41 @@ public class BM25FSimilarity extends Similarity {
 				/ (docFreq + 0.5D));
 	}
 
-	public float getK1(){
+	public float getK1() {
 		return k1;
 	}
-	
+
 	@Override
 	public SimWeight computeWeight(float queryBoost,
 			CollectionStatistics collectionStats, TermStatistics... termStats) {
 		Explanation idf = termStats.length == 1 ? idfExplain(collectionStats,
 				termStats[0]) : idfExplain(collectionStats, termStats);
 
+		boosts = params.getBoosts();
+		lengthBoosts = params.getbParams();
+		k1 = params.getK1();
+
 		String field = collectionStats.field();
 		float avgdl = avgFieldLength(collectionStats);
-		
-		float bField = 0; 
-		if (lengthBoosts.containsKey(field)){
+
+		float bField = 0;
+		if (lengthBoosts.containsKey(field)) {
 			bField = lengthBoosts.get(field);
 		}
 		// ignoring query boost, using bm25f query boost
 		float boost = 1;
-		if (boosts.containsKey(field)){
+		if (boosts.containsKey(field)) {
 			boost = lengthBoosts.get(field);
 		}
 
 		// compute freq-independent part of bm25 equation across all norm values
 		float cache[] = new float[256];
 		for (int i = 0; i < cache.length; i++) {
-			cache[i] =  ((1 - bField) + bField * decodeNormValue((byte) i)
-							/ avgdl);
+			cache[i] = ((1 - bField) + bField * decodeNormValue((byte) i)
+					/ avgdl);
 		}
 
-		return new BM25FSimWeight(field, idf, boost, avgdl, cache,k1);
+		return new BM25FSimWeight(field, idf, boost, avgdl, cache, k1);
 	}
 
 	@Override
@@ -245,7 +250,7 @@ public class BM25FSimilarity extends Similarity {
 		BM25FExactSimScorer(BM25FSimWeight stats, DocValues norms)
 				throws IOException {
 			assert norms != null;
-			
+
 			this.stats = stats;
 			this.cache = stats.cache;
 			this.queryBoost = stats.queryBoost;
@@ -255,12 +260,13 @@ public class BM25FSimilarity extends Similarity {
 
 		@Override
 		public float score(int doc, int freq) {
-			return queryBoost*freq / cache[norms[doc] & 0xFF];
+			return queryBoost * freq / cache[norms[doc] & 0xFF];
 		}
 
 		@Override
 		public Explanation explain(int doc, Explanation freq) {
-			return explainScore(doc, freq, stats,norms, score(doc,(int)freq.getValue()));
+			return explainScore(doc, freq, stats, norms,
+					score(doc, (int) freq.getValue()));
 		}
 	}
 
@@ -307,40 +313,44 @@ public class BM25FSimilarity extends Similarity {
 		public void normalize(float queryNorm, float topLevelBoost) {
 			// we don't normalize with queryNorm at all, we just capture the
 			// top-level boost
-			//this.topLevelBoost = topLevelBoost;
-			//this.weight =  queryBoost * topLevelBoost;
+			// this.topLevelBoost = topLevelBoost;
+			// this.weight = queryBoost * topLevelBoost;
 		}
 	}
 
 	private Explanation explainScore(int doc, Explanation freq,
-			BM25FSimWeight stats,byte[] norms, float finalScore) {
+			BM25FSimWeight stats, byte[] norms, float finalScore) {
 		Explanation result = new Explanation();
-		result.setDescription("score(doc=" + doc + ",field="+stats.field+", freq=" + freq
-				+ "), division of:");
+		result.setDescription("score(doc=" + doc + ",field=" + stats.field
+				+ ", freq=" + freq + "), division of:");
 
 		Explanation num = new Explanation();
 		num.setDescription(" numerator, product of: ");
-		
-		Explanation boostExpl = new Explanation(stats.queryBoost, "boost["+stats.field+"]");
+
+		Explanation boostExpl = new Explanation(stats.queryBoost, "boost["
+				+ stats.field + "]");
 
 		num.addDetail(freq);
 		num.addDetail(boostExpl);
-		num.setValue(freq.getValue()*boostExpl.getValue());
-		
-		float b = (float)lengthBoosts.get(stats.field);
-		Explanation bField = new Explanation(b, "lengthBoost("+stats.field+")");
-		Explanation averageLength = new Explanation(stats.avgdl, "avgFieldLength("+stats.field+")");
-		
-		float length = decodeNormValue((byte) norms[doc]);
-		Explanation fieldLength = new Explanation(length, "length("+stats.field+")");
-		
+		num.setValue(freq.getValue() * boostExpl.getValue());
+
+		float b = lengthBoosts.get(stats.field);
+		Explanation bField = new Explanation(b, "lengthBoost(" + stats.field
+				+ ")");
+		Explanation averageLength = new Explanation(stats.avgdl,
+				"avgFieldLength(" + stats.field + ")");
+
+		float length = decodeNormValue(norms[doc]);
+		Explanation fieldLength = new Explanation(length, "length("
+				+ stats.field + ")");
+
 		Explanation product = new Explanation();
 		product.setDescription("denominator: ((1 - bField) + bField * length / avgFieldLength) :");
-		product.setValue((1-b)+b*(length/stats.avgdl));
+		product.setValue((1 - b) + b * (length / stats.avgdl));
 		product.addDetail(bField);
 		product.addDetail(fieldLength);
 		product.addDetail(averageLength);
-		
+
 		result.addDetail(num);
 		result.addDetail(product);
 		result.setValue(finalScore);
@@ -351,26 +361,28 @@ public class BM25FSimilarity extends Similarity {
 	public class BM25FSloppySimScorer extends SloppySimScorer {
 
 		private final BM25FSimWeight stats;
-	//	private final float weightValue; // boost * idf * (k1 + 1)
+		// private final float weightValue; // boost * idf * (k1 + 1)
 		private final byte[] norms;
 
 		BM25FSloppySimScorer(BM25FSimWeight stats, DocValues norms)
 				throws IOException {
 			this.stats = stats;
-			//this.weightValue = stats.weight ;
-			 this.norms = norms == null ? null : (byte[])norms.getSource().getArray();
+			// this.weightValue = stats.weight ;
+			this.norms = norms == null ? null : (byte[]) norms.getSource()
+					.getArray();
 
 		}
 
 		@Override
 		public float score(int doc, float freq) {
-			//fixme
-			return  freq;
+			// fixme
+			return freq;
 		}
 
 		@Override
 		public Explanation explain(int doc, Explanation freq) {
-			return explainScore(doc, freq, stats, norms, score(doc,freq.getValue()));
+			return explainScore(doc, freq, stats, norms,
+					score(doc, freq.getValue()));
 		}
 
 		@Override

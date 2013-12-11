@@ -515,8 +515,10 @@
 			<!-- Query settings -->
 			<str name="defType">edismax</str>
 			<str name="qf">
-				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
-				title^10.0 description^5.0 keywords^5.0 author^2.0 resourcename^1.0
+				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1
+				cat^1.4
+				title^10.0 description^5.0 keywords^5.0 author^2.0
+				resourcename^1.0
 			</str>
 			<str name="df">text</str>
 			<str name="mm">100%</str>
@@ -525,8 +527,10 @@
 			<str name="fl">*,score</str>
 
 			<str name="mlt.qf">
-				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
-				title^10.0 description^5.0 keywords^5.0 author^2.0 resourcename^1.0
+				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1
+				cat^1.4
+				title^10.0 description^5.0 keywords^5.0 author^2.0
+				resourcename^1.0
 			</str>
 			<str name="mlt.fl">text,features,name,sku,id,manu,cat,title,description,keywords,author,resourcename
 			</str>
@@ -911,7 +915,8 @@
 
 			<str name="defType">edismax</str>
 			<str name="qf">
-				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
+				text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1
+				cat^1.4
 			</str>
 			<str name="q.alt">*:*</str>
 			<str name="rows">10</str>
@@ -1124,7 +1129,27 @@
 	<!-- example of registering a query parser -->
 
 	<queryParser name="bm25f"
-		class="eu.europeana.ranking.bm25f.BM25FParserPlugin" />
+		class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
+		<str name="mainField">text</str>
+	    
+		<float name="k1">18.0</float>
+
+		<lst name="fieldsBoost">
+			<float name="text">3</float>
+			<float name="title">39.0</float>
+			<float name="author">8.0</float>
+			<float name="description">10.0</float>
+		</lst>
+		<lst name="fieldsB">
+			<float name="text">0.15</float>
+			<float name="title">0.05</float>
+			<float name="author">0</float>
+			<float name="description">0.75</float>
+		</lst>
+	</queryParser>
+
+
+	/>
 
 
 	<!-- Function Parsers http://wiki.apache.org/solr/FunctionQuery Multiple 

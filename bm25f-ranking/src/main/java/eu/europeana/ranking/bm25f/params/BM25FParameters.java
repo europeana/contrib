@@ -19,9 +19,7 @@ package eu.europeana.ranking.bm25f.params;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Parameters needed to calculate the BM25F relevance score.
@@ -32,40 +30,32 @@ import java.util.Map.Entry;
 
 public class BM25FParameters {
 
-	
+	public String mainField;
+
 	private String[] fields;
-	/* boosts on fields, you can boost more the match on a field 
-	 * rather than another
+	/*
+	 * boosts on fields, you can boost more the match on a field rather than
+	 * another
 	 */
-	private Map<String,Float> boosts;
-	/* boosts on length, you can boost a record if a 
-	 * field length is similar to the average field
-	 * length in the collection
+	private Map<String, Float> boosts;
+	/*
+	 * boosts on length, you can boost a record if a field length is similar to
+	 * the average field length in the collection
 	 */
-	private Map<String,Float> bParams;
+	private Map<String, Float> bParams;
 
 	float k1 = 1;
-	
-	private static  BM25FParameters bmParams = new BM25FParameters();
-	
-	private BM25FParameters() {
+
+	public BM25FParameters() {
 	};
 
-	//Singleton
-	public static BM25FParameters getInstance(){
-		return bmParams;
-	}
-	
-	
-	public float getBoost(String field){
+	public float getBoost(String field) {
 		return boosts.get(field);
 	}
 
-
-	
-
 	/**
-	 * @param fields - the fields to set
+	 * @param fields
+	 *            - the fields to set
 	 */
 	public void setFields(String[] fields) {
 		this.fields = fields;
@@ -79,30 +69,32 @@ public class BM25FParameters {
 	}
 
 	/**
-	 * @param boosts - the boosts to set (see bm25f formula)
+	 * @param boosts
+	 *            - the boosts to set (see bm25f formula)
 	 */
 	public void setBoosts(Float[] boosts) {
 		this.boosts = new HashMap<String, Float>();
-		for (int i = 0; i < fields.length; i++){
-			this.boosts.put(fields[i],boosts[i]);
-		}		
+		for (int i = 0; i < fields.length; i++) {
+			this.boosts.put(fields[i], boosts[i]);
+		}
 	}
 
 	/**
 	 * @return the boosts (see bm25f formula)
 	 */
-	public Map<String,Float> getBoosts() {
+	public Map<String, Float> getBoosts() {
 		return boosts;
 	}
 
 	/**
-	 * @param bParams the bParams to set (see bm25f formula)
+	 * @param bParams
+	 *            the bParams to set (see bm25f formula)
 	 */
 	public void setbParams(Float[] bParams) {
 		this.bParams = new HashMap<String, Float>();
-		for (int i = 0; i < fields.length; i++){
-			this.bParams.put(fields[i],bParams[i]);
-		}	
+		for (int i = 0; i < fields.length; i++) {
+			this.bParams.put(fields[i], bParams[i]);
+		}
 	}
 
 	/**
@@ -112,8 +104,6 @@ public class BM25FParameters {
 		return bParams;
 	}
 
-
-
 	/**
 	 * @return the k1
 	 */
@@ -121,18 +111,17 @@ public class BM25FParameters {
 		return k1;
 	}
 
-
-
 	/**
-	 * @param k1 the k1 to set
+	 * @param k1
+	 *            the k1 to set
 	 */
 	public void setK1(float k1) {
 		this.k1 = k1;
 	}
 
-
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -146,9 +135,9 @@ public class BM25FParameters {
 		return result;
 	}
 
-
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -177,9 +166,17 @@ public class BM25FParameters {
 		return true;
 	}
 
+	public String getMainField() {
+		return mainField;
+	}
 
+	public void setMainField(String mainField) {
+		this.mainField = mainField;
+	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -188,10 +185,5 @@ public class BM25FParameters {
 				+ ", boosts=" + boosts + ", bParams=" + bParams + ", k1=" + k1
 				+ "]";
 	}
-
-
-	
-	
-	
 
 }
