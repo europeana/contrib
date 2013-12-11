@@ -1,0 +1,5 @@
+target
+.settings
+.project
+.classpath
+bm25f-ranking/src/test/resources/solr/simple-collection/data/
