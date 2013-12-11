@@ -218,7 +218,7 @@ public class BM25FSimilarity extends Similarity {
 		// ignoring query boost, using bm25f query boost
 		float boost = 1;
 		if (boosts.containsKey(field)) {
-			boost = lengthBoosts.get(field);
+			boost = boosts.get(field);
 		}
 
 		// compute freq-independent part of bm25 equation across all norm values

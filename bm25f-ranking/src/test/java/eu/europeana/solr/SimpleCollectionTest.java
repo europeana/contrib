@@ -86,6 +86,7 @@ public class SimpleCollectionTest {
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
 		q.set("defType", "bm25f");
+		q.set("fl", "*,score");
 		q.setRows(10);
 		QueryResponse qr = instance.query(q);
 		// Map<String, String> explainmap = qr.getExplainMap();
@@ -97,6 +98,7 @@ public class SimpleCollectionTest {
 		System.out.println("QUERY " + query);
 		SolrQuery q = new SolrQuery(query);
 		q.set("debugQuery", "on");
+		q.set("debug", "results");
 		q.set("defType", "bm25f");
 		q.setRows(10);
 		QueryResponse qr = instance.query(q);
@@ -142,30 +144,67 @@ public class SimpleCollectionTest {
 
 	}
 
+	// <float name="k1">18.0</float>
+	//
+	// <lst name="fieldsBoost">
+	// <float name="text">3</float>
+	// <float name="title">39.0</float>
+	// <float name="author">8.0</float>
+	// <float name="description">10.0</float>
+	// </lst>
+	// <lst name="fieldsB">
+	// <float name="text">0.15</float>
+	// <float name="title">0.05</float>
+	// <float name="author">0</float>
+	// <float name="description">0.75</float>
+	// </lst>
 	@Test
 	public void testScores() throws SolrServerException {
-
 		System.out.println(explain("picasso"));
+		SolrDocumentList results = getResults("picasso");
+
+		double score = ((Float) results.get(0).get("score"));
+		double idf = idf(1, 4);
+		double titleAvgLength = 1.75; // lengths lossy encoded in the index
+		double authorAvgLength = 2.25;
+		double descriptionAvgLength = 4.0;
+		double textAvgLength = 8.0;
+		double titleBoost = 39.0;
+		double authorBoost = 8.0;
+		double descriptionBoost = 10.0;
+		double textBoost = 3.0;
+		double titleLengthBoost = 0.05;
+		double authorLengthBoost = 0;
+		double descriptionLengthBoost = 0.75;
+		double textLengthBoost = 0.15;
+		double titleWeight = (titleBoost * 1)
+				/ ((1 - titleLengthBoost) + titleLengthBoost * 1.0
+						/ titleAvgLength);
+		double authorWeight = (authorBoost * 1)
+				/ ((1 - authorLengthBoost) + authorLengthBoost * 2.56
+						/ authorAvgLength);
+		double descriptionWeight = (descriptionBoost * 1)
+				/ ((1 - descriptionLengthBoost) + descriptionLengthBoost
+						* 7.111111 / descriptionAvgLength);
+		double textWeight = (textBoost * 3)
+				/ ((1 - textLengthBoost) + textLengthBoost * 10.24
+						/ textAvgLength);
+
+		double k1 = 18;
+		System.out.println("authorWeight = " + authorWeight);
+		System.out.println("descriptionWeight = " + descriptionWeight);
+
+		System.out.println("textWeight = " + textWeight);
+
+		double expectedScore = (titleWeight + authorWeight + descriptionWeight + textWeight);
+		expectedScore = expectedScore / (k1 + expectedScore) * idf;
+		assertEquals(expectedScore, score, 0.00001);
+
 	}
 
-	// @Test
-	// public void testResults() {
-	// try {
-	// SolrDocumentList results = getResults("leonardo");
-	// assertEquals(3, results.size());
-	// // check if the status is not corrupted
-	// results = getResults("leonardo");
-	// assertEquals(3, results.size());
-	// results = getResults("vinci");
-	// assertEquals(3, results.size());
-	// results = getResults("test");
-	// assertEquals(1, results.size());
-	// results = getResults("ThisTermIsNotInTheIndexMuahahah");
-	// assertEquals(0, results.size());
-	// } catch (SolrServerException e) {
-	// fail(e.toString());
-	// }
-	//
-	// }
+	private float idf(long docFreq, long numDocs) {
+		return (float) Math.log(1 + (numDocs - docFreq + 0.5D)
+				/ (docFreq + 0.5D));
+	}
 
 }

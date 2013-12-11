@@ -46,9 +46,6 @@ public class BM25FTermScorer extends Scorer {
 		super(bm25fTermWeight);
 		this.scorers = scorers;
 		this.docsEnums = docs;
-		for (DocsEnum de : docs) {
-			System.out.println("madonna cagna " + de);
-		}
 		idf = bm25fTermWeight.idf;
 		k1 = bm25fTermWeight.k1;
 
