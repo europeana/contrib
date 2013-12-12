@@ -47,6 +47,10 @@ public class BM25FParameters {
 	float k1 = 1;
 
 	public BM25FParameters() {
+		// default params
+		boosts = new HashMap<String, Float>();
+		bParams = new HashMap<String, Float>();
+		fields = new String[0];
 	};
 
 	public float getBoost(String field) {

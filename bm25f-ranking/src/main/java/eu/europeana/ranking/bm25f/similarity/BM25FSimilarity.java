@@ -52,6 +52,10 @@ public class BM25FSimilarity extends Similarity {
 
 	public BM25FSimilarity() {
 		// logger.info("no defaults");
+		params = new BM25FParameters();
+		boosts = params.getBoosts();
+		lengthBoosts = params.getbParams();
+		k1 = params.getK1();
 	}
 
 	public void setBM25FParams(BM25FParameters bm25fparams) {
