@@ -51,7 +51,7 @@ public class BM25FSimilarity extends Similarity {
 	float k1;
 
 	public BM25FSimilarity() {
-		logger.info("no defaults");
+		// logger.info("no defaults");
 	}
 
 	public void setBM25FParams(BM25FParameters bm25fparams) {
@@ -67,7 +67,7 @@ public class BM25FSimilarity extends Similarity {
 	}
 
 	public BM25FSimilarity(BM25FParameters params) {
-		logger.info("defaults");
+		// logger.info("defaults");
 		this.params = params;
 		boosts = params.getBoosts();
 		lengthBoosts = params.getbParams();
@@ -144,8 +144,8 @@ public class BM25FSimilarity extends Similarity {
 	}
 
 	private float avgFieldLength(CollectionStatistics stats) {
-		logger.info("sum total term freq \t {}", stats.sumTotalTermFreq());
-		logger.info("doc count \t {}", stats.docCount());
+		// logger.info("sum total term freq \t {}", stats.sumTotalTermFreq());
+		// logger.info("doc count \t {}", stats.docCount());
 		return (float) stats.sumTotalTermFreq() / (float) stats.docCount();
 	}
 
