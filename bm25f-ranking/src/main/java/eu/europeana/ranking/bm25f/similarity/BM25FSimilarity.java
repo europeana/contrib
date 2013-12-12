@@ -76,7 +76,6 @@ public class BM25FSimilarity extends Similarity {
 		boosts = params.getBoosts();
 		lengthBoosts = params.getbParams();
 		k1 = params.getK1();
-		System.out.println(params);
 	}
 
 	public BM25FSimilarity(float k1, Map<String, Float> boosts,

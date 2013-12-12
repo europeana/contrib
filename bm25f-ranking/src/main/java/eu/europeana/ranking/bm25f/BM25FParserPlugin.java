@@ -37,6 +37,7 @@ public class BM25FParserPlugin extends QParserPlugin {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(BM25FParserPlugin.class);
+
 	BM25FParameters bmParams;
 
 	@Override

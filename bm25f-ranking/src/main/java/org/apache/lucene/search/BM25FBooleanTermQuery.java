@@ -81,7 +81,7 @@ public class BM25FBooleanTermQuery extends Query {
 						searcher.collectionStatistics(fieldTerm.field()),
 						searcher.termStatistics(fieldTerm, fieldTermStates[i]));
 			}
-			System.out.println("term field is " + term.field());
+			// System.out.println("term field is " + term.field());
 			Term fieldTerm = new Term(term.text(), term.field());
 			TermStatistics termStat = searcher.termStatistics(fieldTerm,
 					termStates);
