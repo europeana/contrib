@@ -93,6 +93,34 @@ public class SimpleCollectionTest {
 		return qr.getResults();
 	}
 
+	static String join(float[] s, String delimiter) {
+		StringBuilder builder = new StringBuilder();
+
+		for (float f : s) {
+			builder.append(f);
+			builder.append(delimiter);
+		}
+		builder.setLength(builder.length() - 1);
+		return builder.toString();
+	}
+
+	private static SolrDocumentList getResults(String query, float k1,
+			float[] boosts, float[] bParams) throws SolrServerException {
+		System.out.println("query performed: " + query);
+		SolrQuery q = new SolrQuery(query);
+		q.set("debugQuery", "on");
+		q.set("defType", "bm25f");
+		q.set("fl", "*,score");
+		q.set("k1", String.valueOf(k1));
+		q.set("b", join(boosts, ":"));
+		q.set("lb", join(bParams, ":"));
+
+		q.setRows(10);
+		QueryResponse qr = instance.query(q);
+		// Map<String, String> explainmap = qr.getExplainMap();
+		return qr.getResults();
+	}
+
 	private static Map<String, Object> explain(String query)
 			throws SolrServerException {
 		System.out.println("query performed " + query);
@@ -158,6 +186,48 @@ public class SimpleCollectionTest {
 	// <float name="author">0</float>
 	// <float name="description">0.75</float>
 	// </lst>
+
+	public float picassoScore(float k1, float[] boosts, float[] bParams) {
+
+		double idf = idf(1, 4);
+		double titleAvgLength = 1.75; // lengths lossy encoded in the index
+		double authorAvgLength = 2.25;
+		double descriptionAvgLength = 4.0;
+		double textAvgLength = 8.0;
+		double titleBoost = boosts[3];
+		double authorBoost = boosts[0];
+		double descriptionBoost = boosts[1];
+		double textBoost = boosts[2];
+		double titleLengthBoost = bParams[3];
+		double authorLengthBoost = bParams[0];
+		double descriptionLengthBoost = bParams[1];
+		double textLengthBoost = bParams[2];
+		double titleWeight = (titleBoost * 1)
+				/ ((1 - titleLengthBoost) + titleLengthBoost * 1.0
+						/ titleAvgLength);
+		double authorWeight = (authorBoost * 1)
+				/ ((1 - authorLengthBoost) + authorLengthBoost * 2.56
+						/ authorAvgLength);
+		double descriptionWeight = (descriptionBoost * 1)
+				/ ((1 - descriptionLengthBoost) + descriptionLengthBoost
+						* 7.111111 / descriptionAvgLength);
+		double textWeight = (textBoost * 3)
+				/ ((1 - textLengthBoost) + textLengthBoost * 10.24
+						/ textAvgLength);
+
+		System.out.println("authorWeight = " + authorWeight);
+		System.out.println("descriptionWeight = " + descriptionWeight);
+
+		System.out.println("textWeight = " + textWeight);
+
+		float expectedScore = (float) (titleWeight + authorWeight
+				+ descriptionWeight + textWeight);
+		double den = k1 + expectedScore;
+		if (den > 0)
+			expectedScore = (float) (expectedScore / den * idf);
+		return expectedScore;
+	}
+
 	@Test
 	public void testScores() throws SolrServerException {
 		System.out.println(explain("picasso"));
@@ -191,14 +261,52 @@ public class SimpleCollectionTest {
 						/ textAvgLength);
 
 		double k1 = 18;
+
+		double expectedScore = (titleWeight + authorWeight + descriptionWeight + textWeight);
+		double den = k1 + expectedScore;
+		if (den > 0)
+			expectedScore = expectedScore / den * idf;
+
 		System.out.println("authorWeight = " + authorWeight);
 		System.out.println("descriptionWeight = " + descriptionWeight);
 
 		System.out.println("textWeight = " + textWeight);
-
-		double expectedScore = (titleWeight + authorWeight + descriptionWeight + textWeight);
-		expectedScore = expectedScore / (k1 + expectedScore) * idf;
 		assertEquals(expectedScore, score, 0.00001);
+		System.out.println("score = " + score);
+		System.out.println("expected = " + expectedScore);
+
+	}
+
+	public void assertSameScores(float k1, float[] boosts, float[] bparams)
+			throws SolrServerException {
+
+		SolrDocumentList results = getResults("picasso", k1, boosts, bparams);
+		double score = ((Float) results.get(0).get("score"));
+		float expectedScore = picassoScore(k1, boosts, bparams);
+		System.out.println("score = " + score);
+		System.out.println("expected = " + expectedScore);
+
+		assertEquals(expectedScore, score, 0.00001);
+
+	}
+
+	@Test
+	public void testParamsSwitch() throws SolrServerException {
+
+		assertSameScores(18, new float[] { 8.0f, 10.0f, 3.0f, 39.0f },
+				new float[] { 0, 0.75f, 0.15f, 0.05f });
+		assertSameScores(18, new float[] { 8.0f, 11.0f, 3.0f, 39.0f },
+				new float[] { 0, 0.75f, 0.15f, 0.05f });
+		assertSameScores(18, new float[] { 0.0f, 50.0f, 3.0f, 39.0f },
+				new float[] { 0, 0.75f, 0.15f, 4.05f });
+		assertSameScores(1, new float[] { 10.0f, 10.0f, 3.0f, 39.0f },
+				new float[] { 1, 0.75f, 0.15f, 0.05f });
+		assertSameScores(18, new float[] { 30.0f, 10.0f, 3.0f, 39.0f },
+				new float[] { 0, 0.75f, 0.12f, 0.95f });
+		assertSameScores(0, new float[] { 0f, 0f, 0f, 0f }, new float[] { 0f,
+				0f, 0f, 0f });
+		assertSameScores(0, new float[] { 1f, 0f, 0f, 0f }, new float[] { 0.1f,
+				0f, 0f, 0f });
 
 	}
 

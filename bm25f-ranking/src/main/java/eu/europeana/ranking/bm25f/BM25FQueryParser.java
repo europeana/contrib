@@ -120,10 +120,12 @@ public class BM25FQueryParser extends QParser {
 		if (o != null) {
 			String bstr = (String) o;
 			boosts = new Float[nFields];
-			Scanner scanner = new Scanner(bstr).useDelimiter(":");
+			Scanner scanner = new Scanner(bstr);
+			scanner = scanner.useDelimiter(":");
 			for (int i = 0; i < nFields; i++) {
 				boosts[i] = scanner.nextFloat();
 			}
+			scanner.close();
 			set = true;
 		}
 
@@ -131,25 +133,26 @@ public class BM25FQueryParser extends QParser {
 		if (o != null) {
 			String bParamsStr = (String) o;
 			bParams = new Float[nFields];
-			Scanner scanner = new Scanner(bParamsStr).useDelimiter(":");
+			Scanner scanner = new Scanner(bParamsStr);
+			scanner = scanner.useDelimiter(":");
 			for (int i = 0; i < nFields; i++) {
 				bParams[i] = scanner.nextFloat();
 			}
+			scanner.close();
 			set = true;
 		}
 		if (!set) {
 			return null;
 		}
 		BM25FParameters params = bm25fparams.clone();
-		if (k1 > 0)
+		if (k1 >= 0)
 			params.setK1(k1);
 		if (boosts != null)
 			params.setBoosts(boosts);
 		if (bParams != null)
-			params.setBoosts(bParams);
+			params.setbParams(bParams);
 
 		return params;
 
 	}
-
 }

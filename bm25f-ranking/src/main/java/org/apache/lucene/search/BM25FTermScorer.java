@@ -68,7 +68,12 @@ public class BM25FTermScorer extends Scorer {
 				acum += scorers[i].score(docId, docsEnums[i].freq());
 			}
 		}
-		float score = idf * acum / (acum + k1);
+
+		float den = acum + k1;
+		if (den == 0) {
+			return 0;
+		}
+		float score = idf * acum / den;
 
 		return score;
 	}
