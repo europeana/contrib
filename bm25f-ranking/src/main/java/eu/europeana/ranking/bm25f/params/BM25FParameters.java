@@ -46,6 +46,17 @@ public class BM25FParameters {
 
 	float k1 = 1;
 
+	@Override
+	public BM25FParameters clone() {
+		BM25FParameters clone = new BM25FParameters();
+		clone.setK1(k1);
+		clone.boosts = new HashMap<String, Float>(boosts);
+		clone.bParams = new HashMap<String, Float>(bParams);
+		clone.fields = fields;
+		clone.mainField = mainField;
+		return clone;
+	}
+
 	public BM25FParameters() {
 		// default params
 		boosts = new HashMap<String, Float>();

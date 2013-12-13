@@ -16,6 +16,8 @@
  */
 package eu.europeana.ranking.bm25f;
 
+import java.util.Scanner;
+
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BM25FBooleanQuery;
 import org.apache.lucene.search.BooleanClause;
@@ -73,6 +75,9 @@ public class BM25FQueryParser extends QParser {
 
 	@Override
 	public Query parse() throws ParseException {
+		BM25FParameters param = manageRuntimeBm25fParams();
+		if (param == null)
+			param = bm25fparams;
 
 		SolrQueryParser parser = new SolrQueryParser(this, mainField);
 		Query q = parser.parse(qstr);
@@ -82,7 +87,7 @@ public class BM25FQueryParser extends QParser {
 		if (q instanceof BooleanQuery) {
 			BooleanQuery bq = (BooleanQuery) q;
 
-			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(bm25fparams);
+			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(param);
 			for (BooleanClause clause : bq) {
 				bm25fQuery.add(clause);
 			}
@@ -91,55 +96,60 @@ public class BM25FQueryParser extends QParser {
 		}
 		if (q instanceof TermQuery) {
 			TermQuery tq = (TermQuery) q;
-			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(bm25fparams);
+			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(param);
 			bm25fQuery.add(new BooleanClause(tq, Occur.MUST));
 			return bm25fQuery;
 		}
 		return q;
 	}
-	// SolrParams p = req.getParams();
-	// NamedList<Object> params = p.toNamedList();
-	// if (params.get("k1") != null){
-	// BM25FQuery.k1 = Double.parseDouble((String)params.get("k1"));
-	// } else { BM25FQuery.k1 = 1; }
-	// if (params.get("b") != null){
-	// BM25FQuery.b = Double.parseDouble((String)params.get("b"));
-	// } else { BM25FQuery.b = 0; }
-	// if (params.get("avglen") != null){
-	// BM25FQuery.avgLength = Integer.parseInt((String)params.get("avglen"));
-	// }
-	//
-	//
-	// String userQuery = getString();
-	// SolrQueryParser sqp = new SolrQueryParser(this,DEFAULT_FIELD);
-	// Query q = sqp.parse(userQuery);
-	// Set<Term> termsSet = new HashSet<Term>();
-	// q.extractTerms(termsSet);
-	// TermQuery[] terms = new TermQuery[termsSet.size()];
-	// int i = 0;
-	// for (Term t : termsSet){
-	// terms[i++] = new TermQuery(new Term(DEFAULT_FIELD, t.text()));
-	// }
-	//
-	// logger.debug("query terms = {}", termsSet);
-	// Query twitterQuery = new BM25FQuery(terms);
 
-	//
-	// if (q instanceof BooleanQuery){
-	// // Dismax returns a boolean query, so this condiction should be always
-	// true
-	// logger.debug("Boolean Twitter Query! ");
-	// Query twitterQuery = new TwitterBooleanQuery((BooleanQuery)q);
-	// return twitterQuery;
-	// } else{
-	// logger.warn("the parsed query is not a boolean query ");
-	// Set<Term> termsSet = new HashSet<Term>();
-	// q.extractTerms(termsSet);
-	// BooleanQuery bq = new BooleanQuery();
-	// for (Term t : termsSet){
-	//
-	// }
-	// return q;
-	// }
+	private BM25FParameters manageRuntimeBm25fParams() {
+		SolrParams p = req.getParams();
+		float k1 = -1;
+		Float[] boosts = null;
+		Float[] bParams = null;
+		boolean set = false;
+		int nFields = bm25fparams.getFields().length;
+
+		Object o = p.get("k1");
+		if (o != null) {
+			k1 = Float.parseFloat((String) o);
+			set = true;
+		}
+		o = p.get("b");
+		if (o != null) {
+			String bstr = (String) o;
+			boosts = new Float[nFields];
+			Scanner scanner = new Scanner(bstr).useDelimiter(":");
+			for (int i = 0; i < nFields; i++) {
+				boosts[i] = scanner.nextFloat();
+			}
+			set = true;
+		}
+
+		o = p.get("lb");
+		if (o != null) {
+			String bParamsStr = (String) o;
+			bParams = new Float[nFields];
+			Scanner scanner = new Scanner(bParamsStr).useDelimiter(":");
+			for (int i = 0; i < nFields; i++) {
+				bParams[i] = scanner.nextFloat();
+			}
+			set = true;
+		}
+		if (!set) {
+			return null;
+		}
+		BM25FParameters params = bm25fparams.clone();
+		if (k1 > 0)
+			params.setK1(k1);
+		if (boosts != null)
+			params.setBoosts(boosts);
+		if (bParams != null)
+			params.setBoosts(bParams);
+
+		return params;
+
+	}
 
 }
