@@ -187,6 +187,62 @@ public class SimpleCollectionTest {
 	// <float name="description">0.75</float>
 	// </lst>
 
+	public float picassoAndGoodScore(float k1, float[] boosts, float[] bParams) {
+
+		double idf = idf(1, 4);
+		double titleAvgLength = 1.75; // lengths lossy encoded in the index
+		double authorAvgLength = 2.25;
+		double descriptionAvgLength = 4.0;
+		double textAvgLength = 8.0;
+		double titleBoost = boosts[3];
+		double authorBoost = boosts[0];
+		double descriptionBoost = boosts[1];
+		double textBoost = boosts[2];
+		double titleLengthBoost = bParams[3];
+		double authorLengthBoost = bParams[0];
+		double descriptionLengthBoost = bParams[1];
+		double textLengthBoost = bParams[2];
+		double titleWeight = (titleBoost * 1)
+				/ ((1 - titleLengthBoost) + titleLengthBoost * 1.0
+						/ titleAvgLength);
+		double authorWeight = (authorBoost * 1)
+				/ ((1 - authorLengthBoost) + authorLengthBoost * 2.56
+						/ authorAvgLength);
+		double descriptionWeight = (descriptionBoost * 1)
+				/ ((1 - descriptionLengthBoost) + descriptionLengthBoost
+						* 7.111111 / descriptionAvgLength);
+		double textWeight = (textBoost * 3)
+				/ ((1 - textLengthBoost) + textLengthBoost * 10.24
+						/ textAvgLength);
+
+		System.out.println("authorWeight = " + authorWeight);
+		System.out.println("descriptionWeight = " + descriptionWeight);
+
+		System.out.println("textWeight = " + textWeight);
+
+		float expectedPicassoScore = (float) (titleWeight + authorWeight
+				+ descriptionWeight + textWeight);
+
+		// good
+		descriptionWeight = (descriptionBoost * 1)
+				/ ((1 - descriptionLengthBoost) + descriptionLengthBoost
+						* 7.111111 / descriptionAvgLength);
+		textWeight = (textBoost * 1)
+				/ ((1 - textLengthBoost) + textLengthBoost * 10.24
+						/ textAvgLength);
+
+		float expectedGoodScore = (float) (descriptionWeight + textWeight);
+
+		double den = k1 + expectedGoodScore;
+		if (den > 0)
+			expectedGoodScore = (float) (expectedGoodScore / den * idf);
+
+		den = k1 + expectedPicassoScore;
+		if (den > 0)
+			expectedPicassoScore = (float) (expectedPicassoScore / den * idf);
+		return expectedPicassoScore + expectedGoodScore;
+	}
+
 	public float picassoScore(float k1, float[] boosts, float[] bParams) {
 
 		double idf = idf(1, 4);
@@ -277,8 +333,8 @@ public class SimpleCollectionTest {
 
 	}
 
-	public void assertSameScores(float k1, float[] boosts, float[] bparams)
-			throws SolrServerException {
+	public void assertPicassoSameScores(float k1, float[] boosts,
+			float[] bparams) throws SolrServerException {
 
 		SolrDocumentList results = getResults("picasso", k1, boosts, bparams);
 		double score = ((Float) results.get(0).get("score"));
@@ -290,23 +346,57 @@ public class SimpleCollectionTest {
 
 	}
 
+	public void assertPicassoAndGoodSameScores(float k1, float[] boosts,
+			float[] bparams) throws SolrServerException {
+
+		SolrDocumentList results = getResults("picasso good", k1, boosts,
+				bparams);
+		double score = ((Float) results.get(0).get("score"));
+		float expectedScore = picassoAndGoodScore(k1, boosts, bparams);
+		System.out.println("score = " + score);
+		System.out.println("expected = " + expectedScore);
+
+		assertEquals(expectedScore, score, 0.00001);
+
+	}
+
 	@Test
 	public void testParamsSwitch() throws SolrServerException {
 
-		assertSameScores(18, new float[] { 8.0f, 10.0f, 3.0f, 39.0f },
+		assertPicassoSameScores(18, new float[] { 8.0f, 10.0f, 3.0f, 39.0f },
 				new float[] { 0, 0.75f, 0.15f, 0.05f });
-		assertSameScores(18, new float[] { 8.0f, 11.0f, 3.0f, 39.0f },
+		assertPicassoSameScores(18, new float[] { 8.0f, 11.0f, 3.0f, 39.0f },
 				new float[] { 0, 0.75f, 0.15f, 0.05f });
-		assertSameScores(18, new float[] { 0.0f, 50.0f, 3.0f, 39.0f },
+		assertPicassoSameScores(18, new float[] { 0.0f, 50.0f, 3.0f, 39.0f },
 				new float[] { 0, 0.75f, 0.15f, 4.05f });
-		assertSameScores(1, new float[] { 10.0f, 10.0f, 3.0f, 39.0f },
+		assertPicassoSameScores(1, new float[] { 10.0f, 10.0f, 3.0f, 39.0f },
 				new float[] { 1, 0.75f, 0.15f, 0.05f });
-		assertSameScores(18, new float[] { 30.0f, 10.0f, 3.0f, 39.0f },
+		assertPicassoSameScores(18, new float[] { 30.0f, 10.0f, 3.0f, 39.0f },
 				new float[] { 0, 0.75f, 0.12f, 0.95f });
-		assertSameScores(0, new float[] { 0f, 0f, 0f, 0f }, new float[] { 0f,
-				0f, 0f, 0f });
-		assertSameScores(0, new float[] { 1f, 0f, 0f, 0f }, new float[] { 0.1f,
-				0f, 0f, 0f });
+		assertPicassoSameScores(0, new float[] { 0f, 0f, 0f, 0f }, new float[] {
+				0f, 0f, 0f, 0f });
+		assertPicassoSameScores(0, new float[] { 1f, 0f, 0f, 0f }, new float[] {
+				0.1f, 0f, 0f, 0f });
+
+	}
+
+	@Test
+	public void testParamsSwitch2Terms() throws SolrServerException {
+
+		assertPicassoAndGoodSameScores(18, new float[] { 8.0f, 10.0f, 3.0f,
+				39.0f }, new float[] { 0, 0.75f, 0.15f, 0.05f });
+		assertPicassoAndGoodSameScores(18, new float[] { 8.0f, 11.0f, 3.0f,
+				39.0f }, new float[] { 0, 0.75f, 0.15f, 0.05f });
+		assertPicassoAndGoodSameScores(18, new float[] { 0.0f, 50.0f, 3.0f,
+				39.0f }, new float[] { 0, 0.75f, 0.15f, 4.05f });
+		assertPicassoAndGoodSameScores(1, new float[] { 10.0f, 10.0f, 3.0f,
+				39.0f }, new float[] { 1, 0.75f, 0.15f, 0.05f });
+		assertPicassoAndGoodSameScores(18, new float[] { 30.0f, 10.0f, 3.0f,
+				39.0f }, new float[] { 0, 0.75f, 0.12f, 0.95f });
+		assertPicassoAndGoodSameScores(0, new float[] { 0f, 0f, 0f, 0f },
+				new float[] { 0f, 0f, 0f, 0f });
+		assertPicassoAndGoodSameScores(0, new float[] { 1f, 0f, 0f, 0f },
+				new float[] { 0.1f, 0f, 0f, 0f });
 
 	}
 
