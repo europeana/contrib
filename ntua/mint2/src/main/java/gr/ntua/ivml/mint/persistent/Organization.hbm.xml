@@ -20,6 +20,7 @@
 	    <property name="country"  />
 	    <property name="type" column="org_type" />
 		<property name="publishAllowed" column="publish_allowed" />
+		<property name="jsonFolders" column="json_folders" />
 		
 	    <many-to-one name="parentalOrganization" 
         column="parental_organization_id"

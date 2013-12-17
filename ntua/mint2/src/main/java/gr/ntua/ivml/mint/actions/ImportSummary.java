@@ -4,6 +4,7 @@ import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.util.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,17 @@ public class ImportSummary extends GeneralAction {
 	
 	public List<User> getUploaders(){
 		return DB.getOrganizationDAO().findById(orgId, false).getUploaders();
+	}
+	
+	public List<Label> getLabels(){
+		List<String> list = new ArrayList<String>((DB.getOrganizationDAO().getById(orgId, false)).getFolders());
+		ArrayList<Label> labels=new ArrayList<Label>();
+		for(String inputlbl:list){
+			Label newlabel=new Label(inputlbl);
+			labels.add(newlabel);
+		}
+		return labels;
+		
 	}
 	
 	public void setError(String error) {

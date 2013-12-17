@@ -2,12 +2,18 @@ package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.Publication;
 import gr.ntua.ivml.mint.concurrent.EntryProcessorI;
+import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.db.GlobalPrefixStore;
+import gr.ntua.ivml.mint.db.Meta;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.FileFormatHelper;
+import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.TraversableI;
 import gr.ntua.ivml.mint.util.Tuple;
+import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
+import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +27,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.XMLReader;
 
 public class Dataset implements Lockable, SecurityEnabled {
 	
@@ -43,14 +55,6 @@ public class Dataset implements Lockable, SecurityEnabled {
 	/**
 	 * String constants for status messages. Please use those for setting and comparing
 	 */
-	public static final String NODES_NOT_APPLICABLE = "NOT APPLICABLE";
-	public static final String NODES_RUNNING = "RUNNING";
-	public static final String NODES_FAILED = "FAILED";
-	public static final String NODES_REMOVED = "REMOVED";
-	public static final String NODES_OK = "OK";
-	public static final String NODES_OK_COMPRESSED = "OK compressed";
-	public static final String NODES_OK_EDITED = "OK edited";
-	
 	public static final String ITEMS_NOT_APPLICABLE = "NOT APPLICABLE";
 	public static final String ITEMS_OK = "OK";
 	public static final String ITEMS_RUNNING = "RUNNING";
@@ -78,6 +82,8 @@ public class Dataset implements Lockable, SecurityEnabled {
 	public static final String PUBLICATION_RUNNING = "RUNNING";
 	public static final String PUBLICATION_FAILED = "FAILED";
 	public static final String PUBLICATION_OK = "OK";
+
+	public static final String META_RECENT_ANNOTATIONS = "recent.annotations";
 
 	private Long dbID;
 	
@@ -112,16 +118,15 @@ public class Dataset implements Lockable, SecurityEnabled {
 	private int itemCount;
 	private int validItemCount;
 	
+	// folder / tagging support
+	private String jsonFolders;
 	
-	// ( NOT_APPLICABLE, RUNNING, FAILED, OK, OK-COMPRESSED, OK-EDITED )
-	private String nodeIndexerStatus;
 	
-	// optional tablename for the nodeindex
-	//  if not set, its xml_node_${dataset_id}
-	private String nodeIndexName;
+	// transient
 	
-	// how many nodes in the node index table
-	private long nodeIndexSize;
+	private HashSet<String> folders;
+	
+
 	
 	// (  NOT_APPLICABLE, RUNNING, FAILED, OK, DIRECT )
 	private String statisticStatus;
@@ -136,16 +141,149 @@ public class Dataset implements Lockable, SecurityEnabled {
 	private boolean deleted;
 	private Date deletedDate;
 	
-	private Date publishDate;
-	private String publicationStatus;
-	private int publishedItemCount;
 	
 	private boolean edited;
+	
+	/**
+	 * Create a Dataset for editing. Store it in the DB.
+	 * @param schema
+	 * @param name
+	 * @param creator
+	 * @return
+	 */
+	public static Dataset createEditable( XmlSchema schema, String name, User creator ) {
+		Dataset ds = new Dataset();
+		ds.init( creator );
+		ds.setName(name);
+		ds.setSchema(schema);
+		ds.setItemCount(0);
+		ds.setItemizerStatus(ITEMS_OK);
+		ds.setStatisticStatus(STATS_OK);
+		
+		DB.getDatasetDAO().makePersistent(ds);
+		return ds;
+	}
+	
+	
 	
 	//
 	// Some logic for this object 
 	//
+	// take the path from db and make it an xpath query string
+	private String schemaPathQuery( String dbQueryString ) {
+		String res = dbQueryString
+				// for xpathholder match we needed the %
+				// this might go away in the future xpathholders are not very usefull any more
+				.replaceAll("%/", "//")
+				// remove namespaces
+				.replaceAll("/([^/:]+):", "/" )
+				// put wildcard namespace on all path elements
+				.replaceAll( "/([^/]+)", "/*[local-name()='$1']" );
+		return res;
+	}
+	/**
+	 * Puts item in database and updates some stats fields on dataset.
+	 * XpathValueStats are not updated! label and native id are extracted if defined in the Dataset
+	 * The xml is validated if there is a schema.
+	 * @param item
+	 */
+	public void updateItem( Item item ) {
+		try {
+				XMLReader parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader(); 
+				parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
+				Builder builder = new Builder(parser);
+				Document doc =  builder.build( item.getXml(), null );
+				if( !StringUtils.empty( getSchema().getItemLabelPath()) && (getItemLabelXpath()==null)) {
+					Nodes labels = doc.query( 
+							schemaPathQuery( getSchema().getItemLabelPath()), 
+							GlobalPrefixStore.allPrefixesContext());
+					if( labels.size() >= 1 ) 
+						item.setLabel(labels.get(0).getValue());
+				}
+				
+				if( !StringUtils.empty( getSchema().getItemIdPath()) && (getItemNativeIdXpath()==null)) {
+					Nodes ids = doc.query( 
+							schemaPathQuery(getSchema().getItemPath()), 
+							GlobalPrefixStore.allPrefixesContext());
+					if( ids.size() >= 1 ) 
+						item.setPersistentId(ids.get(0).getValue());
+				}
+
+				if( getItemNativeIdXpath() != null ) {
+					Nodes nativeIds = getItemNativeIdXpath().queryDoc(doc);
+					if( nativeIds.size() == 1 ) {
+						item.setPersistentId(nativeIds.get(0).getValue());
+					}
+				}
+				if( getItemLabelXpath() != null ) {
+					Nodes labels = getItemLabelXpath().queryDoc(doc);
+					if( labels.size() >= 1 ) 
+						item.setLabel(labels.get(0).getValue());
+				}
+		} catch(Exception e) {
+			log.error( "Something went wrong on updateItem " + item.getDbID(), e );
+		}
+		
+		if( getSchema() != null ) {
+			try {
+				ReportErrorHandler rh = SchemaValidator.validate( item.getXml(), schema);
+				if( rh.isValid()) {
+					if( !item.isValid()) {
+						item.setValid(true);
+						setValidItemCount(getValidItemCount()+1);
+					}
+				} else {
+					if( item.isValid() ) {
+						item.setValid(false);
+						setValidItemCount( getValidItemCount() -1 );
+					}
+				}
+			} catch( Exception e ) {
+				log.error( "Schema check failed" ,e );
+				
+			}
+		}
+
+		DB.getItemDAO().makePersistent(item);
+		if( Solarizer.isEnabled()) {
+			Solarizer sol = new Solarizer(item);
+			DB.getStatelessSession().beginTransaction();
+			sol.runInThread();
+		}
+	}
+	
+	/**
+	 * Gives back a new Item for this dataset. No xml is in there!
+	 * itemCount is updated accodingly.
+	 * @return
+	 */
+	public Item createItem() {
+		Item item = new Item();
+		item.setDataset(this);
+		// now for the stats in dataset
+		setItemCount( getItemCount() +1 );
+		item = DB.getItemDAO().makePersistent(item);
+		return item;
+	}
+	
+	/**
+	 * Delete item from db, adjust item count and validItemCount
+	 * Fails if there is a dependency on this item (eg transformed item)
+	 * @param item
+	 * @return
+	 */
+	public boolean deleteItem( Item item ) {
+		boolean valid = item.isValid();
+		if( ! DB.getItemDAO().makeTransient(item)) return false;
+		
+		if( valid ) {
+			setValidItemCount(getValidItemCount()-1);
+		}
+		setItemCount( getItemCount()-1);
+		return true;
+	}
+	
 	/**
 	 * Put into result what are the dataset sources for this one.
 	 */
@@ -153,13 +291,62 @@ public class Dataset implements Lockable, SecurityEnabled {
 		
 	}
 	
+	private void makeFoldersFromJson() {
+		folders = new HashSet<String>();
+		if(( jsonFolders == null ) || (jsonFolders.length()==0 )) return; 
+		try {
+			for( Object obj: JSONUtils.parseArray(jsonFolders)) {
+				folders.add( obj.toString() );
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	private void makeJsonFromFolders() {
+		JSONArray ja = new JSONArray();
+		for( String s: folders ) {
+			ja.add( s );
+		}
+		jsonFolders=  ja.toString();
+	}
+	
+	
+	public Collection<String> getFolders() {
+		if( folders == null ) {
+			makeFoldersFromJson();
+		}
+		return folders;
+	}
+	
+	public void addFolder( String folder ) {
+		if( folders == null ) makeFoldersFromJson();
+		folders.add( folder );
+		getOrganization().addFolder(folder);
+		makeJsonFromFolders();
+	}
+	
+	public void removeFolder( String folder ) {
+		if( folders == null ) makeFoldersFromJson();
+		folders.remove( folder );
+		makeJsonFromFolders();		
+	}
+	
+	public void renameFolder(String oldName, String newName) {
+		if( folders == null ) makeFoldersFromJson();
+		if( folders.remove( oldName ))
+			addFolder( newName );
+	}
+
+
+	
 	/**
 	 * Any of the things running for this dataset ?
 	 * 
 	 */
 	public boolean isProcessing() {
-		return ( getNodeIndexerStatus().equals( NODES_RUNNING ) ||
-				getItemizerStatus().equals( ITEMS_RUNNING ) ||
+		return (getItemizerStatus().equals( ITEMS_RUNNING ) ||
 				getLoadingStatus().equals( LOADING_HARVEST ) ||
 				getLoadingStatus().equals( LOADING_UPLOAD ) ||
 				getSchemaStatus().equals( SCHEMA_RUNNING ) ||
@@ -174,9 +361,7 @@ public class Dataset implements Lockable, SecurityEnabled {
 	 * @return
 	 */
 	public boolean isOk() {
-		return  !getNodeIndexerStatus().equals( NODES_FAILED ) &&
-				 !getNodeIndexerStatus().equals( NODES_RUNNING ) &&
-				( getItemizerStatus().equals( ITEMS_OK ) ||
+		return  ( getItemizerStatus().equals( ITEMS_OK ) ||
 						getItemizerStatus().equals( ITEMS_NOT_APPLICABLE )) &&
 				( getLoadingStatus().equals( LOADING_OK ) ||
 					getLoadingStatus().equals( LOADING_NOT_APPLICABLE )) &&
@@ -201,8 +386,7 @@ public class Dataset implements Lockable, SecurityEnabled {
 	}
 	
 	public boolean isFailed(){
-		return getNodeIndexerStatus().equals( NODES_FAILED ) || 
-				getItemizerStatus().equals( ITEMS_FAILED) ||  
+		return getItemizerStatus().equals( ITEMS_FAILED) ||  
 				getLoadingStatus().equals( LOADING_FAILED ) || 
 				getSchemaStatus().equals( SCHEMA_FAILED ) || 
 				getStatisticStatus().equals(STATS_FAILED) ||
@@ -325,12 +509,9 @@ public class Dataset implements Lockable, SecurityEnabled {
 		setOrganization(creator.getOrganization());
 		setDeleted(false);
 		setItemCount(-1);
-		setPublishedItemCount(0);
 		setValidItemCount(0);
-		setPublicationStatus(PUBLICATION_NOT_APPLICABLE);
 		setItemizerStatus(ITEMS_NOT_APPLICABLE);
 		setStatisticStatus(STATS_NOT_APPLICABLE);
-		setNodeIndexerStatus(NODES_NOT_APPLICABLE);
 		setLoadingStatus(LOADING_NOT_APPLICABLE);
 		setSchemaStatus(SCHEMA_NOT_APPLICABLE);
 		setCreated(new Date());
@@ -344,6 +525,20 @@ public class Dataset implements Lockable, SecurityEnabled {
 	 */
 	public void processAllItems( ApplyI<Item> op, boolean withState ) throws Exception {
 		DB.getItemDAO().applyForDataset(this, op, withState );
+	}
+	
+	
+	/**
+	 * Do given op on all items.
+	 * @param op
+	 * @throws Exception
+	 */
+	public void processAllValidItems( ApplyI<Item> op, boolean withState ) throws Exception {
+		String cond = "dataset = " + getDbID() + " and valid = true order by item_id";
+		if( withState )
+			DB.getItemDAO().onAll( op, cond, true );
+		else
+			DB.getItemDAO().onAllStateless(op, cond);
 	}
 	
 	
@@ -374,16 +569,6 @@ public class Dataset implements Lockable, SecurityEnabled {
 		}
 	}
 
-	/**
-	 * Find the tablename for the node index.
-	 * Standard is xml_node_${dbID} but you can set the nodeIndexName for a different table.
-	 * @return
-	 */
-	public String resolveNodeIndex() {
-		if( getNodeIndexName() != null ) return getNodeIndexName();
-		else return "xml_node_"+getDbID();
-	}
-	
 	
 	/**
 	 * Get an xpathHolder for this path. Works with or without the global prefixes in the path)
@@ -425,6 +610,14 @@ public class Dataset implements Lockable, SecurityEnabled {
 		return list;
 	}
 
+	/**
+	 * Which is the Dataset (DataUpoad) where this is originally derived from
+	 * @return
+	 */
+	public Dataset getOrigin() {
+		return this;
+	}
+	
 	/**
 	 * Which Transformation / Publication is derived from this Dataset
 	 * @return
@@ -477,9 +670,10 @@ public class Dataset implements Lockable, SecurityEnabled {
 		return getPublication().isDirectlyPublishable(this);
 	}
 	
-	public boolean publish() throws Exception {
-		return getPublication().publish(this);
+	public boolean publish( User publisher ) {
+		return getPublication().publish(this, publisher );		
 	}
+	
 	
 	public boolean unpublish() throws Exception {
 		return getPublication().unpublish(this);
@@ -598,24 +792,93 @@ public class Dataset implements Lockable, SecurityEnabled {
 	}
 	
 	public JSONObject toJSON() {
-	
 			
-		JSONObject res = new JSONObject() 
-			.element( "name", getName())
-			.element("created", StringUtils.isoTime( getCreated()))
+		JSONObject res = new JSONObject(); 
+			
+		res.put("created", StringUtils.isoTime( getCreated()));
 			//.element("created", getCreated().toString())
-			.element("creator" , new JSONObject()
+			/*.element("creator" , new JSONObject()
 				.element( "dbID", getCreator().getDbID())
-				.element( "name", getCreator().getName()))
-			.element( "dbID", getDbID())
-			.element( "edited", isEdited())
-			.element( "itemCount",	getItemCount())
-			.element( "itemizerStatus", getItemizerStatus())
-			.element( "lastModified",  StringUtils.isoTime(getLastModified()))
-			.element( "organization", new JSONObject()
-				.element( "dbID", getOrganization().getDbID())
-				.element( "name", getOrganization().getName()));					
+				.element( "name", getCreator().getName()))*/
+		res.put( "dbID", getDbID());
+		res.put( "edited", isEdited());
+		res.put( "itemCount",	getItemCount());
+		res.put("invalidItems",getInvalidItemCount());
+		res.put("validItems",getValidItemCount());
+		res.put("publishedItems",getPublishedItemCount());
+		res.put( "itemizerStatus", getItemizerStatus());
+		res.put( "lastModified",  StringUtils.isoTime(getLastModified()));
+		
+		JSONObject org = new JSONObject();
+		org.put( "dbID", getOrganization().getDbID());
+		org.put( "name", getOrganization().getName());	
+		res.put( "organization", org);
+		
+		if (getCreator() !=null){
+			JSONObject creator = new JSONObject() ;
+			if (getCreator().getDbID() != null){
+				creator.put( "dbID", getCreator().getDbID());
+			}
+			if ((getCreator().getFirstName() != null)&&((getCreator().getFirstName() != null))){
+
+				creator.put( "name", getCreator().getFirstName()+" "+getCreator().getLastName());
+			}
+				res.put("creator" , creator );
+		}
+		
+		if (getName()!=null){
+			res.put( "name", getName());
+		}
+		
+
 		return res;
+	}
+	
+	private PublicationRecord getPublicationRecordForOriginal() {
+		List<PublicationRecord> lpr = DB.getPublicationRecordDAO().findByOriginalDataset(this);
+		if( lpr.size() >0 ) return lpr.get(0);
+		else return null;
+	}
+	
+	public Date getPublishDate() {
+		PublicationRecord pr = getPublicationRecordForOriginal();
+		if( pr == null ) return null;
+		return pr.getEndDate();
+	}
+
+
+	public String getPublicationStatus() {
+		PublicationRecord pr = getPublicationRecordForOriginal();
+		if( pr == null ) return Dataset.PUBLICATION_NOT_APPLICABLE;
+		return pr.getStatus();
+	}
+
+	public int getPublishedItemCount() {
+		PublicationRecord pr = getPublicationRecordForOriginal();
+		if( pr == null ) return 0;
+		return pr.getPublishedItemCount();
+	}
+
+	
+	public Mapping getRecentMapping() {
+		List<Mapping> recent = Mapping.getRecentMappings(this);
+		if(recent.size() > 0) return recent.get(0);
+		
+		return null;
+	}
+	
+	public void addRecentAnnotation() {
+		JSONObject entry = new JSONObject();
+		entry.put("timestamp", new Date().getTime());		
+		Meta.prepend(this, Dataset.META_RECENT_ANNOTATIONS, entry);
+	}
+
+	/**
+	 * Shortcut to get PublicationRecord where this Dataset contains the published Items.
+	 * @return PublicationRecord or null if there is none
+	 */
+	public PublicationRecord getPublicationRecord() {
+		return DB.getPublicationRecordDAO().getByPublishedDataset(this);
 	}
 	//
 	// Start boilerplate code
@@ -691,24 +954,6 @@ public class Dataset implements Lockable, SecurityEnabled {
 	public void setValidItemCount(int validItemCount) {
 		this.validItemCount = validItemCount;
 	}
-	public String getNodeIndexerStatus() {
-		return nodeIndexerStatus;
-	}
-	public void setNodeIndexerStatus(String nodeIndexerStatus) {
-		this.nodeIndexerStatus = nodeIndexerStatus;
-	}
-	public String getNodeIndexName() {
-		return nodeIndexName;
-	}
-	public void setNodeIndexName(String nodeIndexName) {
-		this.nodeIndexName = nodeIndexName;
-	}
-	public long getNodeIndexSize() {
-		return nodeIndexSize;
-	}
-	public void setNodeIndexSize(long nodeIndexSize) {
-		this.nodeIndexSize = nodeIndexSize;
-	}
 	public String getStatisticStatus() {
 		return statisticStatus;
 	}
@@ -776,29 +1021,6 @@ public class Dataset implements Lockable, SecurityEnabled {
 		this.rootHolder = rootHolder;
 	}
 
-	public Date getPublishDate() {
-		return publishDate;
-	}
-
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
-	}
-
-	public String getPublicationStatus() {
-		return publicationStatus;
-	}
-
-	public void setPublicationStatus(String publicationStatus) {
-		this.publicationStatus = publicationStatus;
-	}
-
-	public int getPublishedItemCount() {
-		return publishedItemCount;
-	}
-
-	public void setPublishedItemCount(int publishedItemCount) {
-		this.publishedItemCount = publishedItemCount;
-	}
 
 	public boolean isEdited() {
 		return edited;
@@ -808,11 +1030,12 @@ public class Dataset implements Lockable, SecurityEnabled {
 		this.edited = edited;
 	}
 	
-	public Mapping getRecentMapping() {
-		List<Mapping> recent = Mapping.getRecentMappings(this);
-		if(recent.size() > 0) return recent.get(0);
-		
-		return null;
+	public String getJsonFolders() {
+		return jsonFolders;
+	}
+
+	public void setJsonFolders(String jsonFolders) {
+		this.jsonFolders = jsonFolders;
 	}
 
 }

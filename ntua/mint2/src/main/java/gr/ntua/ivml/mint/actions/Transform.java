@@ -224,7 +224,10 @@ public class Transform extends GeneralAction  {
 				tr.setCreator(du.getCreator());
 				tr.setMapping(m);
 				// set name for transformation
-				tr.setName(m.getTargetSchema().getName()+" Transformation");
+				if( m.getTargetSchema() != null )
+					tr.setName(m.getTargetSchema().getName()+" Transformation");
+				else 
+					tr.setName( m.getName() + " xsl Transformation" );
 				DB.getTransformationDAO().makePersistent(tr);
 				DB.commit();
 

@@ -1,7 +1,9 @@
 <%@ include file="_include.jsp"%>
 <%@ page language="java" errorPage="error.jsp"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="gr.ntua.ivml.mint.persistent.Organization;"%>
+<%@page import="gr.ntua.ivml.mint.persistent.Organization"%>
+<%@page import="gr.ntua.ivml.mint.persistent.XmlSchema"%>
+<%@page import="java.util.List"%>
 
 
  <script type="text/javascript" src="js/oaiRequest.js"></script>
@@ -153,7 +155,7 @@ $(function() {
 				 list="%{#{',':'comma (,)', ';':'semicolon (;)', 'tab':'tab'}}" />
 				 </div>
 				 <div>
-            <label>Define the escape character</label><s:select name="csvescChar" list="%{#{'-1':'no escape', '\\\\':'\\\\'}}" /></div>
+            <label>Define the escape character</label><s:select name="csvescChar" list="%{#{'\0':'none', '\\\\':'\\\\'}}" /></div>
             </div>
      </div>
 
@@ -208,22 +210,26 @@ $(function() {
 				required="true"/> <br/><font style="font-size: 0.9em;"><i>Parent
 			organization upload support</i> </font></div>
 		</s:if>
+		<%List<XmlSchema> l=(List<XmlSchema>)request.getAttribute("xmlSchemas");
+		%>
 		<div class="fitem">	
 			<s:checkbox name="isDirect" id="isDirect" cssStyle="float:left;"  cssClass="checks"/>	<label>This import conforms:</label>
-			<s:select
-			name="directSchema" headerKey="0" headerValue="-- Select schema --"
-			list="xmlSchemas" listKey="dbID"
-			theme="simple" /> <br/>
+			 <select name="directSchema">
+			 <option value="0">--Select schema--</option>
+			 <%for(XmlSchema i:l){ %>
+			 <option value="<%=i.getDbID() %>"><%=i.getName() %></option>
+			 <%} %>
+			 </select> 
+		<br/>
 			<font style="font-size:0.9em;"><i>Select this option in addition to your import method in case your upload already conforms to the selected schema and no mapping is necessary.</i></font>
 		</div>
 		
+	  	<div class="fitem"><label>This is a <i>json</i> upload</label><s:checkbox name="isJson" cssClass="checks"/></div>
 	    
 	    <p align="left">
 				<a class="navigable focus k-focus" id="submit_import">
 					 <span>Submit</span></a>  
 				<a class="navigable focus k-focus"  onclick="this.blur();document.impform.reset();"><span>Reset</span></a>  
-						
-	
 	     </p>
 
 

@@ -6,41 +6,27 @@ import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.StringUtils;
+import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
+import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.ValidatorHandler;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
 
 
 public class Validator implements Runnable {
-	private XMLReader parser;
 	private Dataset dataset;
-	private String currentProblem;
 	private int validCounter=0, invalidCounter=0;
 	private TarArchiveOutputStream validOutput = null;
 	private TarArchiveOutputStream invalidOutput = null;
@@ -48,7 +34,6 @@ public class Validator implements Runnable {
 	private File invalidOutputFile = null;
 	private boolean stopOnFirstInvalid = false;
 	private XmlSchema schema = null;
-	private TransformerFactory tFactory;
 	
 	public static final Logger log = Logger.getLogger( Validator.class );
 	
@@ -59,7 +44,6 @@ public class Validator implements Runnable {
 	public Validator( Dataset ds ) {
 		this.dataset = ds;
 		this.schema = this.dataset.getSchema();
-		this.tFactory = TransformerFactory.newInstance();
 	}
 	
 	/**
@@ -70,7 +54,6 @@ public class Validator implements Runnable {
 	public Validator( Dataset ds, XmlSchema schema ) {
 		this.dataset = ds;
 		this.schema = schema;
-		this.tFactory = TransformerFactory.newInstance();
 	}
 	
 	public void runInThread() {
@@ -83,10 +66,6 @@ public class Validator implements Runnable {
 			dataset.setSchemaStatus(Dataset.SCHEMA_RUNNING);
 			dataset.logEvent("Validation started." );
 			DB.commit();
-			parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader(); 
-			parser.setFeature("http://apache.org/xml/features/validation/schema-full-checking", false);
-			parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			setupSchemaValidation(parser);
 			
 			// if there are items, validate items
 			if( dataset.getItemizerStatus().equals(Dataset.ITEMS_OK)) 
@@ -111,48 +90,6 @@ public class Validator implements Runnable {
 		} 
 	}
 	
-	/**
-	 * Changes the parser to handle validation issues. Will change the currentProblem on every
-	 * error occuring. If currentProblem is null, there is no problem.
-	 * @param parser
-	 * @param statsHandler
-	 */
-	private void setupSchemaValidation( XMLReader parser ) throws Exception {
-		ErrorHandler eh = new ErrorHandler() {
-			@Override
-			public void error(SAXParseException se)
-					throws SAXException {
-				if( currentProblem == null ) currentProblem = se.getMessage();
-				else currentProblem += "\n" + se.getMessage();
-			}
-
-			@Override
-			public void fatalError(SAXParseException se)
-					throws SAXException {
-				if( currentProblem == null ) currentProblem = se.getMessage();
-				else currentProblem += "\n" + se.getMessage();
-				throw se;
-			}
-
-			@Override
-			public void warning(SAXParseException se)
-					throws SAXException {
-				if( currentProblem == null ) currentProblem = se.getMessage();
-				else currentProblem += "\n" + se.getMessage();
-			}				
-		};
-		
-		try {
-			Schema schema = this.schema.getSchema();
-			ValidatorHandler validationHandler = schema.newValidatorHandler();
-			validationHandler.setErrorHandler(eh);
-			parser.setContentHandler(validationHandler);
-		} catch( Exception e ) {
-			log.error( "Schema validation setup failed miserably" ,e );
-			throw e;
-		}
-	}
-	
 	
 	public void run() {
 		try {
@@ -166,61 +103,20 @@ public class Validator implements Runnable {
 	}
 
 	
-	private String stream2String(InputSource ins) throws IOException{
-        Reader reader = ins.getCharacterStream();
-		
-		int c;
-		String contents = "";
-		while((c = reader.read()) != -1) {
-			contents += (char)c;
-		}
-		
-		return contents;
-	}
-	
-	
-	/**
-	 * @param xml
-	 * @throws TransformerException 
-	 */
-	private void validateSchematron(String xml) throws TransformerException{
-		DOMResult result = new DOMResult();
-
-		String schematronXSL = schema.getSchematronXSL();
-		
-		StringReader reader = new StringReader(schematronXSL);
-		
-
-		Transformer transformer = tFactory.newTransformer(
-	       new StreamSource(reader));
-		transformer.transform(new StreamSource(new StringReader(xml)),result);
-	    
-	    NodeList nresults = result.getNode().getFirstChild().getChildNodes();
-	    for(int i=0; i < nresults.getLength();i++){
-	    	Node nresult = nresults.item(i);
-	    	
-	    	if(  "failed-assert".equals(nresult.getLocalName())){
-	    		if( currentProblem == null ) currentProblem = nresult.getTextContent();
-				else currentProblem += "\n" + nresult.getTextContent();
-	    	}
-	    }
-		
-		
-	}
-	
 	private void checkItemSchema() throws Exception {
+		final ReportErrorHandler rh = new ReportErrorHandler();
+		
 		ApplyI<Item> itemProcessor = new ApplyI<Item>() {
 			@Override
 			public void apply(Item item) throws Exception {
 				Thread.sleep(0);
-				InputSource ins = new InputSource();
 				String itemXml = item.getXml();
 				if(!itemXml.startsWith("<?xml")) itemXml = "<?xml version=\"1.0\"  standalone=\"yes\"?>" + item.getXml();
-				ins.setCharacterStream(new StringReader( itemXml ));
-				currentProblem = null;
-				parser.parse( ins );
-				validateSchematron(itemXml);
-				if(currentProblem == null ) {
+				
+				// here we should use the SchemaValidator
+				rh.reset();
+				SchemaValidator.validate(itemXml, schema, rh );
+				if( rh.isValid()) {
 					// this needs a state for the items so the changed item is
 					// committed back
 					item.setValid( true );
@@ -231,11 +127,11 @@ public class Validator implements Runnable {
 						throw new Exception("Invalid item. Schema validation failed");
 					}
 					invalidCounter++;
-					collectInvalid(item, currentProblem );
+					collectInvalid(item, rh.getReportMessage() );
 					if( invalidCounter < 4 ) {
-						dataset.logEvent( "Invalid item " + item.getLabel(), currentProblem );
+						dataset.logEvent( "Invalid item " + item.getLabel(), rh.getReportMessage() );
 					}
-					log.debug( "Item: " + item.getLabel() + "\n" + currentProblem );
+					log.debug( "Item: " + item.getLabel() + "\n" + rh.getReportMessage() );
 				}
 			}
 		};
@@ -250,19 +146,26 @@ public class Validator implements Runnable {
 	}
 	
 	private void checkEntrySchema() throws Exception {
+		final ReportErrorHandler rh = new ReportErrorHandler();
 		EntryProcessorI ep = new EntryProcessorI( ) {
 			public void  processEntry(String entryName, InputStream is) throws Exception {
 				if( !entryName.endsWith(".xml") &&  !entryName.endsWith(".XML")) return;
 				// makes this process interruptible
 				Thread.sleep(0);
-				InputSource ins = new InputSource();
-				ins.setByteStream(is);
+				rh.reset();
+				// need to copy into a mem to run two courses of schema checks
+				byte[] buf = IOUtils.toByteArray(is);
+				ByteArrayInputStream bis = new ByteArrayInputStream(buf);
+				StreamSource ins = new StreamSource();
+				ins.setInputStream(bis);
+				SchemaValidator.validateSchematron(ins, schema, rh);
 				
-				String itemXML = stream2String(ins);
-				currentProblem = null;
-				parser.parse( itemXML );
-				validateSchematron(itemXML);
-				if(currentProblem == null ) {
+				bis.reset();
+				ins = new StreamSource();
+				ins.setInputStream(bis);
+				SchemaValidator.validateXSD(ins, schema, rh);
+				
+				if( rh.isValid() ) {
 					validCounter++;
 				} else {
 					if(isStopOnFirstInvalid()) {
@@ -270,7 +173,7 @@ public class Validator implements Runnable {
 					}
 					invalidCounter++;
 					if( invalidCounter < 10 ) {
-						dataset.logEvent("Entry " + entryName + " didn't validate.", currentProblem );
+						dataset.logEvent("Entry " + entryName + " didn't validate.",rh.getReportMessage());
 					}
 				}
 			}

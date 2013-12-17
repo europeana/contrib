@@ -51,7 +51,10 @@ public class DoXSL extends GeneralAction  {
 	
 	public String getSchemaname() {
 		Mapping m = DB.getMappingDAO().findById(mapid, false);
-		return m.getTargetSchema().getName();
+		if( m.getTargetSchema() != null )
+			return m.getTargetSchema().getName();
+		else
+			return "";
 	}
 	
 	

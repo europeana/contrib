@@ -2,6 +2,7 @@ package gr.ntua.ivml.mint.uim.queue.strategies;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.uim.messages.schema.CreateImportAction;
 import gr.ntua.ivml.mint.uim.messages.schema.CreateOrganizationAction;
 import gr.ntua.ivml.mint.uim.messages.schema.CreateOrganizationCommand;
 import gr.ntua.ivml.mint.uim.messages.schema.CreateOrganizationResponse;

@@ -1,26 +1,17 @@
 package gr.ntua.ivml.mint.actions;
 
 import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.mapping.TargetConfigurationFactory;
 import gr.ntua.ivml.mint.persistent.Crosswalk;
 import gr.ntua.ivml.mint.persistent.User;
-
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 
-
 import java.io.File;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;

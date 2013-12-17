@@ -6,7 +6,6 @@
 	background: #3C3C3C;
 	
 }*/
-
 p {
 	margin: 10px 0;
 }
@@ -854,6 +853,10 @@ h3.ui-accordion-header a {
 	background-color: transparent !important;	
 }
 
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+	padding-bottom: 0 !important;
+}
+
 /* Chosen */
 .group-result {
 	text-transform: uppercase;
@@ -865,3 +868,141 @@ h3.ui-accordion-header a {
 .chzn-results .highlighted {
 	background: #ddddff !important;
 }
+
+
+.labelSelector {
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    font-size: 13px;
+    top: 29px;
+    margin: 0;
+    outline: medium none;
+    padding: 6px 0;
+    position: absolute;
+    right:54px;
+    z-index: 50;
+    transition: opacity 0.218s ease 0s;
+    pointer-events: auto;
+    max-width: 400px;
+}
+
+
+.labelSelector div.labelList {
+	
+	max-height: 160px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space:nowrap;
+    cursor: default;
+    font-size: 13px;
+    font-family: arial,sans-serif;
+    
+    border-bottom: 1px solid #EBEBEB;
+    margin-bottom: 6px;
+    margin-top: 5px;
+}
+
+.labelSelector div.labelBtn{
+	padding-left: 20px;
+	text-align: left;
+	font-weight: normal;
+	font-family: arial,sans-serif;
+    cursor: pointer;
+    line-height:20px;
+    color: black;
+    text-shadow: none;
+    margin-bottom:5px;
+	}
+	
+.labelSelector div.labelBtn:hover{background: #EBEBEB;}
+
+.labelSelector button {
+	float: right;
+}
+
+div.labelInput {
+	/*color: #69F;*/
+	margin: .1em .2em;
+	line-height: 25px;
+	
+}
+
+div.labelInput:hover{background: #EBEBEB;}
+
+.labelInput .checkbox, .radio {
+    width: 19px;
+    height: 25px;
+    padding: 0px; /* Removed padding to eliminate color bleeding around image
+       you could make the image wider on the right to get the padding back */
+    background: url(checkbox2.png) no-repeat;
+    display: block;
+    clear: left;
+    float: left;
+ }
+
+
+.labels{
+  
+    color: white;
+    display: inline-block;
+    font-weight: normal;
+    font: 11px arial,sans-serif;
+    height: 1.4em;
+    margin: 2px;
+    outline: medium none;
+    padding: 1px 3px;
+    text-decoration: none;
+    text-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    
+}
+ 
+.labelspan{
+	 color: black;padding: 5px; padding-right:44px;  line-height: 20px; height: 20px;text-shadow:none;font-weight:normal;cursor: pointer;
+	} 
+ 
+.labelassign{
+	background: url("../images/label.png") no-repeat scroll 0 0 transparent;
+    height: 15px;
+    margin-right: 5px;
+    margin-top: 3px;
+    outline: 0 none;
+    position: absolute;
+    right: 50px;
+    top: 5px;
+    width: 15px;
+    z-index: 20;
+	} 
+	
+.labelset{
+	display:inline-block;
+	background: url(../images/label_set.png) no-repeat;
+	z-index:999;
+	/*background: url('//ssl.gstatic.com/mail/sprites/general_black-2acb9b83290ceab72c6472ec2f9d3f67.png') no-repeat scroll 0 -88px transparent;*/
+	left:10%;
+	height: 21px;
+	outline: 0 none;
+	position: relative;
+	width: 25px;
+	margin-right:5px;
+	top: 3px;
+	} 	
+	
+.lbutton {
+    border: 1px solid #AAAAAA;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 2px #999999;
+    color: black;
+    padding: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+.importInfo{
+	display: block; right: 30px; position: absolute; max-width: 32px;top:5px;}
+	
+.importLabel{position:absolute;top:0px;display:inline-block;max-width: 70%; height:30px;margin-left: 10px; overflow: hidden;}

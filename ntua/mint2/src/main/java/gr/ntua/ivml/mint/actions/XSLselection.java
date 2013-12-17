@@ -122,7 +122,7 @@ public class XSLselection extends GeneralAction  {
 			return "success";
 		} else if( du.isDirectlyPublishable()) {
 			try {
-				boolean result = du.publish();
+				boolean result = du.publish( getUser() );
 				if( ! result ) {
 					error="Publish returned false for DataUpload["+du.getDbID()+"] check logs!"; 
 					return "error";

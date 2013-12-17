@@ -232,6 +232,14 @@
 	background: url(../../images/buttons/preferences.png) !important;
 }
 
+.editor-toolbar-new {
+	background: url(../../images/buttons/add.png) !important;
+}
+
+.editor-toolbar-delete {
+	background: url(../../images/buttons/delete.png) !important;
+}
+
 .editor-preferences-row {
 	min-height: 40px;
 	border-bottom: 1px solid silver;
@@ -294,4 +302,25 @@
 
 .editor-preview-tab .error {
 	background: #fdd !important;
+}
+
+.editor-mapping-view {
+}
+
+.editor-mapping-view .mint2-header {
+	font-size: 150%;
+}
+
+.editor-mapping-view .mint2-box {
+	background: white;
+}
+
+.editor-mapping-view-image {
+}
+
+.editor-mapping-view-image img {
+	width: 95%;
+	border: 1px solid silver;
+	padding: 5px;
+	border-radius: 5px;	
 }

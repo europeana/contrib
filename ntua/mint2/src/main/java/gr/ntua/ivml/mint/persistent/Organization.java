@@ -2,16 +2,22 @@ package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.Publication;
 import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.db.Meta;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
 import org.apache.log4j.Logger;
 
@@ -37,9 +43,14 @@ public class Organization implements SecurityEnabled {
 	List<Organization> dependantOrganizations = new ArrayList<Organization>();
 	List<User> users = new ArrayList<User>();
 	List<DataUpload> dataUploads = new ArrayList<DataUpload>();
+
+	// which folders in this organization
+	// its a json array of strings
+	// the API should not use this directly
+	String jsonFolders;
 	
 	// transient 
-	
+	HashSet<String> folders;
 	Publication publication;
 	//
 	// useful functions
@@ -69,10 +80,84 @@ public class Organization implements SecurityEnabled {
 		return publication;
 	}
 	
+	private void makeFoldersFromJson() {
+		folders = new HashSet<String>();
+		if(( jsonFolders == null ) || (jsonFolders.length()==0 )) return; 
+		
+		for( Object obj:(JSONArray) JSONSerializer.toJSON( jsonFolders)) {
+			folders.add( obj.toString() );
+		}		
+	}
+	
+	private void makeJsonFromFolders() {
+		JSONArray ja = new JSONArray();
+		for( String s: folders ) {
+			ja.add( s );
+		}
+		jsonFolders=  ja.toString();
+	}
+	
+	
+	public Collection<String> getFolders() {
+		if( folders == null ) {
+			makeFoldersFromJson();
+		}
+		ArrayList<String> res = new ArrayList<String>();
+		res.addAll(  folders );
+		Collections.sort( res );
+		return res;
+	}
+	
+		
+	public void addFolder( String folder ) {
+		if( folders == null ) makeFoldersFromJson();
+		folders.add( folder );
+		makeJsonFromFolders();
+	}
+	
+	public void removeFolder( String folder ) {
+		if( folders == null ) makeFoldersFromJson();
+		folders.remove( folder );
+		for( Dataset ds: DB.getDatasetDAO().findNonDerivedByOrganizationFolders(this, folder )) {
+			ds.removeFolder(folder);
+		}
+		makeJsonFromFolders();		
+	}
+	
+	public void renameFolder( String oldName, String newName ) {
+		if( folders == null ) makeFoldersFromJson();
+		if( folders.remove(oldName ))
+			addFolder( newName );
+		for( Dataset ds: DB.getDatasetDAO().findNonDerivedByOrganizationFolders(this, oldName )) {
+			ds.renameFolder(oldName, newName );
+		}
+	}
+	
+	/**
+	 * Get the organizational targets from the meta table. Or null if there are none.
+	 * @return
+	 */
+	public JsonOrganizationTargets getTargets() {
+		String json = Meta.get( this, "targets" );
+		if( json != null ) 
+			return new JsonOrganizationTargets( json );
+		else
+			return null;
+	}
+	
+	public void setTargets( JsonOrganizationTargets targets ) {
+		if( targets == null ) {
+			Meta.delete(this, "targets" );
+		} else {
+			Meta.put( this, "targets", targets.toJson() );
+		}
+	}
+	
 	// convenience 
 	public List<Dataset> getPublishedDatasets() {
 		return DB.getDatasetDAO().findPublishedByOrganization(this);
 	}
+	
 	
 	// temporary getter setter for old attribute
 	public String getName() {
@@ -226,6 +311,14 @@ public class Organization implements SecurityEnabled {
 		return res;
 	}
 	
+	public String getJsonFolders() {
+		return jsonFolders;
+	}
+
+	public void setJsonFolders(String jsonFolders) {
+		this.jsonFolders = jsonFolders;
+	}
+
 	/**
 	 * if find, just look for one
 	 * @param find
@@ -292,6 +385,9 @@ public class Organization implements SecurityEnabled {
 		if( getPrimaryContact() != null ) 
 			res.element( "primaryContact", new JSONObject() 
 				.element( "dbID", getPrimaryContact().getDbID()));
+		String targetJson = Meta.get( this, "targets" );
+		if( targetJson != null )
+			res.element( "targets", JSONObject.fromObject(targetJson));
 		return res;
 	}
 }

@@ -1,60 +1,63 @@
-mappingHandler = new JSONMappingHandler(mapping);
-template = new JSONMappingHandler(mapping.getJSONObject("template"));
+//Comments
+// ****
+// **** Vocabulary method does not exist
+// - next to structural
+// Search input and target schema 
+// Solr???
+// Mandatory
+// 
 
-schemaId = template.getHandlersForPath("/lido/lidoRecID").get(0);
+
+
+// Set project title to lidoRecID
+schemaId = template.getChild("lido:lidoRecID");
 schemaId.addConstantMapping("/" + Config.get("mint.title") + ":000000");
 schemaId.setFixed(true);
 schemaIdType = schemaId.getAttribute("@lido:type");
 schemaIdType.addConstantMapping(Config.get("mint.title"));
 schemaIdType.setFixed(true);
 
+// Make the lang title mandatory
 template.getChild("lido:descriptiveMetadata").getAttribute("@xml:lang").setMandatory(true);
 template.getChild("lido:administrativeMetadata").getAttribute("@xml:lang").setMandatory(true);
 
-// create europeana classification
-europeanaClassification = template.duplicatePath("/lido/descriptiveMetadata/objectClassificationWrap/classificationWrap/classification", cache);
-
+// Duplicate classificatioType and add the Europeana enumerations
+europeanaClassification = cache.duplicate(template.findFirst("lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification").getId());
 europeanaClassification.setLabel("classification (europeana)");
-europeanaType = europeanaClassification.getAttribute("@lido:type")
-	.addConstantMapping("europeana:type");
+europeanaType = europeanaClassification.getAttribute("@lido:type").addConstantMapping("europeana:type");
 europeanaTerm = europeanaClassification.getChild("lido:term")
-	.addEnumeration("IMAGE")
+    .addEnumeration("IMAGE")
 	.addEnumeration("SOUND")
 	.addEnumeration("TEXT")
 	.addEnumeration("VIDEO")
 	.addEnumeration("3D")
 	.setMandatory(true)
+   
+// Make the recordInfoLink mandatory
+recordInfoLink =  template.findFirst("//lido:recordInfoSet/lido:recordInfoLink").setMandatory(true); //****It is not made MANDATORY
 
-// europeana record source
-recordInfoLink =  template.getHandlersForName("recordInfoSet").get(0).getHandlersForName("recordInfoLink").get(0)
-	.setMandatory(true);
+// Add the record type "Photography"
+recordType = template.findFirst("//lido:recordType/lido:term").addConstantMapping("Photography");//**** ????
 
-recordType = template.getHandlersForName("recordType").get(0).getChild("lido:term").addConstantMapping("Photography");
-originalRecordSource = template.getHandlersForName("recordSource").get(0);
-recordSource = template.duplicatePath("/lido/administrativeMetadata/recordWrap/recordSource", cache)
-	.setLabel("recordSource (europeana)")
-recordSourceType = recordSource.getAttribute("@lido:type")
-	.addConstantMapping("europeana:dataProvider")
-	.setFixed(true)
-recordSourceAppellation = recordSource.getChild("lido:legalBodyName")
-	.setMandatory(true);
+// Make the europeana data provider mandatory
+originalRecordSource = template.findFirst("//lido:recordSource");
+recordSource = cache.duplicate(template.findFirst("//lido:administrativeMetadata/lido:recordWrap/lido:recordSource").getId());
+recordSource.setLabel("recordSource (europeana)");
+recordSourceType = recordSource.getAttribute("@lido:type").addConstantMapping("europeana:dataProvider").setFixed(true)
+recordSourceAppellation = recordSource.getChild("lido:legalBodyName").setMandatory(true);
 originalRecordSource.setString(JSONMappingHandler.ELEMENT_MINOCCURS, "0");
 
-// create master & thumb resource, resource rights
-resource = template.duplicatePath("/lido/administrativeMetadata/resourceWrap/resourceSet", cache);
+// Set europeana resource set
+resource = cache.duplicate(template.findFirst("//lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet").getId());
 resource.setLabel("resourceSet (europeana)");
 
-master = template.duplicatePath("/lido/administrativeMetadata/resourceWrap/resourceSet/resourceRepresentation", cache);
+// 	Set image thumb and image master
+master = cache.duplicate(template.findFirst("//lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation").getId());
 master.setLabel("resourceRepresentation (master)");
 master.setRemovable(true);
-
-thumb = template.duplicatePath("/lido/administrativeMetadata/resourceWrap/resourceSet/resourceRepresentation", cache);
+thumb = cache.duplicate(template.findFirst("//lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation").getId());
 thumb.setLabel("resourceRepresentation (thumb)");
 thumb.setRemovable(true);
-
-rights = resource.getChild("lido:rightsResource");
-rights.setLabel("rightsResource (europeana)");
-rights.setMandatory(true);
 
 linkResource = master.getChild("lido:linkResource");
 linkResource.setLabel("linkResource (master)");
@@ -70,6 +73,11 @@ linkType.addConstantMapping("image_thumb");
 linkType.setFixed(true);
 linkResourceThumb = linkResource;
 
+// 	Set rights
+rights = resource.getChild("lido:rightsResource");
+rights.setLabel("rightsResource (europeana)");
+rights.setMandatory(true);
+
 rightsType = rights.getChild("lido:rightsType");
 rightsType.setLabel("rightsType (europeana)");
 rightsType = rightsType.getChild("lido:term");
@@ -80,27 +88,27 @@ rightsType.addEnumeration("http://www.europeana.eu/rights/rr-f/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/rr-p/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/rr-r/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/unknown/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/publicdomain/mark/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/publicdomain/zero/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-sa/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-sa/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nd/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-nd/");
-rightsCopyright = rights.getChild("lido:rightsHolder").getChild("lido:legalBodyName").getChild("lido:appellationValue");
+rightsType.addEnumeration("http://creativecommons.org/publicdomain/mark/1.0/");
+rightsType.addEnumeration("http://creativecommons.org/publicdomain/zero/1.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-sa/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-sa/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nd/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-nd/3.0/");
 rightsTypeEuropeana = rightsType;
 
-// rights work set
-recordRights = template.duplicatePath("/lido/administrativeMetadata/recordWrap/recordRights", cache);
+// Set Rights work set
+recordRights = cache.duplicate(template.findFirst("//lido:administrativeMetadata/lido:recordWrap/lido:recordRights").getId());
 recordRights.setLabel("recordRights (europeana)");
 rightsType = recordRights.getChild("lido:rightsType").getChild("lido:term");
 rightsType.addEnumeration("CC0");
 rightsType.addEnumeration("CC0 (no descriptions)");
 rightsType.addEnumeration("CC0 (mandatory only)");
 
-eventTypes = template.getHandlersForName("eventType");
-for(eventType in eventTypes) {
+// Add the event types
+eventTypes = template.find("//lido:eventType"); //***** de douleuei
+for(Element eventType : eventTypes) {
     conceptID = eventType.getChild("lido:conceptID")
         .addEnumeration("http://terminology.lido-schema.org/lido00001","http://terminology.lido-schema.org/lido00001 - Acquisition")
         .addEnumeration("http://terminology.lido-schema.org/lido00010","http://terminology.lido-schema.org/lido00010 - Collecting")
@@ -129,49 +137,77 @@ for(eventType in eventTypes) {
         .addEnumeration("http://terminology.lido-schema.org/lido00003","http://terminology.lido-schema.org/lido00003 - (Non-specified)")
 }
 
-eventSetCreation = template.duplicatePath("/lido/descriptiveMetadata/eventWrap/eventSet", cache).setLabel("eventSet (Creation)");
+// Set event Creation
+eventSetCreation = cache.duplicate(template.findFirst("//lido:descriptiveMetadata/lido:eventWrap/lido:eventSet").getId());
+eventSetCreation.setLabel("eventSet (Creation)");
 eventSetConceptID = eventSetCreation.getChild("lido:event").getChild("lido:eventType").getChild("lido:conceptID");
 eventSetConceptID.addConstantMapping("http://terminology.lido-schema.org/lido00012");
 eventSetConceptID.getAttribute("@lido:type").addConstantMapping("URI");
+eventSetTerm = eventSetCreation.getChild("lido:event").getChild("lido:eventType").getChild("lido:term");
+eventSetTerm.addConstantMapping("Creation");
+eventSetTerm.getAttribute("@xml:lang").addConstantMapping("en");
 eventSetCreation.setRemovable(true);
-eventDate = eventSetCreation.getHandlerForPath("eventSet/event/eventDate/date/earliestDate");
-eventAuthor = eventSetCreation.getHandlerForPath("eventSet/event/eventActor/actorInRole/actor/nameActorSet/appellationValue");
-eventTechnique = eventSetCreation.getHandlerForPath("eventSet/event/eventMethod");
-eventPlace = eventSetCreation.getHandlerForPath("eventSet/event/eventPlace/place");
-eventPractice = eventSetCreation.getHandlerForPath("eventSet/event/eventDescriptionSet/descriptiveNoteValue");
-eventMaterial = eventSetCreation.getHandlerForPath("eventSet/event/eventMaterialsTech/materialsTech/termMaterialsTech");
+
+// Init elements for bookmarks
+eventDate = eventSetCreation.findFirst("lido:event/lido:eventDate/lido:date/lido:earliestDate");
+eventAuthor = eventSetCreation.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:actor/lido:nameActorSet/lido:appellationValue");
+eventTechnique = eventSetCreation.findFirst("lido:event/lido:eventMethod");
+eventPlace = eventSetCreation.findFirst("lido:event/lido:eventPlace/lido:place");
+eventPractice = eventSetCreation.findFirst("lido:event/lido:eventDescriptionSet/lido:descriptiveNoteID");
+eventMaterial = eventSetCreation.findFirst("lido:event/lido:eventMaterialsTech/lido:materialsTech/lido:termMaterialsTech");
 eventMaterial.getAttribute("@lido:type").addConstantMapping("material");
 
+// Object Work Type
+//objectWorkType = template.findFirst("//lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType");
+//objectWorkType.getChild("lido:term").addConstantMapping("Ancient Photography"); 
 
 // Photography
-
-workType = template.duplicatePath("/lido/descriptiveMetadata/objectClassificationWrap/objectWorkTypeWrap/objectWorkType", cache);
+workType = cache.duplicate(template.findFirst("//lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType").getId());
 workType.setLabel("objectWorkType (Photography)");
 workType.getChild("lido:term").setFixed(true).addConstantMapping("Photography");
 
-// bookmarks
 
-mappingHandler.addBookmarkForXpath("Identifier", "/lido/administrativeMetadata/recordWrap/recordID");
-mappingHandler.addBookmarkForXpath("Descriptive metadata language", "/lido/descriptiveMetadata/@lang");
-mappingHandler.addBookmarkForXpath("Administrative metadata language", "/lido/administrativeMetadata/@lang");
-mappingHandler.addBookmark("Link to Metadata", recordInfoLink);
-mappingHandler.addBookmark("Link to DCHO", linkResourceMaster);
-mappingHandler.addBookmark("Link to DCHO (thumbnail)", linkResourceThumb);
-mappingHandler.addBookmark("Provider", recordSourceAppellation);
-mappingHandler.addBookmark("Europeana Type", europeanaTerm);
-mappingHandler.addBookmark("Europeana Rights", rightsTypeEuropeana);
-mappingHandler.addBookmarkForXpath("Title", "/lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue");
-mappingHandler.addBookmark("Date", eventDate);
-mappingHandler.addBookmark("Author", eventAuthor);
-mappingHandler.addBookmark("Technique", eventTechnique);
-mappingHandler.addBookmark("Place", eventPlace);
-mappingHandler.addBookmark("Photographic practice", eventPractice);
-mappingHandler.addBookmark("Material", eventMaterial);
-mappingHandler.addBookmarkForXpath("Description", "/lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue");
-mappingHandler.addBookmark("Copyright", rightsCopyright);
-mappingHandler.addBookmarkForXpath("Subject concept", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectConcept");
-mappingHandler.addBookmarkForXpath("Subject actor", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectActor");
-mappingHandler.addBookmarkForXpath("Subject place", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectPlace");
-mappingHandler.addBookmarkForXpath("Dimensions", "/lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet");
-mappingHandler.addBookmarkForXpath("Related Works", "/lido/descriptiveMetadata/objectRelationWrap/relatedWorksWrap/relatedWorkSet/relatedWork/object/objectNote");
+// Bookmarks
+mappings.addBookmarkForXpath("Identifier", "/lido/administrativeMetadata/recordWrap/recordID");
+mappings.addBookmarkForXpath("Descriptive metadata language", "/lido/descriptiveMetadata/@lang");
+mappings.addBookmarkForXpath("Administrative metadata language", "/lido/administrativeMetadata/@lang");
+mappings.addBookmark("Link to Metadata", recordInfoLink);
+mappings.addBookmark("Link to DCHO", linkResourceMaster);
+mappings.addBookmark("Link to DCHO (thumbnail)", linkResourceThumb);
 
+mappings.addBookmark("Provider", recordSourceAppellation);
+mappings.addBookmark("Europeana Type", europeanaTerm);
+mappings.addBookmark("Europeana Rights", rightsTypeEuropeana);
+mappings.addBookmarkForXpath("Title", "/lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue");
+mappings.addBookmark("Date", eventDate);
+mappings.addBookmark("Author", eventAuthor);
+mappings.addBookmark("Technique", eventTechnique);
+mappings.addBookmark("Place", eventPlace);
+mappings.addBookmark("Photographic practice", eventPractice);
+mappings.addBookmark("Material", eventMaterial);
+mappings.addBookmarkForXpath("Description", "/lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue");
+mappings.addBookmarkForXpath("Copyright", "/lido/administrativeMetadata/rightsWorkWrap/rightsWorkSet/rightsHolder/legalBodyName/appellationValue");
+mappings.addBookmarkForXpath("Subject concept", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectConcept");
+mappings.addBookmarkForXpath("Subject actor", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectActor");
+mappings.addBookmarkForXpath("Subject place", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectPlace");
+mappings.addBookmarkForXpath("Dimensions", "/lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet");
+mappings.addBookmarkForXpath("Related Works", "/lido/descriptiveMetadata/objectRelationWrap/relatedWorksWrap/relatedWorkSet/relatedWork/object/objectNote");
+
+
+// Vocabs
+handlers = template.find("//lido:eventMethod/lido:conceptID")
+for(Element conceptID: handlers) {
+    conceptID.setThesaurus(MappingPrimitives.thesaurus("http://bib.arts.kuleuven.be/photoVocabulary/Technique"));
+}
+
+handlers = template.find("//lido:subjectConcept/lido:conceptID")
+for(Element conceptID: handlers) {
+    conceptID.setThesaurus(MappingPrimitives.thesaurus("http://bib.arts.kuleuven.be/photoVocabulary/Photographic_practice"));
+}
+
+//**** Vocabulary method does not exist
+//Enumerated xml langs
+//handlers = template.find("//@xml:lang");
+//for(Element handler: handlers) {
+  //  handler.setThesaurus(MappingPrimitives.vocabulary("http://mint.image.ece.ntua.gr/Vocabularies/Languages/LangThesaurus"));
+//}

@@ -29,22 +29,6 @@
 	box-shadow: 0 0 4px 0 black;
 }
 
-.schema-tree-search-box {
-	border-radius: 20px;
-	background: white;
-	border: 1px solid #aaa;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.schema-tree-search-box input {
-	border: 0px solid transparent;
-	margin-left: 20px;
-	width: 85%;
-}
-
 .schema-tree a .jstree-icon {
 	background:url(../../images/buttons/info.png) 0px 0px no-repeat !important;
 }

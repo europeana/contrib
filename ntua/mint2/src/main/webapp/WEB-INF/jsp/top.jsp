@@ -14,10 +14,11 @@
 <script src="js/fileuploader.js" type="text/javascript"></script>
 
 
-<link rel="stylesheet" type="text/css" href="css/esecss/fulldoc.min.css"/>
+
 <link rel="stylesheet" type="text/css" href="css/jquery/jquery.layout.default.css" />
 <link rel="stylesheet" type="text/css" href="css/kaiten.css"/>
 <link rel="stylesheet" type="text/css" href="css/jquery/Aristo/Aristo.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery/jquery.toolbar.css" />
 <link rel="stylesheet" type="text/css" href="css/fileuploader.css"/>
 <link rel="stylesheet" type="text/css" href="css/widgets/schemaTree.css"/>
 <link rel="stylesheet" type="text/css" href="css/widgets/valueBrowser.css"/>
@@ -30,16 +31,18 @@
 <link rel="stylesheet" href="js/slickgrid/examples/examples.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="css/athform.css">
+<link rel="stylesheet" type="text/css" href="css/evol.colorpicker.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="css/core.css">
 <link rel="stylesheet" type="text/css" href="css/mint2.css" />
 
 <!-- highlighter  -->
 
-  <link rel="stylesheet" type="text/css" href="css/highlighter/styles/shThemeMint.css"/>  
-  <link rel="stylesheet" type="text/css" href="css/highlighter/styles/shCore.css"/>
-  <script type="text/javascript" src="js/highlighter/scripts/XRegExp.js"></script>
-  <script type="text/javascript" src="js/highlighter/scripts/shCore.js"></script>
-  <script type="text/javascript" src="js/highlighter/scripts/shBrushXml.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/highlighter/styles/shThemeMint.css"/>  
+<link rel="stylesheet" type="text/css" href="css/highlighter/styles/shCore.css"/>
+<script type="text/javascript" src="js/highlighter/scripts/XRegExp.js"></script>
+<script type="text/javascript" src="js/highlighter/scripts/shCore.js"></script>
+<script type="text/javascript" src="js/highlighter/scripts/shBrushXml.js"></script>
 
    <script type="text/javascript" src="js/highlighter/scripts/shBrushPlain.js"></script>
 
@@ -56,7 +59,11 @@
 <script type="text/javascript" src="js/jquery/jquery.qtip.min.js"> </script>
 <script type="text/javascript" src="js/jquery/jquery.pagination.js"> </script>
 <script type="text/javascript" src="js/jquery/jquery.blockUI.js"> </script>
+<script type="text/javascript" src="js/jquery/jquery.toolbar.min.js"> </script>
 <script type="text/javascript" src="js/jquery/jstree/jquery.jstree.js"></script>
+
+
+
 <script type="text/javascript" src="js/jkaiten.js"> </script>
 <script type="text/javascript" src="js/chosen/chosen.jquery.min.js"> </script>
 <script type="text/javascript" src="js/ace/ace.js"> </script>
@@ -73,26 +80,31 @@
 <script type="text/javascript" src="js/mint2/documentation.js"></script>
 <script type="text/javascript" src="js/mint2/documentation-resources.js"></script>
 <script type="text/javascript" src="js/mint2/preferences.js"></script>
-<script type="text/javascript" src="js/widgets/schemaTree.js"></script>
-<script type="text/javascript" src="js/widgets/valueBrowser.js"></script>
-<script type="text/javascript" src="js/widgets/thesaurusBrowser.js"></script>
-<script type="text/javascript" src="js/widgets/itemBrowser.js"></script>
-<script type="text/javascript" src="js/widgets/itemPreview.js"></script>
-<script type="text/javascript" src="js/xsdmapping/mappingElement.js"></script>
-<script type="text/javascript" src="js/xsdmapping/mappingFunction.js"></script>
-<script type="text/javascript" src="js/xsdmapping/mappingValues.js"></script>
-<script type="text/javascript" src="js/xsdmapping/mappingCondition.js"></script>
-<script type="text/javascript" src="js/xsdmapping/xsdmappingeditor.js"></script>
-<script type="text/javascript" src="js/xsdmapping/xsdmappingPreview.js"></script>
-<script type="text/javascript" src="js/xsdmapping/xsdmappingValidation.js"></script>
-<script type="text/javascript" src="js/xsdmapping/xsdmappingNavigation.js"></script>
-<script type="text/javascript" src="js/xsdmapping/xsdmappingPreferences.js"></script>
-<script type="text/javascript" src="js/annotator/annotator.js"></script>
+<script type="text/javascript" src="js/mint2/widgets/schemaTree.js"></script>
+<script type="text/javascript" src="js/mint2/widgets/valueBrowser.js"></script>
+<script type="text/javascript" src="js/mint2/widgets/thesaurusBrowser.js"></script>
+<script type="text/javascript" src="js/mint2/widgets/itemBrowser.js"></script>
+<script type="text/javascript" src="js/mint2/widgets/itemPreview.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingAjax.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingArea.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingElement.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingFunction.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingValues.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingCondition.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/mappingView.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingeditor.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingPreview.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingValidation.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingNavigation.js"></script>
+<script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingPreferences.js"></script>
+<script type="text/javascript" src="js/mint2/annotator/annotator.js"></script>
 
 
 <script type="text/javascript" src="js/modalPopup.js"></script>
 
 <!--  used stuff  (replace all YUI)-->
+<script type="text/javascript" src="js/jquery/evol.colorpicker.min.js"></script>
+<script type="text/javascript" src="js/labelRequest.js"></script>
 <script type="text/javascript" src="js/itemRequest.js"></script>
 <script type="text/javascript" src="js/mappingRequest.js"></script>
 <script type="text/javascript" src="js/outputxsdRequest.js"></script>

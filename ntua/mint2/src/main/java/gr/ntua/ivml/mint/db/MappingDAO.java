@@ -14,11 +14,11 @@ public class MappingDAO extends DAO<Mapping, Long> {
 	 */
 	public List<Mapping> findByOrganization( Organization org ) {
 		if( org != null )
-		return getSession().createQuery("from Mapping where organization=:org order by last_modified desc")
+		return getSession().createQuery("from Mapping where organization=:org or shared=true order by organization, last_modified desc")
 		.setEntity("org", org)
 		.list();
 		else 
-			return getSession().createQuery("from Mapping where organization is null order by last_modified desc")
+			return getSession().createQuery("from Mapping where organization is null or shared is true order by organization, last_modified desc")
 			.list();
 	}
 	

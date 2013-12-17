@@ -8,6 +8,7 @@ import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.Lock;
 import gr.ntua.ivml.mint.persistent.Mapping;
 import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.persistent.PublicationRecord;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.ValueEdit;
 import gr.ntua.ivml.mint.persistent.XMLNode;
@@ -55,7 +56,7 @@ public class DB {
 							Mapping.class, XmlSchema.class,
 							Crosswalk.class, DatasetLog.class,
 							Item.class, XpathStatsValues.class,
-							ValueEdit.class };
+							ValueEdit.class, PublicationRecord.class };
 
 			Set<Class<?>> classSet = new HashSet<Class<?>>();
 			classSet.addAll( Arrays.asList( classes ));
@@ -258,10 +259,11 @@ public class DB {
 		return (TransformationDAO) instantiateDAO( TransformationDAO.class );
 	}
 
-	public static XMLNodeDAO getXMLNodeDAO() {
-		return (XMLNodeDAO) instantiateDAO( XMLNodeDAO.class );
+	public static PublicationRecordDAO getPublicationRecordDAO() {
+		return new PublicationRecordDAO();
 	}
-
+	
+	
 	public static XpathHolderDAO getXpathHolderDAO() {
 		return (XpathHolderDAO) instantiateDAO( XpathHolderDAO.class );
 	}

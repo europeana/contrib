@@ -2,7 +2,6 @@ package gr.ntua.ivml.mint.persistent;
 
 import static gr.ntua.ivml.mint.util.StringUtils.empty;
 import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.db.XMLNodeDAO;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -240,13 +239,6 @@ public class XMLNode  {
 	}
 	
 	
-	/**
-	 * Will print as well all enclosing tags for this node.
-	 * @param out
-	 */
-	public void toXmlWrapped( PrintWriter out ) {
-		xmlWrapItem( this, out );
-	}
 	
 	private void toXmlWithWrapper( PrintWriter out, boolean wrapper ) {
 		out.println( "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" );
@@ -476,72 +468,6 @@ public class XMLNode  {
 		return result;
 	}
 
-	/**
-	 * Produce XML that wraps the given item node in with all elements and values of surrounding.
-	 * All parent nodes are included. Excluded are subtrees that contain other item nodes but not
-	 * the given one!
-	 * @param itemNode
-	 * @param out
-	 */
-	public static void xmlWrapItem( XMLNode itemNode, PrintWriter out ) {
-		// algorithm like so
-		/*
-		 * From item node go upward, check all children
-		 *  - if its from this node, include
-		 *  - if it leads to other item exclude
-		 *  - otherwise include
-		 *  - go up and repeat
-		 */
-		XMLNode currentTree = DB.getXMLNodeDAO().getDOMTree(itemNode);
-		currentTree.setParentNode(itemNode.getParentNode());
-		while( currentTree.getParentNode() != null ) {
-			currentTree = buildItemWrapTree( currentTree, itemNode );
-		}
-		// now currentTree should be detached and wrapping one item!
-		// Detach, so that we don't auto retrieve other items during traversal
-		currentTree.toXml(out);
-	}
-	
-	
-	public static XMLNode buildItemWrapTree( XMLNode itemNode ) {
-		XMLNode currentTree = DB.getXMLNodeDAO().getDOMTree(itemNode);
-		currentTree.setParentNode(itemNode.getParentNode());
-		while( currentTree.getParentNode() != null ) {
-			currentTree = buildItemWrapTree( currentTree, itemNode );
-		}
-		return currentTree;
-	}
-	
-	/**
-	 * Need a tree with nodes that don't link to the DB any more.
-	 * So that traversal doesn't autoload more items.
-	 * @param currentTree
-	 * @param itemNode
-	 * @return
-	 */
-	public static XMLNode buildItemWrapTree( XMLNode currentTree, XMLNode itemNode ) {
-		XMLNode parent = currentTree.getParentNode();
-		XMLNodeDAO dao = DB.getXMLNodeDAO();
-		XMLNode newParent = dao.getStatelessByIdObject(currentTree.getDataset(), parent.getNodeId() );
-		// check the children
-		for( XMLNode childNode: dao.quickOtherSiblings(currentTree)) {
-			// skip the currentTree 
-			if( childNode.getNodeId() == currentTree.getNodeId()) {
-				newParent.getChildren().add(currentTree);
-				currentTree.setParentNode(newParent);
-			}
-			else {
-				// include if it doesn't contain another item
-				// cases where environment elements are in parts of the tree
-				// that could be parent to an item will not be included
-				if( itemNode.getXpathHolder().isDescendant(childNode.getXpathHolder())) continue;
-				XMLNode newChild= dao.getDOMTree(childNode);
-				newChild.setParentNode(newParent);
-				newParent.getChildren().add( newChild );
-			}
-		}
-		return newParent;
-	}
 
 	public Dataset getDataset() {
 		return dataset;

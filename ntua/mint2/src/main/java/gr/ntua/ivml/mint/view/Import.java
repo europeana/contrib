@@ -7,6 +7,7 @@ import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.util.Label;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +37,12 @@ public class Import {
 	
 	public Organization getOrg(){
 		return this.du.getOrganization();
+	}
+	
+	public int getOrgFolderNum(){
+		Organization o=getOrg();
+		List f=new ArrayList(o.getFolders());
+		return (getOrg().getFolders().size());
 	}
 	
 	public static class Download {
@@ -87,6 +94,21 @@ public class Import {
 		return result;
 	}
 	
+	
+	
+	public List<Label> getLabels() {
+		List<String> list = new ArrayList<String>(du.getFolders());
+		ArrayList<Label> labels=new ArrayList<Label>();
+		for(String inputlbl:list){
+			Label newlabel=new Label(inputlbl);
+			labels.add(newlabel);
+		}
+		return labels;
+	}
+	
+	public int getFolderNum(){
+		return du.getFolders().size();
+	}
 	
 	public boolean isImported() {
 		
@@ -270,9 +292,7 @@ public class Import {
 			}
 		
 		else if(du.isFailed()) {
-			if(du.getNodeIndexerStatus().equals( Dataset.NODES_FAILED )) {
-				this.message="Node indexing failed";
-			} else if(du.getItemizerStatus().equals( Dataset.ITEMS_FAILED)) {
+			if(du.getItemizerStatus().equals( Dataset.ITEMS_FAILED)) {
 				this.message="Itemization failed";
 			} else if(du.getSchemaStatus().equals( Dataset.SCHEMA_FAILED )) {
 				this.message="Schema validation failed";
@@ -302,6 +322,7 @@ public class Import {
 	}
 	
 	public void setStatusIcon(){
+		
 		if(this.isProcessing()){
 			this.statusIcon="images/loader.gif";}
 		else if(du.isOk()){
@@ -309,7 +330,12 @@ public class Import {
 				
 			   if(du instanceof DataUpload){
 				    if(du.isPublished()){
-				    	this.statusIcon="images/published.png";
+//				    	System.out.println("du.getPublishedItemCount():"+du.getPublishedItemCount());
+//				    	System.out.println("du.getItemCount():"+du.getItemCount());
+//				    	if(du.getPublishedItemCount() < du.getItemCount())
+				    		this.statusIcon="images/published.png";
+//				    	else
+//				    		this.statusIcon="images/published_warning.png";
 				    }
 				    else if(this.isTransformed()){
 					
@@ -433,4 +459,15 @@ public class Import {
 		
 	}
 	
+	/**
+	 * Is there a derived Dataset with given schemaName, return the valid item count.
+	 * If there is not, return -1
+	 * @param schemaName
+	 * @return
+	 */
+	public int getValidBySchemaName( String schemaName ) {
+		Dataset derived = du.getBySchemaName(schemaName);
+		if( derived == null ) return -1;
+		return derived.getValidItemCount();
+	}
 }

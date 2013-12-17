@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.concurrent;
 
+import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.GlobalPrefixStore;
 import gr.ntua.ivml.mint.persistent.DataUpload;
@@ -121,6 +122,13 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 				}, true );
 				ds.logEvent("Finished relabeling items." );
 				DB.commit();
+
+				if( Solarizer.isEnabled()) {
+					if( Custom.allowSolarize(ds))
+						Solarizer.queuedIndex(ds);
+				}
+
+
 			} catch( Exception e ) {
 				log.error( "Label/Id update on items was interrupted by Exception ", e );
 			}
@@ -146,6 +154,7 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 				ds.setItemCount(itemCount);
 				ds.logEvent( "Itemization finished created " + itemCount + " items." );
 				DB.commit();
+			
 			} catch(Exception e) {
 				log.error( "Itemization problem", e );
 
@@ -158,6 +167,7 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 				tick.cancel();
 			}
 		}
+
 	}
 	
 	
@@ -296,20 +306,6 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 		return item;
 	}	
 	
-	private Builder getBuilder() {
-		if( builder == null ) {
-			try {
-				XMLReader parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader(); 
-				parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-				builder = new Builder(parser);
-			} catch( Exception e ) {
-				log.error( "Cannot build xml parser.", e );
-			}
-		}
-		return builder;
-	}
-	
 	private boolean needsParsing() {
 		return(!( StringUtils.empty(nativeIdXpath) && StringUtils.empty( labelXpath)));
 	}
@@ -320,9 +316,8 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 	 * @param i
 	 */
 	public void updateLabelsAndIds( Item i ) {
-		String xml = i.getXml();
 		try {
-			Document doc = getBuilder().build( xml, null );
+			Document doc = i.getDocument();
 			if( !StringUtils.empty(nativeIdXpath)) {
 				Nodes nativeIds = doc.query( nativeIdXpath, context );
 				if( nativeIds.size() == 1 ) {

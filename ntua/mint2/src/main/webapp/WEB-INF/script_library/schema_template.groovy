@@ -1,12 +1,11 @@
 import net.sf.json.*;
-import gr.ntua.ivml.mint.mapping.*;
+import gr.ntua.ivml.mint.mapping.model.*;
 
 // Get the mapping template handler for a schema
 
-schema_name = "LIDO";
+schema_name = "EuScreen EDM";
 
 schema = DB.xmlSchemaDAO.simpleGet("name = '$schema_name'")
 json = schema.jsonTemplate
-object = JSONSerializer.toJSON(json)
-handler = new JSONMappingHandler(object)
-template = handler.getTemplate()
+mappings = new Mappings(json)           // top level mappings model
+template = mappings.getTemplate()       // root element of mapping

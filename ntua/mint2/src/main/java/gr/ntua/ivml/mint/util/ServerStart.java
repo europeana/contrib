@@ -4,6 +4,7 @@ package gr.ntua.ivml.mint.util;
 import gr.ntua.ivml.mint.actions.ScriptTester;
 import gr.ntua.ivml.mint.db.DB;
 
+import java.io.File;
 import java.util.Set;
 
 import javax.servlet.ServletContextEvent;
@@ -34,11 +35,22 @@ public class ServerStart implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		DB.getSession().beginTransaction();
 		try {
-		DB.cleanup();
-		// TODO Auto-generated method stub
-		Config.setContext( arg0.getServletContext());
-		// load this class
-		new ScriptTester();
+			DB.cleanup();
+			// TODO Auto-generated method stub
+			Config.setContext( arg0.getServletContext());
+			// load this class
+			new ScriptTester();
+
+			// maybe there is a solr lock file
+			String solrDir = Config.get( "solr.directory");
+			if( !StringUtils.empty( solrDir )) {
+				File dir = new File( solrDir );
+				File lock = new File( dir, "index/write.lock");
+				if( lock.exists() && lock.canWrite()) {
+					log.info( "Solr lock removed!!");
+					lock.delete();
+				}
+			}
 		} finally {
 			DB.closeSession();
 			DB.closeStatelessSession();

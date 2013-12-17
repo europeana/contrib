@@ -1,14 +1,6 @@
 package gr.ntua.ivml.mint.actions;
 
-import java.util.Iterator;
-import java.util.List;
-
-import gr.ntua.ivml.mint.db.DB;
-
-import gr.ntua.ivml.mint.persistent.User;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -31,10 +23,10 @@ public class Preferences extends GeneralAction {
 		json = new JSONObject();
 		
 		try {
-			String preferences = gr.ntua.ivml.mint.util.Preferences.get(getUser(), getKey());			
-			json.element("preferences", preferences); 
+			JSONObject preferences = gr.ntua.ivml.mint.util.Preferences.getJSON(getUser(), getKey());			
+			json.put("preferences", preferences); 
 		} catch( Exception e ) {
-			json.element( "error", e.getMessage());
+			json.put( "error", e.getMessage());
 		}
 		
 		return SUCCESS;

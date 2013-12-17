@@ -1,10 +1,11 @@
 package gr.ntua.ivml.mint.mapping;
 
+import gr.ntua.ivml.mint.mapping.model.Element;
+
 import java.util.HashMap;
 
-import org.openjena.atlas.logging.Log;
-
-import net.sf.json.*;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 /**
  * Cache for elements inside a mapping.
@@ -31,6 +32,10 @@ public class MappingCache {
 
 	public MappingCache() {
 		this.reset();
+	}
+
+	public MappingCache(Element template) {
+		this.load(template.asJSONObject());
 	}
 
 	public MappingCache(JSONObject template) {
@@ -69,6 +74,10 @@ public class MappingCache {
 		this.cacheElement(element, null);
 	}
 	
+	public void cacheElement(Element element) {
+		this.cacheElement(element.asJSONObject());
+	}
+	
 	/**
 	 * Cache element and descendants and assign to parent cache.
 	 * @param element the element.
@@ -78,55 +87,66 @@ public class MappingCache {
 		this.cacheElementRecursive(element);
 		this.fillEmptyIdsRecursive(element);
 		this.cacheParentsRecursive(element);
-		if(parent != null) this.parents.put(element.getString(JSONMappingHandler.ELEMENT_ID), parent);
+		if(parent != null) this.parents.put(element.get(JSONMappingHandler.ELEMENT_ID).toString(), parent);
+	}
+	
+	public void cacheElement(Element element, Element parent) {
+		this.cacheElement(element.asJSONObject(), parent.asJSONObject());
 	}
 		
 	protected void cacheElementRecursive(JSONObject object) {
-		if(object.has(JSONMappingHandler.ELEMENT_ID) && object.getString(JSONMappingHandler.ELEMENT_ID).length() > 0) {
-			String id = object.getString(JSONMappingHandler.ELEMENT_ID);
+		if(object.containsKey(JSONMappingHandler.ELEMENT_ID) && object.get(JSONMappingHandler.ELEMENT_ID).toString().length() > 0) {
+			String id = object.get(JSONMappingHandler.ELEMENT_ID).toString();
 			this.elements.put(id, object);
 		}
 
-		if(object.has(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
-			JSONArray attributes = object.getJSONArray(JSONMappingHandler.ELEMENT_ATTRIBUTES);
+		if(object.containsKey(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
+			JSONArray attributes = (JSONArray) object.get(JSONMappingHandler.ELEMENT_ATTRIBUTES);
 			for(int i = 0; i < attributes.size(); i++) {
 				JSONObject a = (JSONObject) attributes.get(i);
 				this.cacheElementRecursive(a);
-				this.parents.put(a.getString(JSONMappingHandler.ELEMENT_ID), object);
+				this.parents.put(a.get(JSONMappingHandler.ELEMENT_ID).toString(), object);
 			}
 		}
 		
-		if(object.has(JSONMappingHandler.ELEMENT_CHILDREN)) {
-			JSONArray children = object.getJSONArray(JSONMappingHandler.ELEMENT_CHILDREN);
+		if(object.containsKey(JSONMappingHandler.ELEMENT_CHILDREN)) {
+			JSONArray children = (JSONArray) object.get(JSONMappingHandler.ELEMENT_CHILDREN);
 			for(int i = 0; i < children.size(); i++) {		
 				JSONObject a = (JSONObject) children.get(i);
 				this.cacheElementRecursive(a);
-				this.parents.put(a.getString(JSONMappingHandler.ELEMENT_ID), object);
+				this.parents.put(a.get(JSONMappingHandler.ELEMENT_ID).toString(), object);
 			}
 		}
 	}
-	
-	protected void fillEmptyIdsRecursive(JSONObject object) {
-		this.fillEmptyIdsRecursive(object, false);		
+
+	public void fillEmptyIdsRecursive(Element object) {
+		this.fillEmptyIdsRecursive(object.asJSONObject(), false);
 	}
 
-	public void fillEmptyIdsRecursive(JSONObject object, boolean force) {
-		if(force || !object.has(JSONMappingHandler.ELEMENT_ID) || object.getString(JSONMappingHandler.ELEMENT_ID).length() == 0) {
+	private void fillEmptyIdsRecursive(JSONObject object) {
+		this.fillEmptyIdsRecursive(object, false);		
+	}
+	
+	public void fillEmptyIdsRecursive(Element element, boolean force) {
+		this.fillEmptyIdsRecursive(element.asJSONObject(), force);
+	}
+
+	private void fillEmptyIdsRecursive(JSONObject object, boolean force) {
+		if(force || !object.containsKey(JSONMappingHandler.ELEMENT_ID) || object.get(JSONMappingHandler.ELEMENT_ID).toString().length() == 0) {
 			String id = this.generateUniqueId();
 			object.put(JSONMappingHandler.ELEMENT_ID, id);
-			System.out.println("set id: " + object.getString("id"));
 			this.elements.put(id, object);
 			
-			if(object.has(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
-				JSONArray attributes = object.getJSONArray(JSONMappingHandler.ELEMENT_ATTRIBUTES);
+			if(object.containsKey(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
+				JSONArray attributes = (JSONArray) object.get(JSONMappingHandler.ELEMENT_ATTRIBUTES);
 				for(int i = 0; i < attributes.size(); i++) {
 					JSONObject a = (JSONObject) attributes.get(i);
 					this.fillEmptyIdsRecursive(a, force);
 				}
 			}
 			
-			if(object.has(JSONMappingHandler.ELEMENT_CHILDREN)) {
-				JSONArray children = object.getJSONArray(JSONMappingHandler.ELEMENT_CHILDREN);
+			if(object.containsKey(JSONMappingHandler.ELEMENT_CHILDREN)) {
+				JSONArray children = (JSONArray) object.get(JSONMappingHandler.ELEMENT_CHILDREN);
 				for(int i = 0; i < children.size(); i++) {		
 					JSONObject a = (JSONObject) children.get(i);
 					this.fillEmptyIdsRecursive(a, force);
@@ -136,20 +156,21 @@ public class MappingCache {
 	}
 
 	protected void cacheParentsRecursive(JSONObject object) {
-		if(object.has(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
-			JSONArray attributes = object.getJSONArray(JSONMappingHandler.ELEMENT_ATTRIBUTES);
+		if(object.containsKey(JSONMappingHandler.ELEMENT_ATTRIBUTES)) {
+			JSONArray attributes = (JSONArray) object.get(JSONMappingHandler.ELEMENT_ATTRIBUTES);
 			for(int i = 0; i < attributes.size(); i++) {
 				JSONObject a = (JSONObject) attributes.get(i);
 				this.cacheParentsRecursive(a);
-				this.parents.put(a.getString(JSONMappingHandler.ELEMENT_ID), object);
+				this.parents.put(a.get(JSONMappingHandler.ELEMENT_ID).toString(), object);
 			}
 		}
 		
-		if(object.has(JSONMappingHandler.ELEMENT_CHILDREN)) {
-			JSONArray children = object.getJSONArray(JSONMappingHandler.ELEMENT_CHILDREN);
+		if(object.containsKey(JSONMappingHandler.ELEMENT_CHILDREN)) {
+			JSONArray children = (JSONArray) object.get(JSONMappingHandler.ELEMENT_CHILDREN);
 			for(int i = 0; i < children.size(); i++) {		
 				JSONObject a = (JSONObject) children.get(i);
-				this.parents.put(a.getString(JSONMappingHandler.ELEMENT_ID), object);
+				this.cacheParentsRecursive(a);
+				this.parents.put(a.get(JSONMappingHandler.ELEMENT_ID).toString(), object);
 			}
 		}
 	}
@@ -170,13 +191,33 @@ public class MappingCache {
 		return this.elements.get(id);
 	}
 	
+	public JSONObject getElement(MappingIndex index) {
+		return this.getElement(index.getId());
+	}
+
+	public Element getElementHandler(String id) {
+		JSONObject element = this.getElement(id);
+		if(element != null) return new Element(element);
+		else return null;
+	}
+	
+	public Element getElementHandler(MappingIndex index) {
+		return this.getElementHandler(index.getId());
+	}
+	
 	public HashMap<String, JSONObject> getParents() {
 		return this.parents;
 	}
-
+	
 	public JSONObject getParent(String id) {
 		return this.parents.get(id);
 	}
+	
+	public Element getParentHandler(String id) {
+		JSONObject parent = this.getParent(id);
+		if(parent != null) return new Element(parent);
+		else return null;
+	}	
 	
 	public HashMap<String, JSONObject> getGroups() {
 		return this.groups;
@@ -199,5 +240,32 @@ public class MappingCache {
 		}
 		
 		return element;
+	}
+
+	public boolean hasTemplate() {
+		if(template != null) return true;
+		return false;
+	}
+
+	/**
+	 * Convenience method to duplicate an element within this cache. Duplicate element is also added to the cache.
+	 * @param id of the original element.
+	 * @return Element handler of the duplicate.
+	 */
+	public Element duplicate(String id) {
+		Element parent = this.getParentHandler(id);
+		Element original = new Element(null);
+		int index = parent.getByIndex(Element.ELEMENT_CHILDREN, id, original);
+		
+		if(index >= 0) {
+			Element duplicate = original.duplicate();
+			duplicate.setRemovable(true);
+			parent.addChild(index, duplicate);
+			this.fillEmptyIdsRecursive(duplicate, true);
+			this.cacheElement(duplicate, parent);
+			return duplicate;
+		}
+		
+		return null;
 	}
 }

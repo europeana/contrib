@@ -1,6 +1,7 @@
 
 var urid;
 var ooid;
+var labelsearch;
 var importlimit=20; /*number of imports displayed in workspace */
 
 
@@ -83,17 +84,34 @@ function ajaxDatasetDelete( dname,uploadId, userId,orgId,kpan) {
 
 
  
-function ajaxImportsPanel(from, limit, userId, orgId) {
+function ajaxImportsPanel(from, limit, userId, orgId,labels) {
 	urid=userId;
 	ooid=orgId;
+	labelsearch=labels;
+	if(typeof labels == 'undefined'){
+		labels="";
+	}
+	if(typeof userId == 'undefined'){
+		userId="";
+	}
   $.ajax({
    	 url: "ImportsPanel",
    	 type: "POST",
-   	 data: "startImport=" + from + "&maxImports=" + limit + "&userId=" +userId+"&orgId=" +orgId,
+   	 data: "startImport=" + from + "&maxImports=" + limit + "&userId=" +userId+"&orgId=" +orgId+"&labels="+labels,
      error: function(){
    		alert("An error occured. Please try again.");
    		},
    	 success: function(response){
+   		 if(!!labels && labels.length>0){
+			
+			$("select#filteruser").val("-1");
+			$("select#filteruser").trigger('liszt:updated');
+		}
+		
+		if(!!userId && userId!=-1){
+			$("select#filterlabel").val("");
+			$("select#filterlabel").trigger('liszt:updated');
+		}
    		$("div[id=importsPanel]").html( response );
 		if(from==0){
 			
@@ -101,10 +119,43 @@ function ajaxImportsPanel(from, limit, userId, orgId) {
 			initPagination(numentries);
 		}
 		
+		
+		ajaxLabelDraw();
+		$('div.labelassign').each(function(){
+			 $(this).siblings("#labeldiv").find("span.labels").each(function(){
+				 var clr=$(this).css("background-color");
+				 var fontcolor=invert(clr);
+				// console.log("inverted:"+clr);
+				 $(this).css("color",fontcolor);
+			 });
+			 
+			
+		   $(this).click(function(e){
+		
+			 
+			 if($(this).parent().children("div.labelSelector").length){
+				
+				    $('div').css("pointer-events","auto");
+					$(this).parent().children("div.labelSelector").remove();
+					$(this).parent().siblings("div").children(".labelSelector").remove();
+					return false;
+				}
+			 else{
+				 
+				 e.stopPropagation();
+				 var target = $(this).siblings("#labeldiv");
+				//will attach labels to div with id #labeldiv which is sibling of labelassign button div
+				 getLabels(this,LABEL_LIST, spansToLabels(this,target), function(labels) { labelsToSpans(target, labels); });
+		   }
+		})
+		})
    	  }
    	});
      
 }
+
+
+
 
 function ajaxDeleteLock(lockid ,kpanel) {
     $.ajax({
@@ -260,7 +311,7 @@ function pageselectCallback(page_index, jq){
  	/*find start, end from page_index*/
  	end=(page_index+1)*importlimit;
  	start=end-(importlimit);
- 	ajaxImportsPanel(start, importlimit, urid, ooid);
+ 	ajaxImportsPanel(start, importlimit, urid, ooid,labelsearch);
     
      
      return false;

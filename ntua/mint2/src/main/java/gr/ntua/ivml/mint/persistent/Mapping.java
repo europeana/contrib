@@ -2,11 +2,13 @@ package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.Meta;
-import gr.ntua.ivml.mint.mapping.JSONMappingHandler;
+import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.Tuple;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,13 +19,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 
 public class Mapping implements Lockable {
 	public static final Logger log = Logger.getLogger(Mapping.class );
 	public static final String META_RECENT_DATASETS = "recent.datasets";
+	public static final String META_REVERT_VERSION = "revert.version";
 
 	Long dbID;
 	
@@ -113,31 +117,43 @@ public class Mapping implements Lockable {
 		this.jsonString = jsonString;
 	}
 	
-	public JSONMappingHandler getMappingHandler() {
-		JSONObject object = (JSONObject) JSONSerializer.toJSON(this.jsonString);
-		JSONMappingHandler handler = new JSONMappingHandler(object);
+	/**
+	 * Return a Mappings json handler that represents contents of this mapping.
+	 * @return a Mappings json handler or null if jsonString is null or empty.
+	 */
+	public Mappings getMappings() {
+		Mappings mappings = null;
 		
-		return handler;
+		if(this.jsonString != null && this.jsonString.length() > 0) {
+			try {
+				mappings = new Mappings(this.jsonString);
+			} catch (ParseException e) {
+				log.error("Could not parse mappings in this.jsonString");
+				e.printStackTrace();
+			}
+		}
+		
+		return mappings;
 	}
 	
 	public void applyAutomaticMappings(Dataset ds) {
 		this.applyBackwardsXpathMappings(ds);
 	}
 	
-	private ArrayList<JSONMappingHandler> selectNameHandlers(XpathHolder xpath, JSONMappingHandler topHandler) {
+	private ArrayList<Element> selectNameHandlers(XpathHolder xpath, Mappings topHandler) {
 		String name = xpath.getName();
 		String uri = xpath.getUri();
 		String prefix =  null;
 		if(uri != null) prefix = topHandler.getNamespacePrefix(uri); 
 
-		ArrayList<JSONMappingHandler> handlers = topHandler.getHandlersForPrefixAndName(prefix, name);
+		ArrayList<Element> handlers = topHandler.getHandlersForPrefixAndName(prefix, name);
 		
 		return handlers;
 	}
 	
-	private ArrayList<JSONMappingHandler> filterBackwardsXpathHandlers(XpathHolder xpath, JSONMappingHandler topHandler, ArrayList<JSONMappingHandler> list, int levels) {
+	private ArrayList<Element> filterBackwardsXpathHandlers(XpathHolder xpath, Mappings topHandler, ArrayList<Element> list, int levels) {
 //		System.out.println("filter handlers level: " + levels);
-		ArrayList<JSONMappingHandler> handlers = new ArrayList<JSONMappingHandler>();
+		ArrayList<Element> handlers = new ArrayList<Element>();
 		
 		XpathHolder parent = xpath;
 		for(int i = 0; i < levels; i++) {
@@ -152,8 +168,8 @@ public class Mapping implements Lockable {
 			String prefix =  null;
 			if(uri != null) prefix = topHandler.getNamespacePrefix(uri);
 //			System.out.println("parent xpath = " + prefix + ":" + name);
-			for(JSONMappingHandler handler: list) {
-				JSONMappingHandler parentHandler = handler;
+			for(Element handler: list) {
+				Element parentHandler = handler;
 				for(int i = 0; i < levels; i++) {
 					if(parentHandler != null) {
 //						System.out.println("handler level " + i + " = " + parentHandler.getFullName());
@@ -170,7 +186,7 @@ public class Mapping implements Lockable {
 		}
 		
 		if(handlers.size() > 0) {
-			ArrayList<JSONMappingHandler> filtered = filterBackwardsXpathHandlers(xpath, topHandler, handlers, levels+1);
+			ArrayList<Element> filtered = filterBackwardsXpathHandlers(xpath, topHandler, handlers, levels+1);
 			if(filtered.size() > 0) handlers = filtered;
 		}
 		
@@ -179,12 +195,12 @@ public class Mapping implements Lockable {
 		return handlers;
 	}
 	
-	private ArrayList<JSONMappingHandler> selectBackwardsXpathHandlers(XpathHolder xpath, JSONMappingHandler topHandler) {
-		ArrayList<JSONMappingHandler> handlers = selectNameHandlers(xpath, topHandler);
+	private ArrayList<Element> selectBackwardsXpathHandlers(XpathHolder xpath, Mappings topHandler) {
+		ArrayList<Element> handlers = selectNameHandlers(xpath, topHandler);
 
 		if(handlers.size() > 0) {
 //			System.out.println("selected handlers: " + handlers);
-			ArrayList<JSONMappingHandler> filtered = filterBackwardsXpathHandlers(xpath, topHandler, handlers, 1);
+			ArrayList<Element> filtered = filterBackwardsXpathHandlers(xpath, topHandler, handlers, 1);
 			if(filtered.size() > 0) {
 				handlers = filtered;
 			}
@@ -195,16 +211,16 @@ public class Mapping implements Lockable {
 	
 	public void applyBackwardsXpathMappings(Dataset du) {
 		List<XpathHolder> input = du.getItemRootXpath().getChildrenRecursive();
-		JSONMappingHandler topHandler = this.getMappingHandler();
+		Mappings topHandler = this.getMappings();
 
 		for(XpathHolder xpath: input) {
 //			XpathHolder text = xpath.getTextNode();
 //			
 			if(!xpath.isAttributeNode()) {
-				ArrayList<JSONMappingHandler> handlers = selectBackwardsXpathHandlers(xpath, topHandler);
+				ArrayList<Element> handlers = selectBackwardsXpathHandlers(xpath, topHandler);
 				//System.out.println(prefix + " : "  + name + " : text = " + text + " : handlers = " + handlers);
 				if(handlers.size() > 0) {
-					JSONMappingHandler handler = handlers.get(0);
+					Element handler = handlers.get(0);
 					handler.addXPathMapping(xpath.getXpathWithPrefix(true));
 					
 					// ignore namespace for attributes
@@ -213,7 +229,7 @@ public class Mapping implements Lockable {
 						String aname = attribute.getName();
 						//System.out.println("ATTR: " + aname);
 						
-						JSONMappingHandler ahandler = handler.getAttributeByName(aname);
+						Element ahandler = handler.getAttributeByName(aname);
 						if(ahandler != null) {
 							ahandler.addXPathMapping(attribute.getXpathWithPrefix(true));
 						}
@@ -227,16 +243,16 @@ public class Mapping implements Lockable {
 
 	public void applyNameMappings(Dataset ds) {
 		List<XpathHolder> input = ds.getItemRootXpath().getChildrenRecursive();
-		JSONMappingHandler topHandler = this.getMappingHandler();
+		Mappings topHandler = this.getMappings();
 
 		for(XpathHolder xpath: input) {
 			XpathHolder text = xpath.getTextNode();
 			
 			if(text != null) {
-				ArrayList<JSONMappingHandler> handlers = selectNameHandlers(xpath, topHandler);
+				ArrayList<Element> handlers = selectNameHandlers(xpath, topHandler);
 
 				if(handlers.size() > 0) {
-					for(JSONMappingHandler handler: handlers) {
+					for(Element handler: handlers) {
 						handler.addXPathMapping(xpath.getXpathWithPrefix(true));
 					
 						// ignore namespace for attributes
@@ -245,7 +261,7 @@ public class Mapping implements Lockable {
 							String aname = attribute.getName();
 							//System.out.println("ATTR: " + aname);
 							
-							JSONMappingHandler ahandler = handler.getAttributeByName(aname);
+							Element ahandler = handler.getAttributeByName(aname);
 							if(ahandler != null) {
 								ahandler.addXPathMapping(attribute.getXpathWithPrefix(true));
 							}
@@ -278,34 +294,34 @@ public class Mapping implements Lockable {
 			
 			JSONObject automaticMappings = schema.getAutomaticMappings();
 			if(automaticMappings != null && !automaticMappings.keySet().isEmpty()) {
-				JSONMappingHandler topHandler = this.getMappingHandler();
+				Mappings topHandler = this.getMappings();
 
 				for(Object key: automaticMappings.keySet()) {
 					String path = (String) key;
 					
-					JSONArray mappings = automaticMappings.getJSONArray(path);
+					JSONArray mappings = (JSONArray) automaticMappings.get(path);
 
-					ArrayList<JSONMappingHandler> handlers = topHandler.getHandlersForPath(path);
+					ArrayList<Element> handlers = topHandler.getHandlersForPath(path);
 					if(handlers != null && !handlers.isEmpty()) {
-						for(JSONMappingHandler handler: handlers) {
+						for(Element handler: handlers) {
 							for(Object o: mappings) {								
 								if(o instanceof String) {
 									String constant = (String) o;
 									handler.addConstantMapping(constant);
 								} else if(o instanceof JSONObject) {
 									JSONObject mapping = (JSONObject) o;
-									if(mapping.has("type")) {
-										String type = mapping.getString("type");
+									if(mapping.containsKey("type")) {
+										String type = mapping.get("type").toString();
 										if(type.equals("level") && levelXpath != null) {
 											handler.addXPathMapping(levelXpath.getXpathWithPrefix(true));
 										} else if(type.equals("label") && labelXpath != null) {
 											handler.addXPathMapping(labelXpath.getXpathWithPrefix(true));
 										} else if(type.equals("id") && nativeIdXpath != null) {
 											handler.addXPathMapping(nativeIdXpath.getXpathWithPrefix(true));
-										} else if(type.equals("parameter") && mapping.has("name")) {
+										} else if(type.equals("parameter") && mapping.containsKey("name")) {
 											Map<String, XmlSchema.Parameter> parameters = schema.getParameters();
 											if(parameters != null) {
-												XmlSchema.Parameter parameter = parameters.get(mapping.getString("name"));
+												XmlSchema.Parameter parameter = parameters.get(mapping.get("name").toString());
 												handler.addParameterMapping(parameter.getName(), parameter.getValue());
 											}
 										}
@@ -320,45 +336,33 @@ public class Mapping implements Lockable {
 			}
 		}		
 	}
-	
-	public JSONArray getRecentDatasetsInfo() {
-		DB.getStatelessSession().beginTransaction();
-		String property = Meta.get(this, Mapping.META_RECENT_DATASETS);
-		JSONArray recent = null;
 		
-		if(property != null) {
-			recent = (JSONArray) JSONSerializer.toJSON(property);
-		} else recent = new JSONArray();
-		
-		return recent;
-	}
-	
 	public List<Dataset> getRecentDatasets() {
 		List<Dataset> results = new ArrayList<Dataset>();
-		JSONArray recent = this.getRecentDatasetsInfo();
-		
+		JSONArray recent = Meta.getArray(this, Mapping.META_RECENT_DATASETS);
+
 		Iterator<?> i = recent.iterator();
 		while(i.hasNext()) {
 			JSONObject entry = (JSONObject) i.next();
-			if(entry.has("dataset")) {
-				Dataset dataset = DB.getDatasetDAO().findById(entry.getLong("dataset"), false);
+			if(entry.containsKey("dataset")) {
+				Dataset dataset = DB.getDatasetDAO().findById(Long.parseLong(entry.get("dataset").toString()), false);
 				results.add(dataset);
 			}
 		}
-		
 		return results;
 	}
 		
 	public void addRecentDataset(Dataset dataset) {
-		JSONArray recent = this.getRecentDatasetsInfo();
+		JSONArray recent = Meta.getArray(this, Mapping.META_RECENT_DATASETS);
 		
 		JSONObject newEntry = new JSONObject();
-		newEntry.element("timestamp", new Date()).element("dataset", dataset.getDbID());
+		newEntry.put("timestamp", new Date().getTime());
+		newEntry.put("dataset", dataset.getDbID());
 		
 		Iterator<?> i = recent.iterator();
 		while(i.hasNext()) {
 			JSONObject entry = (JSONObject) i.next();
-			if(entry.has("dataset") && entry.getString("dataset").equals(newEntry.getString("dataset"))) {
+			if(entry.containsKey("dataset") && entry.get("dataset").toString().equals(newEntry.get("dataset").toString())) {
 				recent.remove(entry);
 				break;
 			}
@@ -376,16 +380,18 @@ public class Mapping implements Lockable {
 		List<Tuple<Date, Mapping>> recent = new ArrayList<Tuple<Date, Mapping>>();
 		
 		for(Mapping mapping: mappings) {
-			mapping.getRecentDatasetsInfo();
+			JSONArray info = Meta.getArray(mapping, Mapping.META_RECENT_DATASETS);
 			
-			JSONArray info = mapping.getRecentDatasetsInfo();
 			Iterator<?> i = info.iterator();
 			while(i.hasNext()) {
 				JSONObject entry = (JSONObject) i.next();
-				long ds = entry.getLong("dataset");
+				long ds = Long.parseLong(entry.get("dataset").toString());
 				if(ds == dataset.getDbID()) {
-					Date date = JSONUtils.toDate(entry.getJSONObject("timestamp"));
-					recent.add(new Tuple<Date, Mapping>(date, mapping));
+					log.debug(entry);
+					Object timestamp = entry.get("timestamp");
+
+					Date date = JSONUtils.toDate(timestamp);
+					if(date != null) recent.add(new Tuple<Date, Mapping>(date, mapping));
 				}
 			}
 		}
@@ -407,21 +413,66 @@ public class Mapping implements Lockable {
 		return result;
 	}
 	
+	public List<String> getStoredVersions() {
+		return Meta.getAllPropertyKeys(this, Mapping.META_REVERT_VERSION);
+	}
+	
+	public String getVersionKey(String version) {
+		return Mapping.META_REVERT_VERSION + "." + version;
+	}
+
+	/**
+	 * Store current mapping JSON string in meta table with specified version identifier, in order to be able to revert to it later.
+	 * @param version identifier for stored version.
+	 */
+	public void storeAsVersion(String version) {
+		Meta.put(this, this.getVersionKey(version), this.getJsonString());
+	}
+	
+	/**
+	 * Get JSON string of stored mapping version
+	 * @param version identifier of stored version
+	 * @return JSON string of stored mapping version or null if stored version does not exist
+	 */
+	public String getVersion(String version) {
+		String stored = Meta.get(this, this.getVersionKey(version));
+		return stored;
+	}
+	
+	/**
+	 * Reverts to a stored version, if version exists. Otherwise do nothing.  
+	 * @param version identifier of stored version
+	 * @return true if version exists and mapping is reverted.
+	 */
+	public boolean revertToVersion(String version) {
+		String reverted = this.getVersion(version);
+		if(reverted != null) {
+			this.setJsonString(reverted);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public JSONObject toJSON() {
 		JSONObject res = new JSONObject();	
-		res.element( "dbID", getDbID());
-		res.element( "name", getName());
-		res.element( "date", StringUtils.isoTime(creationDate));
-		res.element("lastModified",StringUtils.isoTime(lastModified));
-		if( getOrganization() != null )
-			res.element( "organization", new JSONObject()
-				.element( "name", getOrganization().getName())
-				.element( "dbId", getOrganization().getDbID()));	
+		res.put( "dbID", getDbID());
+		res.put( "name", getName());
+		res.put( "date", StringUtils.isoTime(creationDate));
+		res.put("lastModified",StringUtils.isoTime(lastModified));
+		if( getOrganization() != null ) {
+			JSONObject org = new JSONObject();
+			org.put( "name", getOrganization().getName());
+			org.put( "dbId", getOrganization().getDbID());	
+			res.put( "organization", org);
+		}
 		
-		if ( getTargetSchema() != null)
-			res.element( "Schema", new JSONObject()
-				.element("name", getTargetSchema().getName())
-				.element("dbId", getTargetSchema().getDbID()));
+		if ( getTargetSchema() != null) {
+			JSONObject schema = new JSONObject();
+			schema.put("name", getTargetSchema().getName());
+			schema.put("dbId", getTargetSchema().getDbID());
+			res.put( "Schema", schema);
+		}
 		return res;
 	}
 }

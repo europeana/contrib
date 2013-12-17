@@ -59,8 +59,6 @@ public class ReportErrorHandler implements ErrorHandler {
 	}
 	
 	private void handleException(SAXParseException e) {
-		System.out.println(e.getMessage());
-
 		report.add(e);
 		
 		Error error = new Error();
@@ -115,6 +113,11 @@ public class ReportErrorHandler implements ErrorHandler {
 
 	public void addError(Error error) {
 		if(error != null) this.errors.add(error);
+	}
+	
+	public void reset() {
+		errors.clear();
+		report.clear();
 	}
 
 }

@@ -9,10 +9,10 @@
 }
 
 .mapping-element-parent {
-	border-radius: 5px;
+	border-radius: 5px 5px 0 0;
 	padding: 5px;
 	padding-left: 25px;
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 	background: #eee;
 	background-repeat: no-repeat;
 	background-image: url(../../images/buttons/up.png);
@@ -30,14 +30,20 @@
 	border-bottom: 1px solid #aaa;
 	background: #eee;
 	font-size: 150%;
+	min-height: 38px;
 }
 
 .mapping-element-label {
-	float: left;
+/*	float: left;*/
 	display: inline-block;
 	vertical-align: top;
 	position: relative;
 	padding: 5px;
+}
+
+.mapping-element-label-small {
+	font-size: 80%;
+	color: #777;
 }
 
 .mapping-element-element {
@@ -59,25 +65,41 @@
 }
 
 .mapping-element-mappings {
-	display: inline-block;
+	display: block;
 	position: relative;
-	margin-left: 37px;
-	border-radius: 5px;
-	border: 1px solid silver;
-	background: #ddd;
+	margin-bottom: 2px;
+}
+
+.mapping-element-mappings:hover > .mapping-element-mappings-area {
+	border: 2px solid;
+}
+
+.mapping-element-mappings-area.structural {
+	border: 1px solid #c0c0d0;
+	background: #E1E1F5;
 }
 
 .mapping-element-mappings-area {
 	display: inline-block;
 	vertical-align: middle;
+	border-radius: 5px;
+	border: 1px solid silver;
+	background: #ddd;
 }
 
 .mapping-element-mappings-actions {
 	display: inline-block;
-	vertical-align: top;
 	position: relative;
 	padding: 9px;
-	min-width: 26px;
+	min-width: 16px;
+}
+
+.mapping-element-mappings-actions.top {
+		vertical-align: top;
+}
+
+.mapping-element-mappings-actions.bottom {
+		vertical-align: bottom;
 }
 
 .mapping-element-right-actions {
@@ -126,6 +148,12 @@
 .editable-mapping {
 }
 
+.mapping-element-mapping-areas {
+/*	margin-left: 337px;*/
+	margin-right: 96px;
+	display: inline-block;
+}
+
 .mapping-element-mapping-area {
 	display:inline-block;
 	vertical-align: middle;
@@ -168,9 +196,14 @@
 	background: #fffff5;
 }
 
-.mapping-element-header:hover .mapping-element-mappings {
+.mapping-element-header:hover .mapping-element-mappings-area {
 	border: 1px solid #d5d5d0;
 	background: #e5e5e0;
+}
+
+.mapping-element-header:hover .mapping-element-mappings-area.structural {
+	border: 1px solid #c0c5d5;
+	background: #E5E5F5;
 }
 
 .mapping-element-button-empty {
@@ -307,7 +340,6 @@
 .mapping-action-values-on, .mapping-action-function-on, .mapping-action-function-off, .mapping-action-search, .mapping-action-refresh,  .mapping-action-previous, .mapping-action-next {
 	width: 16px;
 	height: 16px;
-	position: absolute;
 	display: inline-block;
 }
 

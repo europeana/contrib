@@ -1,17 +1,23 @@
 package gr.ntua.ivml.mint.concurrent;
 
+import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.harvesting.SingleHarvester;
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.Dataset.EntryProcessor;
 import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.ReportI;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
 import gr.ntua.ivml.mint.util.Config;
+import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.FileFormatHelper;
+import gr.ntua.ivml.mint.util.JsonToXml;
 import gr.ntua.ivml.mint.util.StringUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -24,10 +30,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
+import net.minidev.json.JSONValue;
+import nu.xom.Document;
+import nu.xom.Serializer;
+
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
+
 
 /**
  * UploadIndexer accompanies an upload from the moment the user initiates it
@@ -55,7 +69,9 @@ public class UploadIndexer implements Runnable, ReportI {
 	// all heavy db stuff is happening in the queued phase
 	public boolean preQueue;
 	
-
+	// json preconvert
+	public boolean json = false;
+	
 	public Connection repoxConnection;
 	public String repoxDataset;
 
@@ -121,6 +137,7 @@ public class UploadIndexer implements Runnable, ReportI {
 		
 		DB.newSession();
 		DB.getSession().beginTransaction();
+		DB.getStatelessSession().beginTransaction();
 		du = DB.getDataUploadDAO().getById(du.getDbID(), false);
 		try {
 			if( preQueue ) {
@@ -130,6 +147,10 @@ public class UploadIndexer implements Runnable, ReportI {
 				if( tmpFile != null ) {
 					normalize();
 					check();
+					if( json ) {
+						// json preconvert
+						convertJson();
+					}
 					upload();
 				}
 			} else {
@@ -178,7 +199,15 @@ public class UploadIndexer implements Runnable, ReportI {
 					val.runInThread();
 					// we dont need the validation reports ...
 					val.clean();
+
+					if( Solarizer.isEnabled()) {
+						if( Custom.allowSolarize(du)) {
+							Solarizer sol = new Solarizer( du );
+							sol.runInThread();
+						}
+					}
 				}
+				
 			}
 		} catch( InterruptedException e ) {
 			log.info( "UploadIndexer interrupted, data will become invalid!" );
@@ -406,6 +435,89 @@ public class UploadIndexer implements Runnable, ReportI {
 			tmpFile = format.output;	
 	}
 	
+	/**
+	 * Creates a new tmpfile archive with json files from tmp file.
+	 */
+	private void convertJson() throws Exception {
+		FileOutputStream fOut = null;
+	    BufferedOutputStream bOut = null;
+	    GzipCompressorOutputStream gzOut = null;
+	    TarArchiveOutputStream tOut = null;
+	    File newTmpFile = null;
+	    
+		try {
+			newTmpFile = File.createTempFile("ConvertJson", ".tgz");
+
+			fOut = new FileOutputStream(newTmpFile );
+	        bOut = new BufferedOutputStream(fOut);
+	        gzOut = new GzipCompressorOutputStream(bOut);
+	        final TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
+	        final Counter count = new Counter();
+	        count.set(0);
+	        tOut = tarOut;
+	        
+			EntryProcessorI ep = new EntryProcessorI() {
+				JsonToXml jtx = new JsonToXml();
+				@Override
+				public void processEntry(String pathname, InputStream is)
+						throws Exception {
+					// only .json is processed
+					// TODO Auto-generated method stub
+					if( !pathname.endsWith(".json")) return;
+					Object jsonValue = JSONValue.parseWithException(is);
+					Document outXml = jtx.convert(jsonValue);
+					String newPath = pathname.replaceAll(".json$", ".xml");
+					TarArchiveEntry tarEntry = new TarArchiveEntry( newPath );
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			        Serializer ser = new Serializer(bos);
+			        ser.write(outXml);
+			        bos.flush();
+					tarEntry.setSize(bos.size());
+					tarOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+					tarOut.putArchiveEntry(tarEntry);
+					bos.writeTo(tarOut);
+					count.inc();
+					tarOut.closeArchiveEntry();
+				}
+			};
+			du.logEvent( "Started json -> xml conversion.");
+			FileFormatHelper.processAllEntries(tmpFile, ep);
+			if( count.get() == 0 ) {
+				throw new Exception( "No .json file for conversion found!");
+			}
+			// use the converted one
+			tmpFile.delete();
+			tmpFile = newTmpFile;
+			du.logEvent( "Finished json -> xml conversion.", "Converted " + count.get() + " files.");
+		} catch( Exception e ) {
+			// just for some cleanup
+			if( tmpFile != null ) {
+				tmpFile.delete();
+				tmpFile = null;
+			}
+			if( newTmpFile != null ) {
+				if( fOut != null ) {
+					fOut.close();
+					fOut = null;
+				}
+				newTmpFile.delete();
+				newTmpFile = null;
+			}
+		} finally {
+			try {
+				if( tOut != null ) {
+					tOut.finish();
+					tOut.close();
+				}
+				if( gzOut != null ) gzOut.close();
+				if( bOut != null ) bOut.close();
+				if( fOut != null ) fOut.close();
+			} catch(Exception e) {
+				log.error( "Closing resources failed", e );
+			}
+		}
+		
+	}
 	
 	/**
 	 * Move data into the BLOB
@@ -448,7 +560,7 @@ public class UploadIndexer implements Runnable, ReportI {
 			throw new InterruptedException( "Thread interrupted!" );
 	}
 	
-
+	
 	@Override
 	public void report(String msg) {
 		du.logEvent(msg, msg, null );
@@ -457,7 +569,7 @@ public class UploadIndexer implements Runnable, ReportI {
 
 	@Override
 	public void reportError() {
-		du.setNodeIndexerStatus(DataUpload.NODES_FAILED);
+		du.logEvent( "Unknown problem occured.", "Probably during OAI harvesting.", null);
 	}
 
 }

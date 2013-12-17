@@ -56,7 +56,7 @@ public class RepoxQueryCache implements Iterator<ResultSet>{
 		while( rs.next()) {
 			Integer count = new Integer(rs.getString("count"));
 			instance.totalNoOfItems = count;
-			instance.currentpointer = 0;
+			instance.currentpointer = 1;
 		}
 		return instance;
 	}
@@ -90,21 +90,19 @@ public class RepoxQueryCache implements Iterator<ResultSet>{
 			
 			int to = 0;
 			
-			String upperLimit = "";
-			
 			if((currentpointer + STEPSIZE) < totalNoOfItems){
 				to = currentpointer + STEPSIZE;
+				
 				currentpointer = currentpointer + STEPSIZE;
-				upperLimit = " < ";
 			}
 			else{
+				
 				to = totalNoOfItems;
 				currentpointer = totalNoOfItems;
-				upperLimit = " <= ";	
 			}
 			
 			ps = repoxConnection.prepareStatement("select nc, value from repox_" + repoxID 
-					+ "_record where deleted = 0 and (id >=" + from + " AND id " + upperLimit + to + ");");
+					+ "_record where deleted = 0 and (id >=" + from + " AND id < " + to + ");");
 			ps.setFetchSize(100);
 			ps.setFetchDirection(ResultSet.FETCH_FORWARD);
 			ResultSet rs = ps.executeQuery();	

@@ -5,7 +5,7 @@ you want to do he procedure for a differently named user / subproject.
 
 Login and create a User for the application
 
-=>psql -U postgres mint
+=>psql -U postgres postgres
 =>create user mint password 'mint' login;
 
 logout with
@@ -15,7 +15,8 @@ From the shell do:
 
 createdb -U postgres -E UTF8 --lc-collate=C --lc-ctype=C -T template0 -O mint mint 
 
-
+from the prompt this works:
+create database mint encoding='utf8' lc_collate='C' lc_ctype='C' template=template0;
 
 login again as mint.
 Its helpful to be in the directory with the createSchema.sql file
@@ -24,7 +25,9 @@ Its helpful to be in the directory with the createSchema.sql file
 => create language plpgsql;
 =>\i createSchema.sql
 
+=> alter schema mint2 rename to mint
 That should setup the schema!
+
 
 To update the schema use either sql scripts to update the existing schema without 
 destroying the data.

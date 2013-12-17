@@ -1,16 +1,13 @@
 package gr.ntua.ivml.mint.actions;
 
 import java.io.File;
-
-
-import java.util.Collection;
-
 import java.util.List;
 import java.util.ArrayList;
 
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.MappingConverter;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 
 
 import gr.ntua.ivml.mint.persistent.Dataset;
@@ -21,8 +18,7 @@ import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 
-import net.sf.json.JSONObject;
-
+import net.minidev.json.JSONObject;
 
 
 import org.apache.log4j.Logger;
@@ -303,10 +299,8 @@ public class NewMapping extends GeneralAction {
 					String dir= System.getProperty("java.io.tmpdir") + File.separator;
 					File newmapping=new File(dir+upfile);
 					StringBuffer contents = StringUtils.fileContents(newmapping);
-					MappingConverter converter = new MappingConverter(DB.getXmlSchemaDAO()
-							.getById(getSchemaSel(), false));
-					JSONObject converted = converter.convert(contents.toString());
-					if(converted != null) convertedMapping = converted.toString();
+					Mappings mappings = new Mappings(contents.toString());
+					MappingConverter.upgradeToLatest(mappings);
 				}catch (Exception e){//Catch exception if any
 					e.printStackTrace();
 
@@ -347,12 +341,6 @@ public class NewMapping extends GeneralAction {
 				return ERROR;
 			}
 
-			if (getSchemaSel() <= 0) {
-
-				addActionError("No schema specified!");
-				return ERROR;
-			}
-
 			Mapping mp = new Mapping();
 			mp.setCreationDate(new java.util.Date());
 			if (checkName(mapName) == true) {
@@ -387,15 +375,16 @@ public class NewMapping extends GeneralAction {
 				XmlSchema schema = DB.getXmlSchemaDAO()
 						.getById(schemaId, false);
 				mp.setTargetSchema(schema);
-
-				if(xsl != null) {
-					mp.setXsl(xsl);
-				} else {
-					System.err.println("Error importing xsl: xsl is null");
-					addActionError("Mappings import failed: xsl is null");
-					return ERROR;
-				}
 			}
+
+			if(xsl != null) {
+				mp.setXsl(xsl);
+			} else {
+				System.err.println("Error importing xsl: xsl is null");
+				addActionError("Mappings import failed: xsl is null");
+				return ERROR;
+			}
+			
 
 			// save mapping name to db and commit?
 

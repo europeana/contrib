@@ -10,7 +10,7 @@ import gr.ntua.ivml.mint.mapping.AbstractMappingManager;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.util.Preferences;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -53,10 +53,11 @@ public class Annotator extends GeneralAction implements ServletRequestAware {
 	
 	@Action(value="Annotator")
     public String execute() throws Exception {
-			Dataset du = DB.getDatasetDAO().getById(getUploadId(), false);
+			Dataset du = DB.getDatasetDAO().getById(getUploadId(), false);			
 			if( du != null)
 			{
-					return "success";
+				du.addRecentAnnotation();
+				return "success";
 			} else {
 				addActionError("Dataset undefined!");
 				return "error";
@@ -75,12 +76,25 @@ public class Annotator extends GeneralAction implements ServletRequestAware {
 		
 		JSONObject result = manager.execute(this.getServletRequest());
 		if(this.getCommand().equals("init")) {
-			result
-			.element("configuration", manager.getConfiguration())
-			.element("preferences", Preferences.get(user, AbstractMappingManager.PREFERENCES))
-			.element("metadata", manager.getMetadata());
+			result.put("configuration", manager.getConfiguration());
+			
+			JSONObject views = manager.getViews();
+			if(views != null) result.put("views", views);
+
+			JSONObject preferences = new JSONObject();
+			
+			try {
+				preferences = Preferences.getObject(user, AbstractMappingManager.PREFERENCES);
+			} catch(Exception e) {
+				e.printStackTrace();
+				log.debug(e);
+			}
+			
+			result.put("preferences", preferences);				
+			result.put("metadata", manager.getMetadata());
 
 		}
+		log.debug(result);
 		this.setJson(result);
 		
 		return "json";

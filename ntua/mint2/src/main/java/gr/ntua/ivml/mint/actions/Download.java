@@ -141,8 +141,11 @@ public class Download extends GeneralAction {
 	public String execute() throws Exception {
 		
 		Dataset ds = getDataset();
+		
+		// check reading rights
 		if( ds != null ) {
-				return "download";
+			if( getUser().can( "view data", ds.getOrganization() )) return "download";
+			else return NONE;
 		}
 		return ERROR;
 	}

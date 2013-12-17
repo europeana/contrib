@@ -8,7 +8,6 @@ import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.Mapping;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.Transformation;
-
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
 import gr.ntua.ivml.mint.util.StringUtils;
@@ -20,7 +19,6 @@ import gr.ntua.ivml.mint.xml.transform.XSLTransform;
 import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
 import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
-import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.xml.transform.stream.StreamSource;
 
+import net.minidev.json.parser.ParseException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -40,8 +38,8 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.util.ServletContextAware;
-import org.xml.sax.SAXParseException;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXParseException;
 
 
 @Results({
@@ -446,23 +444,24 @@ public class XMLPreview extends GeneralAction implements ServletContextAware {
 			
 		}
 
-		// XSD Validation
-		SchemaValidator.validate( transformation, schema, reportHandler);
-		validation = reportHandler.getReportMessage();
-		
-		String schematronreport = SchemaValidator.validateSchematron(transformation, schema, reportHandler);
-		
-		validation = reportHandler.getReportMessage();
-		validation += schematronreport;
-		
-		if(validation == null || validation.length() == 0) {
-			validation = "XML is valid";
-		}
+		if( schema != null ) {
+			// XSD Validation
+			SchemaValidator.validate( transformation, schema, reportHandler);
+			validation = reportHandler.getReportMessage();
 
-		
-		report = reportHandler.getReport();
-		this.isValid = reportHandler.isValid();
-		
+			String schematronreport = SchemaValidator.validateSchematron(transformation, schema, reportHandler);
+
+			validation = reportHandler.getReportMessage();
+			validation += schematronreport;
+
+			if(validation == null || validation.length() == 0) {
+				validation = "XML is valid";
+			}
+
+
+			report = reportHandler.getReport();
+			this.isValid = reportHandler.isValid();
+		}
 	   } catch(Exception e) {
 			validation = e.getMessage();
 			report=null;
@@ -545,17 +544,23 @@ public class XMLPreview extends GeneralAction implements ServletContextAware {
 			String result = null;
 			System.out.println(((DataUpload)du).isDirect());
 	       if((du instanceof DataUpload) && !((DataUpload)du).isDirect()){
-			xslt.setItemLevel(itemPath.getXpathWithPrefix(true));
+			xslt.setItemXPath(itemPath.getXpathWithPrefix(true));
 			xslt.setImportNamespaces(du.getRootHolder().getNamespaces(true));
 	
 			String mappings = getMapping().getJsonString();
-			String xsl = xslt.generateFromString(mappings);
+			String xsl;
+			try {
+				xsl = xslt.generateFromString(mappings);
+				log.debug(xsl);
+				
+				String formattedXsl = XMLFormatter.format(xsl);
+				result = formattedXsl;
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			System.out.println(xsl);
-			
-			String formattedXsl = XMLFormatter.format(xsl);
-	
-			result = formattedXsl;
+
 	       } else if(du instanceof Transformation){
 	    	   String xsl=((Transformation)this.getDataset()).getXsl();
 	    	   result=XMLFormatter.format(xsl);

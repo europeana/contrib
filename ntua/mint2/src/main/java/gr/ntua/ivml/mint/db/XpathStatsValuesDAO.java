@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.db;
 
+import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
 import gr.ntua.ivml.mint.persistent.XpathStatsValues;
 import gr.ntua.ivml.mint.persistent.XpathStatsValues.ValueStat;
@@ -58,4 +59,15 @@ public class XpathStatsValuesDAO extends DAO<XpathStatsValues, Long> {
 		 
 		 return total;
 	}
+	
+	/**
+	 * Remove all the XpathStatsValues for Dataset.
+	 * @param ds
+	 */
+	public void clearDatasetStats( Dataset ds ) {
+		getSession().createQuery( "delete from XpathStatsValues xsv where xsv.dataset = :ds")
+			.setEntity("ds", ds)
+			.executeUpdate();	
+	}
+	
 }

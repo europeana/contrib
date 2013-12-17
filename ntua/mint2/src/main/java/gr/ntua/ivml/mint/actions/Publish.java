@@ -4,7 +4,6 @@ package gr.ntua.ivml.mint.actions;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBElement;
 
 import gr.ntua.ivml.mint.db.DB;
@@ -13,13 +12,16 @@ import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.uim.messages.schema.ErrorResponse;
 import gr.ntua.ivml.mint.uim.messages.schema.ObjectFactory;
+import gr.ntua.ivml.mint.uim.messages.schema.PublishTransformation;
 import gr.ntua.ivml.mint.uim.messages.schema.PublishTransformationAction;
 import gr.ntua.ivml.mint.uim.messages.schema.PublishTransformationResponse;
 import gr.ntua.ivml.mint.uim.queue.OutboundProducer;
 import gr.ntua.ivml.mint.uim.queue.StrategyResponse;
+import gr.ntua.ivml.mint.util.Config;
+
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
@@ -64,13 +66,6 @@ public class Publish extends GeneralAction  {
     public String execute() throws Exception {
 		Transformation trans = DB.getTransformationDAO().getById(this.uploadId, false);
 		
-		HttpServletRequest request = ServletActionContext.getRequest();
-		
-		String scheme = request.getScheme();           
-		String serverName = request.getServerName();     
-		int serverPort = request.getServerPort();       
-		String contextPath = request.getContextPath();  
-		
 		ObjectFactory fact = new ObjectFactory();
 		
 		if(!trans.isOk()){
@@ -90,7 +85,8 @@ public class Publish extends GeneralAction  {
 			prod.close();
 		}else{
 			Long id = trans.getDbID();
-			String url = scheme+"://"+serverName+":"+serverPort+contextPath + "/DownloadTransformed?transformationId=" + Long.toString(id);
+			String url = "http://"+Config.get("mint.api.base") + ":" + Config.get("mint.api.port")+"/"+
+						Config.get("mint.api.database") + "/DownloadTransformed?transformationId=" + Long.toString(id);
 			PublishTransformationResponse resp = fact.createPublishTransformationResponse();
 			resp.setTransformationId(Long.toString(id));
 			resp.setUrl(url);

@@ -72,14 +72,14 @@ rightsType.addEnumeration("http://www.europeana.eu/rights/rr-f/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/rr-p/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/rr-r/");
 rightsType.addEnumeration("http://www.europeana.eu/rights/unknown/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/publicdomain/mark/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/publicdomain/zero/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-sa/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-sa/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nd/");
-rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-nd/");
+rightsType.addEnumeration("http://creativecommons.org/publicdomain/mark/1.0/");
+rightsType.addEnumeration("http://creativecommons.org/publicdomain/zero/1.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-sa/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-sa/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nd/3.0/");
+rightsType.addEnumeration("http://creativecommons.org/licenses/by-nc-nd/3.0/");
 
 // rights work set
 recordRights = template.duplicatePath("/lido/administrativeMetadata/recordWrap/recordRights");

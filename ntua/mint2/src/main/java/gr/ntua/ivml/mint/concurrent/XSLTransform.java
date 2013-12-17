@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.concurrent;
 
+import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.LockManager;
 import gr.ntua.ivml.mint.persistent.Dataset;
@@ -51,7 +52,7 @@ public class XSLTransform implements Runnable {
 			transformation = DB.getTransformationDAO().getById(transformation.getDbID(), false);
 			// new version of the transformation for this session
 			if( transformation == null ) {
-				log.error( "Total disaster, Transformation unavailable, no reporting to UI!!!");
+				log.error( "Total desaster, Transformation unavailable, no reporting to UI!!!");
 				return;
 			}
 
@@ -94,6 +95,13 @@ public class XSLTransform implements Runnable {
 				DB.commit();
 			}
 			
+			// fire of solarizer for the result.
+			if( Solarizer.isEnabled()) {
+				if( Custom.allowSolarize( transformation ))
+				Solarizer.queuedIndex(transformation);
+			}
+			
+			
 		} catch( Exception e ) {
 			log.error( "Transformation failed, should be already noted.", e );
 		} catch( Throwable t ) {
@@ -116,7 +124,7 @@ public class XSLTransform implements Runnable {
 		DB.closeStatelessSession();
 		DB.closeSession();
 		} catch( Exception e ) {
-			log.error( "Problem closing sesions.", e );
+			log.error( "Problem closing sessions.", e );
 		}
 	}
 	
@@ -202,8 +210,13 @@ public class XSLTransform implements Runnable {
 	private void transformItem( Item inputItem ) throws Exception {
 		try {
 			String outputXml = t.transform(inputItem.getXml(), null );
-			// there could be multiple output items for one input!!
-			String itemPath = transformation.getSchema().getItemLevelPath();
+			String itemPath = null;
+			
+			// is there a schema .. mostly there is
+			if( transformation.getSchema() != null ) {
+				// there could be multiple output items for one input!!
+				itemPath = transformation.getSchema().getItemLevelPath();
+			}
 			
 			// on root node we dont need to split
 			if( itemPath != null && itemPath.matches("/.*/.*")) {

@@ -1,9 +1,16 @@
 package gr.ntua.ivml.mint.mapping;
 
+import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
+import gr.ntua.ivml.mint.util.Config;
+import gr.ntua.ivml.mint.util.JSONUtils;
+import gr.ntua.ivml.mint.xsd.XSDParser;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
@@ -13,16 +20,12 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import gr.ntua.ivml.mint.util.Config;
-import gr.ntua.ivml.mint.xsd.XSDParser;
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 
 public class TargetConfigurationFactory {
 	private static final Logger log = Logger.getLogger(TargetConfigurationFactory.class);
@@ -68,7 +71,7 @@ public class TargetConfigurationFactory {
 					}
 
 					java.io.FileWriter writer = new java.io.FileWriter(new java.io.File(output)); 
-					JSONObject mappingTemplate = factory.getMappingTemplate();
+					Mappings mappingTemplate = factory.getMappingTemplate();
 					
 					writer.write(mappingTemplate.toString(2));
 					writer.flush();
@@ -120,8 +123,8 @@ public class TargetConfigurationFactory {
 		JSONObject target = new JSONObject();
 		
 		// basic structure
-		target.element("version", TARGET_DEFINITION_VERSION);
-		target.element("groups", new JSONArray());
+		target.put("version", TARGET_DEFINITION_VERSION);
+		target.put("groups", new JSONArray());
 		
 		
 		// namespaces
@@ -132,10 +135,10 @@ public class TargetConfigurationFactory {
 			String key = i.next();
 			String value = map.get(key);
 			
-			namespaces.element(key, value);
+			namespaces.put(key, value);
 		}
 		
-		target.element("namespaces", namespaces);
+		target.put("namespaces", namespaces);
 		
 		// set item level
 		JSONObject root = parser.getAnyRootElementDescription();
@@ -143,19 +146,19 @@ public class TargetConfigurationFactory {
 		if(root != null) {
 			JSONObject item = new JSONObject();
 			
-			item.element("element", root.getString("name"));
-			if(root.has("prefix")) {
-				item.element("prefix", root.getString("prefix"));
+			item.put("element", root.get("name").toString());
+			if(root.containsKey("prefix")) {
+				item.put("prefix", root.get("prefix").toString());
 			}
 				
-			target.element("item", item);
+			target.put("item", item);
 		}
 		
 		//set default group
 		JSONObject group = new JSONObject();
-		group.element("name", root.getString("name"));
-		group.element("element", root.getString("name"));
-		target.getJSONArray("groups").add(group);
+		group.put("name", root.get("name").toString());
+		group.put("element", root.get("name").toString());
+		((JSONArray) target.get("groups")).add(group);
 		
 		this.setConfiguration(target);
 		return target;
@@ -170,7 +173,11 @@ public class TargetConfigurationFactory {
 	}
 	
 	public void setConfiguration(String configuration) {
-		this.setConfiguration((JSONObject) JSONSerializer.toJSON(configuration));
+		try {
+			this.setConfiguration(JSONUtils.parse(configuration));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setConfiguration(JSONObject configuration) {
@@ -182,12 +189,12 @@ public class TargetConfigurationFactory {
 	}
 	
 	private void setParserNamespacesFromConfiguration() {
-        if(this.configuration.has("namespaces")) {
-            JSONObject object = this.configuration.getJSONObject("namespaces");
+        if(this.configuration.containsKey("namespaces")) {
+            JSONObject object = (JSONObject) this.configuration.get("namespaces");
             HashMap<String, String> map = new HashMap<String, String>();
             for(Object entry : object.keySet()) {
                     String key = (String) entry;
-                    String value = object.getString(key);
+                    String value = object.get(key).toString();
                     map.put(value, key);
             }
 
@@ -195,29 +202,37 @@ public class TargetConfigurationFactory {
         }
 	}
 	
-	public JSONObject getMappingTemplate() {
+	public Mappings getMappingTemplate() {
 		if(this.configuration == null) {
 			this.generateConfiguration();
 		}
 
 		// copy configuration and build from there
-		JSONObject result = (JSONObject) JSONSerializer.toJSON(this.configuration.toString());
+		JSONObject result;
+		
+		try {
+			result = JSONUtils.parse(this.configuration.toString());
+			log.debug("populate template");
+			
+			String root = ((JSONObject) result.get("item")).get("element").toString();
+			JSONObject template = this.parser.getTemplate(root);
+			result.put("template", template);
+			
+			log.debug("remove navigation");
+			// remove configuration specific parts
+			result.remove("navigation");
+			return new Mappings(result);
 
-		log.debug("populate template");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		String root = result.getJSONObject("item").getString("element");
-		JSONObject template = this.parser.getTemplate(root);
-		result.put("template", template);
-		
-		log.debug("remove navigation");
-		// remove configuration specific parts
-		result.remove("navigation");
-		
-		return result;
+		return null;
 	}
 	
-	public JSONObject configureMappingTemplate(String template) {
-		JSONObject result = (JSONObject) JSONSerializer.toJSON(template);
+	public JSONObject configureMappingTemplate(String template) throws ParseException {
+		JSONObject result = JSONUtils.parse(template);
 		this.configureMappingTemplate(result);
 		return result;
 	}
@@ -228,23 +243,29 @@ public class TargetConfigurationFactory {
 		else {
 			cache = new MappingCache();
 			JSONObject template = mapping;
-			if(mapping.has(JSONMappingHandler.TEMPLATE_TEMPLATE)) template = mapping.getJSONObject(JSONMappingHandler.TEMPLATE_TEMPLATE);
+			if(mapping.containsKey(JSONMappingHandler.TEMPLATE_TEMPLATE)) template = (JSONObject) mapping.get(JSONMappingHandler.TEMPLATE_TEMPLATE);
 			cache.load(template);
 		}
-		if(configuration.has("customization")) {
+		if(configuration.containsKey("customization")) {
 			log.debug("groovy customization");
 			try {
-				String path = Config.getScriptPath(configuration.getString("customization"));
+				String path = Config.getScriptPath(configuration.get("customization").toString());
 				String script = FileUtils.readFileToString(new File(path), "UTF-8" );
 				String head = "";
 				
 				head += "import gr.ntua.ivml.mint.util.Config\n";
 				head += "import gr.ntua.ivml.mint.db.DB\n";
 				head += "import gr.ntua.ivml.mint.mapping.*\n";
+				head += "import gr.ntua.ivml.mint.mapping.model.*\n";
 
 				if(script != null) {
+						Mappings mappings = new Mappings(mapping);
+						Element template = mappings.getTemplate();
+					
 						Binding binding = new Binding();
 						binding.setVariable("mapping", mapping);
+						binding.setVariable("mappings", mappings);
+						binding.setVariable("template", template);
 						binding.setVariable("cache", cache);
 						
 						GroovyShell shell = new GroovyShell(binding);

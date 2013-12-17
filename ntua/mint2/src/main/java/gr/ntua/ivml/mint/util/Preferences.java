@@ -1,6 +1,7 @@
 package gr.ntua.ivml.mint.util;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.Meta;
 import gr.ntua.ivml.mint.persistent.User;
@@ -32,6 +33,28 @@ public class Preferences {
 	 */
 	public static String get(User user, String key) {
 		return Meta.get(user, Preferences.generateKey(key));
+	}
+	
+	/**
+	 * Get user preferences specified by key, as a JSONObject. 
+	 * @param user The user.
+	 * @param key  The preferences key (i.e AbstractMappingManager.PREFERENCES for mapping editor preferences)
+	 * @return     The preferences
+	 * @throws ParseException 
+	 */
+	public static JSONObject getJSON(User user, String key) throws ParseException {
+		return JSONUtils.parse(Meta.get(user, Preferences.generateKey(key)));
+	}
+	
+	/**
+	 * Get user preferences specified by key as JSONObject. 
+	 * @param user The user.
+	 * @param key  The preferences key (i.e AbstractMappingManager.PREFERENCES for mapping editor preferences)
+	 * @return     The preferences
+	 * @throws ParseException 
+	 */
+	public static JSONObject getObject(User user, String key) throws ParseException {
+		return JSONUtils.parse(Meta.get(user, Preferences.generateKey(key)));
 	}
 	
 	/**

@@ -7,27 +7,24 @@ import gr.ntua.ivml.mint.persistent.Mapping;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
-import gr.ntua.ivml.mint.pi.messages.SchemaValidation;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.XMLUtils;
 import gr.ntua.ivml.mint.xml.transform.ChainTransform;
-import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
 import gr.ntua.ivml.mint.xml.transform.XSLTGenerator;
 import gr.ntua.ivml.mint.xml.transform.XSLTransform;
 import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
 import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -35,6 +32,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("serial")
 @Results({
 	@Result(name="error", location="json.jsp"),
 	@Result(name="success", location="json.jsp")
@@ -189,34 +187,34 @@ public class ItemPreview extends GeneralAction {
 		}
 		
 		public JSONObject toJSON() {
-			JSONObject result = new JSONObject()
-			.element("key", key)
-			.element("label", label)
-			.element("type", type)
-			.element("url", url)
-			.element("content", content);
+			JSONObject result = new JSONObject();
+			result.put("key", key);
+			result.put("label", label);
+			result.put("type", type);
+			result.put("url", url);
+			result.put("content", content);
 			
 			if(this.schema != null) {
-				result.element("schema", this.schema.getName());
+				result.put("schema", this.schema.getName());
 			}
 			
 			if(this.exception != null) {
-				JSONObject ex = new JSONObject()
-					.element("message", this.exception.getMessage())
-					.element("stacktrace", StringUtils.exceptionStackTrace(this.exception));
-				result.element("exception", ex);
+				JSONObject ex = new JSONObject();
+				ex.put("message", this.exception.getMessage());
+				ex.put("stacktrace", StringUtils.exceptionStackTrace(this.exception));
+				result.put("exception", ex);
 			}
 			
 			if(this.validation != null) {
 				JSONArray errors = new JSONArray();
 				errors.addAll(this.validation.getErrors());
-				JSONObject report = new JSONObject()
-					.element("errors", errors)
-					.element("report", this.validation.getReportMessage());
-				result.element("validation", report);
+				JSONObject report = new JSONObject();
+				report.put("errors", errors);
+				report.put("report", this.validation.getReportMessage());
+				result.put("validation", report);
 			}
 			
-			result.element("executionTime", executionTime);
+			result.put("executionTime", executionTime);
 			return result;
 		}
 
@@ -239,8 +237,8 @@ public class ItemPreview extends GeneralAction {
 	@Action(value="ItemPreview")
 	public String execute() {
 		if(checkPermissions()) {
-			json.element("mappingId", mappingId);
-			json.element("itemId", itemId);
+			json.put("mappingId", mappingId);
+			json.put("itemId", itemId);
 			
 			try {
 				JSONArray views = new JSONArray();
@@ -252,8 +250,25 @@ public class ItemPreview extends GeneralAction {
 								JSONArray set = new JSONArray();
 								for(String key: keysArray) {
 									if(key.length() > 0 || this.computedViews.size() == 0) {
-										View view = this.getView(key);
-										if(view != null) set.add(view.toJSON());
+										if(key.indexOf(".") > 0) {
+											View view = this.getView(key);
+											if(view != null) set.add(view.toJSON());
+										} else if(key.equalsIgnoreCase(View.GROUP_DATASET)) {
+											View view = this.getView(View.key(View.GROUP_DATASET, View.RESOURCE_ITEM));
+											if(view != null) set.add(view.toJSON());
+										} else if(key.equalsIgnoreCase(View.GROUP_MAPPING)) {
+											View view = this.getView(View.key(View.GROUP_MAPPING, View.RESOURCE_ITEM));
+											if(view != null) set.add(view.toJSON());
+											view = this.getView(View.key(View.GROUP_MAPPING, View.RESOURCE_XSL));
+											if(view != null) set.add(view.toJSON());
+										} else if(key.equalsIgnoreCase(View.GROUP_SCHEMA)) {
+											if(this.getSchema() != null) {
+												for(View view: ChainTransform.definedViews(this.getSchema())) {
+													view = this.getView(view.getKey());
+													if(view != null) set.add(view.toJSON());
+												}
+											}
+										}
 									}
 								}
 								views.add(set);
@@ -261,9 +276,9 @@ public class ItemPreview extends GeneralAction {
 						}
 					}
 				}
-				json.element("views", views);
+				json.put("views", views);
 			} catch( Exception e ) {
-				json.element( "error", e.getMessage());
+				json.put( "error", e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -273,11 +288,12 @@ public class ItemPreview extends GeneralAction {
 		return SUCCESS;
 	}
 	
-	private View getView(String key) {
+	public View getView(String key) {
 		if(this.computedViews.containsKey(key)) return this.computedViews.get(key);
 
 		String group = View.GROUP_DATASET;
 		String resource = View.RESOURCE_ITEM;
+
 		String[] tokens = key.split("\\.");
 		if(tokens.length > 1) {
 			group = tokens[0];
@@ -344,14 +360,13 @@ public class ItemPreview extends GeneralAction {
 						view.setType(View.TYPE_WARNING);
 						view.setContent("Mapping XSL is not available.");
 					}
-
 				} else if(resource.equalsIgnoreCase(View.RESOURCE_XSL)) {
 					view = new View(key, "Mapping XSL", View.TYPE_XML);
 					
 					XSLTGenerator xslt = new XSLTGenerator();
 					XpathHolder itemPath = this.getDataset().getItemRootXpath();
 			
-					xslt.setItemLevel(itemPath.getXpathWithPrefix(true));
+					xslt.setItemXPath(itemPath.getXpathWithPrefix(true));
 					xslt.setImportNamespaces(this.getDataset().getRootHolder().getNamespaces(true));		
 					String mappings = getMapping().getJsonString();
 					String xsl = xslt.generateFromString(mappings);
@@ -367,18 +382,25 @@ public class ItemPreview extends GeneralAction {
 			} else if(group.equalsIgnoreCase(View.GROUP_SCHEMA)) {
 				if(this.getSchema() != null) {					
 					ChainTransform chainTransform = new ChainTransform();
-					View mappedView = this.getView(View.key(View.GROUP_MAPPING, View.RESOURCE_ITEM));
+					View mappedView = null;
+					System.out.println("MAPPPING ID: " + this.getMappingId());
+					if(this.getMappingId() == 0) {
+						mappedView = this.getView(View.key(View.GROUP_DATASET, View.RESOURCE_ITEM));
+					} else {
+						mappedView = this.getView(View.key(View.GROUP_MAPPING, View.RESOURCE_ITEM));
+					}
+
 					if(mappedView != null) {
 						List<View> chainedViews = chainTransform.transform(mappedView.getContent(), this.getSchema());
 						for(View chained: chainedViews) {
-//							log.debug(chained.getKey() + " versus " + key);
+//								log.debug(chained.getKey() + " versus " + key);
 							if(chained.getKey().equalsIgnoreCase(key)) {
 								view = chained;
 							}
 							
 							this.computedViews.put(key, chained);
 						}						
-					}
+					}						
 				}
 			}
 		} catch(Exception ex) {
@@ -397,7 +419,12 @@ public class ItemPreview extends GeneralAction {
 	
 	@Action(value="ItemPreview_preferences")
 	public String preferences() {
-		json.element("preferences", gr.ntua.ivml.mint.util.Preferences.get(getUser(), ItemPreview.PREFERECES));
+		try {
+			json.put("preferences", gr.ntua.ivml.mint.util.Preferences.getJSON(getUser(), ItemPreview.PREFERECES));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 	
@@ -406,7 +433,11 @@ public class ItemPreview extends GeneralAction {
 		JSONObject preferences = new JSONObject();
 		preferences.put("views", this.getViews());
 		gr.ntua.ivml.mint.util.Preferences.put(getUser(), ItemPreview.PREFERECES, preferences);
-		json.element("preferences", gr.ntua.ivml.mint.util.Preferences.get(getUser(), ItemPreview.PREFERECES));
+		try {
+			json.put("preferences", gr.ntua.ivml.mint.util.Preferences.getJSON(getUser(), ItemPreview.PREFERECES));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		return SUCCESS;
 	}
@@ -438,8 +469,8 @@ public class ItemPreview extends GeneralAction {
 				}
 			}
 
-			json.element("recent", recent);
-			json.element("mappings", mappings.values());
+			json.put("recent", recent);
+			json.put("mappings", mappings.values());
 		}
 		
 		return SUCCESS;
@@ -454,8 +485,13 @@ public class ItemPreview extends GeneralAction {
 			result.add(view.toJSON());
 		}
 		
-		json.element("views", result);
-		json.element("preferences", gr.ntua.ivml.mint.util.Preferences.get(getUser(), ItemPreview.PREFERECES));
+		json.put("views", result);
+		try {
+			json.put("preferences", gr.ntua.ivml.mint.util.Preferences.getJSON(getUser(), ItemPreview.PREFERECES));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 	
@@ -506,7 +542,7 @@ public class ItemPreview extends GeneralAction {
 	private boolean checkPermissions() {
 		if(!getUser().can("view_data", getItem().getDataset().getOrganization())) {
 			json.clear();
-			json.element( "error", "No access rights" );
+			json.put( "error", "No access rights" );
 			return false;
 		}
 		

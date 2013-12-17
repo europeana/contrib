@@ -37,6 +37,7 @@ public class ImportsPanel extends GeneralAction{
     private User u=null;
     private Organization o=null;
     private ArrayList uploadCheck=new ArrayList();
+    private String labels="";
 
 
 	@Action(value="ImportsPanel")
@@ -95,7 +96,15 @@ public class ImportsPanel extends GeneralAction{
 		  
 	  }
 	
-		
+	  public String getLabels(){
+		  return(labels);
+		  
+	  }
+	  
+	  public void setLabels(String labels){
+		  this.labels=labels;
+		  
+	  }	
 
 	public void setUploadCheck(String uploadCheck){
 		this.uploadCheck=new ArrayList();
@@ -184,6 +193,9 @@ public class ImportsPanel extends GeneralAction{
 		if(this.getUserId()!=-1){
 			result=getUserImports();
 		}
+		else if(this.labels!=null && this.labels.length()>0 && (!this.labels.equalsIgnoreCase("null"))){
+			result=getLabelImports();
+		}
 		else{result=getAllImports();}
 		return result;
 				
@@ -200,14 +212,14 @@ public class ImportsPanel extends GeneralAction{
 		u = DB.getUserDAO().findById(userId, false);
 		org = DB.getOrganizationDAO().findById(orgId, false);
 		
-		List<DataUpload> du= DB.getDataUploadDAO().findByOrganizationUser(org, u);
+		List<Dataset> du= DB.getDatasetDAO().findNonDerivedByOrganizationUser(org, u);
 		//log.debug("du size:"+du.size()+" for user:"+ u.getLogin()+" and org:"+ org.getName());
 		
 		if( du == null ) return Collections.emptyList();
 		
 		
 		//log.debug("startImport:"+startImport+"  maxImports:"+maxImports);
-		List<DataUpload> l = du;
+		List<Dataset> l = du;
 	   if(startImport<0)startImport=0;
 		while(du.size()<=startImport){
 			startImport=startImport-maxImports; 
@@ -218,7 +230,40 @@ public class ImportsPanel extends GeneralAction{
 	    else{
 	    	l = du.subList((int)(startImport),du.size());}
 	    
-	    for( DataUpload x: l ) {
+	    for( Dataset x: l ) {
+				Import su = new Import(x);
+				result.add(su);
+			
+		}
+			
+		
+		return result;
+	} 
+	
+	public List<Import> getLabelImports() {
+		Organization org = null;
+		
+		
+		List<Import> result = new ArrayList<Import>();
+		org = DB.getOrganizationDAO().findById(orgId, false);
+		
+		List<Dataset> du= DB.getDatasetDAO().findNonDerivedByOrganizationFolders(org, this.labels.split(","));
+		
+		if( du == null ) return Collections.emptyList();
+		
+		
+	   List<Dataset> l = du;
+	   if(startImport<0)startImport=0;
+		while(du.size()<=startImport){
+			startImport=startImport-maxImports; 
+		 }
+		
+	    if(du.size()>(startImport+maxImports)){	
+	    	l = du.subList((int)(startImport), startImport+maxImports);}
+	    else{
+	    	l = du.subList((int)(startImport),du.size());}
+	    
+	    for( Dataset x: l ) {
 				Import su = new Import(x);
 				result.add(su);
 			
@@ -236,7 +281,7 @@ public class ImportsPanel extends GeneralAction{
 		List<Import> result = new ArrayList<Import>();
 		u = DB.getUserDAO().findById(userId, false);
 		org = DB.getOrganizationDAO().findById(orgId, false);
-		List<DataUpload> du= DB.getDataUploadDAO().findByOrganization(org);
+		List<Dataset> du= DB.getDatasetDAO().findNonDerivedByOrganization(org);
 		
 		//log.debug("du size:"+du.size()+" for user:"+ u.getLogin()+" and org:"+ org.getName());
 		
@@ -244,7 +289,7 @@ public class ImportsPanel extends GeneralAction{
 		
 		
 		//log.debug("startImport:"+startImport+"  maxImports:"+maxImports);
-		List<DataUpload> l = du;
+		List<Dataset> l = du;
 	   if(startImport<0)startImport=0;
 		while(du.size()<=startImport){
 			startImport=startImport-maxImports; 
@@ -255,10 +300,9 @@ public class ImportsPanel extends GeneralAction{
 	    else if(startImport>=0){
 	    	l = du.subList((int)(startImport),du.size());}
 	    
-	    for( DataUpload x: l ) {
+	    for( Dataset x: l ) {
 				Import su = new Import(x);
 				result.add(su);
-			
 		}
 			
 		
@@ -278,21 +322,23 @@ public class ImportsPanel extends GeneralAction{
 		Organization org = null;
 		org = DB.getOrganizationDAO().findById(orgId, false);
 		
-		if(this.userId==-1){
+		if(this.userId==-1 && (this.labels==null || this.labels.length()==0 || (this.labels.equalsIgnoreCase("null")))){
 			List<User> uploaders=DB.getDataUploadDAO().getUploaders(org);
 			for( User cu:uploaders){
-				List<DataUpload> du= DB.getDataUploadDAO().findByOrganizationUser(org, cu);
+				List<Dataset> du= DB.getDatasetDAO().findNonDerivedByOrganizationUser(org, cu);
 			    result+=du.size();	
 			}
-		}else{
+		}
+		else if(this.labels!=null && this.labels.length()>0 && (!this.labels.equalsIgnoreCase("null"))){
+			if( org == null) return 0;
+			result=DB.getDatasetDAO().findNonDerivedByOrganizationFolders(org, this.labels.split(",")).size();
+		}
+		else{
 			User u=null;
 			u = DB.getUserDAO().findById(userId, false);
 			if( org == null || u==null ) return 0;
-			result=DB.getDataUploadDAO().findByOrganizationUser(org, u).size();
+			result=DB.getDatasetDAO().findNonDerivedByOrganizationUser(org, u).size();
 		}
 		return result;
 	}
-	
-
-
 }

@@ -1,47 +1,39 @@
 package gr.ntua.ivml.mint.xsd;
 
-import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
-import gr.ntua.ivml.mint.schematron.SchematronXSLTProducer;
 import gr.ntua.ivml.mint.util.Config;
-import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-//import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
-import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 
 public class SchemaValidator {	
 	public static final Logger log = Logger.getLogger( SchemaValidator.class );
 	private static SchemaFactory factory;
 	private static TransformerFactory tFactory;
 
-	private static HashMap<String, Schema> schemaCache = new HashMap<String, Schema>();
-	private static HashMap<String, String> schematronCache = new HashMap<String, String>();
+	private static HashMap<Long, Schema> schemaCache = new HashMap<Long, Schema>();
+	private static HashMap<Long, Transformer> schematronCache = new HashMap<Long, Transformer>();
 	
 	static {
 		factory = org.apache.xerces.jaxp.validation.XMLSchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
@@ -99,9 +91,9 @@ public class SchemaValidator {
 		return report;
 	}
 	
-	public static void validateXSD(Source source, XmlSchema schema, ErrorHandler handler) throws SAXException, IOException {
-		String xsd = Config.getSchemaPath(schema.getXsd());
-		SchemaValidator.validateXSD(source, xsd, handler);
+	public static void validateXSD(Source source, XmlSchema xmlSchema, ErrorHandler handler) throws SAXException, IOException {
+		Schema schema = getSchema(xmlSchema);
+		SchemaValidator.validateXSD(source, schema, handler);
 	}
 		
 	public static ReportErrorHandler validateXSD(Source source, File schemaFile) throws SAXException, IOException, TransformerException {
@@ -123,11 +115,21 @@ public class SchemaValidator {
 	
 	public static void validateXSD(Source source, String schemaPath, ErrorHandler handler) throws SAXException, IOException {
 			Schema schema = getSchema(schemaPath);
+			log.debug("getSchema: " + schema);
 			Validator validator = schema.newValidator();
+			log.debug("newValidator: " + validator);
 			if(handler != null) {
 				validator.setErrorHandler(handler);
 			}
 			validator.validate(source);
+	}
+	
+	public static void validateXSD(Source source, Schema schema, ErrorHandler handler ) throws SAXException, IOException {
+		Validator validator = schema.newValidator();
+		if(handler != null) {
+			validator.setErrorHandler(handler);
+		}
+		validator.validate(source);
 	}
 
 	// Schematron validation
@@ -162,11 +164,7 @@ public class SchemaValidator {
 		if(schema.getSchematronXSL() != null) {					
 			DOMResult result = new DOMResult();
 	
-			String schematronXSL = schema.getSchematronXSL();
-//		    log.debug("schematron XSL: " + schematronXSL);
-			StringReader reader = new StringReader(schematronXSL);
-			Transformer transformer = tFactory.newTransformer(
-		       new StreamSource(reader));
+			Transformer transformer = getTransformer(schema);
 		    transformer.transform(source, result);
 //		    log.debug("schematron result: " + StringUtils.fromDOM(result.getNode()));
 		    
@@ -190,20 +188,49 @@ public class SchemaValidator {
 	    return errorReport;
 	}
 	
-	public static synchronized Schema getSchema( XmlSchema schema ) throws SAXException  {
-		String xsd = Config.getSchemaPath(schema.getXsd());
-		return getSchema( xsd );
+	private static synchronized Transformer getTransformer(XmlSchema schema) throws TransformerConfigurationException {
+		Transformer transformer = SchemaValidator.schematronCache.get(schema.getDbID());
+		
+		if(transformer == null) {
+			String schematronXSL = schema.getSchematronXSL();
+	//	    log.debug("schematron XSL: " + schematronXSL);
+			StringReader xslReader = new StringReader(schematronXSL);
+			transformer = tFactory.newTransformer(new StreamSource(xslReader));
+			SchemaValidator.schematronCache.put(schema.getDbID(), transformer);
+		}
+
+		return transformer;
+	}
+
+	public static synchronized Schema getSchema( String schemaPath ) throws SAXException  {
+		Schema schema = factory.newSchema(new File(schemaPath));
+		return schema;
 	}
 	
-	// factor newSchema is not thread safe
-	public static synchronized Schema getSchema( String schemaPath ) throws SAXException  {
-		Schema schema = schemaCache.get(schemaPath);
+	public static synchronized Schema getSchema( XmlSchema xmlSchema ) throws SAXException  {
+		Schema schema = schemaCache.get(xmlSchema.getDbID());
 		
 		if(schema == null) {
-			schema = factory.newSchema(new File(schemaPath));
-			schemaCache.put(schemaPath, schema);
+			schema = factory.newSchema(new File(Config.getSchemaPath(xmlSchema.getXsd())));
+			schemaCache.put(xmlSchema.getDbID(), schema);
 		}
 
 		return schema;
+	}
+	
+	/**
+	 * Clear caches in SchemaValidator
+	 */
+	public static synchronized void clearCaches() {
+		SchemaValidator.schemaCache.clear();
+		SchemaValidator.schematronCache.clear();
+	}
+
+	/**
+	 * Clear cache for specific schema in SchemaValidator
+	 */
+	public static synchronized void clearCaches(XmlSchema schema) {
+		SchemaValidator.schemaCache.remove(schema.getDbID());
+		SchemaValidator.schematronCache.remove(schema.getDbID());
 	}
 }

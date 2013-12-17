@@ -1,17 +1,26 @@
 package gr.ntua.ivml.mint.actions;
 
+import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
@@ -33,6 +42,10 @@ public class ItemList extends GeneralAction {
 	private int start, max;
 	private long datasetId;
 	private String filter = ALL;
+	private String query;
+	// title, all, custom ... default is title
+	// all searches the merged field and custom uses this as solr query
+	private String queryType;
 	
 	@Action(value="ItemList")
 	public String execute() {
@@ -99,8 +112,9 @@ public class ItemList extends GeneralAction {
 	private void getValues( Dataset dataset ) {
 		try {
 			List<Item> values = null;
-			
-			if(getFilter() == null || getFilter().equalsIgnoreCase(ItemList.ALL)) {
+			if( query != null ) {
+				values = solrQueryItems();
+			} else if(getFilter() == null || getFilter().equalsIgnoreCase(ItemList.ALL)) {
 				values = dataset.getItems(getStart(), getMax());
 			} else {
 				if(getFilter().equalsIgnoreCase(ItemList.VALID)) {
@@ -124,6 +138,75 @@ public class ItemList extends GeneralAction {
 			log.error( "No items in dataset " + datasetId, e );
 		}
 	}
+	
+	
+	private List<Item> solrQueryItems() {
+		List<Long> itemIds;
+		SolrQuery sq = new SolrQuery();
+
+		// all queries need this filters
+		sq.addFilterQuery("dataset_id:"+datasetId);
+		if( filter.equals( VALID )) {
+			sq.addFilterQuery( "valid_b:true");
+		} else if( filter.equals( INVALID)) {
+			sq.addFilterQuery("valid_b:false");
+		}
+		sq.setStart(start);
+		sq.setRows(max);
+		sq.setFields("item_id");
+		
+		if( StringUtils.empty( queryType ) || queryType.equals( "label") ) itemIds = solrQueryTitle(sq);
+		else if( queryType.equals( "all" )) itemIds = solrQueryAll(sq);
+		else itemIds = solrQueryCustom(sq);
+		
+		StringBuilder query = new StringBuilder();
+		for( Long id: itemIds ) {
+			if( query.length() > 0 ) query.append(", ");
+			query.append( id.toString());
+		}
+		if( query.length() == 0 ) return Collections.emptyList();
+		return DB.getItemDAO().simpleList( "dbID in (" + query + ")");
+	}
+	
+	private List<Long> solrQueryTitle(SolrQuery sq) {
+		sq.setQuery("label_tg:(" + query + ")");
+		return queryToList(sq);
+	}
+
+	private List<Long> solrQueryAll(SolrQuery sq) {
+		sq.setQuery("all:(" + query + ")");
+		return queryToList(sq);
+	}
+	
+	private List<Long> solrQueryCustom(SolrQuery sq) {
+		sq.setQuery(query );
+		return queryToList(sq);
+	}
+
+	
+	private List<Long> queryToList( SolrQuery sq) {
+		ArrayList<Long> result = new ArrayList<Long>();
+		SolrServer ss = Solarizer.getSolrServer();
+		try {
+			if( ss != null ) {
+				QueryResponse qr = ss.query( sq );
+				SolrDocumentList sdl = qr.getResults();
+				json.element("total", sdl.getNumFound());
+				for( SolrDocument sd: sdl ) {
+					Long itemId = Long.parseLong(sd.getFirstValue("item_id").toString());
+					result.add( itemId );
+				}
+			}
+		} catch(Exception e ) {
+			log.error( "Solr query failed" ,e );
+		}
+		return result;
+	}
+	
+	
+	//
+	// getter setter 
+	//
 	
 	public int getStart() {
 		return start;
@@ -155,6 +238,23 @@ public class ItemList extends GeneralAction {
 
 	public void setFilter(String filter) {
 		this.filter = filter;
+	}
+	
+
+	public String getQueryType() {
+		return queryType;
+	}
+
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
 	}
 
 	public void setJson(JSONObject json) {

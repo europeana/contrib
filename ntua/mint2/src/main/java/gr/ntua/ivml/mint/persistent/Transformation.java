@@ -1,5 +1,7 @@
 package gr.ntua.ivml.mint.persistent;
 
+import gr.ntua.ivml.mint.mapping.MappingConverter;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.Tuple;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
@@ -11,7 +13,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 
@@ -111,7 +113,11 @@ public class Transformation extends Dataset implements Lockable {
 		getParentDataset().derivedFrom(result);
 	}
 	
-
+	@Override
+	public Dataset getOrigin( ) {
+		return getParentDataset().getOrigin();
+	}
+	
 	/**
 	 * Only append msg if we are not longer than REPORT_SIZE_LIMIT
 	 * otherwise clip the report.
@@ -173,8 +179,35 @@ public class Transformation extends Dataset implements Lockable {
 		
 		if(getMapping().isXsl()) {
 			return getMapping().getXsl();
-		} else {	
+		} else {
+			
 			XSLTGenerator xslt = new XSLTGenerator();
+	
+			xslt.setItemXPath(getParentDataset().getItemRootXpath().getXpathWithPrefix(true));
+			xslt.setImportNamespaces(getParentDataset().getRootHolder().getNamespaces(true));
+			xslt.setOption(XSLTGenerator.OPTION_OMIT_XML_DECLARATION, true);
+			//xslt.setNamespaces(ftr.getDataUpload().getRootXpath().getNamespaces(true));
+			
+			Mappings mappings = getMapping().getMappings();
+			MappingConverter.upgradeToLatest(getMapping().getMappings());
+			String xsl = XMLFormatter.format(xslt.generateFromMappings(mappings));
+	
+			return xsl;
+		}
+	}
+	
+	/**
+	 * @Deprecated
+	 * Gets Old XSL either from crosswalk or from Mapping
+	 * @return
+	 */
+	public String getOldXsl() {
+		if( getCrosswalk() != null) return getCrosswalk().getXsl();
+		
+		if(getMapping().isXsl()) {
+			return getMapping().getXsl();
+		} else {	
+			gr.ntua.ivml.mint.mapping.old.XSLTGenerator xslt = new gr.ntua.ivml.mint.mapping.old.XSLTGenerator();
 	
 			xslt.setItemLevel(getParentDataset().getItemRootXpath().getXpathWithPrefix(true));
 			xslt.setImportNamespaces(getParentDataset().getRootHolder().getNamespaces(true));
@@ -195,27 +228,37 @@ public class Transformation extends Dataset implements Lockable {
 	
 	@Override
 	public JSONObject toJSON() {
-		JSONObject res = super.toJSON();
-		if (getInvalidItemCount()!=-1){
-			res.element("invalidItems",getInvalidItemCount());
-		}		
-		else res.element("invalidItems",0);
-		
-		res.element("validItems", getValidItemCount());
+		JSONObject res = super.toJSON();	
+		res.put("invalidItems",getInvalidItemCount());			
+		res.put("validItems", getValidItemCount());
 		if (getMapping() != null){
-		res.element("mappingUsed",getMapping().getName());
+		res.put("mappingUsed",getMapping().getName());
 		}
-		if (getMapping() != null){
-		res.element("targetSchema",getMapping().getTargetSchema().getName());
+		if ((getMapping() != null) && (getMapping().getTargetSchema() != null )){
+		res.put("targetSchema",getMapping().getTargetSchema().getName());
 		}
 		else if (getCrosswalk() != null ){
-			res.element("targetSchema",getCrosswalk().getTargetSchema().getName());
+			res.put("targetSchema",getCrosswalk().getTargetSchema().getName());
 		}
 		if (parentDataset !=null){
-		res.element("parentDataset",parentDataset.getName());
+			res.put("parentDataset",parentDataset.getName());
+		
+			JSONObject org = new JSONObject();
+			org.put( "dbID", parentDataset.getOrganization().getDbID());
+			org.put( "name", parentDataset.getOrganization().getName());
+			res.put( "organization", org);
 		}
-		res.element( "type", "Transformation");
+		else {
+			JSONObject org = new JSONObject();
+			org.put( "dbID", getOrganization().getDbID());
+			org.put( "name", getOrganization().getName());
+			res.put( "organization", org);
+		}
+
+		
+		res.put( "type", "Transformation");
 		return res;
+	
 	}
 	
 	/**

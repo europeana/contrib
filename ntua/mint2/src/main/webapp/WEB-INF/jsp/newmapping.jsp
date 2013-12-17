@@ -16,8 +16,13 @@ $(document).ready(function () {
 		if(e.keyCode == 13) {
 			e.preventDefault();
 			e.stopPropagation();
-			$("#button_newmap").click();
+			$("#button_newmap").one("click", function() {});
+			
 		}
+	});
+	$("#button_newmap").one('click', function()
+	{
+		var url='NewMapping.action?uploadId=<s:property value="uploadId"/>&orgId=<s:property value="orgId"/>&selaction=<s:property value="selaction"/>';saveMapping(url);
 	});
 });
 
@@ -31,7 +36,9 @@ function createUploader(){
 }
 
 $(document).ready(function () {
-	$("#button_upload").click(function() {
+	
+	$("#button_upload").one('click', function(){
+		
 		var cp=$($(this).closest('div[id^=kp]'));
 		var newurl='NewMapping.action?uploadId=<s:property value="uploadId"/>&orgId=<s:property value="orgId"/>&selaction=<s:property value="selaction"/>&'+$('form[name=newmapform]').serialize();
  
@@ -104,6 +111,7 @@ $(document).ready(function () {
 			 
 	<div class="fitem"> <label for="selectedMapping">Create with schema: </label>
 		      <select id="schemaSel" name="schemaSel">
+		       <option value="-1"> Select schema </option>
 			  	<%
 			  		String defaultSchema = Config.get("defaultSchema");
 			  		for(XmlSchema schema: schemas) {
@@ -135,7 +143,7 @@ $(document).ready(function () {
 	 <a class="navigable focus k-focus"  id="button_upload">
 					 <span>Submit</span></a>  
 	 <%}else{ %>
-	 <a class="navigable focus k-focus"  id="button_newmap" onclick="var url='NewMapping.action?uploadId=<s:property value="uploadId"/>&orgId=<s:property value="orgId"/>&selaction=<s:property value="selaction"/>';saveMapping(url);">
+	 <a class="navigable focus k-focus"  id="button_newmap">
 					 <span>Submit</span></a>  
 	 <%} %>
 				<a class="navigable focus k-focus"  onclick="this.blur();document.newmapform.reset();"><span>Reset</span></a>  
@@ -147,6 +155,6 @@ $(document).ready(function () {
 		
 	<%} %>
 </div>
-</div>
+
 
 

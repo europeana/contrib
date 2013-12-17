@@ -1,11 +1,13 @@
 package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import net.sf.json.JSONObject;
@@ -228,11 +230,7 @@ public class User implements SecurityEnabled {
 		}
 		return sb;
 	}
-	/**
-	 * A User without organization has ALL_RIGHTS, when he joins one, it needs to be determined
-	 * what rights he has.
-	 * @param rights
-	 */
+
 	public void setRights( int rights ) {
 		this.rights = rights;
 	}
@@ -245,6 +243,12 @@ public class User implements SecurityEnabled {
 		return (( right & this.rights) == right);
 	}
 	
+	public String toString() {
+		String org = "";
+		if( getOrganization() != null )
+			org = StringUtils.getDefault(getOrganization().getShortName(), getOrganization().getEnglishName(), getOrganization().getOriginalName());
+		return StringUtils.join(getLogin(), "@", org);
+	}
 	
 	/**
 	 * Convenience functions to find if user has any locks on Mappings
@@ -283,23 +287,24 @@ public class User implements SecurityEnabled {
 	 */
 	public List<Mapping> getAccessibleMappings() {
 		ArrayList<Mapping> maplist = new ArrayList<Mapping>();
-		
-		// if user is admin or superuser then get his accessibleOrgs
-		if (this.getMintRole().equalsIgnoreCase("ADMIN")
-				|| this.getMintRole().equalsIgnoreCase("SUPERUSER")) {
+		if( this.getMintRole().equalsIgnoreCase("SUPERUSER")) {
+			// just all mappings
+			return DB.getMappingDAO().findAll();
+		} else if( this.can( "view data", getOrganization())){
 			List<Organization> deporgs = this.getAccessibleOrganizations();
+			HashSet<Long> mappings = new HashSet<Long>();
+			
 			for (Organization org : deporgs) {
-				maplist.addAll(DB.getMappingDAO().findByOrganization(org));
+				for( Mapping amap: DB.getMappingDAO().findByOrganization(org)) {
+					if(! mappings.contains( amap.getDbID())) {
+						maplist.add( amap );
+						mappings.add( amap.getDbID());
+					}
+				}
 			}
 
-		} else if (this.getMintRole().indexOf("annotator") > -1) {
-			// if he is annotator then only access to his orgs mappings
-
-			Organization uorg = this.getOrganization();
-			maplist.addAll(DB.getMappingDAO().findByOrganization(uorg));
-
+			
 		}
-		
 		return maplist;
 	}
 

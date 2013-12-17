@@ -1,4 +1,7 @@
-MintDocumentation.resources = {
+/**
+ * Hash map that contains user documentation resources for Mint2 widgets. Used by {@link Mint2.Documentation#embed}. 
+ */
+Mint2.Documentation.resources = {
 		itemBrowser: "<div><h4>Item Browser</h4>" +
 		"<p>Items in green color are valid based on their schema.</p>" +
 		"<p>Items in red color failed validation.</p>" +
@@ -6,13 +9,15 @@ MintDocumentation.resources = {
 		"</div>",
 	
 		itemPreview: "<div><h4>Preview Options</h4>" +
-		"<p>Select a mapping to preview your items after the transformation</p>" +
+		"<p>Select a mapping to preview your items after the transformation.</p>" +
 		"<p>Select the views you want to see. Possible views are: </p>" +
 		"<ul>" +
-		"<li><strong>Item</strong>: The XML of the original item</li>" +
-		"<li><strong>Mapped Item</strong>: The XML of the item after the mapping transformation</li>" +
-		"<li><strong>Mapped XSL</strong>: The XSL used to transform the item, based on the selected mapping</li>" +
-		"<li><strong>Other views</strong>: Other view might be available depending on the schema of item or mapping</li>" +
+		"<li><strong>Import Item</strong>: The XML of the original item.</li>" +
+		"<li><strong>Source Item</strong>: The XML of the input item. Input item is the item from which selected item is generated.</li>" +
+		"<li><strong>Item</strong>: The XML of the dataset's selected item.</li>" +
+		"<li><strong>Mapped Item</strong>: The XML of the item after the mapping transformation.</li>" +
+		"<li><strong>Mapped XSL</strong>: The XSL used to transform the item, based on the selected mapping.</li>" +
+		"<li><strong>Other views</strong>: Other view might be available depending on the schema of item or mapping.</li>" +
 		"</ul>" +
 		"<p>Select views for the second column to compare them side by side.</p>" +
 		"<p>Click on <i>Remember selected views</i> to save your selection.</p>" +

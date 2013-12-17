@@ -8,13 +8,22 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
 
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Text;
+
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
+import org.xml.sax.XMLReader;
 
 public class Item {
+	private static Builder builder;
 	
 	private final static Logger log = Logger.getLogger( Item.class );
 	
@@ -24,7 +33,6 @@ public class Item {
 	private byte[] gzippedXml;
 	private Dataset dataset;
 	private String persistentId;
-	private XMLNode itemNode;
 	private Item sourceItem;
 	private Date lastModified;
 	private String label;
@@ -32,6 +40,7 @@ public class Item {
 	
 	// transient
 	private String xml = null;
+	private Document dom;
 	
 	public List<Item> getDerived() {
 		return DB.getItemDAO().getDerived(this);
@@ -106,6 +115,93 @@ public class Item {
 		return xml;
 	}
 	
+	
+	public Document getDocument() {
+		if( dom == null ) {
+			try {
+				dom = getBuilder().build( getXml(), null );
+			} catch(Exception e ) {
+				log.warn( "Item " + getDbID() + " has problems!",e );
+			}
+		}
+		return dom;
+	}
+
+	
+	
+	/**
+	 * Gets the Value if there is one node as the query result. 
+	 * Otherwise returns null.
+	 * @param query
+	 * @return
+	 */
+	public String getValue( String query ) {
+		nu.xom.Nodes nodes = getDocument().query( query );
+		if( nodes.size() != 1 ) return null;
+		String res = nodes.get(0).getValue();
+		if( res == null ) res = "";
+		return res;
+	}
+	
+ 	/**
+	 * Set node value to given. Returns false if there is not exactly one and does nothing then.
+	 * @param query
+	 * @param value
+	 */
+	public boolean setValue( String query, String value ) {
+		nu.xom.Nodes nodes = getDocument().query( query );
+		if( nodes.size() != 1 ) return false;
+		Node modify = nodes.get(0);
+		if( modify instanceof Element ) {
+			Element elem = (Element) modify;
+			// replace first Text node 
+			// and delete the others
+			int length = elem.getChildCount();
+			int i=0;
+			boolean replaced = false;
+			while( length > 0 ) {
+				Node n = elem.getChild(i);
+				if( n instanceof Text ) {
+					if( replaced ) {
+						elem.removeChild(i);
+						i--;
+					} else {
+						((Text) n).setValue(value);
+						replaced = true;
+					}
+				}
+				i++;
+				length--;
+			}
+			if( ! replaced) elem.appendChild(value);
+		} else if( modify instanceof Text ) {
+			Text txt = (Text) modify;
+			txt.setValue(value);
+		} else if( modify instanceof Attribute ) {
+			Attribute attr = (Attribute) modify;
+			attr.setValue(value);
+		} else { return false; }
+		
+		// update xml
+		setXml( dom.toXML());
+		return true;
+	}
+	
+	private static Builder getBuilder() {
+		if( builder == null ) {
+			try {
+				XMLReader parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader(); 
+				parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+				builder = new Builder(parser);
+			} catch( Exception e ) {
+				log.error( "Cannot build xml parser.", e );
+			}
+		}
+		return builder;
+	}
+
+	
 	/**
 	 * Gets the original item that produced this item, or "this" if it is an original item.
 	 * Calls getSourceItem() recursively. 
@@ -149,12 +245,6 @@ public class Item {
 	}
 	public void setPersistentId(String persistentId) {
 		this.persistentId = persistentId;
-	}
-	public XMLNode getItemNode() {
-		return itemNode;
-	}
-	public void setItemNode(XMLNode itemNode) {
-		this.itemNode = itemNode;
 	}
 	public Item getSourceItem() {
 		return sourceItem;

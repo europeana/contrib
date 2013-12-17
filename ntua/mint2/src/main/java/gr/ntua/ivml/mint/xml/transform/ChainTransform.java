@@ -1,25 +1,27 @@
 package gr.ntua.ivml.mint.xml.transform;
 
-import gr.ntua.ivml.mint.actions.ItemPreview;
 import gr.ntua.ivml.mint.actions.ItemPreview.View;
 import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.mapping.MappingManager;
+import gr.ntua.ivml.mint.mapping.model.SchemaConfiguration;
 import gr.ntua.ivml.mint.persistent.Crosswalk;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import javax.xml.transform.TransformerException;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
+import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
 public class ChainTransform {
 	protected static final Logger log = Logger.getLogger( ChainTransform.class);
@@ -36,10 +38,10 @@ public class ChainTransform {
 	}
 	
 	public ArrayList<View> transform(String input, XmlSchema schema) throws Exception{
-		JSONObject configuration = (JSONObject) JSONSerializer.toJSON(schema.getJsonConfig());
+		SchemaConfiguration configuration = schema.getConfiguration();
 
 		if(configuration.has("preview")) {
-			return this.transform(input, configuration.getJSONArray("preview"), schema);
+			return this.transform(input, configuration.getArray("preview"), schema);
 		}
 		
 		return new ArrayList<View>();
@@ -66,39 +68,40 @@ public class ChainTransform {
 			String output = null;
 			String label = "Preview";
 			ItemTransform transform = null;
+			
 
 			View view = null;
 
 			// load preview tab values
-			if(preview.has("type")) {
-				type = preview.getString("type");
+			if(preview.containsKey("type")) {
+				type = preview.get("type").toString();
 			}
 
-			if(preview.has("label")) {
-				label = preview.getString("label");
+			if(preview.containsKey("label")) {
+				label = preview.get("label").toString();
 			}
 			
-			if(preview.has("output")) {
-				output_type = preview.getString("output");
+			if(preview.containsKey("output")) {
+				output_type = preview.get("output").toString();
 			}
 			
 			// initialise preview transform
-			if(preview.has("xsl") || preview.has("target")) {
+			if(preview.containsKey("xsl") || preview.containsKey("target")) {
 				try {
 					XSLTransform xslt = new XSLTransform();
 
-					if(preview.has("xsl")) {
-						String xsl = preview.getString("xsl");
+					if(preview.containsKey("xsl")) {
+						String xsl = preview.get("xsl").toString();
 						File file = new File(Config.getXSLPath(xsl));	
 						xsl = StringUtils.xmlContents(file);
 						xslt.setXSL(xsl);						
 					}
 					
-					if(preview.has("target")) {
-						String schema = preview.getString("target");
+					if(preview.containsKey("target")) {
+						String schema = preview.get("target").toString();
 						target = DB.getXmlSchemaDAO().getByName(schema);
-						if(!preview.has("label")) label = target.getName();
-						if(!preview.has("xsl")) {
+						if(!preview.containsKey("label")) label = target.getName();
+						if(!preview.containsKey("xsl")) {
 							Crosswalk crosswalk = new Crosswalk();
 							crosswalk.setSourceSchema(source);
 							crosswalk.setTargetSchema(target);
@@ -113,18 +116,18 @@ public class ChainTransform {
 						}
 					}
 
-					if(preview.has("parameters")) {
-						JSONArray previewParameters = preview.getJSONArray("parameters");
+					if(preview.containsKey("parameters")) {
+						JSONArray previewParameters = (JSONArray) preview.get("parameters");
 						HashMap<String, String> parameters = new HashMap<String, String>();
 						
 						for(Object o: previewParameters) {
 							JSONObject parameter = (JSONObject) o;
-							if(parameter.has("name") && parameter.has("value")) {
-								String name = parameter.getString("name");
-								String value = parameter.getString("value");
-								if(!parameter.has("type") || parameter.getString("type").equalsIgnoreCase("constant")) {
+							if(parameter.containsKey("name") && parameter.containsKey("value")) {
+								String name = parameter.get("name").toString();
+								String value = parameter.get("value").toString();
+								if(!parameter.containsKey("type") || parameter.get("type").toString().equalsIgnoreCase("constant")) {
 									parameters.put(name, value);
-								} else if(parameter.getString("type").equalsIgnoreCase("mint")) {
+								} else if(parameter.get("type").toString().equalsIgnoreCase("mint")) {
 									parameters.put(name, Config.get(value));
 								}								
 							}
@@ -137,13 +140,13 @@ public class ChainTransform {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else if(preview.has("jsp")) {
-				String jsp = preview.getString("jsp");
+			} else if(preview.containsKey("jsp")) {
+				String jsp = preview.get("jsp").toString();
 				view = new View(View.key(View.GROUP_SCHEMA, label), label, View.TYPE_JSP);
 				view.setContent(input);
 				view.setUrl(jsp);
-			} else if(preview.has("transform")) {
-				String cname = preview.getString("transform");
+			} else if(preview.containsKey("transform")) {
+				String cname = preview.get("transform").toString();
 				try {
 					Class c = ChainTransform.class.getClassLoader().loadClass(cname);
 					transform = (ItemTransform) c.newInstance();
@@ -170,10 +173,17 @@ public class ChainTransform {
 			
 			// if valid tab then add and check for next transformation.
 			if(view != null) {
+				if(target != null) {
+					try {
+						view.validate(target);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				result.add(view);
 				
-				if(preview.has("preview")) {
-					JSONArray p = preview.getJSONArray("preview");
+				if(preview.containsKey("preview")) {
+					JSONArray p = (JSONArray) preview.get("preview");
 					ArrayList<View> more = this.transform(output, p, target);
 					result.addAll(more);
 				}
@@ -215,27 +225,27 @@ public class ChainTransform {
 			boolean hidden = false;
 			
 			// load preview tab values
-			if(preview.has("type"))
-				type = preview.getString("type");
+			if(preview.containsKey("type"))
+				type = preview.get("type").toString();
 
-			if(preview.has("target"))
-				label = preview.getString("target");
+			if(preview.containsKey("target"))
+				label = preview.get("target").toString();
 			
-			if(preview.has("label"))
-				label = preview.getString("label");
+			if(preview.containsKey("label"))
+				label = preview.get("label").toString();
 			
-			if(preview.has("output"))
-				output = preview.getString("output");
+			if(preview.containsKey("output"))
+				output = preview.get("output").toString();
 			
-			if(preview.has("hide")) {
+			if(preview.containsKey("hide")) {
 				hidden = true;
 			}
 			
 			View view = new View(View.key(View.GROUP_SCHEMA, label), label, type, output);
 			if(includeHidden || !hidden) result.add(view);
 						
-			if(preview.has("preview")) {
-				JSONArray p = preview.getJSONArray("preview");
+			if(preview.containsKey("preview")) {
+				JSONArray p = (JSONArray) preview.get("preview");
 				result.addAll(ChainTransform.definedViews(p));				
 			}
 		}

@@ -6,12 +6,13 @@ import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.TraversableI;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
+import nu.xom.Document;
+import nu.xom.Nodes;
 
 public class XpathHolder implements TraversableI {
 	private Long dbID;
@@ -43,7 +44,7 @@ public class XpathHolder implements TraversableI {
 	
 	public XpathHolder getByNameUri( String name, String uri ) {
 		for( XpathHolder xp: getChildren() ) {
-			if( xp.name.equals(name) && xp.uri.equals(uri ))
+			if( xp.getName().equals(name) && xp.getUri().equals(uri ))
 				return xp;
 		}
 		
@@ -57,26 +58,6 @@ public class XpathHolder implements TraversableI {
 		return result;
 	}
 	
-	/**
-	 * Get a list of nodes with start and end, so you can page through big lists.
-	 * @param from
-	 * @param to
-	 * @return
-	 */
-	public List<XMLNode> getNodes( long from, long count ) {
-		return DB.getXMLNodeDAO().getByXpathHolder(this, from, count );
-	}
-
-	/**
-	 * Alternative to paging with offset for high throughput processing
-	 *  This is potentially better supported with index ..
-	 * @param from
-	 * @param count
-	 * @return
-	 */
-	public List<XMLNode> getNodes( XMLNode start, long count ) {
-		return DB.getXMLNodeDAO().getByXpathHolder(this, start, count );
-	}
 	
 	public List<? extends XpathHolder> getAttributes() {
 		List<XpathHolder> res = new ArrayList<XpathHolder>();
@@ -229,6 +210,18 @@ public class XpathHolder implements TraversableI {
 		return getName().startsWith("@");
 	}
 
+	public Nodes queryDoc( Document doc ) {
+		return doc.query( getQueryPath(), GlobalPrefixStore.allPrefixesContext());
+	}
+	
+	
+	public String getQueryPath() {
+		String path = getXpathWithPrefix(true);
+		// cut of /text()
+		if( isTextNode()) path = path.substring(0,path.length()-7 );
+		return path;
+	}
+	
 	/**
 	 * Get the first child which is Text.
 	 * @return

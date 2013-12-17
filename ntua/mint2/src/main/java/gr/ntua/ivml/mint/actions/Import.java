@@ -29,7 +29,7 @@ import org.apache.struts2.convention.annotation.Results;
 @Results({
 	  @Result(name="input", location="import.jsp"),
 	  @Result(name="error", location="import.jsp"),
-	  @Result(name="success", location="${url}", type="redirect" )
+	  @Result(name="success", location="successimport.jsp" )
 	})
 
 public class Import extends GeneralAction  {
@@ -51,7 +51,7 @@ public class Import extends GeneralAction  {
 	public Date toDate;
 	public String oaifromdate;
 	public String oaitodate;
-	public String url="successimport";
+	// public String url="successimport.jsp";
 	public long schemaId = 0;
 	public Boolean isDirect=false;
 	public Boolean csvhasHeader;
@@ -62,6 +62,9 @@ public class Import extends GeneralAction  {
 	private String upfile;
 	
 	private Boolean isCsv=false;
+	private Boolean isJson = false;
+	
+	private String orgId;
 	
 	@Action("Import")
     public String execute() throws Exception {
@@ -169,11 +172,14 @@ public class Import extends GeneralAction  {
 			upI.getDataUpload().setSchema(DB.getXmlSchemaDAO().findById(this.schemaId, false));
 		}
 
+		if( upI != null && getIsJson()) {
+			upI.json = true;
+		}
+		
     	DB.commit();
     	if( upI != null ) {
     		Queues.queue(upI, "net" );
-    		this.url+="?orgId="+this.du.getOrganization().getDbID();
-    		System.out.println("url is:"+this.url);
+    		setOrgId( Long.toString( du.getOrganization().getDbID()));
     		return "success";
     	} else {
     		return "error";
@@ -435,7 +441,15 @@ public class Import extends GeneralAction  {
 		    this.isCsv = isCsv;
 	    }
 	  
-	  public Boolean getCsvhasHeader() {
+	  public Boolean getIsJson() {
+		return isJson;
+	}
+
+	public void setIsJson(Boolean isJson) {
+		this.isJson = isJson;
+	}
+
+	public Boolean getCsvhasHeader() {
 	        return this.csvhasHeader;
 	    }
 
@@ -491,4 +505,13 @@ public class Import extends GeneralAction  {
 	public long getUploaderOrg() {
 		return uploaderOrg;
 	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+	
 }

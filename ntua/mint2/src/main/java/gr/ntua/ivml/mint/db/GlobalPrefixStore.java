@@ -121,6 +121,7 @@ public class GlobalPrefixStore {
 			if( part.length()<3) continue;
 			if( part.toLowerCase().contains("www")) continue;
 			if( part.toLowerCase().matches("com|org|edu|biz|gov|http|uri|urn|url|xml|zip|xsl")) continue;
+			if( part.matches("\\d.*" )) continue;
 			return part;
 		}
 		return "def";
@@ -165,5 +166,13 @@ public class GlobalPrefixStore {
 	public static Map allPrefixMap() {
 		// TODO Auto-generated method stub
 		return getPrefixes();
+	}
+	
+	/**
+	 * READ ONLY map for all global namespaces, don't mess with it
+	 * @return
+	 */
+	public static Map<String,String> allNamespaceMap() {
+		return ns;
 	}
 }
