@@ -1,0 +1,404 @@
+{
+    "views": [
+        {
+            "type": "tabs",
+            "contents": [
+                {
+                    "type": "collection",
+                    "label": "Identification and description",
+                    "contents": [
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:identifier",
+                            "label": "Identifier",
+                            "description": "An unambiguous reference to the resource or an agent within a given context."
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:type/skos:Concept/@rdf:about",
+                            "label": "Object type (thesaurus terms)",
+                            "description": "The nature or genre of the resource. Type includes terms describing general categories, functions, genres, or aggregation levels for content. This element typically includes values such as photograph, painting, sculpture etc."
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/edmfp:localType",
+                            "label": "Object type (local designation)",
+                            "description": "The original object name of the object, as was listed by the data provider."
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/edm:type",
+                            "label": "Object genre",
+                            "description": "The Europeana type of the resource. This element is used to create the Type facet based on the Europeana material types in the Europeana portal."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:title",
+                            "label": "Title",
+                            "description": "A name given to the resource. Typically, a title will be a name by which the resource is formally known."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:alternative",
+                            "label": "Alternative title",
+                            "description": "An alternative name for the resource. This can be any form of the title that is used as a substitute or an alternative to the formal title of the resource including abbreviations or translations of the title."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:description",
+                            "label": "Description",
+                            "description": "An account of the resource."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:subject",
+                            "label": "Subject",
+                            "description": "This is the subject of the original analog or born digital object. This may be a abstract concept or another resource, including an Agent or another ProvidedCHO."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:spatial/edm:Place/skos:prefLabel",
+                            "label": "Spatial keyword",
+                            "description": "Information about the spatial characteristics of the original analog or born digital object, i.e. what the resource represents or depicts in terms of space."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:temporal",
+                            "label": "Temporal keyword",
+                            "description": "The temporal characteristics of the original analog or born digital object i.e. what the resource is about or depicts in terms of time."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:date",
+                            "label": "General date",
+                            "description": "A point or period of time associated with an event in the lifecycle of the resource."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:created",
+                            "label": "Creation date",
+                            "description": "Date of creation of the resource. This date element should be used to contain the most significant date in the life of the cultural heritage object."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:issued",
+                            "label": "Publication date",
+                            "description": "Date of creation of the resource. This date element should be used to contain the most significant date in the life of the cultural heritage object."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:language",
+                            "label": "Language",
+                            "description": "The language(s) of the resource."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dcterms:provenance",
+                            "label": "Provenance statement",
+                            "description": "A statement of any changes in ownership and custody of the resource since its creation that are significant for its authenticity, integrity and interpretation. This may include a description of any changes successive custodians made to the resource."                        
+                        },
+                        {
+                            "xpath": "//edm:ProvidedCHO/dc:rights",
+                            "label": "Rights statement",
+                            "description": "Information about rights held in and over the resource."                        
+                        }
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Physical characteristics",
+                    "contents": [
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dcterms:medium",
+                            "label": "Material",
+                            "description": "The material or physical carrier of the resource."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:technique",
+                            "label": "Technique",
+                            "description": "Identifies the processes, methods, techniques or tools used to fabricate or decorate an object."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dcterms:extent",
+                            "label": "Size or duration",
+                            "description": "The size or duration of the resource."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dc:format",
+                            "label": "File format",
+                            "description": "The file format or physical medium of the resource."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/gr:color/skos:Concept/@rdf:about",
+                            "label": "Color",
+                            "description": "The color of the material of which a work is composed."                        
+                    	}
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Relations",
+                    "contents": [
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dcterms:isPartOf",
+                            "label": "Part of",
+                            "description": "A related resource in which the described resource is physically or logically included - i.e. The reverse of dcterms:hasPart"                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:isSubjectOf",
+                            "label": "Is referred to by",
+                            "description": "This property documents that another provideCHO makes (a) statement(s) about the edm:ProvidedCHO, e.g. an exhibition which is the subject of an exhibition catalogue."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dc:relation",
+                            "label": "Related object",
+                            "description": "A related resource."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edm:isNextInSequence",
+                            "label": "Next in sequence",
+                            "description": "edm:isNextInSequence relates two resources S and R that are ordered parts of the same re-source A, and such that S comes immediately after R in the order created by their being parts of A."
+                        }                        
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Related agents (Europeana)",
+                    "contents": [
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dc:creator",
+                            "label": "Creator",
+                            "type": "Agent",
+                            "description": "An entity primarily responsible for making the resource. This may be a person or organisation."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dc:contributor",
+                            "label": "Contributor",
+                            "type": "Agent",
+                            "description": "An entity responsible for making contributions to the resource.  This may be a person or an organisation."                        
+                    	}
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Related agents (Europeana Fashion)",
+                    "contents": [
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:aut",
+                            "label": "Author",
+                            "type": "Agent",
+                            "description": "Use for a person or organization chiefly responsible for the intellectual or artistic content of a work, usually printed text. This term may also be used when more than one person or body bears such responsibility."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:clb",
+                            "label": "Collaborator",
+                            "type": "Agent",
+                            "description": "Use for a person or organization that takes a limited part in the elaboration of a work of another person or organization that brings complements (e.g., appendices, notes) to the work."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dcterms:creator",
+                            "label": "Creator",
+                            "type": "Agent",
+                            "description": "An entity primarily responsible for making the resource. This may be a person, organisation or a service. This property is used when a more specific role for the entity primarly responsible for creating the resurce is not given. See also Europeana Creator."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:cur",
+                            "label": "Curator of an exhibition",
+                            "type": "Agent",
+                            "description": "Use for a person or organization responsible for conceiving and organizing an exhibition."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:drt",
+                            "label": "Director",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who is responsible for the general management of a work or who supervises the production of a performance for stage, screen, or sound recording."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:dsr",
+                            "label": "Designer",
+                            "type": "Agent",
+                            "description": "Use for a person or organization responsible for the design."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:edt",
+                            "label": "Editor",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who prepares for publication a work not primarily his/her own, such as by elucidating text, adding introductory or other critical matter, or technically directing an editorial staff."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:hairstylist",
+                            "label": "Hairstylist",
+                            "type": "Agent",
+                            "description": "Use for a person responsible for the cut or style hair (e.g. of a model)"                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:ill",
+                            "label": "Illustrator",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who conceives, and perhaps also implements, a design or illustration, usually to accompany a written text."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:ive",
+                            "label": "Interviewee",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who is interviewed at a consultation or meeting, usually by a reporter, pollster, or some other information gathering agent."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:ivr",
+                            "label": "Interviewer",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who acts as a reporter, pollster, or other information gathering agent in a consultation or meeting involving one or more individuals."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:makeupArtist",
+                            "label": "Make-up artist",
+                            "type": "Agent",
+                            "description": "Use for a person responsible for the makeup and prosthetics for theatrical, television, film, fashion, magazines and other similar productions including all aspects of the modeling industry."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:model",
+                            "label": "Model",
+                            "type": "Agent",
+                            "description": "Use for a person who is employed to display, advertise and promote commercial products (notably fashion clothing or accessories)."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:pht",
+                            "label": "Photographer",
+                            "type": "Agent",
+                            "description": "Use for a person or organization responsible for taking photographs, whether they are used in their original form or as reproductions."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:pro",
+                            "label": "Producer",
+                            "type": "Agent",
+                            "description": "Use for a person or organization responsible for the making of a motion picture, including business aspects, management of the productions, and the commercial success of the work."                        
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/dc:publisher",
+                            "label": "Publisher",
+                            "type": "Agent",
+                            "description": "An entity responsible for making the resource available."
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:std",
+                            "label": "Set designer",
+                            "type": "Agent",
+                            "description": "Use for a person or organization who translates the rough sketches of the art director into actual architectural structures for a theatrical presentation, entertainment, motion picture, etc. Set designers draw the detailed guides and specifications for building the set."
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:sds",
+                            "label": "Sound designer",
+                            "type": "Agent",
+                            "description": "Use for a person who produces and reproduces the sound score (both live and recorded), the installation of microphones, the setting of sound levels, and the coordination of sources of sound for a production."
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/mrel:spn",
+                            "label": "Sponsor",
+                            "type": "Agent",
+                            "description": "Use for a person or organization that issued a contract or under the auspices of which a work has been written, printed, published, etc."
+                    	},
+                    	{
+                            "xpath": "//edm:ProvidedCHO/edmfp:stylist",
+                            "label": "Stylist",
+                            "type": "Agent",
+                            "description": "Use for a person who chooses clothing and accessories in the context of published editorial features, print or television advertising campaigns."
+                    	}
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Aggregation",
+                    "contents": [
+                        {
+                            "xpath": "//ore:Aggregation/dc:rights",
+                            "label": "Rights statement",
+							"description": "Use for the name of the rights holder of the digital representation or for more general rights information. Note the difference between this property and the use of the mandatory, controlled edm:rights."
+						},
+                        {
+                            "xpath": "//ore:Aggregation/edm:rights",
+                            "label": "Europeana Rights statement",
+							"description": "The value of this element indicates the usage and access rights that apply to this digital representation."
+						},
+                        {
+                            "xpath": "//ore:Aggregation/edm:dataProvider",
+                            "label": "Content provider",
+                            "type": "Agent",
+							"description": "The name or identifier of the organisation that contributes data to Europeana"
+						},
+                        {
+                            "xpath": "//ore:Aggregation/edm:hasView/edm:WebResource/@rdf:about",
+                            "label": "Digital object(s)",
+							"description": "This property relates a ORE aggregation about a CHO with a web resource providing a view of that CHO."
+						},
+                        {
+                            "xpath": "//ore:Aggregation/edm:isShownAt/edm:WebResource/@rdf:about",
+                            "label": "Original webpage/URI",
+							"description": "An URL to the digital object on the provider’s web site in its full in-formation context. See also edm:isShownBy"
+						},
+                        {
+                            "xpath": "//ore:Aggregation/edm:isShownBy/edm:WebResource/@rdf:about",
+                            "label": "Original digital object (main object)",
+							"description": "An URL to the digital object on the provider’s web site in the best available resolution/quality. See also edm:isShownAt."
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    
+    "buttons": [
+    	{
+    		"type": "button",
+    		"label": "Image",
+    		"contents": [
+		    	{
+					"xpath": "//ore:Aggregation/edm:isShownBy/edm:WebResource/@rdf:about",
+		        	"type": "image",
+		        }
+		    ],
+    	}
+    ],
+    
+    "types": {
+        "Agent": {
+            "type": "table",
+            "metadata": {
+            	label: {
+            		"name": "Prefered Name",
+            		"xpath": "edm:Agent/skos:prefLabel"
+            	}
+            },
+            "contents": [
+                {
+                    "xpath": "edm:Agent/dc:identifier",
+                    "label": "Identifier"
+                },
+                {
+                    "xpath": "edm:Agent/skos:prefLabel",
+                    "label": "Preferred name"
+                },
+                {
+                    "xpath": "edm:Agent/skos:altLabel",
+                    "label": "Alternative name"
+                },
+                {
+                    "xpath": "edm:Agent/dc:type/skos:Concept/@rdf:about",
+                    "label": "Type (person or organization)"
+                },
+                {
+                    "xpath": "edm:Agent/edm:begin",
+                    "label": "Date of birth or establishment"
+                },
+                {
+                    "xpath": "edm:Agent/edm:end",
+                    "label": "Date of death or termination"
+                },
+                {
+                    "xpath": "edm:Agent/rdaGr2:gender",
+                    "label": "Gender"
+                },
+                {
+                    "xpath": "edm:Agent/rdaGr2:biographicalInformation",
+                    "label": "Biographical description"
+                },
+                {
+                    "xpath": "edm:Agent/foaf:homepage/edm:WebResource/@rdf:about",
+                    "label": "Homepage"
+                },
+                {
+                    "xpath": "edm:Agent/foaf:basedNear/edm:Place/skos:prefLabel",
+                    "label": "Place of activity"
+                },
+                {
+                    "xpath": "edm:Agent/edmfp:nationality",
+                    "label": "Nationality"
+                }
+            ]
+        }
+    },
+}

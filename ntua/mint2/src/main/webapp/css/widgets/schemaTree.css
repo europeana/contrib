@@ -1,0 +1,42 @@
+.schema-tree-container {
+	border-radius: 10px;
+	background: #eee;
+	border: 1px solid silver;
+	z-index: 2;
+	overflow: hidden !important;
+	padding: 0px !important;
+	height: 100%;
+}
+
+.schema-tree {
+	height: 100%;
+	overflow: auto;
+	background: none !important;
+	padding: 10px;
+}
+
+.schema-tree .jstree-search {
+	background: #55d !important;
+	color: white !important;
+	font-weight: bold;
+}
+	
+.schema-tree-search {
+	background: #ddd;
+	border-radius: 10px 10px 0px 0px;
+	height: 25px;
+	padding: 10px;
+	box-shadow: 0 0 4px 0 black;
+}
+
+.schema-tree a .jstree-icon {
+	background:url(../../images/buttons/info.png) 0px 0px no-repeat !important;
+}
+
+.schema-tree a .jstree-icon:hover {
+	background:url(../../images/buttons/info_hover.png) 0px 0px no-repeat !important;
+}
+
+.schema-tree li[unique="true"] > a {
+	color: green !important;
+}
