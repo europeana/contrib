@@ -8,11 +8,14 @@
 	<groupId>gr.ntua</groupId>
 	<artifactId>mint2Maven</artifactId>
 	<packaging>war</packaging>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 	<name>mint2Maven</name>
+	<url>http://maven.apache.org</url>
+
 
 
 	<repositories>
+
 		<!-- Europeana Labs Java.net Maven 2 Repository (mirror) -->
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -20,15 +23,28 @@
 			<url>http://europeanalabs.eu/artifactory/java.net.m2</url>
 		</repository>
 
+
 		<!-- Europeana Labs UIM external libraries repository -->
 		<repository>
 			<id>europeanalabs.eu</id>
 			<name>europeanalabs.eu-releases</name>
 			<url>http://europeanalabs.eu/artifactory/ext-releases-local</url>
 		</repository>
+
+
+		<repository>
+			<id>java.net-m2</id>
+			<name>java.net - Maven 2</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/java.net-m2</url>
+		</repository>
+
+
 	</repositories>
 
+
+
 	<dependencies>
+
 		<dependency>
 			<groupId>gr.ntua.ivml</groupId>
 			<artifactId>MintPIThriftMessages</artifactId>
@@ -386,18 +402,4 @@
 
 		</plugins>
 	</build>
-	
-	<distributionManagement>
-		<repository>
-			<id>europeanalabs.eu</id>
-			<name>europeanalabs.eu-releases</name>
-			<url>http://europeanalabs.eu/artifactory/mint-releases-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>europeanalabs.eu</id>
-			<name>europeanalabs.eu-snapshots</name>
-			<url>http://europeanalabs.eu/artifactory/mint-releases-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-	
 </project>
