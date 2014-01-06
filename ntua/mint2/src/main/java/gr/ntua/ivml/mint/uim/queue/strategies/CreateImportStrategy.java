@@ -4,6 +4,7 @@ import gr.ntua.ivml.mint.concurrent.Queues;
 import gr.ntua.ivml.mint.concurrent.UploadIndexer;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.DataUpload;
+import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.uim.messages.schema.CreateImportAction;
 import gr.ntua.ivml.mint.uim.messages.schema.CreateImportCommand;
@@ -34,8 +35,10 @@ public class CreateImportStrategy implements MessageConsumerStrategy{
 		CreateImportCommand importCommand = command.getCreateImportCommand();
 		//do something on mint
 		long userId = -1;
+		long orgId = -1;
 		try{
 			userId = Long.parseLong(importCommand.getUserId());
+			orgId = Long.parseLong(importCommand.getOrganizationId());
 		}catch(Exception e){
 			JAXBElement el = createErrorMessage(message.getName().toString(), e.getMessage());
 			StrategyResponse resP = new StrategyResponse();
@@ -53,6 +56,7 @@ public class CreateImportStrategy implements MessageConsumerStrategy{
 			DB.getSession().beginTransaction();
 			User u = DB.getUserDAO().findById(userId, false);
 			
+			Organization org = DB.getOrganizationDAO().findById(orgId, false);
 			
 			DataUpload du;
 			
@@ -68,8 +72,8 @@ public class CreateImportStrategy implements MessageConsumerStrategy{
 			du.setUploadMethod(DataUpload.METHOD_REPOX);
 			du.setStructuralFormat(DataUpload.FORMAT_XML);
 
-			log.debug( "Import " + repoxSetName + " for Organization " + u.getOrganization().getEnglishName());
-			du.setOrganization(u.getOrganization());
+			log.debug( "Import " + repoxSetName + " for Organization " + org.getEnglishName());
+			du.setOrganization(org);
 			du.setOriginalFilename(repoxSetName);
 
 

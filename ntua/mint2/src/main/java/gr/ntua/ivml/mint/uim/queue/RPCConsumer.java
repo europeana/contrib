@@ -119,7 +119,8 @@ public class RPCConsumer implements Runnable{
 		while(running){
 			try {
 				delivery = consumer.nextDelivery();
-				JAXBElement command = unmarshalMessage(delivery.getBody());
+                String utfstr = new String(delivery.getBody(),"UTF-8"); 
+	            JAXBElement command = unmarshalMessage(utfstr.getBytes());
 				String commandClass = Config.get("uim.strategy." + command.getName().toString());
 				@SuppressWarnings("unchecked")
 				Class<MessageConsumerStrategy> claz = (Class<gr.ntua.ivml.mint.uim.queue.strategies.MessageConsumerStrategy>) classLoader.loadClass(commandClass);
