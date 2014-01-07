@@ -3,20 +3,8 @@
 <schema name="europeana" version="1.4">
   
   <!-- BM25FSimilarity overriding the default similarity -->
-   	<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory">
-			<lst name="bParams">
-				<float name="title">20</float>
-				<float name="author">1</float>
-				<float name="description">5</float>
-				<float name="text">1</float>
-			</lst>
-			<lst name="boosts">
-				<float name="title">20</float>
-				<float name="author">1</float>
-				<float name="description">5</float>
-				<float name="text">1</float>
-			</lst>
-	</similarity>
+   	<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
+
   <types>
   
 	

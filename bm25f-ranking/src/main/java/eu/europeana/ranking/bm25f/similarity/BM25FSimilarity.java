@@ -258,7 +258,14 @@ public class BM25FSimilarity extends Similarity {
 			this.cache = stats.cache;
 			this.queryBoost = stats.queryBoost;
 			// this.cache = stats.cache;
-			this.norms = (byte[]) norms.getSource().getArray();
+
+			if (norms != null) {
+				this.norms = (byte[]) norms.getSource().getArray();
+
+			} else {
+				logger.warn("norms == null");
+				this.norms = new byte[0];
+			}
 		}
 
 		@Override
@@ -323,6 +330,9 @@ public class BM25FSimilarity extends Similarity {
 
 	private Explanation explainScore(int doc, Explanation freq,
 			BM25FSimWeight stats, byte[] norms, float finalScore) {
+		boosts = params.getBoosts();
+		lengthBoosts = params.getbParams();
+		k1 = params.getK1();
 		Explanation result = new Explanation();
 		result.setDescription("score(doc=" + doc + ",field=" + stats.field
 				+ ", freq=" + freq + "), division of:");

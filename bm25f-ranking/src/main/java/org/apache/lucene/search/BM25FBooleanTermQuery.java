@@ -31,6 +31,7 @@ import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.ToStringUtils;
 
 import eu.europeana.ranking.bm25f.params.BM25FParameters;
+import eu.europeana.ranking.bm25f.similarity.BM25FSimilarity;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -68,8 +69,13 @@ public class BM25FBooleanTermQuery extends Query {
 			this.bm25fParams = bm25fParams;
 			this.termStates = termStates;
 
-			this.fieldTermStates = fieldTermStates;
 			this.similarity = searcher.getSimilarity();
+			if (this.similarity instanceof BM25FSimilarity) {
+
+				((BM25FSimilarity) this.similarity).setBM25FParams(bm25fParams);
+			}
+
+			this.fieldTermStates = fieldTermStates;
 			this.k1 = bm25fParams.getK1();
 			this.fields = bm25fParams.getFields();
 
