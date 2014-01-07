@@ -152,6 +152,12 @@
             			<systemProperty>
               				<name>solr.solr.home</name>
 							<value>${basedir}/src/test/resources/solr/</value>
+							
+            			</systemProperty>
+            			<systemProperty>
+              				<name>europeana.index.dir</name>
+							<value>/data/diego/europeana/data</value>
+							
             			</systemProperty>
          			</systemProperties>   
 				</configuration>

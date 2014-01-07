@@ -64,7 +64,7 @@
 	<!-- Data Directory Used to specify an alternate directory to hold all index 
 		data other than the default ./data under the Solr home. If replication is 
 		in use, this should match the replication configuration. -->
-	<dataDir>${solr.data.dir:}</dataDir>
+	<dataDir>${europeana.index.dir:}</dataDir>
 
 
 	<!-- The DirectoryFactory to use for indexes. solr.StandardDirectoryFactory 
