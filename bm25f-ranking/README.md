@@ -19,8 +19,7 @@ relevance of a document for a given query. Given a document d, having fields F, 
 produces a score of the document computed as follows:
 
 
-<img alt=" BM25F(q,d) = \sum_{t \in q}{TF(t,d) \cdot}" src=http://www.texify.com/img/%5CLARGE%5C%21%20BM25F%28q%2Cd%29%20%3D%20%5Csum_%7Bt%20%5Cin%20q%7D%7BTF%28t%2Cd%29%20%5Ccdot%7D.gif align=center border=0>
-
+![bm25f](http://www.texify.com/img/%5CLARGE%5C%21%20BM25F%28q%2Cd%29%20%3D%20%5Csum_%7Bt%20%5Cin%20q%7D%7BTF%28t%2Cd%29%20%5Ccdot%7D.gif)
 
 
 The [BM25F ranking function][bm25f] comes as a [Solr Query Parser plugig][solr]. In order to install
