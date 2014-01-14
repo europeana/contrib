@@ -1,11 +1,5 @@
 ## BM25F Ranking SOLR 4.0 plugin 
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-</script>
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 ### Introduction
 Ranking functions are one of the most important components of a document retrieval system. 
@@ -25,8 +19,7 @@ relevance of a document for a given query. Given a document d, having fields F, 
 produces a score of the document computed as follows:
 
 
-
-$$ BM25F(q,d) = \sum_{t \in q}{TF(t,d) \cdot} $$
+<img alt=" BM25F(q,d) = \sum_{t \in q}{TF(t,d) \cdot}" src=http://www.texify.com/img/%5CLARGE%5C%21%20BM25F%28q%2Cd%29%20%3D%20%5Csum_%7Bt%20%5Cin%20q%7D%7BTF%28t%2Cd%29%20%5Ccdot%7D.gif align=center border=0>
 
 
 
