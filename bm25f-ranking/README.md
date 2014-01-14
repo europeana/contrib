@@ -52,28 +52,31 @@ it, the following steps have to be performed:
 2. Move the jar in the lib folder of the core containing the your index folder, or in the main lib of solr ( see also [the CoreAdmin documentation][solr1]), please note that by default Solr does not have the lib folder, you’ll have to create it.
 3. Override the default Solr Similarity function with the BM25F Similarity function, i.e., open the ''schema.xml'' file in your core and add: 
 
-	<schema name="europeana" version="1.4">
-	<!-- BM25FSimilarity overriding the default similarity -->
-	<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
+		<schema name="europeana" version="1.4">
+			<!-- BM25FSimilarity overriding the default similarity -->
+			<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
     
 4. Add the new query type and the new query handler, i.e., open the ''solrconfig.xml'' file in your core and add:
-	<queryParser name="bm25f" class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
-	<str name="mainField">text</str>
-	<float name="k1">18.0</float>
-		<lst name="fieldsBoost">
-		<float name="text">3</float>
-		<float name="title">39.0</float>
-		<float name="author">8.0</float>
-		<float name="description">10.0</float>
-		</lst>
 		
-	<lst name="fieldsB">
-		<float name="text">0.15</float>
-		<float name="title">0.05</float>
-		<float name="author">0</float>
-		<float name="description">0.75</float>
-		</lst>
-	</queryParser>
+		<queryParser name="bm25f" class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
+			<str name="mainField">text</str>
+
+			<float name="k1">18.0</float>
+
+			<lst name="fieldsBoost">
+				<float name="text">3</float>
+				<float name="title">39.0</float>
+				<float name="author">8.0</float>
+				<float name="description">10.0</float>
+			</lst>
+		
+			<lst name="fieldsB">
+				<float name="text">0.15</float>
+				<float name="title">0.05</float>
+				<float name="author">0</float>
+				<float name="description">0.75</float>
+			</lst>
+		</queryParser>
 
 The configuration file allows the admin to change the parameters. The customizable parameters are:
   * **K1**, the saturation factor;
