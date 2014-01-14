@@ -58,7 +58,6 @@ it, the following steps have to be performed:
 		<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
     
 4. Add the new query type and the new query handler, i.e., open the ''solrconfig.xml'' file in your core and add:
-
 	<queryParser name="bm25f" class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
 		<str name="mainField">text</str>
 
