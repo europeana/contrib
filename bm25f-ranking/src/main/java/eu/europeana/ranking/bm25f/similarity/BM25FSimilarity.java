@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
 import eu.europeana.ranking.bm25f.params.BM25FParameters;
 
 /**
+ * BM25FSimililarity implements the BM25F similarity function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Nov 15, 2012
@@ -96,6 +98,9 @@ public class BM25FSimilarity extends Similarity {
 	/** Cache of decoded bytes. */
 	private static final float[] NORM_TABLE = new float[256];
 
+	// since lucene store the field lengths is a lossy format,
+	// which is encoded in 1 byte (i.e., 256 different values).
+	// the decoded values are stored in a cache.
 	static {
 		for (int i = 0; i < 256; i++) {
 			float f = SmallFloat.byte315ToFloat((byte) i);
@@ -146,6 +151,13 @@ public class BM25FSimilarity extends Similarity {
 
 	}
 
+	/**
+	 * Compute the average length for a field, given its stats.
+	 * 
+	 * @param the
+	 *            length statistics of a field.
+	 * @return the average length of the field.
+	 */
 	private float avgFieldLength(CollectionStatistics stats) {
 		// logger.info("sum total term freq \t {}", stats.sumTotalTermFreq());
 		// logger.info("doc count \t {}", stats.docCount());
@@ -189,14 +201,26 @@ public class BM25FSimilarity extends Similarity {
 	}
 
 	/**
-	 * Implemented as
+	 * Return the inverse document frequency (IDF), given the document frequency
+	 * and the number of document in a collection. Implemented as
+	 * 
 	 * <code>log(1 + (numDocs - docFreq + 0.5)/(docFreq + 0.5))</code>.
+	 * 
+	 * @param numDocs
+	 *            the number of documents in the index.
+	 * @param docFreq
+	 *            the number of documents containing the term
+	 * @return the inverse document frequency.
+	 * 
 	 */
 	protected float idf(long docFreq, long numDocs) {
 		return (float) Math.log(1 + (numDocs - docFreq + 0.5D)
 				/ (docFreq + 0.5D));
 	}
 
+	/**
+	 * @return the saturation parameter.
+	 */
 	public float getK1() {
 		return k1;
 	}
@@ -388,7 +412,7 @@ public class BM25FSimilarity extends Similarity {
 
 		@Override
 		public float score(int doc, float freq) {
-			// fixme
+			// FIXME compute score in sloppy sim scorer
 			return freq;
 		}
 

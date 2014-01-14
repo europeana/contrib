@@ -37,8 +37,10 @@ import eu.europeana.ranking.bm25f.similarity.BM25FSimilarity;
 
 /**
  * A Query that matches documents matching boolean combinations of other
- * queries, e.g. {@link TermQuery}s, {@link PhraseQuery}s or other
- * BooleanQuerys.
+ * queries, documents are scored using the BM25F ranking function [1].
+ * 
+ * [1] The probabilistic relevance framework: BM25 and beyond, Robertson,
+ * Stephen, Zaragoza, Hugo
  */
 public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> {
 
@@ -306,80 +308,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			result.setValue(score);
 
 			return result;
-			// int coord = 0;
-			// float sum = 0.0f;
-			// boolean fail = false;
-			// int shouldMatchCount = 0;
-			// Iterator<BooleanClause> cIter = clauses.iterator();
-			// for (Iterator<Weight> wIter = weights.iterator();
-			// wIter.hasNext();) {
-			// Weight w = wIter.next();
-			// BooleanClause c = cIter.next();
-			// if (w.scorer(context, true, true, context.reader().getLiveDocs())
-			// == null) {
-			// if (c.isRequired()) {
-			// fail = true;
-			// Explanation r = new Explanation(0.0f,
-			// "no match on required clause (" + c.getQuery().toString() + ")");
-			// sumExpl.addDetail(r);
-			// }
-			// continue;
-			// }
-			// Explanation e = w.explain(context, doc);
-			// if (e.isMatch()) {
-			// if (!c.isProhibited()) {
-			// sumExpl.addDetail(e);
-			// sum += e.getValue();
-			// coord++;
-			// } else {
-			// Explanation r =
-			// new Explanation(0.0f, "match on prohibited clause (" +
-			// c.getQuery().toString() + ")");
-			// r.addDetail(e);
-			// sumExpl.addDetail(r);
-			// fail = true;
-			// }
-			// if (c.getOccur() == Occur.SHOULD)
-			// shouldMatchCount++;
-			// } else if (c.isRequired()) {
-			// Explanation r = new Explanation(0.0f,
-			// "no match on required clause (" + c.getQuery().toString() + ")");
-			// r.addDetail(e);
-			// sumExpl.addDetail(r);
-			// fail = true;
-			// }
-			// }
-			// if (fail) {
-			// sumExpl.setMatch(Boolean.FALSE);
-			// sumExpl.setValue(0.0f);
-			// sumExpl.setDescription
-			// ("Failure to meet condition(s) of required/prohibited clause(s)");
-			// return sumExpl;
-			// } else if (shouldMatchCount < minShouldMatch) {
-			// sumExpl.setMatch(Boolean.FALSE);
-			// sumExpl.setValue(0.0f);
-			// sumExpl.setDescription("Failure to match minimum number "+
-			// "of optional clauses: " + minShouldMatch);
-			// return sumExpl;
-			// }
-			//
-			// sumExpl.setMatch(0 < coord ? Boolean.TRUE : Boolean.FALSE);
-			// sumExpl.setValue(sum);
-			//
-			// final float coordFactor = disableCoord ? 1.0f : coord(coord,
-			// maxCoord);
-			// if (coordFactor == 1.0f) {
-			// return sumExpl; // eliminate wrapper
-			// } else {
-			// ComplexExplanation result = new
-			// ComplexExplanation(sumExpl.isMatch(),
-			// sum*coordFactor,
-			// "product of:");
-			// result.addDetail(sumExpl);
-			// result.addDetail(new Explanation(coordFactor,
-			// "coord("+coord+"/"+maxCoord+")"));
-			// return result;
-			// }
+
 		}
 
 		@Override
@@ -483,49 +412,6 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 	@Override
 	public Query rewrite(IndexReader reader) throws IOException {
 		return this;
-		// // if (minNrShouldMatch == 0 && clauses.size() == 1) { // optimize
-		// 1-clause queries
-		// // BooleanClause c = clauses.get(0);
-		// // if (!c.isProhibited()) { // just return clause
-		// //
-		// // Query query = c.getQuery().rewrite(reader); // rewrite first
-		// //
-		// // if (getBoost() != 1.0f) { // incorporate boost
-		// // if (query == c.getQuery()) { // if rewrite was no-op
-		// // query = query.clone(); // then clone before boost
-		// // }
-		// // // Since the BooleanQuery only has 1 clause, the BooleanQuery will
-		// be
-		// // // written out. Therefore the rewritten Query's boost must
-		// incorporate both
-		// // // the clause's boost, and the boost of the BooleanQuery itself
-		// // query.setBoost(getBoost() * query.getBoost());
-		// // }
-		// //
-		// // return query;
-		// }
-		// }
-		//
-		// BM25FBooleanQuery clone = null; // recursively rewrite
-		// for (int i = 0 ; i < clauses.size(); i++) {
-		// BooleanClause c = clauses.get(i);
-		// Query query = c.getQuery().rewrite(reader);
-		// if (query != c.getQuery()) { // clause rewrote: must clone
-		// if (clone == null) {
-		// // The BooleanQuery clone is lazily initialized so only initialize
-		// // it if a rewritten clause differs from the original clause (and
-		// hasn't been
-		// // initialized already). If nothing differs, the clone isn't
-		// needlessly created
-		// clone = this.clone();
-		// }
-		// clone.clauses.set(i, new BooleanClause(query, c.getOccur()));
-		// }
-		// }
-		// if (clone != null) {
-		// return clone; // some clauses rewrote
-		// } else
-		// return this; // no clauses rewrote
 	}
 
 	// inherit javadoc

@@ -34,6 +34,9 @@ import eu.europeana.ranking.bm25f.params.BM25FParameters;
 import eu.europeana.ranking.bm25f.similarity.BM25FSimilarity;
 
 /**
+ * A boolean query made by only one term. Documents are scored using the BM25F
+ * ranking function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Nov 25, 2012
@@ -152,44 +155,12 @@ public class BM25FBooleanTermQuery extends Query {
 
 		}
 
-		// /**
-		// * Returns a {@link TermsEnum} positioned at this weights Term or null
-		// * if the term does not exist in the given context
-		// */
-		// private TermsEnum getTermsEnum(AtomicReaderContext context, String
-		// field, int fieldPos)
-		// throws IOException {
-		// final TermState state = fieldTermStates[fieldPos].get(context.ord);
-		// Term t = new Term(field, term.text());
-		// if (state == null) { // term is not present in that reader
-		// assert termNotInReader(context.reader(), field, t.bytes()) :
-		// "no termstate found but term exists in reader term="
-		// + t;
-		// return null;
-		// }
-		// // System.out.println("LD=" + reader.getLiveDocs() + " set?=" +
-		// // (reader.getLiveDocs() != null ? reader.getLiveDocs().get(0) :
-		// // "null"));
-		// final TermsEnum termsEnum = context.reader().terms(field)
-		// .iterator(null);
-		// termsEnum.seekExact(t.bytes(), state);
-		// return termsEnum;
-		// }
-
 		private DocsEnum getDocsEnum(AtomicReaderContext context, String field)
 				throws IOException {
 
 			return context.reader().termDocsEnum(new Term(field, term.text()));
 
 		}
-
-		// private boolean termNotInReader(AtomicReader reader, String field,
-		// BytesRef bytes) throws IOException {
-		// // only called from assert
-		// // System.out.println("TQ.termNotInReader reader=" + reader +
-		// // " term=" + field + ":" + bytes.utf8ToString());
-		// return reader.docFreq(field, bytes) == 0;
-		// }
 
 		@Override
 		public Explanation explain(AtomicReaderContext context, int doc)

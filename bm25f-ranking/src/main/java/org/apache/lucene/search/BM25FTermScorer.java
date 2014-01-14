@@ -22,6 +22,9 @@ import org.apache.lucene.search.BM25FBooleanTermQuery.BM25FTermWeight;
 import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
 
 /**
+ * Scorer for a query composed by only one term. Documents are scored using the
+ * BM25F ranking function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Nov 25, 2012

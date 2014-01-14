@@ -1131,24 +1131,22 @@
 	<queryParser name="bm25f"
 		class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
 		<str name="mainField">text</str>
-	    
+
 		<float name="k1">18.0</float>
 
 		<lst name="fieldsBoost">
-			<float name="title">20</float>
-				<float name="text">1</float>
-				<float name="description">5</float>
-				<float name="subject">0.5</float>
-				<float name="what">1</float>
+			<float name="text">3</float>
+			<float name="title">39.0</float>
+			<float name="author">8.0</float>
+			<float name="description">10.0</float>
 		</lst>
 		<lst name="fieldsB">
-			<float name="title">0.2</float>
-				<float name="text">1</float>
-				<float name="description">5</float>
-				<float name="subject">0.5</float>
-				<float name="what">1</float>
+			<float name="text">0.15</float>
+			<float name="title">0.05</float>
+			<float name="author">0</float>
+			<float name="description">0.75</float>
 		</lst>
-		
+
 	</queryParser>
 
 
