@@ -55,6 +55,8 @@ it, the following steps have to be performed:
 		<schema name="europeana" version="1.4">
 			<!-- BM25FSimilarity overriding the default similarity -->
 			<similarity class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
+			...
+		</schema>
     
 4. Add the new query type and the new query handler, i.e., open the ''solrconfig.xml'' file in your core and add:
 		
