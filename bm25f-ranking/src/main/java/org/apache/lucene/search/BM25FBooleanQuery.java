@@ -494,11 +494,4 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 				&& this.disableCoord == other.disableCoord;
 	}
 
-	/** Returns a hash code value for this object. */
-	@Override
-	public int hashCode() {
-		return Float.floatToIntBits(getBoost()) ^ clauses.hashCode()
-				+ getMinimumNumberShouldMatch() + (disableCoord ? 17 : 0);
-	}
-
 }
