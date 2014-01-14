@@ -44,13 +44,44 @@ BM25F can be considered the state of the art of ranking functions in multi-field
 
 ### BM25F Solr Plugin
 
-The [BM25F ranking function][bm25f] comes as a [Solr Query Parser plugig][solr]. In order to install
-it, the following steps have to be performed. 
+The [BM25F ranking function][bm25f] comes as a [Solr Query Parser plugin][solr]. In order to install
+it, the following steps have to be performed: 
+
+1. Create a jar of the module ./bm25f-solr-ranking containing all the dependences.  Run the command mvn assembly:assembly within the ./bm25f-solr-ranking folder will produce the jar in the target folder, (i.e. ''bm25f-solr-ranking-xx-jar-with-dependencies.jar'')
+
+2. Move the jar in the lib folder of the core containing the your index folder, or in the main lib of solr ( see also [the CoreAdmin documentation][solr1]), please note that by default Solr does not have the lib folder, you’ll have to create it.
+3. Add the new query type and the new query handler, i.e., open the ''solrconfig.xml'' file of your core and add:
+
+	<queryParser name="bm25f" class="eu.europeana.ranking.bm25f.BM25FParserPlugin">
+		<str name="mainField">text</str>
+
+		<float name="k1">18.0</float>
+
+		<lst name="fieldsBoost">
+			<float name="text">3</float>
+			<float name="title">39.0</float>
+			<float name="author">8.0</float>
+			<float name="description">10.0</float>
+		</lst>
+		
+		<lst name="fieldsB">
+			<float name="text">0.15</float>
+			<float name="title">0.05</float>
+			<float name="author">0</float>
+			<float name="description">0.75</float>
+		</lst>
+
+	</queryParser>
+
+
+
+
 
 
 [bm25]: http://dl.acm.org/citation.cfm?id=188561 "Some simple effective approximations to the 2-Poisson model for probabilistic weighted retrieval, SE Robertson, S Walker - SIGIR 1994"
 [bm25f]: http://dl.acm.org/citation.cfm?id=1031181 "Simple BM25 extension to multiple weighted fields, S Robertson, H Zaragoza, M Taylor, CIKM 2004"
 [bm25f2]: http://dl.acm.org/citation.cfm?id=1704810 "The Probabilistic Relevance Framework: BM25 and Beyond"
 [solr]: http://wiki.apache.org/solr/SolrPlugins 
+[solr1]: http://wiki.apache.org/solr/CoreAdmin
 
 
