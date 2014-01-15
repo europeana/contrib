@@ -269,14 +269,13 @@ public class BM25FSimilarity extends Similarity {
 
 		private final BM25FSimWeight stats;
 		private final float queryBoost;
-		private final byte[] norms;
+		private byte[] norms;
 		private final float[] cache;
 
 		// private final float[] cache;
 
 		BM25FExactSimScorer(BM25FSimWeight stats, DocValues norms)
 				throws IOException {
-			assert norms != null;
 
 			this.stats = stats;
 			this.cache = stats.cache;
@@ -286,14 +285,20 @@ public class BM25FSimilarity extends Similarity {
 			if (norms != null) {
 				this.norms = (byte[]) norms.getSource().getArray();
 
-			} else {
-				logger.warn("norms == null");
-				this.norms = new byte[0];
+			}
+
+			else {
+				logger.warn("norms == null for field {} ", stats.getField());
+				// this.norms = new byte[0];
 			}
 		}
 
 		@Override
 		public float score(int doc, int freq) {
+			if (norms == null) {
+				return queryBoost * freq
+						/ (1 - params.getbParams().get(stats.getField()));
+			}
 			return queryBoost * freq / cache[norms[doc] & 0xFF];
 		}
 
@@ -350,6 +355,11 @@ public class BM25FSimilarity extends Similarity {
 			// this.topLevelBoost = topLevelBoost;
 			// this.weight = queryBoost * topLevelBoost;
 		}
+
+		public String getField() {
+			return field;
+		}
+
 	}
 
 	private Explanation explainScore(int doc, Explanation freq,

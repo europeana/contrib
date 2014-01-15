@@ -481,17 +481,36 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 		return buffer.toString();
 	}
 
-	/** Returns true iff <code>o</code> is equal to this. */
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof BooleanQuery))
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((bm25fparams == null) ? 0 : bm25fparams.hashCode());
+		result = prime * result + ((clauses == null) ? 0 : clauses.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
 			return false;
-		BM25FBooleanQuery other = (BM25FBooleanQuery) o;
-		return (this.getBoost() == other.getBoost())
-				&& this.clauses.equals(other.clauses)
-				&& this.getMinimumNumberShouldMatch() == other
-						.getMinimumNumberShouldMatch()
-				&& this.disableCoord == other.disableCoord;
+		if (getClass() != obj.getClass())
+			return false;
+		BM25FBooleanQuery other = (BM25FBooleanQuery) obj;
+		if (bm25fparams == null) {
+			if (other.bm25fparams != null)
+				return false;
+		} else if (!bm25fparams.equals(other.bm25fparams))
+			return false;
+		if (clauses == null) {
+			if (other.clauses != null)
+				return false;
+		} else if (!clauses.equals(other.clauses))
+			return false;
+		return true;
 	}
 
 }
