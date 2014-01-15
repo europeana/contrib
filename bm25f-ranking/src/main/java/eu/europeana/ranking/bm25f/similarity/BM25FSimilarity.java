@@ -387,9 +387,15 @@ public class BM25FSimilarity extends Similarity {
 		Explanation averageLength = new Explanation(stats.avgdl,
 				"avgFieldLength(" + stats.field + ")");
 
-		float length = decodeNormValue(norms[doc]);
-		Explanation fieldLength = new Explanation(length, "length("
-				+ stats.field + ")");
+		float length = -1;
+		Explanation fieldLength;
+		if (norms != null) {
+			length = decodeNormValue(norms[doc]);
+			fieldLength = new Explanation(length, "length(" + stats.field + ")");
+		} else {
+			fieldLength = new Explanation(-1, "NONORMS - length(" + stats.field
+					+ ")");
+		}
 
 		Explanation product = new Explanation();
 		product.setDescription("denominator: ((1 - bField) + bField * length / avgFieldLength) :");
