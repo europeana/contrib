@@ -18,25 +18,25 @@ package org.apache.lucene.search;
 import java.io.IOException;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.AtomicReaderContext;
-import org.apache.lucene.index.DocsAndPositionsEnum;
 import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexReaderContext;
 import org.apache.lucene.index.ReaderUtil;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermContext;
-import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
 import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.ToStringUtils;
 
-import eu.europeana.ranking.bm25f.enums.SolrFields;
+import eu.europeana.ranking.bm25f.params.BM25FParameters;
 import eu.europeana.ranking.bm25f.similarity.BM25FSimilarity;
 
 /**
+ * A boolean query made by only one term. Documents are scored using the BM25F
+ * ranking function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Nov 25, 2012
@@ -45,9 +45,10 @@ public class BM25FBooleanTermQuery extends Query {
 	private final Term term;
 	private final int docFreq;
 	private final TermContext perReaderTermState;
+	private final BM25FParameters bm25fParams;
 
-	//private String defaultField = SolrFields.getInstance().getDefaultField();
-	private String[] fields = SolrFields.getInstance().getFieldNames();
+	// private String defaultField = SolrFields.getInstance().getDefaultField();
+	private String[] fields;
 
 	final class BM25FTermWeight extends Weight {
 		private final Similarity similarity;
@@ -56,7 +57,8 @@ public class BM25FBooleanTermQuery extends Query {
 		private final TermContext[] fieldTermStates;
 		float idf;
 		public float k1;
-		private String[] fields;
+		private final String[] fields;
+		private final BM25FParameters bm25fParams;
 
 		protected float idf(long docFreq, long numDocs) {
 			return (float) Math.log(1 + (numDocs - docFreq + 0.5D)
@@ -64,24 +66,21 @@ public class BM25FBooleanTermQuery extends Query {
 		}
 
 		public BM25FTermWeight(IndexSearcher searcher, TermContext termStates,
-				TermContext[] fieldTermStates) throws IOException {
+				TermContext[] fieldTermStates, BM25FParameters bm25fParams)
+				throws IOException {
 			assert termStates != null : "TermContext must not be null";
+			this.bm25fParams = bm25fParams;
 			this.termStates = termStates;
 
-			this.fieldTermStates = fieldTermStates;
 			this.similarity = searcher.getSimilarity();
-
-			
 			if (this.similarity instanceof BM25FSimilarity) {
-				if(StringUtils.equals(SolrFields.getInstance().getDefaultField(), term.field())){
-					fields = ((BM25FSimilarity) similarity).getFields();
-				} else {
-					fields = new String[]{term.field()};
-				}
-				k1 = ((BM25FSimilarity) similarity).getK1();
-			} else {
-				fields = new String[] { term.field() };
+
+				((BM25FSimilarity) this.similarity).setBM25FParams(bm25fParams);
 			}
+
+			this.fieldTermStates = fieldTermStates;
+			this.k1 = bm25fParams.getK1();
+			this.fields = bm25fParams.getFields();
 
 			this.stats = new Similarity.SimWeight[fields.length];
 			for (int i = 0; i < fields.length; i++) {
@@ -91,7 +90,7 @@ public class BM25FBooleanTermQuery extends Query {
 						searcher.collectionStatistics(fieldTerm.field()),
 						searcher.termStatistics(fieldTerm, fieldTermStates[i]));
 			}
-			System.out.println("term field is " + term.field());
+			// System.out.println("term field is " + term.field());
 			Term fieldTerm = new Term(term.text(), term.field());
 			TermStatistics termStat = searcher.termStatistics(fieldTerm,
 					termStates);
@@ -134,7 +133,7 @@ public class BM25FBooleanTermQuery extends Query {
 
 			ExactSimScorer[] scorers = new ExactSimScorer[stats.length];
 			DocsEnum[] docsEnums = new DocsEnum[stats.length];
-			//TermsEnum termDocs = null;
+			// TermsEnum termDocs = null;
 			DocsEnum docsEnum = null;
 			for (int i = 0; i < stats.length; i++) {
 				// termDocs = getTermsEnum(context, fields[i],i);
@@ -156,47 +155,12 @@ public class BM25FBooleanTermQuery extends Query {
 
 		}
 
-		// /**
-		// * Returns a {@link TermsEnum} positioned at this weights Term or null
-		// * if the term does not exist in the given context
-		// */
-		// private TermsEnum getTermsEnum(AtomicReaderContext context, String
-		// field, int fieldPos)
-		// throws IOException {
-		// final TermState state = fieldTermStates[fieldPos].get(context.ord);
-		// Term t = new Term(field, term.text());
-		// if (state == null) { // term is not present in that reader
-		// assert termNotInReader(context.reader(), field, t.bytes()) :
-		// "no termstate found but term exists in reader term="
-		// + t;
-		// return null;
-		// }
-		// // System.out.println("LD=" + reader.getLiveDocs() + " set?=" +
-		// // (reader.getLiveDocs() != null ? reader.getLiveDocs().get(0) :
-		// // "null"));
-		// final TermsEnum termsEnum = context.reader().terms(field)
-		// .iterator(null);
-		// termsEnum.seekExact(t.bytes(), state);
-		// return termsEnum;
-		// }
+		private DocsEnum getDocsEnum(AtomicReaderContext context, String field)
+				throws IOException {
 
-		private DocsEnum getDocsEnum(AtomicReaderContext context, String field
-				) throws IOException {
-
-			return context.reader().termDocsEnum(
-					null, field,
-					new Term(field, term.text()).bytes());
+			return context.reader().termDocsEnum(new Term(field, term.text()));
 
 		}
-
-		
-//		private boolean termNotInReader(AtomicReader reader, String field,
-//				BytesRef bytes) throws IOException {
-//			// only called from assert
-//			// System.out.println("TQ.termNotInReader reader=" + reader +
-//			// " term=" + field + ":" + bytes.utf8ToString());
-//			return reader.docFreq(field, bytes) == 0;
-//		}
 
 		@Override
 		public Explanation explain(AtomicReaderContext context, int doc)
@@ -256,29 +220,33 @@ public class BM25FBooleanTermQuery extends Query {
 	}
 
 	/** Constructs a query for the term <code>t</code>. */
-	public BM25FBooleanTermQuery(Term t) {
-		this(t, -1);
+	public BM25FBooleanTermQuery(Term t, BM25FParameters bm25fParams) {
+		this(t, -1, bm25fParams);
 	}
 
 	/**
 	 * Expert: constructs a TermQuery that will use the provided docFreq instead
 	 * of looking up the docFreq against the searcher.
 	 */
-	public BM25FBooleanTermQuery(Term t, int docFreq) {
+	public BM25FBooleanTermQuery(Term t, int docFreq,
+			BM25FParameters bm25fParams) {
 		term = t;
 		this.docFreq = docFreq;
 		perReaderTermState = null;
+		this.bm25fParams = bm25fParams;
 	}
 
 	/**
 	 * Expert: constructs a TermQuery that will use the provided docFreq instead
 	 * of looking up the docFreq against the searcher.
 	 */
-	public BM25FBooleanTermQuery(Term t, TermContext states) {
+	public BM25FBooleanTermQuery(Term t, TermContext states,
+			BM25FParameters bm25fParams) {
 		assert states != null;
 		term = t;
 		docFreq = states.docFreq();
 		perReaderTermState = states;
+		this.bm25fParams = bm25fParams;
 	}
 
 	/** Returns the term of this query. */
@@ -288,6 +256,7 @@ public class BM25FBooleanTermQuery extends Query {
 
 	@Override
 	public Weight createWeight(IndexSearcher searcher) throws IOException {
+		fields = bm25fParams.getFields();
 		final IndexReaderContext context = searcher.getTopReaderContext();
 		final TermContext termState;
 		if (perReaderTermState == null
@@ -312,7 +281,8 @@ public class BM25FBooleanTermQuery extends Query {
 		if (docFreq != -1)
 			termState.setDocFreq(docFreq);
 
-		return new BM25FTermWeight(searcher, termState, fieldTermContext);
+		return new BM25FTermWeight(searcher, termState, fieldTermContext,
+				bm25fParams);
 	}
 
 	@Override

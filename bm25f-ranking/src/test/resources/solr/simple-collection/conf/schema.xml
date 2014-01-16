@@ -4,20 +4,7 @@
 
 	<!-- BM25FSimilarity overriding the default similarity -->
 	<similarity
-		class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory">
-		<lst name="bParams">
-			<float name="title">0.5</float>
-			<float name="author">1</float>
-			<float name="description">0.7</float>
-			<!-- float name="text">1</float -->
-		</lst>
-		<lst name="boosts">
-			<float name="title">20</float>
-			<float name="author">1</float>
-			<float name="description">5</float>
-			<!-- float name="text">1</float -->
-		</lst>
-	</similarity>
+		class="eu.europeana.ranking.bm25f.similarity.BM25FSimilarityFactory" />
 	<types>
 
 
@@ -115,7 +102,7 @@
 		<!-- SEVERE: Unable to use updateLog: _version_field must exist in schema -->
 		<field name="_version_" type="long" indexed="true" stored="true"
 			multiValued="false" />
-		<!-- / - -->
+		
 
 
 

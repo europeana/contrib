@@ -16,7 +16,9 @@
  */
 package eu.europeana.ranking.bm25f;
 
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.solr.common.params.SolrParams;
@@ -24,66 +26,83 @@ import org.apache.solr.common.util.NamedList;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.search.QParser;
 import org.apache.solr.search.QParserPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import eu.europeana.ranking.bm25f.enums.SolrFields;
 import eu.europeana.ranking.bm25f.params.BM25FParameters;
-
-
 
 public class BM25FParserPlugin extends QParserPlugin {
 
 	public static String NAME = "bm25f";
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(BM25FParserPlugin.class);
+
+	BM25FParameters bmParams;
 
 	@Override
 	public QParser createParser(String qstr, SolrParams localParams,
 			SolrParams params, SolrQueryRequest req) {
-		
-		req.getSchema();
-		SolrFields solrFields =SolrFields.getInstance();
-		if(solrFields.getDefaultField()==null){
-			solrFields.setDefaultField(req.getSchema().getDefaultSearchFieldName());
-		}
-		if(solrFields.getBoosts()==null){
-			solrFields.createSimilarityFields(params.toNamedList());
-		}
-		
-		return new BM25FQueryParser(qstr, localParams,params,req);
+
+		return new BM25FQueryParser(qstr, localParams, params, req, bmParams);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void init(NamedList args) {
-//		BM25FParameters bmParams = new BM25FParameters();
-//		if (args != null) {
-//			float k1 = (Float) args.get("k1");
-//			String mainField = (String) args.get("mainField");
-//
-//			Map<String, String> averageLengthFields = SolrParams
-//					.toMap((NamedList) args.get("averageLengthFields"));
-//			Map<String, String> fieldsBoost = SolrParams.toMap((NamedList) args
-//					.get("fieldsBoost"));
-//			Map<String, String> fieldsB = SolrParams.toMap((NamedList) args
-//					.get("fieldsB"));
-//			Object[] tmp = averageLengthFields.keySet().toArray();
-//			String[] fields = new String[tmp.length];
-//			for (int i = 0; i < tmp.length; i++)
-//				fields[i] = (String) tmp[i];
-//
-//			Float[] boosts = new Float[fields.length];
-//			Float[] bParams = new Float[fields.length];
-//			for (int i = 0; i < fields.length; i++) {
-//				boosts[i] = Float.parseFloat(fieldsBoost.get(fields[i]));
-//				bParams[i] = Float.parseFloat(fieldsB.get(fields[i]));
-//				float avg = Float
-//						.parseFloat(averageLengthFields.get(fields[i]));
-//			//	bmParams.setAverageLength(fields[i], avg);
-//			}
-//			bmParams.setK1(k1);
-//			bmParams.setBoosts(boosts);
-//			bmParams.setFields(fields);
-//			bmParams.setbParams(bParams);
-	
-	//	 }
-	}
 
+		bmParams = new BM25FParameters();
+		if (args == null) {
+			return;
+		}
+
+		String mainField = (String) args.get("mainField");
+		bmParams.setMainField(mainField);
+
+		Object o = args.get("k1");
+		if (o == null) {
+			logger.warn("cannot find k1 parameter in solr config");
+			logger.warn("using default values");
+			return;
+		}
+		float k1 = (Float) o;
+		logger.info("K1 = " + k1);
+		o = args.get("fieldsBoost");
+		if (o == null) {
+			logger.warn("cannot find fieldsBoost parameter in solr config");
+			logger.warn("using default values");
+			return;
+		}
+		Map<String, String> fieldsBoost = SolrParams.toMap((NamedList) o);
+		o = args.get("fieldsB");
+		if (o == null) {
+			logger.warn("cannot find fieldsB parameter in solr config");
+			logger.warn("using default values");
+			return;
+		}
+		Map<String, String> fieldsB = SolrParams.toMap((NamedList) o);
+		List<String> f = new ArrayList<String>();
+		for (String ffield : fieldsBoost.keySet()) {
+			f.add(ffield);
+		}
+
+		Collections.sort(f);
+
+		String[] fields = f.toArray(new String[f.size()]);
+
+		Float[] boosts = new Float[fields.length];
+		Float[] bParams = new Float[fields.length];
+
+		for (int i = 0; i < fields.length; i++) {
+			boosts[i] = Float.parseFloat(fieldsBoost.get(fields[i]));
+			bParams[i] = Float.parseFloat(fieldsB.get(fields[i]));
+		}
+
+		bmParams.setFields(fields);
+
+		bmParams.setBoosts(boosts);
+
+		bmParams.setbParams(bParams);
+		bmParams.setK1(k1);
+
+	}
 }

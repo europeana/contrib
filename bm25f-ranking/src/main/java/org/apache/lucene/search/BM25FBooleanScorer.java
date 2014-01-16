@@ -22,15 +22,24 @@ import java.util.List;
 
 import org.apache.lucene.search.BM25FBooleanQuery.BM25FBooleanWeight;
 
-
+/**
+ * Implements a Boolean Scorer, scores are computed using the BM25F similarity
+ * function.
+ * 
+ * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+ * 
+ *         Created on Jan 14, 2014
+ */
 final class BM25FBooleanScorer extends Scorer {
 
 	private int docID = NO_MORE_DOCS;
 	private boolean initialized = false;
-	private Scorer[] requiredScorers;
-	private Scorer[] optionalScorers;
-	private Scorer[] prohibitedScorers;
+	private final Scorer[] requiredScorers;
+	private final Scorer[] optionalScorers;
+	private final Scorer[] prohibitedScorers;
 
+	// min number of terms that should match in a document, in order to return
+	// it.
 	int minNrShouldMatch;
 
 	BM25FBooleanScorer(BM25FBooleanWeight weight, boolean disableCoord,
@@ -38,7 +47,7 @@ final class BM25FBooleanScorer extends Scorer {
 			List<Scorer> optionalScorers, List<Scorer> prohibitedScorers,
 			int maxCoord) throws IOException {
 		super(weight);
-		
+
 		this.requiredScorers = requiredScorers
 				.toArray(new Scorer[requiredScorers.size()]);
 		this.optionalScorers = optionalScorers
@@ -46,10 +55,10 @@ final class BM25FBooleanScorer extends Scorer {
 		this.prohibitedScorers = prohibitedScorers
 				.toArray(new Scorer[prohibitedScorers.size()]);
 		this.minNrShouldMatch = minNrShouldMatch;
-		if (this.minNrShouldMatch  == 0) {
+		if (this.minNrShouldMatch == 0) {
 			this.minNrShouldMatch = this.requiredScorers.length;
 		}
-		if (this.minNrShouldMatch  == 0) {
+		if (this.minNrShouldMatch == 0) {
 			this.minNrShouldMatch = this.optionalScorers.length;
 		}
 
@@ -103,12 +112,10 @@ final class BM25FBooleanScorer extends Scorer {
 
 	}
 
-
 	@Override
 	public int docID() {
 		return docID;
 	}
-
 
 	@Override
 	public int nextDoc() throws IOException {
@@ -119,71 +126,65 @@ final class BM25FBooleanScorer extends Scorer {
 
 		}
 
-
-
 		int min = NO_MORE_DOCS;
 		int count = 0;
 		boolean prohibited = true;
-		while (count < minNrShouldMatch || (prohibited)){
-				min = NO_MORE_DOCS;
-				prohibited = false;
-				int i,j,k = 0;
-				count = 0;
-				for (i = 0; i < requiredScorers.length ; i++){
-					if (requiredScorers[i].docID() == NO_MORE_DOCS) {
-						continue;
-					}
-					if (requiredScorers[i].docID()  == docID) {
-						requiredScorers[i].nextDoc();
-					}
-					if (requiredScorers[i].docID()  == min) {
-						count++;
-					}
-					if (requiredScorers[i].docID()  < min) {
-						min = requiredScorers[i].docID();
-						count = 1;
-					}
+		while (count < minNrShouldMatch || (prohibited)) {
+			min = NO_MORE_DOCS;
+			prohibited = false;
+			int i, j, k = 0;
+			count = 0;
+			for (i = 0; i < requiredScorers.length; i++) {
+				if (requiredScorers[i].docID() == NO_MORE_DOCS) {
+					continue;
 				}
-				for (j = 0; j < optionalScorers.length ; j++){
-					if (optionalScorers[j].docID() == NO_MORE_DOCS) {
-						continue;
-					}
-					if (optionalScorers[j].docID()  == docID) {
-						optionalScorers[j].nextDoc();
-					}
-					if (optionalScorers[j].docID()  == min) {
-						count++;
-					}
-					if (optionalScorers[j].docID()  < min) {
-						min = optionalScorers[j].docID();
-						count = 1;
-					}
+				if (requiredScorers[i].docID() == docID) {
+					requiredScorers[i].nextDoc();
 				}
-				for (k = 0; k < prohibitedScorers.length ; k++){
-					if (prohibitedScorers[k].docID() == NO_MORE_DOCS) {
-						continue;
-					}
-					if (prohibitedScorers[k].docID()  == docID) {
-						prohibitedScorers[k].nextDoc();
-					}
-					if (prohibitedScorers[k].docID()  == min) {
-						prohibited = true;
-						break;
-					}
-	
+				if (requiredScorers[i].docID() == min) {
+					count++;
 				}
-				
-				
-				
-				
-				
-				docID = min; // --> doc = min doc
-				if (docID == NO_MORE_DOCS) break;
-			
+				if (requiredScorers[i].docID() < min) {
+					min = requiredScorers[i].docID();
+					count = 1;
+				}
+			}
+			for (j = 0; j < optionalScorers.length; j++) {
+				if (optionalScorers[j].docID() == NO_MORE_DOCS) {
+					continue;
+				}
+				if (optionalScorers[j].docID() == docID) {
+					optionalScorers[j].nextDoc();
+				}
+				if (optionalScorers[j].docID() == min) {
+					count++;
+				}
+				if (optionalScorers[j].docID() < min) {
+					min = optionalScorers[j].docID();
+					count = 1;
+				}
+			}
+			for (k = 0; k < prohibitedScorers.length; k++) {
+				if (prohibitedScorers[k].docID() == NO_MORE_DOCS) {
+					continue;
+				}
+				if (prohibitedScorers[k].docID() == docID) {
+					prohibitedScorers[k].nextDoc();
+				}
+				if (prohibitedScorers[k].docID() == min) {
+					prohibited = true;
+					break;
+				}
+
+			}
+
+			docID = min; // --> doc = min doc
+			if (docID == NO_MORE_DOCS)
+				break;
+
 		}
 		return docID;
 	}
-
 
 	@Override
 	public int advance(int target) throws IOException {

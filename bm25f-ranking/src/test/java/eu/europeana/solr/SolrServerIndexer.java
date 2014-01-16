@@ -41,13 +41,14 @@ public class SolrServerIndexer {
 
 		try {
 			logger.info("indexing test data");
-			solrServer.add(ZipFileUtils.readDocuments("./src/test/resources/tiny-test-dataset.zip"));
+			solrServer
+					.add(ZipFileUtils
+							.readDocuments("./src/test/resources/tiny-test-dataset.zip"));
 			logger.info("done indexing test data");
-		}
-		catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
