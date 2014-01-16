@@ -289,7 +289,7 @@ public class BM25FSimilarity extends Similarity {
 
 			else {
 				logger.warn("norms == null for field {} ", stats.getField());
-				// this.norms = new byte[0];
+				this.norms = null;
 			}
 		}
 
