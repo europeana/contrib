@@ -104,6 +104,7 @@ public class BM25FSimilarity extends Similarity {
 	static {
 		for (int i = 0; i < 256; i++) {
 			float f = SmallFloat.byte315ToFloat((byte) i);
+			System.out.println(i + "\t-> " + f);
 			NORM_TABLE[i] = 1.0f / (f * f);
 		}
 	}
