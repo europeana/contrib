@@ -105,8 +105,9 @@ public class BM25FSimilarity extends Similarity {
 		NORM_TABLE[0] = 0;
 		for (int i = 1; i < 256; i++) {
 			float f = SmallFloat.byte315ToFloat((byte) i);
-			System.out.println(i + "\t-> " + f);
+
 			NORM_TABLE[i] = 1.0f / (f * f);
+			System.out.println(i + "\t-> " + NORM_TABLE[i]);
 		}
 	}
 
@@ -257,6 +258,7 @@ public class BM25FSimilarity extends Similarity {
 		for (int i = 0; i < cache.length; i++) {
 			cache[i] = ((1 - bField) + bField * decodeNormValue((byte) i)
 					/ avgdl);
+			System.out.println("cache " + i + "\t" + cache[i]);
 		}
 
 		return new BM25FSimWeight(field, idf, boost, avgdl, cache, k1);
