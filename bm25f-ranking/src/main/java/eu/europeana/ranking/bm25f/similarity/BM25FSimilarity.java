@@ -269,7 +269,7 @@ public class BM25FSimilarity extends Similarity {
 
 		private final BM25FSimWeight stats;
 		private final float queryBoost;
-		private byte[] norms;
+		private final byte[] norms;
 		private final float[] cache;
 
 		// private final float[] cache;
@@ -282,15 +282,8 @@ public class BM25FSimilarity extends Similarity {
 			this.queryBoost = stats.queryBoost;
 			// this.cache = stats.cache;
 
-			if (norms != null) {
-				this.norms = (byte[]) norms.getSource().getArray();
-
-			}
-
-			else {
-				logger.warn("norms == null for field {} ", stats.getField());
-				this.norms = null;
-			}
+			this.norms = norms == null ? null : (byte[]) norms.getSource()
+					.getArray();
 		}
 
 		@Override
