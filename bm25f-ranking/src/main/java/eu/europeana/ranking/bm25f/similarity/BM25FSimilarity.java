@@ -298,6 +298,8 @@ public class BM25FSimilarity extends Similarity {
 
 		@Override
 		public Explanation explain(int doc, Explanation freq) {
+			System.out
+					.println("explain " + this.getClass() + " norms " + norms);
 			return explainScore(doc, freq, stats, norms,
 					score(doc, (int) freq.getValue()));
 		}
@@ -431,6 +433,9 @@ public class BM25FSimilarity extends Similarity {
 
 		@Override
 		public Explanation explain(int doc, Explanation freq) {
+			System.out
+					.println("explain " + this.getClass() + " norms " + norms);
+
 			return explainScore(doc, freq, stats, norms,
 					score(doc, freq.getValue()));
 		}
