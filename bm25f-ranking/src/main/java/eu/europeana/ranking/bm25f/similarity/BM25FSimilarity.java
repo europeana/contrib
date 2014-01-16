@@ -298,7 +298,7 @@ public class BM25FSimilarity extends Similarity {
 			// return queryBoost * freq / cache[norms[doc] & 0xFF];
 			if (bParams == null || boosts == null || stats.field == null
 					|| !bParams.containsKey(stats.field)) {
-				logger.warn("bm25f not initialited... ");
+				// bm25f not initialited... ignore
 				return 1.0f;
 			}
 			float bField = bParams.get(stats.field);
