@@ -391,6 +391,8 @@ public class BM25FSimilarity extends Similarity {
 		Explanation fieldLength;
 		if (norms != null) {
 			length = decodeNormValue(norms[doc]);
+			System.out.println("decode norm table norms[doc] " + norms[doc]
+					+ " length = " + length);
 
 			fieldLength = new Explanation(length, "length(" + stats.field + ")");
 			System.out.println("diego cane " + fieldLength.toHtml());
