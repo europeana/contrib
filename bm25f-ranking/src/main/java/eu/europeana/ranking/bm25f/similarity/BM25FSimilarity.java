@@ -284,6 +284,7 @@ public class BM25FSimilarity extends Similarity {
 
 			this.norms = norms == null ? null : (byte[]) norms.getSource()
 					.getArray();
+
 		}
 
 		@Override
