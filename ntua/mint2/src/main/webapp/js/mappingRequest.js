@@ -64,7 +64,7 @@ mapping_oid=organizationId;
   $.ajax({
 	 url: "MappingsPanel",
 	 type: "POST",
-	 data: "startMapping=" + from + "&maxMappings=" + mappinglimit + "&orgId=" + organizationId+"&uploadId=" + uploadId +"&userId=" + userId,
+	 data: "startMapping=" + from + "&maxMappings=" + mappinglimit + "&orgId=" + organizationId+"&uploadId=" + uploadId ,
 	 error: function(){
 	   		alert("An error occured. Please try again.");
 	   		},

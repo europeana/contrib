@@ -17,9 +17,6 @@
      		column="dataset_id"
 		    not-null="true" />
 		<property name="persistentId" column="persistent_id" />
-		<many-to-one name="itemNode"
-			column="xml_node_id"
-			not-null="false" />
 		<many-to-one name="sourceItem"
 			column="source_item_id"
 			not-null="false" />

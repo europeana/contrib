@@ -164,6 +164,14 @@ public class Config {
 		return getProjectFile( Config.getWithDefault("paths.xsl", "xsl") );
 	}
 	
+	public static File getViewsDir() {
+		return getProjectFile( Config.getWithDefault("paths.views", "views") );
+	}
+	
+	public static String getViewsPath(String file) {
+		return new File( getSchemaDir(), file ).getAbsolutePath();
+	}
+	
 	public static File getUploadedSchemaDir() {
 		String schemas = Config.getWithDefault("paths.schemas", "schemas");
 		String uploaded = Config.getWithDefault("paths.schemas.uploaded", "uploaded");
@@ -187,6 +195,11 @@ public class Config {
 		String subdir = get("custom.name" );
 		File jspFile = getProjectFile( "WEB-INF/custom/"+subdir+"/jsp/" + jsp);
 		if( jspFile.exists() && jspFile.canRead()) return jspFile;
+		return null;
+	}
+
+	public static String getViewsPath() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

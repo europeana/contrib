@@ -2,9 +2,9 @@ package gr.ntua.ivml.mint.actions;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
+import gr.ntua.ivml.mint.util.JSONUtils;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -30,20 +30,20 @@ public class SchemaDocumentation extends GeneralAction {
 		try {
 			XmlSchema schema = DB.getXmlSchemaDAO().findById(this.getSchemaId(), true);
 			if(schema != null) {
-				JSONObject documentation = (JSONObject) JSONSerializer.toJSON(schema.getDocumentation());
+				JSONObject documentation = JSONUtils.parse(schema.getDocumentation());
 				String key = this.element;
 				
-				if(documentation.has(key)) {
-					json.element("documentation", documentation.getString(key));
+				if(documentation.containsKey(key)) {
+					json.put("documentation", documentation.get(key).toString());
 				} else {
-					json.element("error", "No documentation for '" + key + "'");
+					json.put("error", "No documentation for '" + key + "'");
 				}
 				
-				json.element("key", key);
-				json.element("schemaId", this.getSchemaId());
+				json.put("key", key);
+				json.put("schemaId", this.getSchemaId());
 			}
 		} catch( Exception e ) {
-			json.element( "error", e.getMessage());
+			json.put( "error", e.getMessage());
 			log.error( "No values", e );
 		}
 

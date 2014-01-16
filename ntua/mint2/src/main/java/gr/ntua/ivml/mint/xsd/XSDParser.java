@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,25 +16,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -54,8 +45,6 @@ import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.XSTerm;
 import com.sun.xml.xsom.XSType;
 import com.sun.xml.xsom.XmlString;
-import com.sun.xml.xsom.parser.AnnotationContext;
-import com.sun.xml.xsom.parser.AnnotationParser;
 import com.sun.xml.xsom.parser.XSOMParser;
 import com.sun.xml.xsom.util.DomAnnotationParserFactory;
 
@@ -194,12 +183,12 @@ public class XSDParser {
 	}
 	
 	public JSONObject getElementDescription(XSElementDecl edecl) {
-		log.debug("getElementDescription for " + edecl.getName());
-		String namespace = edecl.getTargetNamespace();
-		//if(namespace.length() == 0) namespace = edecl.getOwnerSchema().getTargetNamespace();
-
 		JSONObject result = new JSONObject();
 		if (edecl != null) {
+			log.debug("getElementDescription for " + edecl.getName());
+			String namespace = edecl.getTargetNamespace();
+			//if(namespace.length() == 0) namespace = edecl.getOwnerSchema().getTargetNamespace();
+
 			XSComplexType complexType = edecl.getType().asComplexType();
 			if (complexType != null) {
 				XSContentType contentType = complexType.getContentType();
@@ -217,26 +206,27 @@ public class XSDParser {
 					xstype = xstype.getBaseType();
 				}
 				String type = xstype.getName();
-				result = result.element("name", name).element("id", "")
-						.element("type", type);
+				result.put("name", name);
+				result.put("id", "");
+				result.put("type", type);
 				
 
 				if (namespace.length() > 0) {
-					result = result.element("prefix", this
+					result.put("prefix", this
 							.getPrefixForNamespace(namespace));
 				}
 
 				// process attributes
 				JSONArray attributes = this
 						.processElementAttributes(complexType);
-				result = result.element("attributes", attributes);
+				result.put("attributes", attributes);
 
 				// process enumerations
 				if (simpleType != null) {
 					JSONArray enumerations = this
 							.processElementEnumerations(simpleType);
 					if (enumerations.size() > 0) {
-						result = result.element("enumerations", enumerations);
+						result.put("enumerations", enumerations);
 					}
 				}
 
@@ -245,7 +235,7 @@ public class XSDParser {
 					visitedElements.add(this.elementLabel(edecl));
 					JSONArray elementChildren = this.getParticleMappingChildren(particle);
 
-					result = result.element("children", elementChildren);
+					result.put("children", elementChildren);
 					visitedElements.remove(this.elementLabel(edecl));
 				}
 			} else {
@@ -256,16 +246,16 @@ public class XSDParser {
 					JSONArray enumerations = this
 							.processElementEnumerations(simpleType);
 					if (enumerations.size() > 0) {
-						result = result.element("enumerations", enumerations);
+						result.put("enumerations", enumerations);
 					}
 				}
 
-				result = result.element("name", edecl.getName()).element(
-						"type", "string")
-						.element("id", "");
+				result.put("name", edecl.getName());
+				result.put("type", "string");
+				result.put("id", "");
 
 				if (namespace.length() > 0) {
-					result = result.element("prefix", this
+					result.put("prefix", this
 							.getPrefixForNamespace(namespace));
 				}
 			}
@@ -273,11 +263,11 @@ public class XSDParser {
 			log.error(edecl + " is null!...");
 		}
 
-		result = result.element("mappings", new JSONArray());
+		result.put("mappings", new JSONArray());
 
-		if (!result.has("children")
-				|| result.getJSONArray("children").size() == 0) {
-			if (result.getString("type").equals("anyType")) {
+		if (!result.containsKey("children")
+				|| ((JSONArray) result.get("children")).size() == 0) {
+			if (result.get("type").toString().equals("anyType")) {
 				result.put("type", "string");
 			}
 		}
@@ -290,8 +280,8 @@ public class XSDParser {
 				.asElementDecl());
 		BigInteger maxOccurs = p.getMaxOccurs();
 		BigInteger minOccurs = p.getMinOccurs();
-		child = child.element("maxOccurs", maxOccurs).element("minOccurs",
-				minOccurs);
+		child.put("maxOccurs", maxOccurs);
+		child.put("minOccurs", minOccurs);
 		log.debug("process child particle: " + child);
 
 		return child;
@@ -319,20 +309,22 @@ public class XSDParser {
 		//if(namespace.length() == 0) namespace = rootElementDecl.getOwnerSchema().getTargetNamespace();
 		
 		//log.debug("init");
-		result = result.element("mappings", new JSONArray()).element("id",
-				"template_" + root);
+		result.put("mappings", new JSONArray());
+		result.put("id", "template_" + root);
 		if (namespace.length() > 0) {
 			String prefix = this.getPrefixForNamespace(namespace);
-			result = result.element("prefix", prefix);
+			result.put("prefix", prefix);
 		}
 
 		//log.debug("check if group");
 		// check if root is a group element (button)
-		Iterator gi = groups.iterator();
+		Iterator<?> gi = groups.iterator();
 		while (gi.hasNext()) {
 			JSONObject group = (JSONObject) gi.next();
-			if (root.equals(group.getString("element"))) {
-				return result.element("name", root).element("type", "group");
+			if (root.equals(group.get("element").toString())) {
+				result.put("name", root);
+				result.put("type", "group");
+				return result;
 			}
 		}
 
@@ -347,11 +339,10 @@ public class XSDParser {
 		}
 
 		visitedElements.add(this.elementLabel(rootElementDecl));
-		result = result.element("name", rootElementDecl.getName()).element(
-				"type", xstype.getName());
+		result.put("name", rootElementDecl.getName());
+		result.put("type", xstype.getName());
+	
 		// element types
-		
-		
 		XSComplexType complexType = rootElementDecl.getType().asComplexType();
 		XSSimpleType simpleType = rootElementDecl.getType().asSimpleType();
 		
@@ -362,7 +353,7 @@ public class XSDParser {
 			XSParticle particle = contentType.asParticle();
 			// process element attributes
 			JSONArray attributes = this.processElementAttributes(complexType);
-			result = result.element("attributes", attributes);
+			result.put("attributes", attributes);
 			
 			// process children
 			if (particle != null) {
@@ -392,19 +383,19 @@ public class XSDParser {
 								.getModelGroup();
 						XSParticle[] groupChildren = group.getChildren();
 						for (XSParticle gp : groupChildren) {
-							String name = gp.getTerm().asElementDecl().getName();
+							//String name = gp.getTerm().asElementDecl().getName();
 							JSONObject child;
 							if(!visitedElements.contains(this.elementLabel(gp.getTerm().asElementDecl()))) {
 								child = this.buildTemplate(groups, gp.getTerm()
 									.asElementDecl());
-								if(isChoice) child.element("minOccurs", "0");
+								if(isChoice) child.put("minOccurs", "0");
 								elementChildren.add(child);
 							}
 						}
 					}
 				}
 
-				result = result.element("children", elementChildren);
+				result.put("children", elementChildren);
 			}
 		}
 		
@@ -416,10 +407,10 @@ public class XSDParser {
 			JSONArray enumerations = this
 					.processElementEnumerations(simpleType);
 			if (enumerations.size() > 0) {
-				result = result.element("enumerations", enumerations);
+				result.put("enumerations", enumerations);
 			}
 
-			result = result.element("type", "string");
+			result.put("type", "string");
 		}
 		return result;
 	}
@@ -440,23 +431,23 @@ public class XSDParser {
 			XSAttributeDecl attributeDecl = attributeUse.getDecl();
 			String namespace = attributeDecl.getTargetNamespace();
 			//if(namespace.length() == 0) namespace = attributeDecl.getOwnerSchema().getTargetNamespace();
-			JSONObject attribute = new JSONObject().element("name",
-					"@" + attributeDecl.getName()).element("id", "").element(
-					"mappings", new JSONArray());
+			JSONObject attribute = new JSONObject();
+			attribute.put("name", "@" + attributeDecl.getName());
+			attribute.put("id", "");
+			attribute.put("mappings", new JSONArray());
 			if (namespace.length() > 0) {
-				attribute = attribute.element("prefix", this
-						.getPrefixForNamespace(namespace));
+				attribute.put("prefix", this.getPrefixForNamespace(namespace));
 			}
 
 			// check if it has a default value and assign it
 			XmlString defaultValue = attributeDecl.getDefaultValue();
 			if (defaultValue != null && defaultValue.value.length() > 0) {
-				attribute = attribute.element("default", defaultValue.value);
+				attribute.put("default", defaultValue.value);
 			}
 
 			// check if it is required
 			if (attributeUse.isRequired()) {
-				attribute = attribute.element("minOccurs", "1");
+				attribute.put("minOccurs", "1");
 			}
 
 			// check for enumerations in attributes
@@ -464,15 +455,15 @@ public class XSDParser {
 			JSONArray enumerations = this
 					.processElementEnumerations(simpleType);
 			if (enumerations.size() > 0) {
-				attribute = attribute.element("enumerations", enumerations);
+				attribute.put("enumerations", enumerations);
 			}
 
 			boolean alreadyIn = false;
 			for(int a = 0; a < attributes.size(); a++) {
-				JSONObject at = attributes.getJSONObject(a);
-				if(at.getString("name").equals(attribute.getString("name"))) {
-					if(at.has("prefix") && attribute.has("prefix")) {
-						if(at.getString("prefix").equals(attribute.getString("prefix"))) {
+				JSONObject at = (JSONObject) attributes.get(a);
+				if(at.get("name").toString().equals(attribute.get("name").toString())) {
+					if(at.containsKey("prefix") && attribute.containsKey("prefix")) {
+						if(at.get("prefix").toString().equals(attribute.get("prefix").toString())) {
 							alreadyIn = true;
 						}
 					}
@@ -640,7 +631,7 @@ public class XSDParser {
 						if (!visitedElements.contains(this.elementLabel(p.getTerm().asElementDecl()))) {
 							JSONObject child = this.processChildParticle(p);
 							if(isChoice) {
-								child.element("minOccurs", 0);
+								child.put("minOccurs", 0);
 							}
 							children.add(child);
 							log.debug("child: " + child);
@@ -652,7 +643,7 @@ public class XSDParser {
 							   (p.getTerm().isModelGroupDecl() &&
 									   ((p.getTerm().asModelGroupDecl().asModelGroup() != null && p.getTerm().asModelGroup().getCompositor() == XSModelGroup.CHOICE)))) {
 								for(Object o : particleChildren) {
-									((JSONObject) o).element("maxOccurs", compositorMaxOccurs);
+									((JSONObject) o).put("maxOccurs", compositorMaxOccurs);
 								}
 							}
 						}
@@ -736,8 +727,8 @@ public class XSDParser {
 			tag = prefix + ":" + name;
 		}
 		
-		if (documentation.has(name)) {
-			if (documentationText.equals(documentation.getString(name))) {
+		if (documentation.containsKey(name)) {
+			if (documentationText.equals(documentation.get(name).toString())) {
 				// System.out.println("documentation mismatch for: " + name);
 				// System.out.println("new: " + annotation);
 				// System.out.println("old: " + documentation.getString(name));
@@ -745,7 +736,7 @@ public class XSDParser {
 		}
 
 		if (documentationText.length() > 0) {
-			documentation.element(tag, documentationText);
+			documentation.put(tag, documentationText);
 		}
 		
 		if(schematronText.length() > 0){
@@ -756,7 +747,7 @@ public class XSDParser {
 		if (complexType != null) {
 			// proccess children
 			XSContentType contentType = complexType.getContentType();
-			XSSimpleType simpleType = contentType.asSimpleType();
+//			XSSimpleType simpleType = contentType.asSimpleType();
 			XSParticle particle = contentType.asParticle();
 			XSType xstype = edecl.getType().getBaseType();
 
@@ -822,113 +813,8 @@ public class XSDParser {
 		}
 	}
 
-	
-/*
-	private void buildDocumentationFor(XSElementDecl edecl) {
-		String annotation = this.processElementAnnotation(edecl);
-		String name = edecl.getName();
-		String namespace = edecl.getTargetNamespace();
-		if(namespace.length() == 0) {
-			//namespace = edecl.getOwnerSchema().getTargetNamespace();
-		}
-		
-		String tag = name;
-		if(namespace.length() != 0) {
-			String prefix = this.getPrefixForNamespace(namespace);
-			tag = prefix + ":" + name;
-		}
-		
-		if (documentation.has(name)) {
-			if (annotation.equals(documentation.getString(name))) {
-				// System.out.println("documentation mismatch for: " + name);
-				// System.out.println("new: " + annotation);
-				// System.out.println("old: " + documentation.getString(name));
-			}
-		}
-
-		if (annotation.length() > 0) {
-			documentation.element(tag, annotation);
-		}
-
-		XSComplexType complexType = edecl.getType().asComplexType();
-		if (complexType != null) {
-			// proccess children
-			XSContentType contentType = complexType.getContentType();
-			XSSimpleType simpleType = contentType.asSimpleType();
-			XSParticle particle = contentType.asParticle();
-			XSType xstype = edecl.getType().getBaseType();
-
-			while (xstype.getBaseType() != null) {
-				if (xstype.getName().equals(xstype.getBaseType().getName()))
-					break;
-				if (xstype.getName().equalsIgnoreCase("string"))
-					break;
-				xstype = xstype.getBaseType();
-			}
-
-			// log.debug("name: " + edecl.getName() + " orig: " + etype +
-			// " type: " + type + " namespace: " + namespace);
-
-			if (particle != null) {
-				visitedElements.add(this.elementLabel(edecl));
-				// JSONArray elementChildren = new JSONArray();
-
-				ArrayList<XSParticle> array = this
-						.getParticleChildren(particle);
-				for (XSParticle p : array) {
-					if (p.getTerm().isElementDecl()) {
-						if (!visitedElements.contains(this.elementLabel(p.getTerm()
-								.asElementDecl()))) {
-							XSElementDecl child = p.getTerm().asElementDecl();
-							this.buildDocumentationFor(child);
-						}
-					} else if (p.getTerm().isModelGroupDecl()) {
-						XSModelGroup group = p.getTerm().asModelGroupDecl()
-								.getModelGroup();
-						XSParticle[] groupChildren = group.getChildren();
-						for (XSParticle gp : groupChildren) {
-							if (!visitedElements.contains(this.elementLabel(gp.getTerm()
-									.asElementDecl()))) {
-								XSElementDecl child = gp.getTerm().asElementDecl();
-								this.buildDocumentationFor(child);
-							}
-						}
-					}
-				}
-
-				visitedElements.remove(this.elementLabel(edecl));
-			}
-
-			// process attributes
-			Iterator<? extends XSAttributeUse> aitr = complexType
-					.iterateAttributeUses();
-			while (aitr.hasNext()) {
-				XSAttributeDecl attributeDecl = aitr.next().getDecl();
-				attributeDecl.getAnnotation();
-				
-				String nm = attributeDecl.getTargetNamespace();
-				if(nm.length() == 0) {
-					//nm = attributeDecl.getOwnerSchema().getTargetNamespace();
-				}
-				
-				tag = "@" + attributeDecl.getName();
-				if(nm.length() != 0) {
-					String prefix = this.getPrefixForNamespace(nm);
-					tag = "@" + prefix + ":" + attributeDecl.getName();
-				}
-				
-				String value = this.processAttributeAnnotation(attributeDecl);
-				if (value.length() > 0) {
-					documentation.element(tag, value);
-				}
-			}
-		}
-	}
-*/
-
 	public JSONObject getElementDescription(String element) {
 		JSONObject result = null;
-
 		Iterator<XSSchema> i = schemaSet.iterateSchema();
 		while (i.hasNext()) {
 			XSSchema s = i.next();
@@ -1013,8 +899,9 @@ public class XSDParser {
 			}
 		}
 
-		return new JSONObject().element("error", "root element " + element
-				+ " not found in any schema set");
+		JSONObject result = new JSONObject();
+		result.put("error", "root element " + element + " not found in any schema set");
+		return result;
 	}
 
 	public JSONObject getAnyRootElementDescription() {

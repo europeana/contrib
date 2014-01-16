@@ -14,15 +14,15 @@
 	<div class="summary"></div>
 
 	 <s:if test="imports.size>0">
-	 <form name='imports_<s:property value="userId"/>_<s:property value="orgId"/>'>
+	 <form id="importsPanelform" name='imports_<s:property value="userId"/>_<s:property value="orgId"/>'>
 		 <s:iterator id="impt" value="imports">
 		
-		 				<div title="<s:property value="name"/>" 
+		 				<div id="<s:property value="dbID"/>" title="<s:property value="name"/>" 
 		 				onclick="ajaxFetchStatus(<s:property value="dbID"/>);var cp=$($(this).closest('div[id^=kp]'));
 		 				$(cp).find('div.k-active').removeClass('k-active');$(this).toggleClass('k-active');
 		 				$K.kaiten('removeChildren',cp, false);
 		 				$K.kaiten('load',{kConnector:'html.page', url:'DatasetOptions.action?uploadId=<s:property value="dbID"/>&userId=<s:property value="userId"/>&organizationId=<s:property value="orgId"/>', kTitle:'Dataset Options' });"
-		 			    class="items navigable">
+		 			    class="items navigable" style="min-height:30px;height:auto;">
 		 				
 		 				<div class="head">
 		 				   <s:if test="isOai()">
@@ -45,13 +45,14 @@
 						</s:else>
 					     </div>
 		 				
-						<div class="label" style="width: 80%; margin-left: 10px;">						
+						<div class="importLabel">						
 						 
 						<s:property value="name"/>
 						</div>
-						
-						
-						<div class="info">
+						<s:if test="orgFolderNum>0">
+						<div class="labelassign lbutton" title="Set labels for upload"></div>
+						</s:if>
+						<div class="importInfo">
 						<!-- status icon goes here -->
 						
 						
@@ -66,13 +67,21 @@
 						
 						<s:else>
 									      <!-- do html -->
-						   <img id="context<s:property value="dbID"/>" src="<s:property value="statusIcon"/>" style="vertical-align:sub;margin-top:10px;width:16px;height:16px;" onMouseOver="this.style.cursor='pointer';" title="<s:property value="message"/>">
+						   <img id="context<s:property value="dbID"/>" src="<s:property value="statusIcon"/>" style="vertical-align:sub;width:16px;height:16px;" onMouseOver="this.style.cursor='pointer';" title="<s:property value="message"/>">
 
 									      
 					    </s:else>
 						
 						</div>
 						<div class="tail"></div>
+						<div id="labeldiv" style="margin-top:-10px;">
+						<s:if test="folderNum>0">
+						    <s:iterator id="lbl" value="labels">
+						    <span class="labels" style="background-color:<s:property value="lblcolor"/>;"><s:property value="lblname"/></span>
+						    </s:iterator>
+						</s:if>
+						</div>
+						
 					</div>
 		   			</s:iterator>
 		   			

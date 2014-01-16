@@ -83,7 +83,7 @@ public class Thesaurus extends GeneralAction {
 		json = new JSONObject();
 		SKOSThesaurus skos = this.getSKOSThesaurus();
 		
-		JSONArray concepts = JSONUtils.toJSON(skos.getTopConcepts());
+		JSONArray concepts = JSONUtils.toNetSfJSONArray(JSONUtils.toJSON(skos.getTopConcepts()));
 		int total = concepts.size();
 		json = this.jsonResult(concepts, total);
 		
@@ -97,7 +97,7 @@ public class Thesaurus extends GeneralAction {
 		skos.setLimit(this.getLimit());
 		skos.setOffset(this.getOffset());
 		
-		JSONArray concepts = JSONUtils.toJSON(skos.getConcepts());
+		JSONArray concepts = JSONUtils.toNetSfJSONArray(JSONUtils.toJSON(skos.getConcepts()));
 		json = this.jsonResult(concepts);
 		
 		return SUCCESS;
@@ -108,7 +108,7 @@ public class Thesaurus extends GeneralAction {
 		SKOSThesaurus skos = this.getSKOSThesaurus();
 		skos.setConcept(this.getConcept());
 		
-		JSONArray concepts = JSONUtils.toJSON(skos.getNarrowerConcepts());
+		JSONArray concepts = JSONUtils.toNetSfJSONArray(JSONUtils.toJSON(skos.getNarrowerConcepts()));
 		json = this.jsonResult(concepts);
 
 		return SUCCESS;
@@ -119,7 +119,7 @@ public class Thesaurus extends GeneralAction {
 		SKOSThesaurus skos = this.getSKOSThesaurus();
 		skos.setConcept(this.getConcept());
 		
-		JSONArray concepts = JSONUtils.toJSON(skos.getBroaderConcepts());
+		JSONArray concepts = JSONUtils.toNetSfJSONArray(JSONUtils.toJSON(skos.getBroaderConcepts()));
 		json = this.jsonResult(concepts);
 
 		return SUCCESS;
@@ -130,7 +130,7 @@ public class Thesaurus extends GeneralAction {
 		SKOSThesaurus skos = this.getSKOSThesaurus();
 		skos.setConcept(this.getConcept());
 		
-		JSONArray concepts = JSONUtils.toJSON(skos.getRelatedConcepts());
+		JSONArray concepts = JSONUtils.toNetSfJSONArray(JSONUtils.toJSON(skos.getRelatedConcepts()));
 		json = this.jsonResult(concepts);
 
 		return SUCCESS;

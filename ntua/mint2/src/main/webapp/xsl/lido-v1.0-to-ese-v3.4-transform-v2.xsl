@@ -28,7 +28,7 @@
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
-	<xsl:param name="provider">Linked Heritage</xsl:param>
+	<xsl:param name="provider">MINT</xsl:param>
 	<xsl:param name="europeana-output">full-transform</xsl:param>
 	<xsl:param name="europeana-rights">http://www.europeana.eu/rights/unknown/</xsl:param>
 	
@@ -249,7 +249,7 @@
 								</xsl:if>
 							</xsl:for-each>
 						</xsl:when>
-						<xsl:otherwise>http://www.europeana.eu/rights/unknown/</xsl:otherwise>
+						<xsl:otherwise><xsl:value-of select="$europeana-rights"/></xsl:otherwise>
 					</xsl:choose>
 					</europeana:rights>
 

@@ -247,5 +247,65 @@ dsl9.each {
   Queues.queue( xslt, "db" )
   println "Queued ${it.name}"
 }
-  ========================================
+===== load server files for euscreenxl  ========================================
 
+import org.apache.commons.io.FileUtils
+import gr.ntua.ivml.mint.util.Config
+import gr.ntua.ivml.mint.persistent.*
+import gr.ntua.ivml.mint.concurrent.*
+import java.io.*
+
+dir = new File( "/home/arne/euscreenOriginalData")
+org = DB.organizationDAO.findAll().find{ it.originalName =~ "euscreen" }
+    	
+
+		
+if( org == null) {
+	println( "Org 'Euscreen old data' not found");
+	return
+}
+
+user = org.getPrimaryContact();
+schema = DB.xmlSchemaDAO.getByName( "EUScreen_valid");
+
+def map = readMapFile( new File(dir,"annInfo.txt"))
+
+// iterate through the map and see if the files exist
+map.each{ key,val ->
+  File file = new File( dir, "Annotation_"+key+".zip" )
+  if( file.exists() && file.length() > 0 ) {
+	  uploadFile( file, map[key][1], map[key][0])
+	  return
+  } else {
+	  println( "No data for ${file.name}")
+  }
+}
+
+// upload the file to 
+def uploadFile( File data, String tag, String name ) {
+	DataUpload du = new DataUpload();
+	du.init( user );
+	du.setName( name );
+	du.setUploadMethod DataUpload.METHOD_SERVER
+	du.setOrganization( org )
+	du.addFolder( tag+"#8080ff" );
+	du.setSchema( schema )
+	println( "Name file '${data.name}' with '$name', tag '$tag'")
+	// safe this
+	DB.dataUploadDAO.makePersistent( du )
+	DB.commit()
+	UploadIndexer ui = new UploadIndexer( du, UploadIndexer.SERVERFILE );
+	ui.setServerFile(data.getAbsolutePath())
+	Queues.queue( ui, "single" );
+}
+
+
+def readMapFile( File mapFile ) {
+	// num, filename, org/tag
+	def res = [:]
+	mapFile.eachLine( "UTF8", {
+		String[] line = it.split("\t")
+		res[line[0]] = [line[1], line[2]]		
+	})
+	return res
+}

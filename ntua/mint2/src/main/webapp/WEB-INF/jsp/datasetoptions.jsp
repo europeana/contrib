@@ -71,7 +71,7 @@
 			   <div title="Show all items" data-load='{"kConnector":"html.page", "url":"ItemView.action?uploadId=<s:property value='uploadId'/>&organizationId=<s:property value='organizationId'/>&userId=<s:property value='userId'/>", "kTitle":"<s:property value="datasetType"/> Items" }' class="items navigable">
 			   		<div class="label">Show all items</div>
 					<div class="detail"><s:property value="getDu().getItemCount()"/> items</div>	
-			   		<div class="tail"></div>
+				   		<div class="tail"></div>
 			   </div>
 
 			   <s:if test="getDu().getInvalidItemCount() > 0">			   
@@ -91,15 +91,21 @@
 			   <div class="label">Mappings</div>
 			   <div class="tail"></div></div>
 			   		<%} %>
-			   		
+
+<!--
+			   		<s:if test="du.getSchema() != null">
 		 			<%
-		 				if(user.hasRight(User.SUPER_USER) || !Config.getBoolean("ui.hide.annotator")) {
+		 				//if(user.hasRight(User.SUPER_USER) || !Config.getBoolean("ui.hide.annotator")) {
 		 			%>
+ -->			   		
 			  <!--  access mappings --> 
 			   <div title="Annotate" data-load='{"kConnector":"html.page", "url":"Annotator.action?uploadId=<s:property value='uploadId'/>&orgId=<s:property value='organizationId'/>&userId=<s:property value='userId'/>", "kTitle":"Annotator" }' class="items navigable">
 			   <div class="label">Annotate (in development)</div>
 			   <div class="tail"></div></div>
-			   		<%} %>
+			   		<%//} %>
+<!-- 
+			   		</s:if>
+ -->
 			   
 			   		<%
 		 				if(user.hasRight(User.SUPER_USER) || !Config.getBoolean("ui.hide.transform")) {
@@ -188,7 +194,6 @@
 			 </div>
 			 </s:if>
 			 <%} %>
-			
 	<s:if test="!current.isTransformation() && transformations.size>0">
 	 <div class="summary">
 	<div class="label" style="margin-bottom:-10px;margin-top:20px;">Transformations</div>

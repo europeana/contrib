@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib uri="customize.tld" prefix="cst" %> 
+<%@ taglib uri="/WEB-INF/jsp/customize.tld" prefix="cst" %> 
 
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="gr.ntua.ivml.mint.persistent.User" %>

@@ -4,35 +4,6 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-   <class name="gr.ntua.ivml.mint.persistent.XMLNode"  
-         mutable="false" table="xml_node_master"
-         >
-	    <id name="nodeId" column="xml_node_id">
-	    </id>
-
-	    <many-to-one name="parentNode" 
-        column="parent_node_id"
-        not-null="false"/>
-
-	    <property name="size" />
-	    <property name="content" />
-	    <property name="checksum" />
-	    <property name="nodeType" column="node_type" />
-		
-	   <many-to-one name="dataset" 
-	   column="dataset_id"
-	   not-null="true" />
-		
-	    <many-to-one name="xpathHolder" 
-        column="xpath_summary_id"
-        not-null="false"  />
-
-	    <bag name="children" order-by="xml_node_id"  inverse="true" >           
-        	<key column="parent_node_id" />
-        	<one-to-many class="gr.ntua.ivml.mint.persistent.XMLNode" />
-        </bag>
-
-   </class>
    <class name="gr.ntua.ivml.mint.persistent.XpathHolder"
     	table="xpath_summary" >
        <id name="dbID" column="xpath_summary_id" >

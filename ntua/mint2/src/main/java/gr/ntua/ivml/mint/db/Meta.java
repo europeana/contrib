@@ -1,5 +1,8 @@
 package gr.ntua.ivml.mint.db;
 
+import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.Mapping;
+import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.Tuple;
 
 import java.lang.reflect.Field;
@@ -8,7 +11,13 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 import org.openjena.atlas.logging.Log;
 
@@ -55,8 +64,6 @@ public class Meta {
 	 */
 	public static void put( String key, String value ) {
 		String result = Meta.get(key);
-		System.out.println("Meta: original value: " + key + " = " + result);
-		
 		if(result == null) {
 			DB.getStatelessSession().createSQLQuery("insert into meta( meta_id, meta_key, meta_value ) " +
 					" values( nextval('seq_meta_id'), ?, ? )")
@@ -141,7 +148,8 @@ public class Meta {
 	 * @return
 	 */
 	public static List<Tuple<String, String>> getLike( String pattern ) {
-		List<String[]> queryRes = (List<String[]>) DB.getStatelessSession().createSQLQuery( "select meta_key, meta_value from meta where meta_key like ? order by meta_id")
+		// broken on oreo ..
+		List<Object[]> queryRes = (List<Object[]>) DB.getStatelessSession().createSQLQuery( "select meta_key, meta_value from meta where meta_key like ? order by meta_id")
 		.setParameter( 0, pattern )
 		.list();
 		if(( queryRes == null) || ( queryRes.isEmpty())) return Collections.emptyList();
@@ -163,6 +171,37 @@ public class Meta {
 		String key = Meta.generateKey(object) + ".%";
 		return Meta.getLike(key);
 	}
+	
+	/**
+	 * Get all property keys for the specified object
+	 * @param object
+	 * @return
+	 */
+	public static List<String> getAllPropertyKeys(Object object) {
+		return Meta.getAllPropertyKeys(object, null);
+	}
+
+	/**
+	 * Get all property keys for the specified object that start with a specific string
+	 * @param object
+	 * @param startsWith string that should exist at the start of the property. Set to null to get all properties
+	 * @return
+	 */
+	public static List<String> getAllPropertyKeys(Object object, String startsWith) {
+		String key = Meta.generateKey(object);
+		if(startsWith != null) key += "." + startsWith;
+		List<String[]> queryRes = (List<String[]>) DB.getStatelessSession().createSQLQuery( "select meta_key from meta where meta_key like ? order by meta_id")
+		.setParameter( 0, key + "%" )
+		.list();
+		if(( queryRes == null) || ( queryRes.isEmpty())) return Collections.emptyList();
+
+		List<String> res = new ArrayList<String>();
+		for( Object[] s2: queryRes ) {
+			res.add( s2[0].toString() );
+		}
+		return res;
+	}
+
 	
 	/**
 	 * Delete entries where the key fits the 'LIKE' pattern.
@@ -196,5 +235,81 @@ public class Meta {
 		.uniqueResult();
 		
 		return res.intValue();
+	}
+	
+	/*
+	 *	JSON wrappers 
+	 */
+	
+	/**
+	 * Get and parse a json object meta property of a specified object.
+	 * @param object
+	 * @param key key of the meta property.
+	 * @return JSONObject with contents of meta property, or an empty JSONObject if parsing fails.
+	 */
+	public static JSONObject getObject(Object object, String key) {
+		DB.getStatelessSession().beginTransaction();
+		String property = Meta.get(object, key);
+		JSONObject result = new JSONObject();
+		
+		if(property != null) {
+			try {
+				result = JSONUtils.parse(property);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		};
+		
+		return result;		
+	}
+	
+	/**
+	 * Get and parse a json array meta property of a specified object.
+	 * @param object
+	 * @param key key of the meta property.
+	 * @return JSONArray with contents of meta property, or an empty JSONArray if parsing fails.
+	 */
+	public static JSONArray getArray(Object object, String key) {
+		DB.getStatelessSession().beginTransaction();
+		String property = Meta.get(object, key);
+		JSONArray result = new JSONArray();
+		
+		if(property != null) {
+			try {
+				result = JSONUtils.parseArray(property);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		};
+		
+		return result;		
+	}
+
+	/**
+	 * Add a json object at the start of a json array saved as a meta property of an object.
+	 * @param object
+	 * @param key key of the meta property.
+	 * @param entry entry to add at the start of the meta property array.
+	 * @return
+	 */
+	public static JSONArray prepend(Object object, String key, JSONObject entry) {
+		JSONArray array = Meta.getArray(object, key);
+		array.add(0, entry);
+		Meta.put(object, key, array.toString());
+		return array;
+	}
+	
+	/**
+	 * Add a json object at the end of a json array saved as a meta property of an object.
+	 * @param object
+	 * @param key key of the meta property.
+	 * @param entry entry to add at the end of the meta property array.
+	 * @return
+	 */
+	public static JSONArray append(Object object, String key, JSONObject entry) {
+		JSONArray array = Meta.getArray(object, key);
+		array.add(entry);
+		Meta.put(object, key, array.toString());
+		return array;
 	}
 }

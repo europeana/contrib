@@ -18,31 +18,31 @@ public class SKOSThesaurus {
 	/**
 	 * repository - the SPARQL endpoint
 	 */
-	private String repository = null;
+	protected String repository = null;
 	/**
 	 * conceptScheme - the resource of the concept scheme to be examined in the query
 	 */
-	private String conceptScheme = null; 
+	protected String conceptScheme = null; 
 	/**
 	 * language - the language selected for the labels
 	 */
-	private String language = null; 
+	protected String language = null; 
 	/**
 	 * rdfDatasets - the list of RDFDatasets (graphs)
 	 */
-	private String[] rdfDatasets = null; 
+	protected String[] rdfDatasets = null; 
 	/**
 	 * collections - the resulting terms of a query are checked for membership status (boolean) in this list of collections.
 	 */
-	private String[] collections = null;
+	protected String[] collections = null;
 	/**
 	 * includeDefault - If true, the repository's default graph is included in the search; if false the repository's default graph is not included in the search 
 	 */
-	private boolean defaultIncluded = true;
-	private int limit = 0;
-	private int offset = 0;
-	private String like = null;
-	private String concept = null;
+	protected boolean defaultIncluded = true;
+	protected int limit = 0;
+	protected int offset = 0;
+	protected String like = null;
+	protected String concept = null;
 	
 	
 	public SKOSThesaurus(){}
@@ -132,7 +132,7 @@ public class SKOSThesaurus {
 				((defaultIncluded)?condition:"") 
 				+ graphs + "\n" + filter +
 				"}ORDER BY ?label";		
-		System.out.println(query);
+//		System.out.println(query);
 		return Repository.queryMapList(repository, query);	
 	}
 	
@@ -256,7 +256,7 @@ public class SKOSThesaurus {
 				((defaultIncluded)?condition:"")+
 				graphs + filter +
 				"}\n ORDER BY ?label";
-		System.out.println(query);
+//		System.out.println(query);
 		return Repository.queryMapList(repository, query);
 	}
 	
@@ -292,6 +292,7 @@ public class SKOSThesaurus {
 	public List<Map<String, String>> getNotes(String property) {
 
 		String select = "SELECT (str(?"+property+") as ?label) (str(?"+property+"En) as ?enlabel) (str(?"+property+"NoLang) as ?labelNoLang)\n";
+//		String select = "SELECT ?"+property+" (str(?"+property+"En) as ?enlabel) (str(?"+property+"NoLang) as ?labelNoLang)\n";
 		String condition = "{\n" +
 				"	<" + concept + "> skos:"+property+" ?"+property+"En.\n"+
 				"	<" + concept + "> a skos:Concept.\n"+
@@ -320,7 +321,7 @@ public class SKOSThesaurus {
 	 * Creates a string in SPARQL syntax with the unions of graphs, when a query is performed to more than one dataset (graph) 
 	 * @param condition - the condition to be checked in the various graphs 
 	 */
-	private String getFromGraphs(String condition) {
+	protected String getFromGraphs(String condition) {
 		String graphs = "";
 		if(rdfDatasets != null){
 			for(int i = 0; i < rdfDatasets.length; i++)
@@ -335,7 +336,7 @@ public class SKOSThesaurus {
 		return graphs;
 	}
 	
-	private String initCollections() {
+	protected String initCollections() {
 		String collectionsStr = "";
 		if(collections != null){
 			for(int i = 0; i < collections.length; i++){
@@ -347,7 +348,7 @@ public class SKOSThesaurus {
 		}
 		return collectionsStr;
 	}
-	private String otherLangs(String conceptParam, String property){
+	protected String otherLangs(String conceptParam, String property){
 		String otherLangs = 
 				"	OPTIONAL { \n" +
 				"		?"+conceptParam+" skos:"+property+" ?"+property+"Lang.\n"+ 
@@ -481,7 +482,7 @@ public class SKOSThesaurus {
 		
 //		System.out.println(skos.getConceptSchemes());//OK
 //		System.out.println(skos.getLanguages());//OK
-		System.out.println(skos.getTopConcepts());//OK
+//		System.out.println(skos.getTopConcepts());//OK
 //		System.out.println(skos.getConcepts());//OK
 //		System.out.println(skos.getNarrowerConcepts());//OK
 //		System.out.println(skos.getBroaderConcepts());//OK

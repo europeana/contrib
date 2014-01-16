@@ -2,16 +2,16 @@ package gr.ntua.ivml.mint.actions;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.TargetConfigurationFactory;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.persistent.Crosswalk;
-
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.schematron.SchematronXSLTProducer;
 import gr.ntua.ivml.mint.util.Config;
+import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
-
+import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,10 +19,9 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONStyler;
+import net.minidev.json.parser.ParseException;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -131,19 +130,19 @@ public class OutputXSD extends GeneralAction implements Preparable, ServletConte
 			} else if(getUaction().equalsIgnoreCase("show_conf")) {  
 				XmlSchema xs = DB.getXmlSchemaDAO().findById(Long.parseLong(this.getId()), false);
 				String output = xs.getJsonConfig();
-				output = JSONSerializer.toJSON(output).toString(2);
+				output = JSONUtils.parse(output).toString(JSONUtils.getJSONStyler());
 				setTextdata(output);
 				return "txtdata"; 
 			} else if(getUaction().equalsIgnoreCase("show_template")) {  
 				XmlSchema xs = DB.getXmlSchemaDAO().findById(Long.parseLong(this.getId()), false);
 				String output = xs.getJsonTemplate();
-				output = JSONSerializer.toJSON(output).toString(2);
+				output = JSONUtils.parse(output).toString(JSONUtils.getJSONStyler());
 				setTextdata(output);
 				return "txtdata";
 			} else if(getUaction().equalsIgnoreCase("show_original")) {  
 				XmlSchema xs = DB.getXmlSchemaDAO().findById(Long.parseLong(this.getId()), false);
 				String output = xs.getJsonOriginal();
-				output = JSONSerializer.toJSON(output).toString(2);
+				output = JSONUtils.parse(output).toString(JSONUtils.getJSONStyler());
 				setTextdata(output);
 				return "txtdata";
 			} else if(getUaction().equalsIgnoreCase("show_schematron")) {  
@@ -288,11 +287,11 @@ public class OutputXSD extends GeneralAction implements Preparable, ServletConte
 		this.targetSchemaId = id;
 	}
 
-	private void processSchema(XmlSchema schema) throws IOException {
+	private void processSchema(XmlSchema schema) throws IOException, ParseException {
 		this.processSchema(schema, true);
 	}
 	
-	private void processSchema(XmlSchema schema, boolean reparse) throws IOException {
+	private void processSchema(XmlSchema schema, boolean reparse) throws IOException, ParseException {
 		log.debug("Processing schema: " + schema);
 
 		String confFilename = Config.getSchemaPath(schema.getXsd()) + ".conf";
@@ -324,15 +323,15 @@ public class OutputXSD extends GeneralAction implements Preparable, ServletConte
 			log.debug("Generating default configuration");
 			if(factory.getParser() == null) factory.setParser(xsd);
 			configuration = factory.getConfiguration(true);
-			configuration.element("xsd", schema.getXsd());
+			configuration.put("xsd", schema.getXsd());
 			schema.setJsonConfig(configuration.toString());
 		} else {
-			configuration = (JSONObject) JSONSerializer.toJSON(schema.getJsonConfig());
+			configuration = JSONUtils.parse(schema.getJsonConfig());
 			factory.setConfiguration(schema.getJsonConfig());
 			log.debug("Using provided configuration");
 		}
 		
-		JSONObject mappingTemplate = null;
+		Mappings mappingTemplate = null;
 		if(schema.getJsonOriginal() == null || reparse) {
 			// generate mapping template
 			if(factory.getParser() == null) factory.setParser(xsd);
@@ -349,13 +348,20 @@ public class OutputXSD extends GeneralAction implements Preparable, ServletConte
 			log.debug("-- schematron rules: " + schema.getSchematronRules());
 			log.debug("Get documentation");
 			schema.setDocumentation(factory.getDocumentation().toString());
-		} else mappingTemplate = (JSONObject) JSONSerializer.toJSON(schema.getJsonOriginal());
+		} else {
+			try {
+				mappingTemplate = new Mappings(schema.getJsonOriginal());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		log.debug("Looking schematron rules");
 		String externalSchematron = null;
 		String schematronFilename = null;
-		if(configuration.has("schematron")) {
-			schematronFilename = Config.getSchemaPath(configuration.getString("schematron"));					
+		if(configuration.containsKey("schematron")) {
+			schematronFilename = Config.getSchemaPath(configuration.get("schematron").toString());					
 		} else {
 			schematronFilename = Config.getSchemaPath(schema.getXsd()) + ".sch";
 		}
@@ -409,26 +415,29 @@ public class OutputXSD extends GeneralAction implements Preparable, ServletConte
 		
 		if(mappingTemplate != null) {
 			log.debug("Configure template");
-			String json = factory.configureMappingTemplate(mappingTemplate).toString();
+			String json = factory.configureMappingTemplate(mappingTemplate.asJSONObject()).toString();
 			schema.setJsonTemplate(json);
 		}
 
 		// extract item level, label & id if they exist
-		if(configuration.has("paths")) {
-			JSONObject paths = configuration.getJSONObject("paths");
+		if(configuration.containsKey("paths")) {
+			JSONObject paths = (JSONObject) configuration.get("paths");
 
-			if(paths.has("item")) {
-				schema.setItemLevelPath(paths.getString("item"));
+			if(paths.containsKey("item")) {
+				schema.setItemLevelPath(paths.get("item").toString());
 			}
 			
-			if(paths.has("label")) {
-				schema.setItemLabelPath(paths.getString("label"));				
+			if(paths.containsKey("label")) {
+				schema.setItemLabelPath(paths.get("label").toString());				
 			}
 			
-			if(paths.has("id")) {
-				schema.setItemIdPath(paths.getString("id"));				
+			if(paths.containsKey("id")) {
+				schema.setItemIdPath(paths.get("id").toString());				
 			}
 		}
+		
+		// Clear any cached objects in SchemaValidator
+		SchemaValidator.clearCaches(schema);
 	}
 	
 	public void setTextdata(String s) {

@@ -1,10 +1,10 @@
 package gr.ntua.ivml.mint.mapping;
 
 import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Mapping;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
-
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 import org.apache.log4j.Logger;
 
@@ -28,28 +28,32 @@ public class TemplateMappingManager extends AbstractMappingManager {
 		log.debug("init template mapping");
 		this.schema = xmlsch;
 
-		String savedMappings = null;
+		Mappings mappingObject = null;
 		if(schema != null) {
 			log.debug("get saved mappings");
-
-			savedMappings = this.schema.getJsonTemplate();
+			String savedMappings = this.schema.getJsonTemplate();
+			log.debug("serialize json mapping");
+			try {
+				mappingObject = new Mappings(savedMappings);
+				this.init(mappingObject, this.schema);
+				log.debug("init complete");
+			} catch (ParseException e) {
+				log.debug("Could not parse saved mapping");
+				e.printStackTrace();
+				log.debug("init failed");
+			}
 		} else {
 			log.error("template mapping object is null");
 		}
 
-		//log.debug("savedMappings: " + savedMappings);
-		log.debug("serialize json mapping");
-
-		this.init(savedMappings, this.schema);
 		
-		log.debug("init complete");
 	}
 	
 	public JSONObject getMetadata() {
 		JSONObject result = new JSONObject();
 		
-		result.element("name", this.schema.getName());
-		result.element("created",this.schema.getCreated().toString());
+		result.put("name", this.schema.getName());
+		result.put("created",this.schema.getCreated().toString());
 		return result;
 	}
 

@@ -120,8 +120,8 @@ public class DoMapping extends GeneralAction  {
 			Dataset du = this.getDataset();
 			Mapping mp = this.getMapping();
 			
-			log.debug(du);
-			log.debug(mp);
+//			log.debug(du);
+//			log.debug(mp);
 			
 			if( du != null && mp != null)
 			{

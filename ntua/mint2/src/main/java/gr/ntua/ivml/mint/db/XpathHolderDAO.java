@@ -95,7 +95,19 @@ public class XpathHolderDAO extends DAO<XpathHolder, Long> {
 		.setEntity("ds", ds )
 		.setString( "uri", uri )
 		.list();
-	return result;
-		
+		return result;
+	}
+	
+	/**
+	 * Sets all XpathHolders statistics values to their start value so you can recollect the Stats.
+	 *  
+	 * @param ds
+	 */
+	public void clearDatasetStats( Dataset ds ) {
+		getSession().createQuery( "update XpathHolder set count=0, optional=false, distinctCount=-1, multiple=false, " 
+				+ "uniqueValue=false, avgLength=-1" 
+				+ " where dataset=:ds")
+				.setEntity("ds", ds)
+				.executeUpdate();
 	}
 }

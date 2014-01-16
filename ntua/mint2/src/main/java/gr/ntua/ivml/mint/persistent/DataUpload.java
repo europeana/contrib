@@ -2,12 +2,17 @@ package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.util.FileFormatHelper;
+import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 import org.apache.log4j.Logger;
 
@@ -59,6 +64,7 @@ public class DataUpload extends Dataset  {
 	private char csvDelimiter;
 	private char csvEsc;
 	
+
 	//
 	// Useful functionality special for DataUploads
 	//
@@ -167,10 +173,17 @@ public class DataUpload extends Dataset  {
 					DataUpload.FORMAT_ZIP_CSV);
 	}
 	
+	
 	@Override
 	public JSONObject toJSON() {
 		JSONObject res = super.toJSON();
-		res.element( "type", "DataUpload");
+		res.put( "type", "DataUpload");
+		Collection<Dataset> der= getDerived(); 
+		JSONArray derivedDatasets = new JSONArray();
+		for( Dataset ds: der ) {
+				derivedDatasets.add( ds.toJSON() );
+			}
+		res.put("derived", derivedDatasets);
 		return res;
 	}
 	
@@ -250,6 +263,5 @@ public class DataUpload extends Dataset  {
 	public void setCsvEsc(char csvEsc) {
 		this.csvEsc = csvEsc;
 	}
-	
 }
 

@@ -65,7 +65,10 @@ public class XSDMappingEditor extends GeneralAction implements SessionAware {
 	
 	public String getSchemaname() {
 		final Mapping m = DB.getMappingDAO().findById(mapId, false);
-		return m.getTargetSchema().getName();
+		if( m.getTargetSchema() != null )
+			return m.getTargetSchema().getName();
+		else 
+			return "";
 	}
 	
 	public void setMapId(final long mapId) {

@@ -5,6 +5,7 @@ package gr.ntua.ivml.mint.actions;
 
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.MappingSummary;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.persistent.Lock;
 import gr.ntua.ivml.mint.persistent.Mapping;
 
@@ -75,8 +76,8 @@ ServletRequestAware,ServletResponseAware{
 			Mapping em=DB.getMappingDAO().findById(getMapping(), false);
 				
 			if(em.getJsonString()!=null){	
-				
-				if(em.getJsonString().isEmpty()==false && (MappingSummary.getMissingMappings(em)==null || MappingSummary.getMissingMappings(em).size()==0)){
+				Mappings mappings = em.getMappings();
+				if(em.getJsonString().isEmpty()==false && (MappingSummary.getMissingMappings(mappings).size()==0)){
 	    		 em.setFinished(true);
 			     }
 			    else{em.setFinished(false);}

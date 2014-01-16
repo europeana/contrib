@@ -39,14 +39,9 @@ public class SchemaStatsBuilder implements Runnable {
 			dataset.logEvent("Started collecting stats." );
 			parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader(); 
 			parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			XpathHolder root = new XpathHolder();
-			root.setName("");
-			root.setParent( null );
-			root.setXpath( "" );
-			root.setDataset(dataset);
-			DB.getXpathHolderDAO().makePersistent(root);			
-			dataset.setRootHolder(root);
-			DB.commit();
+			
+			// we should check if there is already a root node, and this will be schema update
+			XpathHolder root = prepareForUpdate();
 			
 			SchemaExtractorHandler statsHandler = new SchemaExtractorHandler(root);
 
@@ -112,6 +107,42 @@ public class SchemaStatsBuilder implements Runnable {
 		}
 	}
 
+	
+	/**
+	 * If this run is an update run, return the original XpathHolder root,
+	 * otherwise make a new one.
+	 * Clean XpathHolder nodes and XpathValueStats.
+	 * 
+	 * @return
+	 */
+	public XpathHolder prepareForUpdate() {
+		XpathHolder root = dataset.getRootHolder();
+		if( root ==  null) {
+			root = new XpathHolder();
+			root.setName("");
+			root.setParent( null );
+			root.setXpath( "" );
+			root.setDataset(dataset);
+			DB.getXpathHolderDAO().makePersistent(root);			
+			dataset.setRootHolder(root);
+			DB.commit();
+			return root;
+		}
+		
+		// now for the cleanup
+		// remove existing stats
+		// remove stats entries on XpathHolder rows
+		// clear session so those can be reloaded clean
+		DB.getXpathStatsValuesDAO().clearDatasetStats(dataset);
+		DB.getXpathHolderDAO().clearDatasetStats(dataset);
+		DB.commit();
+		DB.getSession().clear();
+		
+		// maybe we need to put the dataset back into session, dont know
+		dataset = DB.getDatasetDAO().getById(dataset.getDbID(), false);
+		return dataset.getRootHolder();
+	}
+	
 	/**
 	 * If there is a schema set, now the paths can be made xpathHolders
 	 * and set in the dataset. If the dataset does not comply with the 

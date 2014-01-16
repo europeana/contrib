@@ -7,6 +7,7 @@ import gr.ntua.ivml.mint.persistent.Crosswalk;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.persistent.PublicationRecord;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
@@ -33,15 +34,20 @@ public class BasePublication extends Publication {
 	
 	public class Publish implements Runnable {
 		private Dataset ds;
-		public Publish( Dataset ds) {
+		private User publisher;
+		
+		public Publish( Dataset ds, User publisher ) {
 			this.ds = ds;
+			this.publisher = publisher;
 		}
 		
 		public void run() {
 			try {
 				DB.getSession().beginTransaction();
 				ds = DB.getDatasetDAO().getById(ds.getDbID(), false);
-				externalPublish( ds );
+				publisher = DB.getUserDAO().getById(publisher.getDbID(), false);
+				
+				externalPublish( ds, publisher );
 				DB.commit();
 			} catch( Exception e ) {
 				log.error( "Publish has exception.", e );
@@ -119,9 +125,9 @@ public class BasePublication extends Publication {
 	
 	
 	@Override
-	public boolean publish(Dataset ds)  {
+	public boolean publish(Dataset ds, User publisher)  {
 		if( ! isDirectlyPublishable(ds)) return false;
-		Publish pbl = new Publish( ds );
+		Publish pbl = new Publish( ds, publisher );
 		Queues.queue( pbl, "net" );
 		return true;
 	}
@@ -137,9 +143,18 @@ public class BasePublication extends Publication {
 		// no dataset is removed for this
 		// send the unpublish info to the export target
 		boolean result = externalUnpublish( ds );
-		if( result ) {
-			ds.setPublicationStatus(Dataset.PUBLICATION_NOT_APPLICABLE);
-			ds.setPublishDate(null);		
+		
+		// get the oai schema dataset
+		
+		Dataset publishedDs = ds.getBySchemaName(Config.get( "oai.schema"));
+		if( publishedDs == null ) return false;
+		
+		PublicationRecord pr = DB.getPublicationRecordDAO().getByPublishedDataset(publishedDs);
+		
+		
+		
+		if( pr != null  ) {
+				DB.getPublicationRecordDAO().makeTransient(pr);
 			DB.commit();
 			return true;
 		} else {
@@ -186,6 +201,18 @@ public class BasePublication extends Publication {
 		return true;
 	}
 	
+	/**
+	 * Compares existing transformed datasets with required schemas from config
+	 * @param ds
+	 * @return
+	 */
+	public boolean hasRequiredSchemasAndValidItems( Dataset ds ) {
+		for( XmlSchema schema: requiredTargetSchemas()) {
+			Dataset dsDerived = ds.getBySchemaName(schema.getName());
+			if( dsDerived.getValidItemCount() == 0 ) return false; 
+		}
+		return true;
+	}
 
 	/**
 	 * Can I reach all required target schemas in 2 steps ?
@@ -290,27 +317,47 @@ public class BasePublication extends Publication {
 	 * @param ds
 	 * @return
 	 */
-	public void externalPublish( Dataset ds ) {
+	public void externalPublish( Dataset ds, User publisher ) {
 		String oaiSchema = Config.get( "oai.schema" );
 		
 		log.debug( "External publish " + ds.getName() );
 		ds.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
-		ds.setPublicationStatus(Dataset.PUBLICATION_RUNNING);
-		DB.commit();
+		final Dataset derivedItemsDataset = ds.getBySchemaName(oaiSchema);
+
+		// get or make a publication record
 		
+		PublicationRecord pr;
+		pr = DB.getPublicationRecordDAO().getByPublishedDataset(derivedItemsDataset);
+		if( pr == null ) {
+
+			pr = new PublicationRecord();
+
+			pr.setStartDate(new Date());
+			pr.setPublisher(publisher);
+			pr.setOriginalDataset(ds);
+			pr.setStatus(Dataset.PUBLICATION_RUNNING);
+			pr.setOrganization(ds.getOrganization());
+			DB.getPublicationRecordDAO().makePersistent(pr);
+			DB.commit();
+		} else {
+			pr.setStatus(Dataset.PUBLICATION_RUNNING);
+			DB.commit();			
+		}
+		
+		final Counter itemCounter = new Counter();
 		try {
 			final RecordMessageProducer rmp = new RecordMessageProducer(Config.get("queue.host"), "mint" );
 			// this should be the derived Dataset with the right schema
-			final Dataset derivedItemsDataset = ds.getBySchemaName(oaiSchema);
 			final Dataset originalDataset = ds;
 			final Namespace ns = new Namespace();
 			final int schemaId = derivedItemsDataset.getSchema().getDbID().intValue();
-
+			pr.setPublishedDataset(derivedItemsDataset);
+			
 			String routingKeysConfig = Config.get("queue.routingKey");
 			if(StringUtils.empty(routingKeysConfig)) {
 				log.warn( "No routing Key for Publication.");
 				ds.logEvent("No routing Key for Publication." );
-				return;
+				throw new Exception( "No routing key");
 			}
 			
 			final Set<String> routingKeys =  TextParseUtil.commaDelimitedStringToSet(routingKeysConfig);
@@ -340,33 +387,32 @@ public class BasePublication extends Publication {
 			final ArrayList<ExtendedParameter> params = new ArrayList<ExtendedParameter>();
 			params.add( ep );
 			
-			final Counter itemCounter = new Counter();
 			itemCounter.set(0);
 			
 			ApplyI<Item> itemSender = new ApplyI<Item>() {
 				@Override
 				public void apply(Item item) throws Exception {
-					ItemMessage im = new ItemMessage();
-					im.setDataset_id(item.getDataset().getDbID().intValue());
-					im.setDatestamp(System.currentTimeMillis());
-					im.setItem_id(item.getDbID());
-					im.setOrg_id((int) item.getDataset().getOrganization().getDbID());
-					im.setPrefix(ns);
-					im.setProject("");
-					im.setSchema_id(schemaId);
-					im.setSourceDataset_id(originalDataset.getDbID().intValue());
-					im.setSourceItem_id(item.getSourceItem().getDbID());
-					im.setUser_id(originalDataset.getCreator().getDbID().intValue());
-					im.setXml(item.getXml());
-					im.setParams(params);
-					
-					for( String routingKey: routingKeys ) 
-						rmp.send(im, routingKey );
-					itemCounter.inc();
+						ItemMessage im = new ItemMessage();
+						im.setDataset_id(item.getDataset().getDbID().intValue());
+						im.setDatestamp(System.currentTimeMillis());
+						im.setItem_id(item.getDbID());
+						im.setOrg_id((int) item.getDataset().getOrganization().getDbID());
+						im.setPrefix(ns);
+						im.setProject("");
+						im.setSchema_id(schemaId);
+						im.setSourceDataset_id(originalDataset.getDbID().intValue());
+						im.setSourceItem_id(item.getSourceItem().getDbID());
+						im.setUser_id(originalDataset.getCreator().getDbID().intValue());
+						im.setXml(item.getXml());
+						im.setParams(params);
+						
+						for( String routingKey: routingKeys ) 
+							rmp.send(im, routingKey );
+						itemCounter.inc();
 				}
 			};
 			
-			derivedItemsDataset.processAllItems(itemSender, false);
+			derivedItemsDataset.processAllValidItems(itemSender, false);
 			long lastChange = System.currentTimeMillis();
 			int lastTotal=0;
 			while( true ) {
@@ -388,16 +434,22 @@ public class BasePublication extends Publication {
 				Thread.sleep( 30000l );
 			}
 			
+			pr.setReport(osc.getProgress(reportId).toString());
 			osc.closeReport(reportId);
 			osc.close();
+
 			ds.logEvent( "Finished publishing. " + itemCounter.get() + " items send.");
-			ds.setPublicationStatus(Dataset.PUBLICATION_OK);
-			ds.setPublishDate(new Date());
+			pr.setPublishedItemCount(itemCounter.get());
+			pr.setEndDate(new Date());
+			pr.setStatus(Dataset.PUBLICATION_OK);
 			DB.commit();
 		} catch( Exception e ) {
 			log.warn( "Item publication went wrong", e );
 			ds.logEvent( "Publication went wrong. " + e.getMessage());
-			ds.setPublicationStatus(Dataset.PUBLICATION_FAILED);
+			pr.setStatus(Dataset.PUBLICATION_FAILED);
+			pr.setEndDate(new Date());
+			pr.setReport(e.getMessage());
+			pr.setPublishedItemCount(itemCounter.get());
 			DB.commit();
 		}
 		

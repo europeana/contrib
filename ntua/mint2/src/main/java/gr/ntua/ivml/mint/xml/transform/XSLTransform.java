@@ -139,14 +139,8 @@ public class XSLTransform implements ItemTransform {
 
 
 	@Override
-	public String transform(String input) {
-		try {
-			return transform(input, null);
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+	public String transform(String input) throws Exception {
+		return transform(input, null);
 	}
 
 	public Map<String, String> getParameters() {

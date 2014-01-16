@@ -3,6 +3,7 @@ package gr.ntua.ivml.mint;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.persistent.PublicationRecord;
 import gr.ntua.ivml.mint.persistent.User;
 
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class Publication {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean publish( Dataset ds ) {
+	public boolean publish( Dataset ds, User publisher ) {
 		return false;
 	}
 	
@@ -72,7 +73,10 @@ public class Publication {
 	 * @return
 	 */
 	public boolean isPublished( Dataset ds ) {
-		return Dataset.PUBLICATION_OK.equals( ds.getPublicationStatus());
+		// either its the original or its the derived that is published
+		List<PublicationRecord> lpr = DB.getPublicationRecordDAO().findByAnyDataset( ds );
+		if( lpr.size() == 0) return false;
+		return Dataset.PUBLICATION_OK.equals( lpr.get(0).getStatus());
 	}
 	
 	// actions are taken to remove the dataset from published set
@@ -121,8 +125,9 @@ public class Publication {
 	 * @return
 	 */
 	public boolean inProgress() {
-		for( Dataset ds: DB.getDatasetDAO().findByOrganization(org))
-			if( Dataset.PUBLICATION_RUNNING.equals( ds.getPublicationStatus())) return true;
+		List<PublicationRecord> lpr = DB.getPublicationRecordDAO().findByOrganization(org);
+		for( PublicationRecord pr: lpr )
+			if( Dataset.PUBLICATION_RUNNING.equals( pr.getStatus())) return true;
 		return false;
 	}
 	
@@ -138,12 +143,11 @@ public class Publication {
 		boolean isFailed = false;
 		boolean hasDatasets = false;
 		
-		for( Dataset ds: DB.getDatasetDAO().findByOrganization(org)) {
-			if( ! Dataset.PUBLICATION_NOT_APPLICABLE.equals( ds.getPublicationStatus()))
-				hasDatasets = true;
-			if( Dataset.PUBLICATION_RUNNING.equals( ds.getPublicationStatus())) 
+		for( PublicationRecord pr: DB.getPublicationRecordDAO().findByOrganization(org)) {
+			hasDatasets = true;
+			if( Dataset.PUBLICATION_RUNNING.equals( pr.getStatus())) 
 				isRunning = true;
-			if( Dataset.PUBLICATION_FAILED.equals( ds.getPublicationStatus())) 
+			if( Dataset.PUBLICATION_FAILED.equals( pr.getStatus())) 
 				isFailed = true;
 		}
 		if( ! hasDatasets ) return Dataset.PUBLICATION_NOT_APPLICABLE;

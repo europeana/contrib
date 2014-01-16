@@ -1,23 +1,11 @@
 package gr.ntua.ivml.mint.rdf.thesauri;
 
 import gr.ntua.ivml.mint.rdf.Repository;
-import gr.ntua.ivml.mint.util.JSONUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.sparql.resultset.JSONOutputResultSet;
 
 /**
  * @author nsimou
@@ -980,17 +968,17 @@ public class Thesaurus {
 		return graphs;
 	}
 	
-	private static void testFotisJSON(String repository, String conceptScheme, String collection, String lang){
-		JSONObject json = new JSONObject();
-
-		JSONArray concepts = JSONUtils.toJSON(gr.ntua.ivml.mint.rdf.thesauri.Thesaurus.getTopConcepts(repository, conceptScheme, collection, lang));
-		json.put("repository", repository);
-		json.put("collection", collection);
-		json.put("conceptScheme", conceptScheme);
-		json.put("concepts", concepts);
-		System.out.println(json);
-		
-	}
+//	private static void testFotisJSON(String repository, String conceptScheme, String collection, String lang){
+//		JSONObject json = new JSONObject();
+//
+//		JSONArray concepts = JSONUtils.toJSON(gr.ntua.ivml.mint.rdf.thesauri.Thesaurus.getTopConcepts(repository, conceptScheme, collection, lang));
+//		json.put("repository", repository);
+//		json.put("collection", collection);
+//		json.put("conceptScheme", conceptScheme);
+//		json.put("concepts", concepts);
+//		System.out.println(json);
+//		
+//	}
 
 	public static void main(String[] args) {
 		String semNative = "http://panic.image.ece.ntua.gr:8080/openrdf-sesame/repositories/NativeThesauri";
@@ -1002,7 +990,7 @@ public class Thesaurus {
 		//Thesaurus.deleteConceptScheme(fuseki, "http://www.europeanafashion.eu/fashionVocabulary/Accesories");
 		
 		System.out.println(Thesaurus.getTopConcepts(repository, "http://lod.image.ntua.gr/ConceptScheme", "el"));//OK
-		Thesaurus.testFotisJSON(repository, "http://lod.image.ntua.gr/ConceptScheme", "", "el");
+//		Thesaurus.testFotisJSON(repository, "http://lod.image.ntua.gr/ConceptScheme", "", "el");
 //		System.out.println(Thesaurus.getPrefLabels(repository, "http://partage.vocnet.org/part00769", "sl", "", true));
 //		System.out.println(Thesaurus.getScopeNote(repository, "http://partage.vocnet.org/part00769", "en", "", true));
 		

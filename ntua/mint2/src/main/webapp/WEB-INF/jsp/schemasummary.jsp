@@ -50,7 +50,7 @@ jQuery(document).ready(function(){
 			
              <s:property escape="false" /> <br/>
        </s:iterator></div></div>
-     <div class="accordion" ">
+     <div class="accordion" >
       <s:iterator id="schema" value="xmlSchemas">
            		
       			   <h3><a href="#"><s:property value="name"/></a></h3>

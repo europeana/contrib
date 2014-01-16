@@ -127,7 +127,16 @@
 						data : { kConnector:"html.page", url:"LockSummary", kTitle:"Locks" }
 					}));
                 <%}%>                
-	            
+                
+                <%if(Config.getBoolean("mint.enableReports")){%>
+                <%if(user.hasRight(User.SUPER_USER) || Config.getBoolean("mint.enableGoalReports")){%>			
+					$navBlock.append(kTemplater.jQuery('line.navigation', {
+						label : 'Data Report',
+						data : { kConnector:"html.page", url:"DataReport", kTitle:"Data Report" }
+					}));
+					<%}%>                    
+				<%}%>      
+	           
 				this.kaiten('load', function(data, $panel, $kaiten){
 					$panel.kpanel('setTitle', 'MINT Home');							
 					return kTemplater.jQuery('panel.body', { content : $navBlock });

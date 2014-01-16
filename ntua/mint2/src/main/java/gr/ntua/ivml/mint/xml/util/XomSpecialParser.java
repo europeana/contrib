@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.xml.util;
 
+import gr.ntua.ivml.mint.db.GlobalPrefixStore;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.StringUtils;
 
@@ -9,11 +10,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
+import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.Node;
 import nu.xom.NodeFactory;
 import nu.xom.Nodes;
@@ -349,6 +355,54 @@ public class XomSpecialParser implements StreamingTransform {
 		}
 	}
 	
+	// recurses down Element and sets namespace prefixes to the global prefixes
+	// collect used namespaces t oadjust the namespace declaration on root node
+	public void adjustNamespacePrefixes( Map<String, String> globalPrefixes, Element elem, Set<String> declaredNamespaces ) {
+		String uri = elem.getNamespaceURI();
+		if( !StringUtils.empty(uri)) {
+			String prefix = globalPrefixes.get( uri );
+			elem.setNamespacePrefix(prefix);
+			declaredNamespaces.add( uri );
+			if( StringUtils.empty(prefix)) log.error( "Found Namespace witjout global prefix!! '" + uri + "'" );
+		}
+		// clean up attributes
+		for( int i=0; i<elem.getAttributeCount(); i++ ) {
+			Attribute att = elem.getAttribute(i);
+			uri = att.getNamespaceURI();
+			if( !StringUtils.empty(uri)) {
+				String prefix = globalPrefixes.get(uri);
+				att.setNamespace(prefix, uri );
+				if( StringUtils.empty(prefix)) log.error( "Found Namespace witjout global prefix!! '" + uri + "'" );
+				declaredNamespaces.add( uri );
+			}
+		}
+
+		// remove existing declarations
+		for( int i=0; i<elem.getNamespaceDeclarationCount(); i++ ) {
+			String prefix = elem.getNamespacePrefix( i );
+			elem.removeNamespaceDeclaration(prefix);
+		}
+		
+		// recurse into subelements
+		Elements elems = elem.getChildElements();
+		for( int i=0; i<elems.size(); i++ ) {
+			Element subElem = elems.get(i);
+			adjustNamespacePrefixes(globalPrefixes, subElem, declaredNamespaces);
+		}
+	}
+	
+	public void documentNamespaceAdjust( Document doc ) {
+		Map<String,String> globalPrefixes = GlobalPrefixStore.allNamespaceMap();
+		Set<String> declaredNamespaces = new HashSet<String>();
+		Element elem = doc.getRootElement();
+		adjustNamespacePrefixes(globalPrefixes, elem, declaredNamespaces);
+		// install the global prefixes on root element
+		for( String uri: declaredNamespaces ) {
+			elem.addNamespaceDeclaration(globalPrefixes.get(uri), uri );
+		}
+	}
+	
+	
 	public void parseStream( InputStream is, String itemPath  ) {
 		// build the replacement outer document, missing all item nodes
 		// stax reparse and copy the element tree into the appropriate places
@@ -364,6 +418,7 @@ public class XomSpecialParser implements StreamingTransform {
 				Builder builder = new Builder( xmlReader, false );
 				templateDoc = builder.build(is);
 				
+				documentNamespaceAdjust(templateDoc);
 				if( resultItemCollector != null )
 					resultItemCollector.apply(templateDoc.getRootElement().toXML());
 			} else {
@@ -419,8 +474,11 @@ public class XomSpecialParser implements StreamingTransform {
 			Element itemParent = root.insertItem();
 			
 			
-			if( resultItemCollector != null )
+			if( resultItemCollector != null ) {
+				// adjust namespace prefixes on document
+				documentNamespaceAdjust(templateDoc);
 				resultItemCollector.apply(templateDoc.getRootElement().toXML());
+			}
 			// and after processing, remove the currentItem again.
 			itemParent.removeChild(currentItemElem);
 			((FilterElement)itemParent).removePlaceholder();

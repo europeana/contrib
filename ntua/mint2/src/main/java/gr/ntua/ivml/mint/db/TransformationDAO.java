@@ -3,6 +3,7 @@ package gr.ntua.ivml.mint.db;
 
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Counter;
@@ -19,6 +20,7 @@ public class TransformationDAO extends DAO<Transformation, Long> {
 		.setEntity("du", du)
 		.list();
 	}
+	
 
 	public List<Transformation> getByParent( Dataset ds ) {
 		return getSession().createQuery( "from Transformation where parentDataset=:ds order by created DESC")
@@ -50,11 +52,6 @@ public class TransformationDAO extends DAO<Transformation, Long> {
 					if( tr.getSchemaStatus().equals( Dataset.SCHEMA_RUNNING ))  {
 						tr.setSchemaStatus(Dataset.SCHEMA_FAILED);
 						tr.logEvent( "Schema validation interrupted, set to FAILED!" );
-						modified = true;
-					}
-					if( tr.getNodeIndexerStatus().equals( Dataset.NODES_RUNNING )) {
-						tr.setNodeIndexerStatus(Dataset.NODES_FAILED);
-						tr.logEvent( "Node indexing interrupted, set to FAILED!" );
 						modified = true;
 					}
 					if( tr.getStatisticStatus().equals( Dataset.STATS_RUNNING)) {

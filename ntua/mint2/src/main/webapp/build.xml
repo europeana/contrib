@@ -36,7 +36,7 @@
 		<!-- Compile the java code from ${src} into ${build} -->
 		<javac destdir="${build}" 
 			encoding = "utf-8"
-			source="1.6" debug="true" debuglevel="lines,source" 
+			source="1.6" debug="true" debuglevel="lines,vars,source" 
 			includeAntRuntime="no" srcdir="${allSrc}" >
 			<classpath>
 				<pathelement path="${classpath}"/>
@@ -84,8 +84,13 @@
 		<tstamp>
 		    <format property="NOW" pattern="d-MMM-yyyy HH:mm:ss" locale="en,UK"/>
 		  </tstamp>
-		<echo file="build.properties" message="svn-revision=" />
-		<exec executable="svnversion" output="build.properties" append="true"/>
+		<echo file="build.properties" message="git-SHA1=" />
+		<exec executable="git" output="build.properties" append="true">
+			<arg value="rev-parse"/>
+			<arg value="--verify"/>
+			<arg value="HEAD"/>
+		</exec>
+		
 		<echo file="build.properties" append="true" >appname=${appname}
 deploy_target=${deploy_target}
 build-time=${NOW}</echo>
@@ -133,6 +138,10 @@ build-time=${NOW}</echo>
 		<copy todir="${dist}/${appname}/scripts">
 			<fileset dir="scripts" />
 		</copy>
+		<echo message="Copying views..." />
+		<copy todir="${dist}/${appname}/views">
+			<fileset dir="views" />
+		</copy>
 		<echo message="Copying WEB-INF..." />
 		<copy todir="${dist}/${appname}/WEB-INF">
 			<fileset dir="WEB-INF" />
@@ -159,4 +168,19 @@ build-time=${NOW}</echo>
 	<target name="deploy" depends="modify, dist" if="deploy_target">
 		<antcall target="deploy-specific"/>
 	</target>
+	
+    <target name="doc">
+       <javadoc destdir="docs/mint2" 
+                sourcepath="WEB-INF/src/java"
+                packagenames="gr.ntua.ivml.mint.*"
+                windowtitle="Mint2 Javadoc" 
+       >
+		<classpath>
+			<pathelement path="${classpath}"/>
+                        <fileset dir="WEB-INF/lib">
+                        	<include name="**/*.jar"/>
+                        </fileset>
+		</classpath>
+	</javadoc>
+    </target>
 </project>

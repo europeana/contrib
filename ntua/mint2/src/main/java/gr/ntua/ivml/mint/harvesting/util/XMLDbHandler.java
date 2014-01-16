@@ -2,7 +2,6 @@ package gr.ntua.ivml.mint.harvesting.util;
 
 import gr.ntua.ivml.mint.persistent.XMLNode;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
-import gr.ntua.ivml.mint.util.NodeReader;
 import gr.ntua.ivml.mint.util.NodeStoreI;
 
 import java.util.HashMap;

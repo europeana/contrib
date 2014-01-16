@@ -1,11 +1,13 @@
 package gr.ntua.ivml.mint.persistent;
 
 import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.mapping.MappingConverter;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
+import gr.ntua.ivml.mint.mapping.model.SchemaConfiguration;
 import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +16,9 @@ import java.util.Set;
 
 import javax.xml.validation.Schema;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 import org.xml.sax.SAXException;
 
@@ -63,7 +65,7 @@ public class XmlSchema {
 	Date lastModified;
 	
 	
-	private JSONObject conf = null;
+	private SchemaConfiguration conf = null;
 	
 	// helper functions
 	
@@ -210,9 +212,14 @@ public class XmlSchema {
 		this.schematronXSL = xsl;
 	}
 
-	public JSONObject getConfiguration() {
+	public SchemaConfiguration getConfiguration() {
 		if(conf == null) {
-			conf = (JSONObject) JSONSerializer.toJSON(this.getJsonConfig());
+			try {
+				conf = new SchemaConfiguration(JSONUtils.parse(this.getJsonConfig()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return conf;
@@ -220,7 +227,7 @@ public class XmlSchema {
 	
 	public JSONArray getPreviews() {
 		if(this.getConfiguration() != null && this.getConfiguration().has("preview")) {
-			return this.getConfiguration().getJSONArray("preview");
+			return this.getConfiguration().getArray("preview");
 		}
 		
 		return new JSONArray();
@@ -230,8 +237,8 @@ public class XmlSchema {
 		String result = null;
 		
 		if(this.getConfiguration().has("paths")) {
-			JSONObject paths = this.getConfiguration().getJSONObject("paths");
-			if(paths.has("item")) result = paths.getString("item");
+			JSONObject paths = (JSONObject) this.getConfiguration().getObject("paths");
+			if(paths.containsKey("item")) result = paths.get("item").toString();
 		}
 		
 		return result;
@@ -241,9 +248,9 @@ public class XmlSchema {
 		String result = null;
 		
 		if(this.getConfiguration().has("publication")) {
-			JSONObject publication = this.getConfiguration().getJSONObject("publication");
-			if(publication.has("type") && publication.getString("type").equalsIgnoreCase("xsl")) {
-				if(publication.has("value")) result = publication.getString("value");
+			JSONObject publication = this.getConfiguration().getObject("publication");
+			if(publication.containsKey("type") && publication.get("type").toString().equalsIgnoreCase("xsl")) {
+				if(publication.containsKey("value")) result = publication.get("value").toString();
 			}
 		}
 		
@@ -257,7 +264,7 @@ public class XmlSchema {
 	public JSONObject getAutomaticMappings() {
 		JSONObject result = null;
 		if(this.getConfiguration().has("automaticMappings")) {
-			result = this.getConfiguration().getJSONObject("automaticMappings");
+			result = this.getConfiguration().getObject("automaticMappings");
 		}
 		
 		return result;
@@ -281,14 +288,14 @@ public class XmlSchema {
 		if(this.getConfiguration().has("parameters")) {
 			HashMap<String, XmlSchema.Parameter> result = new HashMap<String, XmlSchema.Parameter>();
 			
-			JSONObject parameters = this.getConfiguration().getJSONObject("parameters");
+			JSONObject parameters = this.getConfiguration().getObject("parameters");
 			for(Object o: parameters.keySet()) {
 				String key = o.toString();
-				JSONObject p = parameters.getJSONObject(key);
+				JSONObject p = (JSONObject) parameters.get(key);
 				XmlSchema.Parameter parameter = new XmlSchema.Parameter();
 				parameter.setName(key);
-				parameter.setType(p.getString("type"));
-				parameter.setValue(p.getString("value"));
+				parameter.setType(p.get("type").toString());
+				parameter.setValue(p.get("value").toString());
 
 				result.put(key, parameter);
 			}
@@ -307,13 +314,30 @@ public class XmlSchema {
 		
 		if(this.getConfiguration() != null) {
 			if(this.getConfiguration().has("namespaces")) {
-				JSONObject nm = this.getConfiguration().getJSONObject("namespaces");
+				JSONObject nm = this.getConfiguration().getObject("namespaces");
 				for(Object prefix: nm.keySet()) {
-					namespaces.put(prefix.toString(), nm.getString((String) prefix));
+					namespaces.put(prefix.toString(), nm.get((String) prefix).toString());
 				}
 			}
 		}
 		
 		return namespaces;
+	}
+
+	public Mappings getTemplate() {
+		if(this.getJsonTemplate() != null) {
+			try {
+				Mappings mappings = new Mappings(this.getJsonTemplate());
+				if(MappingConverter.upgradeToLatest(mappings)) {
+					this.setJsonTemplate(mappings.toString());
+				}
+				
+				return mappings;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
 	}	
 }

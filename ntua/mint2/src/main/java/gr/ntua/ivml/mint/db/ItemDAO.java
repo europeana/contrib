@@ -74,6 +74,8 @@ public class ItemDAO extends DAO<Item, Long> {
 			onAllStateless(operation, cond);
 	}
 	
+	
+	
 	/**
 	 * Iterates and repeatedly throws the retrieved Item out of session.
 	 * If you change the item that will be committed.

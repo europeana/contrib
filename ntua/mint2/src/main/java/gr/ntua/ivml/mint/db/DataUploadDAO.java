@@ -1,19 +1,20 @@
 package gr.ntua.ivml.mint.db;
 
-import gr.ntua.ivml.mint.concurrent.Queues;
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.util.JSONUtils;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
+import org.hibernate.Query;
 
 public class DataUploadDAO extends DAO<DataUpload, Long> {
 	public static final Logger log = Logger.getLogger(DataUploadDAO.class);
@@ -54,7 +55,7 @@ public class DataUploadDAO extends DAO<DataUpload, Long> {
 	}
 	
 	public List<User> getUploaders( Organization o ) {
-		List<User> l = getSession().createQuery( "select distinct(ul) from DataUpload du join du.creator ul where du.organization = :org" )
+		List<User> l = getSession().createQuery( "select distinct(ul) from Dataset du join du.creator ul where du.class<>'Transformation' and du.organization = :org" )
 		.setEntity("org", o)
 		.list();
 	return l;		
@@ -66,6 +67,28 @@ public class DataUploadDAO extends DAO<DataUpload, Long> {
 			.list();
 		return l;
 	}
+	
+	
+	public List<DataUpload> findByOrganizationFolders( Organization o, String... folders ) {
+		StringBuilder sb = new StringBuilder();
+		ArrayList<String> likeParams = new ArrayList<String>();
+		int i =0;
+		for( String folder: folders ) {
+			String jsonFolder = "%" + JSONUtils.valueToString(folder) + "%";
+			sb.append( " and jsonFolders like :param" + i );
+			likeParams.add( jsonFolder);
+			i++;
+		}
+		Query q = getSession().createQuery( "from DataUpload where organization = :org " + sb.toString())
+				.setEntity("org", o);
+		for( int j=0; j<i; j++ ) {
+			q.setString("param"+j, likeParams.get(j));
+		}
+		List<DataUpload> l = 
+				q.list();
+		return l;
+	}
+	
 	
 	public DataUpload findByName( String name ) {
 		DataUpload ds = (DataUpload) getSession().createQuery( "from DataUpload where name=:name")
@@ -97,11 +120,6 @@ public class DataUploadDAO extends DAO<DataUpload, Long> {
 					if( du.getSchemaStatus().equals( Dataset.SCHEMA_RUNNING ))  {
 						du.setSchemaStatus(Dataset.SCHEMA_FAILED);
 						du.logEvent( "Schema validation interrupted, set to FAILED!" );
-						modified = true;
-					}
-					if( du.getNodeIndexerStatus().equals( Dataset.NODES_RUNNING )) {
-						du.setNodeIndexerStatus(Dataset.NODES_FAILED);
-						du.logEvent( "Node indexing interrupted, set to FAILED!" );
 						modified = true;
 					}
 					if( du.getStatisticStatus().equals( Dataset.STATS_RUNNING)) {

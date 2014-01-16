@@ -29,9 +29,8 @@ import gr.ntua.ivml.mint.persistent.XpathHolder;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
 import gr.ntua.ivml.mint.xml.transform.XSLTGenerator;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -157,7 +156,7 @@ public class MappingOptions extends GeneralAction {
 		String result = null;
 		
 		if((du instanceof DataUpload) && !((DataUpload)du).isDirect()) {
-			xslt.setItemLevel(itemPath.getXpathWithPrefix(true));
+			xslt.setItemXPath(itemPath.getXpathWithPrefix(true));
 			xslt.setImportNamespaces(du.getRootHolder().getNamespaces(true));
 			
 			String xsl = XMLFormatter.format(xslt.generateFromString(mappings));
@@ -326,9 +325,7 @@ public class MappingOptions extends GeneralAction {
 				} else {
 
 					
-					JSONObject object = (JSONObject) JSONSerializer.toJSON(em.getJsonString());
-					Map<String,String> allmaps=MappingSummary.getMappedXPaths(object );
-					Collection<String> allvalues = allmaps.values();
+					Collection<String> allvalues = MappingSummary.getAllMappedXPaths(em.getMappings());
 
 					addActionError("This import does not contain the following xpaths which appear in <i>'"
 							+ em.getName()

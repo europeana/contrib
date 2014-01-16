@@ -1,20 +1,32 @@
 package gr.ntua.ivml.mint.annotator;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.AbstractMappingManager;
-import gr.ntua.ivml.mint.mapping.JSONMappingHandler;
 import gr.ntua.ivml.mint.mapping.MappingCache;
+import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
+import gr.ntua.ivml.mint.mapping.model.SchemaConfiguration;
+import gr.ntua.ivml.mint.mapping.model.SchemaConfiguration.Views;
+import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
+import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Preferences;
+import gr.ntua.ivml.mint.util.XMLUtils;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -23,13 +35,35 @@ import org.xml.sax.SAXException;
 
 public class Annotator {
 	public class AnnotationDocument {
-		private JSONMappingHandler template = null;
-		public AnnotationDocument(JSONMappingHandler template) {
-			this.setTemplate(template);
+		private Mappings mappings = null;
+		private Item item = null;
+		
+		public AnnotationDocument(Mappings mappings) {
+			this.setMappings(mappings);
 		}
-		public JSONMappingHandler getTemplate() { return this.template; }
-		public void setTemplate(JSONMappingHandler handler) { this.template = handler; }
-		public JSONMappingHandler getRoot() { return this.template.getTemplate(); }
+		
+		public AnnotationDocument(Item item) throws ValidityException, SAXException, ParsingException, IOException {
+			this.setItem(item);
+			Mappings mappings = Mappings.templateFromXML(item.getXml());
+
+			XmlSchema schema = getSchema();
+			if(schema != null) {
+				Mappings output = schema.getTemplate();
+				Element input = mappings.findFirst("//" + output.getTemplate().getFullName());
+				output.getTemplate().expand(input);
+				this.setMappings(output);
+			} else {
+				this.setMappings(mappings);
+			}
+		}
+		
+		public Item getItem() { return this.item; };
+		public void setItem(Item item) { this.item = item; }
+		
+		public Mappings getMappings() { return this.mappings; }
+		public void setMappings(Mappings mappings) { this.mappings = mappings; }
+		
+		public Element getTemplate() { return this.mappings.getTemplate(); }
 	}
 	
 	protected final Logger log = Logger.getLogger(getClass());
@@ -37,10 +71,15 @@ public class Annotator {
 	private JSONObject configuration = new JSONObject();
 	
 	private long datasetId;
+	private XmlSchema schema = null;
 	AnnotationDocument document = null;
 	
 	private JSONObject errorResponse(String error, HttpServletRequest request) {
-		return new JSONObject().element("request", request.getParameterMap()).element("error", error);
+		JSONObject response = new JSONObject();
+		if(request != null) response.put("request", request.getParameterMap());
+		response.put("error", error);
+		
+		return response;
 	}
 
 	public Annotator() {
@@ -54,6 +93,7 @@ public class Annotator {
 		log.debug("Initialize with datasetId: " + this.datasetId);
 
 		this.datasetId = Long.parseLong(datasetId);
+		this.schema = null;
 		this.document = null;
 		this.cache.reset();
 	}
@@ -81,10 +121,15 @@ public class Annotator {
 			} else if(command.equals("loadItem")) {
 				String itemId = request.getParameter("itemId");
 				response = this.loadItem(Long.parseLong(itemId));
+			} else if(command.equals("newItem")) {
+				response = this.newItem();
+			} else if(command.equals("deleteItem")) {
+				response = this.deleteItem();
 			} else if(command.equals("setPreferences")) {
-					String preferences = request.getParameter("preferences");
-					Preferences.put(user, AbstractMappingManager.PREFERENCES, preferences);
-					response = new JSONObject().element("preferences", preferences);
+				String preferences = request.getParameter("preferences");
+				Preferences.put(user, AbstractMappingManager.PREFERENCES, preferences);
+				response = new JSONObject();
+				response.put("preferences", preferences);
 			} else if(command.equals("setConstantValueMapping")) {
 				String id = request.getParameter("id");
 				String value = request.getParameter("value");
@@ -107,8 +152,63 @@ public class Annotator {
 				} else {
 					return this.errorResponse("argument missing", request);
 				}
+			} else if(command.equals("duplicateNode")) {
+				String id = request.getParameter("id");
+				
+				if(id != null) {
+					return this.duplicateNode(id);
+				} else {
+					return this.errorResponse("argument missing", request);
+				}
+			} else if(command.equals("removeNode")) {
+				String id = request.getParameter("id");
+				
+				if(id != null) {
+					return this.removeNode(id);
+				} else {
+					return this.errorResponse("argument missing", request);
+				}
+			} else if(command.equals("find")) {
+				String id = request.getParameter("root");				
+				String xpath = request.getParameter("xpath");
+				HashMap<String, String> metadata = new HashMap<String, String>();
+				
+				// find metadata
+				for(Object keyObj: request.getParameterMap().keySet()) {
+					String key = (String) keyObj;
+					if(key.startsWith("metadata[")) {
+						String metadataKey = key.replaceFirst("metadata\\[", "").replaceFirst("\\]", "");
+						metadata.put(metadataKey, request.getParameter(key));
+					}
+				}
+				
+				if(xpath != null) {
+					response = new JSONObject();
+					
+					Collection<Element> elements = this.find(xpath, id);
+					JSONArray results = new JSONArray();
+					for(Element element: elements) {
+						JSONObject elementResult = new JSONObject();
+						
+						elementResult.put("target", element.asJSONObject());
+						
+						JSONObject metadataResults = new JSONObject();
+						for(String key: metadata.keySet()) {
+							String value = this.findValue(metadata.get(key), element.getId());
+							metadataResults.put(key, value);
+						}
+						elementResult.put("metadata", metadataResults);
+						results.add(elementResult);
+					}
+					
+					response.put("results", results);
+				} else {
+					return this.errorResponse("argument missing", request);
+				}
 			} else if(command.equals("getXML")) {
-				return new JSONObject().element("xml", this.getXML());
+				JSONObject xml = new JSONObject();
+				xml.put("xml", this.getXML());
+				return xml;
 			} else {
 				return this.errorResponse("unsupported operation", request);
 			}
@@ -118,6 +218,62 @@ public class Annotator {
 		}
 		
 		return response;
+	}
+
+	private JSONObject newItem() throws ValidityException, SAXException, ParsingException, IOException {
+		Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
+		if(dataset != null) {
+			Item item = dataset.createItem();
+			
+			Mappings mappings = this.getItemTemplate();
+			item.setXml(XMLUtils.toXML(mappings));
+			item.setLastModified(new Date());
+			item.setLabel("New item");
+			
+			dataset.updateItem(item);
+			
+			JSONObject response = new JSONObject();
+			response.put("itemId", item.getDbID());
+			response.put("item", this.loadItem(item));
+			return response;		
+		}
+		
+		return this.errorResponse("Could not get dataset", null);
+	}
+	
+	private JSONObject deleteItem() {
+		Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
+		Item item = this.document.getItem();
+		
+		if(item != null) {
+			boolean result = dataset.deleteItem(item);
+			JSONObject response = new JSONObject();
+			response.put("deleteItem", result);			
+			this.document = null;
+			
+			return response;
+		}
+		
+		return this.errorResponse("no item loaded", null); 
+	}
+	
+	private XmlSchema getSchema() {
+		if(this.schema == null) {
+			Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
+			if(dataset != null && dataset.getSchema() != null) {
+				this.schema = dataset.getSchema();
+			}
+		}
+		
+		return this.schema;
+	}
+
+	private Mappings getItemTemplate() {
+		Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
+		if(dataset != null && dataset.getSchema() != null) {
+			return dataset.getSchema().getTemplate();
+		}
+		return null;
 	}
 
 	/**
@@ -131,11 +287,13 @@ public class Annotator {
 	 */
 	public JSONObject loadItem(long itemId) throws ValidityException, SAXException, ParsingException, IOException {
 		Item item = DB.getItemDAO().getById(itemId, false);
-		this.document = new AnnotationDocument(JSONMappingHandler.templateFromXML(item.getXml()));
-		
-		this.cache = new MappingCache(this.document.getRoot().asJSONObject());
-		
-		return this.document.getTemplate().asJSONObject();
+		return this.loadItem(item);
+	}
+	
+	private JSONObject loadItem(Item item) throws ValidityException, SAXException, ParsingException, IOException {
+		this.document = new AnnotationDocument(item);
+		this.cache = new MappingCache(this.document.getTemplate().asJSONObject());
+		return this.document.getMappings().asJSONObject();
 	}
 
 	
@@ -148,10 +306,12 @@ public class Annotator {
 	 * @return
 	 */
 	private JSONObject setConstantValueMapping(String id, String value, String annotation, int index) {
-		JSONObject target = this.cache.getElement(id);
-		JSONMappingHandler handler = new JSONMappingHandler(target);
-		handler.setConstantValueMapping(value, annotation, index);
-		return target;
+		Element element = this.cache.getElementHandler(id);
+		element.getMappingCase(0, true).setMapping(index, SimpleMapping.MAPPING_TYPE_CONSTANT, value, annotation);
+		
+		this.save();
+
+		return element.asJSONObject();
 	}
 	
 	/**
@@ -159,16 +319,56 @@ public class Annotator {
 	 * @return
 	 */	
 	private JSONObject removeMapping(String id, int index) {
-		JSONObject target = this.cache.getElement(id);
-		new JSONMappingHandler(target).removeMapping(index);
-		return target;
+		Element element = this.cache.getElementHandler(id);
+		element.getMappingCase(0, true).removeMapping(index);
+
+		this.save();
+
+		return element.asJSONObject();
+	}
+	
+	private JSONObject duplicateNode(String id) {
+		Element duplicate = this.cache.duplicate(id);
+		if(duplicate != null) duplicate.setRemovable(true);
+		
+		this.save();
+
+		if(duplicate != null) return duplicate.asJSONObject();
+		else return null;
+	}
+
+	private JSONObject removeNode(String id) {
+		JSONObject result = new JSONObject();
+		Element parent = this.cache.getParentHandler(id);
+		Element child = this.cache.getElementHandler(id);
+		
+		if(child == null || parent == null) {
+			result.put("error", "could not find target or parent element");
+		} else if(parent.find(child.getFullName()).size() > 1) {
+			result.put("id", id);
+			result.put("parent", parent.getString("id"));
+			
+			child = parent.removeChild(id);
+			if(child != null) {
+				this.cache.removeElement(id);
+				result.put("id", id);
+				result.put("parent", parent.getString("id"));
+			}
+		} else {
+			child.clearMappingsRecursive();
+		}
+
+		
+		save();
+		
+		return result;
 	}
 
 	public String getXML() {
 		String xml = "";
 
 		if(this.document != null) {
-			xml = this.document.getTemplate().toXML();
+			xml = XMLUtils.toXML(this.document.getMappings());
 			xml = XMLFormatter.format(xml);
 		}
 		
@@ -185,5 +385,64 @@ public class Annotator {
 
 	public void setConfiguration(JSONObject configuration) {
 		this.configuration = configuration;
+	}
+
+	public JSONObject getViews() {
+		SchemaConfiguration configuration = this.getSchema().getConfiguration();
+		if(configuration != null) {
+			Views views = configuration.getViews();
+			if(views != null) return views.asJSONObject();
+		}
+		return null;
+	}
+	
+	public Collection<Element> find(String xpath) {
+		return this.document.mappings.find(xpath);
+	}
+	
+	public Collection<Element> find(String xpath, String rootId) {
+		if(rootId == null) return this.find(xpath);
+		
+		Element root = this.cache.getElementHandler(rootId);
+		return root.find(xpath);
+	}
+	
+	public String findValue(String xpath) {
+		Element result = this.document.mappings.findFirst(xpath);
+		ArrayList<SimpleMapping> constants = result.getAllMappings(SimpleMapping.MAPPING_TYPE_CONSTANT);
+		if(constants.size() > 0) return constants.get(0).getValue();
+		return null;
+	}
+	
+	public String findValue(String xpath, String rootId) {	
+		if(rootId == null) return this.findValue(xpath);
+		
+		Element root = this.cache.getElementHandler(rootId);
+		Element result = root.findFirst(xpath);
+		ArrayList<SimpleMapping> constants = result.getAllMappings(SimpleMapping.MAPPING_TYPE_CONSTANT);
+		if(constants.size() > 0) return constants.get(0).getValue();
+		return null;
+	}
+	
+	public synchronized void save() {
+		log.debug("SAVING");
+		if(this.document != null && this.document.getItem() != null) {
+			// merge item to session
+			Item item = this.document.getItem();
+			item = (Item) DB.getSession().merge(item);
+			this.document.setItem(item);
+
+			// save item xml
+			String xml = this.getXML();
+			item.setXml(xml);
+			
+			Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
+			dataset.updateItem(item);
+			
+			DB.commit();
+			log.debug("Item saved");
+		} else {
+			log.debug("Item is null");
+		}
 	}
 }

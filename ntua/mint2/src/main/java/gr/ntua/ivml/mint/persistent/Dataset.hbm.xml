@@ -52,9 +52,6 @@
 		<property name="itemizerStatus" column="itemizer_status"/>
 		<property name="itemCount" column="item_count"/>
 		<property name="validItemCount" column="valid_item_count" />
-		<property name="nodeIndexerStatus" column="node_index_status"/>
-		<property name="nodeIndexName" column="node_index_name" />
-		<property name="nodeIndexSize" column="node_index_size" />
 		<property name="statisticStatus" column="statistic_status" />
 		
 		<property name="created" />
@@ -69,10 +66,8 @@
 		
 		<property name="deleted" />
 		<property name="deletedDate" column="deleted_date"/>
+		<property name="jsonFolders" column="json_folders" />
 		
-		<property name="publishDate" column="publish_date" />
-		<property name="publicationStatus" column="publication_status" />
-		<property name="publishedItemCount" column="published_item_count" />
 		
 	    <subclass name="gr.ntua.ivml.mint.persistent.DataUpload"  discriminator-value="DataUpload"  >
 	    <join table="data_upload" >

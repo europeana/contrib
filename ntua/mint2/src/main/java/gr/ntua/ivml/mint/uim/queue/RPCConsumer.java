@@ -6,7 +6,6 @@ import gr.ntua.ivml.mint.util.Config;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
@@ -103,19 +102,6 @@ public class RPCConsumer implements Runnable{
 		return res;
 	}
 	
-	private JAXBElement unmarshalMessage(String xml){
-		JAXBElement res = null;
-		try {
-			StringReader reader = new StringReader(xml);
-			JAXBElement elem = (JAXBElement) u.unmarshal(reader);
-			res = elem;
-			//System.out.println(elem.getName());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-	
 	private byte[] marshalXMLObject(JAXBElement xmlObject){
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		byte[] res = null;
@@ -133,8 +119,8 @@ public class RPCConsumer implements Runnable{
 		while(running){
 			try {
 				delivery = consumer.nextDelivery();
-				String utfstr = new String(delivery.getBody(),"UTF-8");
-				JAXBElement command = unmarshalMessage(utfstr);
+                String utfstr = new String(delivery.getBody(),"UTF-8"); 
+	            JAXBElement command = unmarshalMessage(utfstr.getBytes());
 				String commandClass = Config.get("uim.strategy." + command.getName().toString());
 				@SuppressWarnings("unchecked")
 				Class<MessageConsumerStrategy> claz = (Class<gr.ntua.ivml.mint.uim.queue.strategies.MessageConsumerStrategy>) classLoader.loadClass(commandClass);

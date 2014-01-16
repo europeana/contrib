@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -375,6 +377,24 @@ public class StringUtils {
 		String str = buffer.toString();
 		
 		return str;
+	}
+	
+	public static String md5Utf8( String clearText ) {
+		StringBuilder sb = new StringBuilder();
+		try {
+			MessageDigest md = MessageDigest.getInstance( "MD5");
+			md.update( clearText.getBytes( Charset.forName( "UTF-8")));
+			byte[] md5 = md.digest();
+			for( byte b: md5 ) {
+				int i = (b&0xff);
+				if( i < 16 )
+					sb.append( "0" );
+				sb.append( Integer.toHexString(i).toUpperCase());
+			}
+		} catch( Exception e ) {			
+			return "Can't md5, exception " + e.getMessage();
+		}
+		return sb.toString();
 	}
 	
 	public static String exceptionStackTrace(Exception ex) {

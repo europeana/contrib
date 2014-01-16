@@ -7,9 +7,11 @@ import gr.ntua.ivml.mint.util.Tuple;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,6 +26,55 @@ import org.apache.log4j.Logger;
  *
  */
 public class Queues {
+	
+	static class LightSerialQueue {
+		String name;
+		boolean active;
+		Queue<Runnable> jobs = new LinkedList<Runnable>();
+		class WrappedRunnable implements Runnable {
+			String[] serialQueues;
+			int currentQueue;
+			String finalQueue;
+			Runnable job;
+			public void run() {
+				try {
+					job.run();
+				} finally {
+					// tell everybody I'm done
+					for( String name: serialQueues ) {
+						Queues.serialQueues.get( name ).done();
+					}
+				}
+			}
+			public WrappedRunnable(  Runnable job, String finalQueue, String[] serialQueues ) {
+				this.serialQueues = serialQueues;
+				this.finalQueue = finalQueue;
+				this.job = job;
+				currentQueue = -1;
+			}
+			
+		}
+		public void serialQueue( Runnable job, String finalQueue, String... serialQueues ) {
+			if( active ) {
+				Runnable wrappedRunnable = job;
+				jobs.add( wrappedRunnable );
+			} else {
+				active=true;
+				
+			}
+		}
+		
+		// job announces that it is finished
+		public void done( ) {
+			if( !jobs.isEmpty() ) {
+				Runnable newJob = jobs.poll();
+				
+			} else {
+				// should remove the queue
+				serialQueues.remove( name );
+			}
+		}
+	}
 	static public interface ConditionedRunnable {
 		// when this returns true, the Runnable is put to the queue it was 
 		// submitted to
@@ -37,7 +88,8 @@ public class Queues {
 	static Map<Runnable, Future<?>> futures = new HashMap<Runnable, Future<?>>();
 	static List<Tuple<Runnable, String>> conditionedRunnables = new ArrayList<Tuple<Runnable, String>>();
 	
-	// only one queue at the moment
+	static HashMap<String, LightSerialQueue> serialQueues = new HashMap<String, Queues.LightSerialQueue>();
+
 	static {
 		// db queue allows 2 parallel jobs on db heavy stuff
 		// transformation goes here and upload part two ( parse and index )
@@ -180,3 +232,18 @@ public class Queues {
 		}
 	}
 }
+
+
+// two ideas that might be funny / useful
+// the light serial queues. You submit a job there and it guarantees, that it will only execute 
+// the next one if the previous has run
+
+// multiple jobs on a dataset could be serialized in one dataset related queue.
+// and in a queue chain, once the original job finished execution, next one is started down the chain
+
+// conditionedJobs are nice and lightweight, but require timer and pulling. How about some message based system
+
+// submit a job to a conditionedqueue, and have the queue receive messages that prompt the check of all
+// queued jobs if they can run (or not run)
+// eliminates the polling, allow for params in the message
+

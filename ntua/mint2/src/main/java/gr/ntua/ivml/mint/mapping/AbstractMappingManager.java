@@ -1,16 +1,21 @@
 package gr.ntua.ivml.mint.mapping;
 
-import gr.ntua.ivml.mint.db.Meta;
+import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.Function;
+import gr.ntua.ivml.mint.mapping.model.MappingCase;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
+import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
+import gr.ntua.ivml.mint.util.JSONUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.ParseException;
 
 public abstract class AbstractMappingManager {	
 	protected static final Logger log = Logger.getLogger( AbstractMappingManager.class );
@@ -18,56 +23,38 @@ public abstract class AbstractMappingManager {
 	
 	protected XmlSchema outputSchema;
 
+	Mappings mappings = null;
 	JSONObject targetDefinition = null;
-	JSONObject targetConfiguration = null;
+	JSONObject schemaConfiguration = null;
 	public JSONObject getConfiguration() {
-		return this.targetConfiguration;
+		return this.schemaConfiguration;
 	}
 
 	MappingCache cache = null;
-	
-	JSONObject documentation = null;
-	
-	protected String getDocumentationForKey(String key) {
-		if(documentation == null) {
-			documentation = (JSONObject) JSONSerializer.toJSON(outputSchema.getDocumentation());
-		}
-		
-		String result = null;
-		if(documentation.has(key)) {
-			result = documentation.getString(key);
-		// TODO: this could result in bugs, remove if documentation is rebuild in all deployed applications.
-		} else if(key.contains(":")){
-			String[] parts = key.split(":");
-			if(parts.length > 1 && documentation.has(parts[1])) {
-				result = documentation.getString(parts[1]);
-			}
-		}
-		
-		if(result == null) {
-				result = "No documentation for '" + key + "'";
-		}
-		
-		return result;
-	}
 	
 	public AbstractMappingManager() {
 	}
 	
 	public abstract void init(String id);
 	
-	public void init(String mapping, XmlSchema schema) {
+	public void init(Mappings mappings, XmlSchema schema) {
 		this.outputSchema = schema;
+		if(this.cache != null) this.cache.reset();
 
-		targetConfiguration = (JSONObject) JSONSerializer.toJSON(this.outputSchema.getJsonConfig());
-		targetConfiguration.element("schemaId", this.outputSchema.getDbID());
+		this.mappings = mappings;
+		this.targetDefinition = mappings.asJSONObject();
+		this.schemaConfiguration = new JSONObject();
+		try {
+			schemaConfiguration = JSONUtils.parse(this.outputSchema.getJsonConfig());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		schemaConfiguration.put("schemaId", this.outputSchema.getDbID());
 
-		targetDefinition = (JSONObject) JSONSerializer.toJSON(mapping);
-		
 		// cache template
 		log.debug("cache elements");
-		this.cache = new MappingCache(targetDefinition.getJSONObject("template"));
-		
+		this.cache = new MappingCache(mappings.getTemplate());
 	}
 	
 	public JSONObject getMetadata() {
@@ -75,17 +62,17 @@ public abstract class AbstractMappingManager {
 	}
 	
 	public JSONArray getBookmarks() {
-		if(targetDefinition.has("bookmarks")) return targetDefinition.getJSONArray("bookmarks");
+		if(targetDefinition == null) return new JSONArray();
+		else if(targetDefinition.containsKey("bookmarks")) return (JSONArray) targetDefinition.get("bookmarks");
 		else {
 			JSONArray bookmarks = new JSONArray();
-			targetDefinition.element("bookmarks", bookmarks);
-			this.save();
-			return targetDefinition.getJSONArray("bookmarks");
+			targetDefinition.put("bookmarks", bookmarks);
+			return (JSONArray) targetDefinition.get("bookmarks");
 		}
 	}
 	
 	public JSONArray addBookmark(String title, String id) {
-		return this.addBookmark(JSONMappingHandler.bookmark(title, id));
+		return this.addBookmark(MappingPrimitives.bookmark(title, id));
 	}
 	
 	public JSONArray addBookmark(JSONObject bookmark) {
@@ -104,7 +91,7 @@ public abstract class AbstractMappingManager {
 		Iterator<?> i = bookmarks.iterator();
 		while(i.hasNext()) {
 			JSONObject next = (JSONObject) i.next();
-			if(next.has("id") && next.getString("id").equals(id)) {
+			if(next.containsKey("id") && next.get("id").toString().equals(id)) {
 				bookmark = next;
 				break;
 			}
@@ -114,9 +101,34 @@ public abstract class AbstractMappingManager {
 		return bookmark;
 	}
 	
+	public void removeBookmarkRecursive(JSONObject object) {
+		if(object.containsKey("id")) {
+			String id = object.get("id").toString();
+			this.removeBookmark(id);
+		}
+		
+		if(object.containsKey("children")) {
+			JSONArray children = (JSONArray) object.get("children");
+			Iterator<?> it = children.iterator();
+			while(it.hasNext()) {
+				JSONObject child = (JSONObject) it.next();
+				this.removeBookmarkRecursive(child);
+			}
+		}
+
+		if(object.containsKey("attributes")) {
+			JSONArray attributes = (JSONArray) object.get("attributes");
+			Iterator<?> it = attributes.iterator();
+			while(it.hasNext()) {
+				JSONObject attribute = (JSONObject) it.next();
+				this.removeBookmarkRecursive(attribute);
+			}
+		}		
+	}
+	
 	public JSONArray renameBookmark(String newTitle, String id) {
 		JSONObject bookmark = this.getBookmark(id);
-		bookmark.element("title", newTitle);
+		bookmark.put("title", newTitle);
 		this.save();
 		
 		return this.getBookmarks();
@@ -129,7 +141,7 @@ public abstract class AbstractMappingManager {
 		Iterator<?> i = bookmarks.iterator();
 		while(i.hasNext()) {
 			JSONObject next = (JSONObject) i.next();
-			if(next.has("id") && next.getString("id").equals(id)) {
+			if(next.containsKey("id") && next.get("id").toString().equals(id)) {
 				bookmark = next;
 				break;
 			}
@@ -143,71 +155,7 @@ public abstract class AbstractMappingManager {
 		
 		return bookmarks;
 	}
-	
-	public void removeBookmarkRecursive(JSONObject object) {
-		if(object.has("id")) {
-			String id = object.getString("id");
-			this.removeBookmark(id);
-		}
 		
-		if(object.has("children")) {
-			JSONArray children = object.getJSONArray("children");
-			Iterator<?> it = children.iterator();
-			while(it.hasNext()) {
-				JSONObject child = (JSONObject) it.next();
-				this.removeBookmarkRecursive(child);
-			}
-		}
-
-		if(object.has("attributes")) {
-			JSONArray attributes = object.getJSONArray("attributes");
-			Iterator<?> it = attributes.iterator();
-			while(it.hasNext()) {
-				JSONObject attribute = (JSONObject) it.next();
-				this.removeBookmarkRecursive(attribute);
-			}
-		}		
-	}
-	
-	public void setArrayFixed(JSONArray array, boolean fixed) {
-		Iterator<?> i = array.iterator();
-		while(i.hasNext()) {
-			JSONObject object = (JSONObject) i.next();
-			object = this.setFixedRecursive(object, fixed);
-		}
-	}
-	
-	public JSONObject setFixed(JSONObject object, boolean fixed) {
-		if(fixed) {
-			if(!object.has("fixed")) {
-				object = object.element("fixed", "");
-			}
-		} else {
-			if(object.has("fixed")) {
-				object.remove("fixed");
-			}
-		}
-		
-		return object;
-	}
-	
-	public JSONObject setFixedRecursive(JSONObject object, boolean fixed) {
-		this.setFixed(object, fixed);
-		if(object.has("attributes")) {
-			this.setArrayFixed(object.getJSONArray("attributes"), fixed);
-		}
-		
-		if(object.has("children")) {
-			this.setArrayFixed(object.getJSONArray("children"), fixed);
-		}
-		
-		return object;
-	}
-	
-	protected void initCustomMappingContent()
-	{
-	}
-
 	/**
 	 * Get json object of element with specified id
 	 * @param id element's id
@@ -215,6 +163,17 @@ public abstract class AbstractMappingManager {
 	 */
 	public JSONObject getElement(String id) {
 		return this.getElement(id, false);
+	}
+	
+	/**
+	 * Get json mapping handler for element with specified id
+	 * @param id element's id
+	 * @return
+	 */
+	public JSONMappingHandler getElementHandler(String id) {
+		JSONObject element = this.getElement(id);
+		if(element != null) return new JSONMappingHandler(element);
+		return null;
 	}
 	
 	/**
@@ -228,17 +187,17 @@ public abstract class AbstractMappingManager {
 		
 		if(strip) {
 			JSONObject stripped = new JSONObject();
-			if(target.has("id")) stripped.element("id", target.getString("id"));
-			if(target.has("name")) stripped.element("name", target.getString("name"));
-			if(target.has("prefix")) stripped.element("prefix", target.getString("prefix"));
-			if(target.has("minOccurs")) stripped.element("minOccurs", target.get("minOccurs"));
-			if(target.has("maxOccurs")) stripped.element("maxOccurs", target.get("maxOccurs"));
+			if(target.containsKey("id")) stripped.put("id", target.get("id").toString());
+			if(target.containsKey("name")) stripped.put("name", target.get("name").toString());
+			if(target.containsKey("prefix")) stripped.put("prefix", target.get("prefix").toString());
+			if(target.containsKey("minOccurs")) stripped.put("minOccurs", target.get("minOccurs"));
+			if(target.containsKey("maxOccurs")) stripped.put("maxOccurs", target.get("maxOccurs"));
 			
 			return stripped;
 		}
 		
 		if(this.cache.getParent(id) != null) {
-			target.element("parent", this.getElement(this.cache.getParent(id).getString("id"), true));
+			target.put("parent", this.getElement(this.cache.getParent(id).get("id").toString(), true));
 		}
 		
 		return target;
@@ -257,325 +216,217 @@ public abstract class AbstractMappingManager {
 		return target;
 	}
 	
-	public JSONObject getTargetDefinition() {		
-		this.targetDefinition.put("template", this.cache.getTemplate());
+	public JSONObject getTargetDefinition() {
+		if(this.cache != null && this.cache.hasTemplate()) {
+			this.targetDefinition.put(JSONMappingHandler.TEMPLATE_TEMPLATE, this.cache.getTemplate());
+		}
+		
 		return this.targetDefinition;
 	}
 	
-	public JSONObject setXPathMapping(String xpath, String target, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		
-		setXPathMapping(xpath, targetElement, index);
-		save();
-		
-		return targetElement;
+	public JSONObject setStructuralMapping(MappingIndex index, String xpath) {
+		return this.setXPathMapping(index, xpath, true);
 	}
 	
-	public void setXPathMapping(String xpath, JSONObject target, int index) {
-		if(!target.has("mappings")) {
-			target.element("mappings", new JSONArray());
-		}
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
+	public JSONObject setXPathMapping(MappingIndex index, String xpath) {
+		return this.setXPathMapping(index, xpath, false);
+	}
 
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			mapping.put("type", "xpath");
-			mapping.put("value", xpath);
-		} else {
-			mapping = new JSONObject();
-			mapping.put("type", "xpath");
-			mapping.put("value", xpath);
-			mappings.add(mapping);
-		}
+	public JSONObject setXPathMapping(MappingIndex index, String xpath, boolean structural) {
+		Element element = this.cache.getElementHandler(index);
 		
-		if(mapping != null) {
+		setXPathMapping(index, xpath, element, structural);
+		save();
+		
+		return element.asJSONObject();
+	}
+	
+	public void setXPathMapping(MappingIndex index, String xpath, Element element, boolean structural) {
+		if(structural) {
+			element.setStructuralMapping(xpath);
+		} else {
+			SimpleMapping mapping = new SimpleMapping(MappingPrimitives.mapping(SimpleMapping.MAPPING_XPATH, xpath));
+			element.addMapping(index, mapping);
 		}
-
-		//mappings.clear();
 	}
 
 	public JSONObject setXPathFunction(String id, int index, String call, String[] args) {
-		JSONObject target = this.cache.getElement(id);
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-		JSONObject function = new JSONObject()
-			.element("call", call)
-			.element("arguments", args);
-
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			mapping.put("func", function);
-		}
-
-		save();
-		
-		return target;
+		return this.setXPathFunction(new MappingIndex(id, index), call, args);
 	}
 	
+	public JSONObject setXPathFunction(MappingIndex index, String call, String[] arguments) {
+		Element element = this.cache.getElementHandler(index);
+		Function function = new Function(call, arguments);
+		SimpleMapping mapping = element.getMapping(index);
+		if(mapping != null) mapping.setFunction(function);
+		
+		save();
+		
+		return element.asJSONObject();
+	}
+	
+	@Deprecated
 	public JSONObject clearXPathFunction(String id, int index) {
-		JSONObject target = this.cache.getElement(id);
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			mapping.remove("func");
-		}
-
-		save();
+		return this.clearXPathFunction(new MappingIndex(id, index));
+	}
 		
-		return target;
+	public JSONObject clearXPathFunction(MappingIndex index) {
+		return this.setXPathFunction(index, null, null);
 	}
 	
 
-	
+	@Deprecated
 	public JSONObject setValueMapping(String input, String output, String target, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		setValueMapping(input, output, targetElement, index);
-		save();
-		
-		return targetElement;
+		return this.setValueMapping(new MappingIndex(target, index, -1), input, output);
 	}
 	
+	public JSONObject setValueMapping(MappingIndex index, String input, String output) {
+		Element element = this.cache.getElementHandler(index.getId());
+		setValueMapping(index, input, output, element);
+		save();
+		
+		return element.asJSONObject();		
+	}
+	
+	public void setValueMapping(MappingIndex index, String input, String output, Element element) {
+		SimpleMapping mapping = element.getMapping(index);
+		if(mapping != null) mapping.setValueMapping(input, output);
+	}
+	
+	@Deprecated
 	public JSONObject removeValueMapping(String input, String target, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		removeValueMapping(input, targetElement, index);
+		return this.removeValueMapping(new MappingIndex(target, index, -1), input);
+	}
+	
+	public JSONObject removeValueMapping(MappingIndex index, String input) {
+		Element element = this.cache.getElementHandler(index);
+		this.removeValueMapping(index, input, element);
 		save();
 		
-		return targetElement;
+		return element.asJSONObject();
 	}
 	
-	public void setValueMapping(String input, String output, JSONObject target, int index) {
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-		
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			if(!mapping.has("valuemap")) {
-				mapping.element("valuemap", new JSONArray());
-			}
-			
-			JSONArray valuemap = mapping.getJSONArray("valuemap");
-			JSONObject map = null;
-			
-			Iterator<?> i = valuemap.iterator();
-			while(i.hasNext()) {
-				JSONObject m = (JSONObject) i.next();
-				if(m.getString("input").equals(input)) {
-					map = m;
-					break;
-				}
-			}
-			
-			if(map == null) {
-				map = new JSONObject().element("input", input).element("output", output);
-				valuemap.add(map);
-			} else {
-				map.put("output", output);
-			}
-		}
+	public void removeValueMapping(MappingIndex index, String input, Element element) {
+		SimpleMapping mapping = element.getMapping(index);
+		if(mapping != null) mapping.removeValueMapping(input);
 	}
 	
-	public void removeValueMapping(String input, JSONObject target, int index) {
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-		
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			if(mapping.has("valuemap")) {
-				JSONArray valuemap = mapping.getJSONArray("valuemap");
-				JSONObject map = null;
-				Iterator<?> i = valuemap.iterator();
-				while(i.hasNext()) {
-					JSONObject m = (JSONObject) i.next();
-					if(m.getString("input").equals(input)) {
-						map = m;
-						break;
-					}
-				}
-				
-				if(map != null) {
-					valuemap.remove(map);
-				}
-			}			
-		}
-	}
-	
-	
-	private JSONArray generateValueMappingsTable(String xpath, JSONArray enumerations) {
-		JSONArray result = new JSONArray();
-		ArrayList<String> values = new ArrayList<String>();
-				
-		// populate list and assign identical enumeration values
-		for(String v: values) {
-			JSONObject m = new JSONObject();
-			m.element("key", v);
-			
-			Iterator<?> i = enumerations.iterator();
-			while(i.hasNext()) {
-				String e = (String) i.next();
-				if(v.compareToIgnoreCase(e) == 0) {
-					m.element("value", e);
-				}
-			}
-			
-			result.add(m);
-		}
-		
-		return result;
-	}
-
+	@Deprecated
 	public JSONObject setConstantValueMapping(String target, String value, int index) {
-		return setConstantValueMapping(target, value, null, index);
+		return setConstantValueMapping(new MappingIndex(target, index, -1), value, null);
 	}
 
+	@Deprecated
 	public JSONObject setConstantValueMapping(String target, String value, String annotation, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		if(targetElement == null) {
-			System.out.println("*** Could not find " + targetElement + " in element cache!");
-		}
-
-		setConstantValueMapping(targetElement, value, annotation, index);
-		save();
-		
-		return targetElement;
+		return setConstantValueMapping(new MappingIndex(target, index, -1), value, annotation);
 	}
 	
-	public JSONObject setEnumerationValueMapping(String target, String value) {
-		JSONObject targetElement = this.cache.getElement(target);
-		if(targetElement == null) {
-			System.out.println("*** Could not find " + targetElement + " in element cache!");
-		}
+	public JSONObject setConstantValueMapping(MappingIndex index, String value, String annotation) {
+		Element element = this.cache.getElementHandler(index);
+		setConstantValueMapping(index, element, value, annotation);
 		
-		setEnumerationValueMapping(targetElement, value);
 		save();
 		
-		return targetElement;
-	}
-
-	public void setConstantValueMapping(JSONObject target, String value, int index) {
-		this.setConstantValueMapping(target, value, null, index);
-	}
-
-	public void setConstantValueMapping(JSONObject target, String value, String annotation, int index) {
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-
-		// if no mapping was added using -1 index, subsequent calls should edit the first entry (previously created)
-		if(index == -1 && mappings.size() > 0) index = 0;
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			mapping.put("type", JSONMappingHandler.MAPPING_CONSTANT);
-			mapping.put("value", value);
-			if(annotation != null) mapping.put("annotation", annotation);
-		} else {
-			mapping = new JSONObject();
-			mapping.put("type", JSONMappingHandler.MAPPING_CONSTANT);
-			mapping.put("value", value);
-			if(annotation != null) mapping.put("annotation", annotation);
-			mappings.add(mapping);
-		}
+		return element.asJSONObject();
 	}
 	
+	public void setConstantValueMapping(MappingIndex index, Element element, String value) {
+		this.setConstantValueMapping(index, element, value, null);
+	}
+
+	public void setConstantValueMapping(MappingIndex index, Element element, String value, String annotation) {
+		MappingCase aCase = element.getMappingCase(index);
+		aCase.setMapping(index, new SimpleMapping(SimpleMapping.MAPPING_TYPE_CONSTANT, value, annotation));
+	}
+	
+	@Deprecated
 	public JSONObject setParameterMapping(String target, String parameter, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		if(targetElement == null) {
-			System.out.println("*** Could not find " + targetElement + " in element cache!");
-		}
+		return this.setParameterMapping(new MappingIndex(target, index), parameter);
+	}
+	
+	public JSONObject setParameterMapping(MappingIndex index, String parameter) {
+		Element element = this.cache.getElementHandler(index.getId());
 
-		setParameterMapping(targetElement, parameter, index);
+		setParameterMapping(index, element, parameter);
 		save();
 		
-		return targetElement;
+		return element.asJSONObject();
 	}
 	
-	public void setParameterMapping(JSONObject target, String parameter, int index) {
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-
-		if(index > -1) {
-			mapping = mappings.getJSONObject(index);
-			mapping.put("type", JSONMappingHandler.MAPPING_PARAMETER);
-			mapping.put("value", parameter);
-		} else {
-			mapping = new JSONObject();
-			mapping.put("type", JSONMappingHandler.MAPPING_PARAMETER);
-			mapping.put("value", parameter);
-			mappings.add(mapping);
-		}
-	}
-
-	public void setEnumerationValueMapping(JSONObject target, String value) {
-		JSONArray mappings = target.getJSONArray("mappings");
-		JSONObject mapping = null;
-
-		mappings.clear();
-		if(value != null && value.length() > 0) {
-			mapping = new JSONObject();
-			mapping.put("type", "constant");
-			mapping.put("value", value);
-			mappings.add(mapping);
-		}
-	}
-
-	public JSONObject addCondition(String target, int depth) {
-		JSONObject targetElement = this.cache.getElement(target);
-
-		if(depth == 0) {	
-			JSONObject condition = new JSONObject().element("xpath", "").element("value", "");
-			JSONObject elseMapping = duplicateJSONObject(targetElement);
-			condition = condition.element("elseMapping", elseMapping);
-			
-			targetElement.put("condition", condition);
-			save();			
-		} else {
-		}
-		
-		return targetElement;
+	public void setParameterMapping(MappingIndex index, Element element, String parameter) {
+		MappingCase aCase = element.getMappingCase(index);
+		aCase.setMapping(index, new SimpleMapping(SimpleMapping.MAPPING_TYPE_PARAMETER, parameter, null));
 	}
 	
-	public JSONObject removeCondition(String target, int depth) {
-		JSONObject targetElement = this.cache.getElement(target);
-		
-		if(depth == 0) {
-			targetElement.remove("condition");
-			save();
-		} else {
-		}
-		
-		return targetElement;
-	}
-		
+
+
+	@Deprecated
 	public JSONObject removeMappings(String target, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-
-		removeMappings(targetElement, index);
+		return this.removeMapping(new MappingIndex(target, index));
+	}
 		
+	public JSONObject removeMapping(MappingIndex index) {
+		JSONObject element = this.cache.getElement(index.getId());
+
+		removeMapping(index, element);		
 		save();
-
-		return targetElement;
-	}
-	
-	public void  removeMappings(JSONObject target, int index) {
-		new JSONMappingHandler(target).removeMapping(index);
-	}
-	
-	public JSONObject additionalMappings(String target, int index) {
-		JSONObject targetElement = this.cache.getElement(target);
-		JSONArray mappings = targetElement.getJSONArray("mappings");
-
-		JSONObject empty = new JSONObject()
-			.element("type", "empty")
-			.element("value", "");
 		
-		if(index > -1) {
-			mappings.add(index + 1, empty);
+		return element;
+	}
+	
+	public JSONObject addMappingCase(MappingIndex index) {
+		Element element = this.cache.getElementHandler(index);
+
+		element.addMappingCase(index);
+		save();
+		
+		return element.asJSONObject();
+	}
+	
+	public JSONObject removeMappingCase(MappingIndex index) {
+		Element element = this.cache.getElementHandler(index);
+
+		element.removeMappingCase(index);
+		save();
+		
+		return element.asJSONObject();
+	}
+	
+	@Deprecated
+	public JSONObject removeStructuralMapping(String target) {
+		return this.removeStructuralMapping(new MappingIndex(target));
+	}
+	
+	public JSONObject removeStructuralMapping(MappingIndex index) {
+		Element element = this.cache.getElementHandler(index);
+
+		element.removeStructuralMapping();
+		save();
+		
+		return element.asJSONObject();
+	}
+	
+	@Deprecated
+	public void  removeMappings(JSONObject target, int index) {
+		this.removeMapping(new MappingIndex(null, index), target);
+	}
+	
+	public void  removeMapping(MappingIndex index, JSONObject target) {
+		new Element(target).removeMapping(index);
+	}
+		
+	public JSONObject additionalMappings(MappingIndex index) {
+		Element element = this.cache.getElementHandler(index.getId());
+		MappingCase aCase = element.getMappingCase(index);
+		
+		if(aCase != null && index.getIndex() > -1) {
+				SimpleMapping mapping = new SimpleMapping(MappingPrimitives.mapping(SimpleMapping.MAPPING_TYPE_EMPTY, ""));
+				aCase.addMapping(index.getIndex() + 1, mapping);
 		}
 		
 		save();
 		
-		return targetElement;
+		return element.asJSONObject();
 	}
 	
 	public JSONObject objectForTargetXPath(String xpath) {
@@ -610,14 +461,14 @@ public abstract class AbstractMappingManager {
 	}
 	
 	public JSONObject objectForTargetXPath(JSONObject object, String xpath) {
-		System.out.println("objectForTargetXPath: " + object.getString("name") + " - "  + xpath);
+		System.out.println("objectForTargetXPath: " + object.get("name").toString() + " - "  + xpath);
 
 		if(xpath.startsWith("/")) { xpath = xpath.replaceFirst("/", ""); }
 		String[] tokens = xpath.split("/");
 		if(tokens.length > 0) {
 			log.debug("looking path:" + xpath + " in object:" + object);
-			if(object.has("name")) {
-				if(tokens[0].equals(object.getString("name"))) {
+			if(object.containsKey("name")) {
+				if(tokens[0].equals(object.get("name").toString())) {
 					if(tokens.length == 1) {
 						return object;
 					} else {
@@ -627,12 +478,12 @@ public abstract class AbstractMappingManager {
 						}
 	
 						if(path.startsWith("@")) {
-							if(object.has("attributes")) {
-								return this.objectForTargetXPath(object.getJSONArray("attributes"), path);
+							if(object.containsKey("attributes")) {
+								return this.objectForTargetXPath((JSONArray) object.get("attributes"), path);
 							}
 						} else {
-							if(object.has("children")) {
-								return this.objectForTargetXPath(object.getJSONArray("children"), path);
+							if(object.containsKey("children")) {
+								return this.objectForTargetXPath((JSONArray) object.get("children"), path);
 							}
 						}
 					}
@@ -649,80 +500,52 @@ public abstract class AbstractMappingManager {
 		JSONObject object = this.objectForTargetXPath(xpath);
 
 		if(object != null) {
-			result = this.duplicateNode(object.getString("id"));
-			result = this.cache.getElement(result.getJSONObject("duplicate").getString("id"));
+			result = this.duplicateNode(object.get("id").toString());
+			result = this.cache.getElement(((JSONObject) result.get("duplicate")).get("id").toString());
 		}
 		
 		return result;
 	}
-	
+
+	public JSONObject duplicateNode(MappingIndex index) {
+		return this.duplicateNode(index.getId());
+	}
+
 	public JSONObject duplicateNode(String id) {
-		JSONObject targetElement = this.cache.getElement(id);
-		JSONObject parent = this.cache.getParent(id);
-
-		JSONObject duplicate = duplicateJSONObject(targetElement);
-
-		JSONArray children = parent.getJSONArray("children");
-		if(children != null) {
-			int index = -1;
-			for(int i = 0; i < children.size(); i++) {
-				JSONObject child = (JSONObject) children.get(i);
-				if(child.getString("id").equals(id)) {
-					index = i;
-					break;
-				}
-			}
-			
-			if(index >= 0) {
-				children.add(index, duplicate);
-				duplicate = children.getJSONObject(index);
-			}
-		} else {
-			JSONArray array = new JSONArray();
-			array.add(duplicate);
-			parent.put("children", array);
-			children = parent.getJSONArray("children");
-			duplicate = children.getJSONObject(0);
-		}
-		
-		this.cache.fillEmptyIdsRecursive(duplicate, true);
-		this.cache.cacheElement(duplicate, parent);	
+		Element parent = this.cache.getParentHandler(id);
+		Element duplicate = this.cache.duplicate(id);
+		if(duplicate != null) duplicate.setRemovable(true);
 
 		this.save();
 
-		return new JSONObject()
-			.element("parent", parent.getString("id"))
-			.element("original", id)
-			.element("duplicate", duplicate);
+		JSONObject result = new JSONObject();
+		result.put("parent", parent.getId());
+		result.put("original", id);
+		result.put("duplicate", duplicate.asJSONObject());
+		return result;
 	}
+	
+	public JSONObject removeNode(MappingIndex index) {
+		return this.removeNode(index.getId());
+	}
+	
 	
 	public JSONObject removeNode(String id) {
 		JSONObject result = new JSONObject();
-		JSONObject parent = this.cache.getParent(id);
-
-		JSONArray children = parent.getJSONArray("children");
-		if(children != null && !children.isEmpty()) {
-			int targetIndex = -1;
-			for(int i = 0; i < children.size(); i++) {
-				JSONObject child = (JSONObject) children.get(i);
-				if(child.getString("id").equals(id)) {
-					targetIndex = i;
-				}
-			}
-
-			if(targetIndex >= 0) {
-				this.removeBookmarkRecursive((JSONObject) children.get(targetIndex));
-				children.remove(targetIndex);
-				this.cache.removeElement(id);
-			}
-			
-			result = result.element("id", id);
-			result = result.element("parent", parent.getString("id"));
-		} else {
-			result = result.element("error", "could not find target element");
-		}
 		
-		this.save();
+		Element parent = this.cache.getParentHandler(id);
+
+		Element child = parent.removeChild(id);
+		if(child != null) {
+			this.removeBookmarkRecursive(child.asJSONObject());
+			this.cache.removeElement(id);
+			result.put("id", id);
+			result.put("parent", parent.getString("id"));
+		} else {
+			result.put("error", "could not find target element");
+		}
+				
+		save();
 		
 		return result;
 	}
@@ -731,263 +554,72 @@ public abstract class AbstractMappingManager {
 		String json = source.toString();
 		JSONObject out = null;
 		
-		out = (JSONObject) JSONSerializer.toJSON(json);
+		try {
+			out = JSONUtils.parse(json);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		out.put("duplicate", "");
-		clearAllMappings(out);
+		new Element(out).clearMappingsRecursive();
 
 		return out;
 	}
 	
-	protected void clearAllMappings(JSONObject object) {
-		JSONArray mappings = object.getJSONArray("mappings");
-		mappings.clear();
-		
-		if(object.has("attributes")) {
-			JSONArray attributes = object.getJSONArray("attributes");
-			for(int i = 0; i < attributes.size(); i++) {
-				JSONObject a = (JSONObject) attributes.get(i);
-				clearAllMappings(a);
-			}
-		}
-		
-		if(object.has("children")) {
-			JSONArray children = object.getJSONArray("children");
-			for(int i = 0; i < children.size(); i++) {		
-				JSONObject a = (JSONObject) children.get(i);
-				clearAllMappings(a);
-			}
-		}
+	@Deprecated
+	public JSONObject addConditionClause(String id, String path, boolean complex) {
+		MappingIndex index = new MappingIndex(id, -1, 0);
+		index.setPath(path);
+		return this.addConditionClause(index, complex);
 	}
 	
-	public JSONObject getDocumentation(String id) {
+	public JSONObject addConditionClause(MappingIndex index, boolean complex) {
+		Element handler = this.cache.getElementHandler(index);
+		handler.addConditionClause(index, complex);
+		
+		save();
+		
+		return handler.getCondition(index).asJSONObject();
+	}
+		
+	@Deprecated
+	public JSONObject removeConditionClause(String id, String path) {
+		MappingIndex index = new MappingIndex(id);
+		index.setPath(path);
+
+		return this.removeConditionClause(index);
+	}
+
+	public JSONObject removeConditionClause(MappingIndex index) {
+		Element element = this.cache.getElementHandler(index);
+		element.removeConditionClause(index);
+		
+		save();
+		
+		return element.getCondition(index).asJSONObject();
+	}
+	
+	public JSONObject setConditionClauseKey(MappingIndex index, String key, String value) {
+		Element element = this.cache.getElementHandler(index.getId());
+		element.setConditionClauseKey(index, key, value);
+		
+		save();
+		
+		return element.getCondition(index).asJSONObject();
+	}
+
+	public JSONObject setConditionClauseXPath(MappingIndex index, String xpath) {
+		return this.setConditionClauseKey(index, "xpath", xpath);
+	}
+		
+	public JSONObject removeConditionClauseKey(MappingIndex index, String key) {
 		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-		
-		String key = targetElement.getString("name");
-		if(targetElement.has("prefix") && targetElement.getString("prefix").length() > 0) {
-			if(key.startsWith("@")) {
-				key = "@" + targetElement.getString("prefix") + ":" + key.replace("@", "");
-			} else {
-				key = targetElement.getString("prefix") + ":" + key;
-			}
-		}
-		result.element("title", key);
-		result.element("documentation", this.getDocumentationForKey(key));
-		
-		return result;
-	}
-	
-	public JSONObject initComplexCondition(String id) {
-		String defaultLogicalOp = "AND";
-		boolean conditionInit = false;
-		
-		JSONObject targetElement = this.cache.getElement(id);
-		
-		if(targetElement.has("condition")) {
-			JSONObject condition = targetElement.getJSONObject("condition");
-			if(!condition.has("logicalop")) {
-				condition.element("logicalop", defaultLogicalOp);
-				JSONArray clauses = new JSONArray();
-				JSONObject clause = new JSONObject();
-				if(condition.has("xpath") && condition.getString("xpath").length() > 0) { clause.element("xpath", condition.getString("xpath")); }
-				if(condition.has("value") && condition.getString("value").length() > 0) { clause.element("value", condition.getString("value")); }
-				if(condition.has("relationalop")) { clause.element("relationalop", condition.getString("=")); }
-				clauses.add(clause);
-				condition.element("clauses", clauses);
-				
-				conditionInit = true;
-			}
-		} else {
-			targetElement.element("condition", new JSONObject().element("logicalop", defaultLogicalOp).element("clauses", new JSONArray()));
-			conditionInit = true;
-		}
-
-		if(conditionInit) {
-			save();
-		}
-		
-		return targetElement.getJSONObject("condition");
-	}
-	
-	public JSONObject addConditionClause(String id, String path, boolean complex)
-	{
-		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-
-		if(!targetElement.has("condition")) {
-			this.initComplexCondition(id);
-		}
-
-		JSONObject condition = targetElement.getJSONObject("condition");
-		this.addConditionClause(condition, path, complex);
-		result = condition;
+		Element element = this.cache.getElementHandler(index);
+		element.removeConditionClauseKey(index, key);
+		result = element.getCondition(index).asJSONObject();
 		
 		save();
 		
 		return result;
-	}
-	
-	protected void addConditionClause(JSONObject condition, String path, boolean complex) {
-		if(condition.has("clauses")) {
-			addConditionClause(condition.getJSONArray("clauses"), path, complex);
-		}
-	}
-	
-	protected void addConditionClause(JSONArray clauses, String path, boolean complex) {
-		JSONObject clause = new JSONObject();
-		
-		if(complex) {
-			clause.element("logicalop", "AND");
-			JSONArray array = new JSONArray();
-			array.add(new JSONObject());
-			clause.element("clauses", array);
-		}
-
-		if(path.endsWith(".")) path = path.substring(0, path.length()-1);
-		//log.debug("addConditionClause at " + path);
-		if(path.contains(".")) {
-				String[] parts = path.split("\\.", 2);
-				//System.out.println("'" + path + "' '" + parts[0] + "' '" + parts[1] + "'");
-				int index = Integer.parseInt(parts[0]);
-				addConditionClause(clauses.getJSONObject(index), parts[1], complex);
-		} else {
-			try {
-				int index = Integer.parseInt(path);
-				clauses.add(index+1, clause);
-			} catch(Exception e) {
-			}
-		}
-	}
-	
-	public JSONObject removeConditionClause(String id, String path)
-	{
-		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-		if(targetElement.has("condition")) {
-			JSONObject condition = targetElement.getJSONObject("condition");
-			this.removeConditionClause(condition, path);
-			result = condition;
-			
-			save();
-		}
-		
-		return result;
-	}
-	
-	protected void removeConditionClause(JSONObject condition, String path) {
-		if(condition.has("clauses")) {
-			removeConditionClause(condition.getJSONArray("clauses"), path);
-		}
-	}
-	
-	protected void removeConditionClause(JSONArray clauses, String path) {
-		if(path.length() > 0) {
-			if(path.contains(".")) {
-				String[] parts = path.split("\\.", 2);
-				int index = Integer.parseInt(parts[0]);
-				if(parts[1].length() > 0) {
-					removeConditionClause(clauses.getJSONObject(index), parts[1]);
-				} else {
-					clauses.remove(index);
-				}
-			} else {
-				int index = Integer.parseInt(path);
-				clauses.remove(index);
-			}
-		}
-	}
-	
-	public JSONObject setConditionClauseKey(String id, String path, String key, String value)
-	{
-		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-
-		if(!targetElement.has("condition")) {
-			this.initComplexCondition(id);
-		}
-
-		JSONObject condition = targetElement.getJSONObject("condition");
-		this.setConditionClauseKey(condition, path, key, value);
-		result = condition;
-		
-		save();
-		
-		return result;
-	}
-	
-	public JSONObject setConditionClauseXPath(String id, String path, String xpath)
-	{
-		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-
-		if(!targetElement.has("condition")) {
-			this.initComplexCondition(id);
-		}
-
-		JSONObject condition = targetElement.getJSONObject("condition");
-		this.setConditionClauseKey(condition, path, "xpath", xpath);
-		result = condition;
-		
-		save();
-		
-		return result;
-	}
-	
-	
-	protected void setConditionClauseKey(JSONObject condition, String path, String key, String value) {
-		//System.out.println("setting " + key + " on " + path + " of " + condition);
-		if(path.length() == 0) {
-			if(condition.has(key)) { condition.remove(key); }
-			condition.element(key, value);
-		} else {
-			JSONArray clauses = condition.getJSONArray("clauses");
-			if(clauses.isEmpty()) {
-				clauses.add(new JSONObject());
-			}
-			if(path.contains(".")) {
-				String[] parts = path.split("\\.", 2);
-				int index = Integer.parseInt(parts[0]);
-				setConditionClauseKey(clauses.getJSONObject(index), parts[1], key, value);
-			} else {
-				int index = Integer.parseInt(path);
-				setConditionClauseKey(clauses.getJSONObject(index), "", key, value);
-			}
-		}
-	}
-	
-	public JSONObject removeConditionClauseKey(String id, String path, String key)
-	{
-		JSONObject result = new JSONObject();
-		JSONObject targetElement = this.cache.getElement(id);
-		if(!targetElement.has("condition")) {
-			this.initComplexCondition(id);
-		}
-
-		JSONObject condition = targetElement.getJSONObject("condition");
-		this.removeConditionClauseKey(condition, path, key);
-		result = condition;
-		
-		save();
-		
-		return result;
-	}
-	
-	protected void removeConditionClauseKey(JSONObject condition, String path, String key) {
-		if(path.length() == 0) {
-			condition.remove(key);
-		} else {
-			if(condition.has("clauses")) {
-				JSONArray clauses = condition.getJSONArray("clauses");
-				if(path.contains(".")) {
-					String[] parts = path.split("\\.", 2);
-					int index = Integer.parseInt(parts[0]);
-					removeConditionClauseKey(clauses.getJSONObject(index), parts[1], key);
-				} else {
-					int index = Integer.parseInt(path);
-					removeConditionClauseKey(clauses.getJSONObject(index), "", key);
-				}
-			}			
-		}
 	}
 	
 	public JSONObject getValidationReport() {
@@ -1001,23 +633,29 @@ public abstract class AbstractMappingManager {
 		JSONArray missing_attributes = new JSONArray();
 //		JSONArray normal_attributes = new JSONArray();
 		
-		mapped.addAll(MappingSummary.getIdsForElementsWithMappingsInside(targetDefinition));
-		missing.addAll(MappingSummary.getMissingMappingsIds(targetDefinition));
-//		normal.addAll(MappingSummary.getIdsForElementsWithNoMappingsInside(targetDefinition));
-		
-		mapped_attributes.addAll(MappingSummary.getIdsForElementsWithMappedAttributes(targetDefinition));
-		missing_attributes.addAll(MappingSummary.getIdsForElementsWithMissingAttributes(targetDefinition));
-//		normal_attributes.addAll(MappingSummary.getIdsForElementsWithNoMappedAttributes(targetDefinition));
-		
-		Collection<String> mandatory = MappingSummary.explicitMandatoryIds(targetDefinition);
-		for(String id: mandatory) {
-			if(!mapped.contains(id) && !missing.contains(id)) {
-				missing.add(id);
+		if(mappings != null) {
+			mapped.addAll(MappingSummary.getIdsForElementsWithMappingsInside(mappings));
+			missing.addAll(MappingSummary.getMissingMappingsIds(mappings));
+	//		normal.addAll(MappingSummary.getIdsForElementsWithNoMappingsInside(targetDefinition));
+			
+			mapped_attributes.addAll(MappingSummary.getIdsForElementsWithMappedAttributes(mappings));
+			missing_attributes.addAll(MappingSummary.getIdsForElementsWithMissingAttributes(mappings));
+	//		normal_attributes.addAll(MappingSummary.getIdsForElementsWithNoMappedAttributes(targetDefinition));
+			
+			Collection<String> mandatory = mappings.getIdsForExplicitMandatoryXPaths();
+			for(String id: mandatory) {
+				if(!mapped.contains(id) && !missing.contains(id)) {
+					missing.add(id);
+				}
 			}
+		} else {
+			result.put("error", "targetDefinition is not initialised yet!");
 		}
 					
-		result = result.element("mapped", mapped).element("missing", missing);
-		result = result.element("mapped_attributes", mapped_attributes).element("missing_attributes", missing_attributes);
+		result.put("mapped", mapped);
+		result.put("missing", missing);
+		result.put("mapped_attributes", mapped_attributes);
+		result.put("missing_attributes", missing_attributes);
 		
 		JSONArray warnings = new JSONArray();
 		for(Object i: missing) {
@@ -1025,14 +663,16 @@ public abstract class AbstractMappingManager {
 			JSONObject warning = new JSONObject();
 			JSONObject element = this.cache.getElement(id);
 			if(element != null) {
-				warning.element("id", id);
-				warning.element("name", element.getString("name"));
-				if(element.has("prefix")) warning.element("prefix", element.getString("prefix"));
+				warning.put("id", id);
+				warning.put("name", element.get("name").toString());
+				if(element.containsKey("prefix")) {
+					warning.put("prefix", element.get("prefix").toString());
+				}
 				
-				if(element.has("children") && !element.getJSONArray("children").isEmpty()) {
-					warning.element("type", "structural");
+				if(element.containsKey("children") && !((JSONArray) element.get("children")).isEmpty()) {
+					warning.put("type", "structural");
 				} else {
-					warning.element("type", "unmapped");
+					warning.put("type", "unmapped");
 				}
 			}
 			
@@ -1044,64 +684,64 @@ public abstract class AbstractMappingManager {
 			JSONObject warning = new JSONObject();
 			JSONObject element = this.cache.getElement(id);
 			if(element != null) {
-				warning.element("id", id);
-				warning.element("name", element.getString("name"));
-				if(element.has("prefix")) warning.element("prefix", element.getString("prefix"));
+				warning.put("id", id);
+				warning.put("name", element.get("name").toString());
+				if(element.containsKey("prefix")) warning.put("prefix", element.get("prefix").toString());
 				
-				warning.element("type", "attribute");
+				warning.put("type", "attribute");
 			}
 			
 			warnings.add(warning);
 		}
-		result.element("warnings", warnings);
+		result.put("warnings", warnings);
 
 		return result;
 	}
 	
-	public JSONObject getXPathsUsedInMapping()
-	{
-		JSONObject result = new JSONObject();
+	public Collection<String> getXPathsUsedInMapping() {
+		Collection<String> list = new ArrayList<String>();
 		
-		JSONObject mappings = this.getTargetDefinition();		
-		Collection<String> list = MappingSummary.getMappedXPathList(mappings);
+		Mappings mappings = new Mappings(this.getTargetDefinition());
+		if(mappings != null) {
+			list = MappingSummary.getAllMappedXPaths(mappings);
+		}
 
-		return result.element("xpaths", list);
+		return list; 
 	}
 	
 	public String getXpathForElement(String id) {
-		JSONObject element = this.cache.getElement(id);
-		JSONObject parent = this.cache.getParent(id);
+		Element element = this.cache.getElementHandler(id);
+		Element parent = this.cache.getParentHandler(id);
 		
 		if(element == null) return null;
 		
-		String localName = element.getString("name");
-		if(element.has("prefix")) localName = element.getString("prefix") + ":" + localName;
+		String localName = "/" + element.getFullName(false);
 		localName = "/" + localName;
 		
 		
 		if(parent == null) {
 			return localName;
 		} else {
-			return this.getXpathForElement(parent.getString("id")) + localName;
+			return this.getXpathForElement(parent.getId()) + localName;
 		}
 	}
 	
 	private JSONArray getXpathAsList(String id) {
 		JSONArray list = new JSONArray();
-		JSONObject element = this.cache.getElement(id);
-		JSONObject parent = this.cache.getParent(id);
+
+		Element element = this.cache.getElementHandler(id);
+		Element parent = this.cache.getParentHandler(id);
 		
 		if(element == null) return list;
 		
 		if(parent != null) {
-			list = this.getXpathAsList(parent.getString("id"));
+			list = this.getXpathAsList(parent.getId());
 		}
 		
-		String localName = element.getString("name");
-		if(element.has("prefix")) localName = element.getString("prefix") + ":" + localName;
-		JSONObject part = new JSONObject();
-		part.element("name", localName).element("id", id);
-		list.add(part);
+		JSONObject item = new JSONObject();
+		item.put("name", element.getFullName(false));
+		item.put("id", id);
+		list.add(item);
 		
 		return list;
 	}
@@ -1121,36 +761,36 @@ public abstract class AbstractMappingManager {
 				JSONObject element = it.next();
 				
 				boolean foundString = false;
-				if(caseSensitive) foundString = (element.getString("name").indexOf(term) > -1);
-				else foundString = (element.getString("name").toLowerCase().indexOf(term.toLowerCase()) > -1);
+				if(caseSensitive) foundString = (element.get("name").toString().indexOf(term) > -1);
+				else foundString = (element.get("name").toString().toLowerCase().indexOf(term.toLowerCase()) > -1);
 				
 				if(foundString) {
 					JSONObject result = new JSONObject();
 
-					String id = element.getString("id");
-					String name = element.getString("name");
+					String id = element.get("id").toString();
+					String name = element.get("name").toString();
 
 					JSONObject parent = this.cache.getParent(id);
 					
-					result.element("id", id);
-					if(parent != null) result.element("parent", parent.getString("id"));
-					result.element("name", name);
+					result.put("id", id);
+					if(parent != null) result.put("parent", parent.get("id").toString());
+					result.put("name", name);
 					
-					if(element.has("prefix")) result.element("prefix", element.getString("prefix"));
-					result.element("xpath", this.getXpathForElement(id));
-					result.element("paths", this.getXpathAsList(id));
+					if(element.containsKey("prefix")) result.put("prefix", element.get("prefix").toString());
+					result.put("xpath", this.getXpathForElement(id));
+					result.put("paths", this.getXpathAsList(id));
 					
 					if(name.startsWith("@")) {
-						if(report.getJSONArray("mapped_attributes").contains(id)) {
-							result.element("mapped", true);
-						} else if(report.getJSONArray("missing").contains(id)) {
-							result.element("missing_attributes", true);
+						if(((JSONArray) report.get("mapped_attributes")).contains(id)) {
+							result.put("mapped", true);
+						} else if(((JSONArray) report.get("missing")).contains(id)) {
+							result.put("missing_attributes", true);
 						}
 					} else {
-						if(report.getJSONArray("mapped").contains(id)) {
-							result.element("mapped", true);
-						} else if(report.getJSONArray("missing").contains(id)) {
-							result.element("missing", true);
+						if(((JSONArray) report.get("mapped")).contains(id)) {
+							result.put("mapped", true);
+						} else if(((JSONArray) report.get("missing")).contains(id)) {
+							result.put("missing", true);
 						}
 					}
 					

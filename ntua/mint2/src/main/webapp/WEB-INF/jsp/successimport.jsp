@@ -11,13 +11,13 @@ if(pnum>1){
 	
 	var newpanel=$("#kp"+(pnum-1).toString());
 	
-   $K.kaiten('reload',newpanel,{kConnector:'html.page', url:'ImportSummary.action?orgId=<%=request.getParameter("orgId")%>&userId=<%=user.getDbID()%>', kTitle:'My workspace' });
+   $K.kaiten('reload',newpanel,{kConnector:'html.page', url:'ImportSummary.action?orgId=<s:property value="orgId"/>', kTitle:'My workspace' });
    
 
 }else{
 	var newpanel=$("#kp1");
 	
-	$K.kaiten('reload',newpanel,{kConnector:'html.page', url:'ImportSummary.action?orgId=<%=request.getParameter("orgId")%>&userId=<%=user.getDbID()%>', kTitle:'My workspace' });
+	$K.kaiten('reload',newpanel,{kConnector:'html.page', url:'ImportSummary.action?orgId=<s:property value="orgId"/>', kTitle:'My workspace' });
 
 	}
 })
