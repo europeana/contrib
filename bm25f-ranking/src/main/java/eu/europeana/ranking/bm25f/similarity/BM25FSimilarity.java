@@ -148,6 +148,8 @@ public class BM25FSimilarity extends Similarity {
 	public final ExactSimScorer exactSimScorer(SimWeight weight,
 			AtomicReaderContext context) throws IOException {
 		BM25FSimWeight w = (BM25FSimWeight) weight;
+		System.out.println("field: " + w.field);
+		System.out.println("norms " + context.reader().normValues(w.field));
 		return new BM25FExactSimScorer(w, context.reader().normValues(w.field));
 
 	}
@@ -285,6 +287,7 @@ public class BM25FSimilarity extends Similarity {
 
 			this.norms = norms == null ? null : (byte[]) norms.getSource()
 					.getArray();
+			System.out.println("norms = " + this.norms);
 
 		}
 
