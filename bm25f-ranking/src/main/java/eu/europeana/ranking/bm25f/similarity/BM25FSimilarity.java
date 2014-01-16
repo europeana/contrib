@@ -272,9 +272,9 @@ public class BM25FSimilarity extends Similarity {
 	public class BM25FExactSimScorer extends ExactSimScorer {
 
 		private final BM25FSimWeight stats;
-		private final float queryBoost;
 		private final byte[] norms;
-		private final float[] cache;
+		private final Map<String, Float> bParams;
+		private final Map<String, Float> boosts;
 
 		// private final float[] cache;
 
@@ -282,8 +282,9 @@ public class BM25FSimilarity extends Similarity {
 				throws IOException {
 
 			this.stats = stats;
-			this.cache = stats.cache;
-			this.queryBoost = stats.queryBoost;
+			bParams = params.getbParams();
+			boosts = params.getBoosts();
+
 			// this.cache = stats.cache;
 
 			this.norms = norms == null ? null : (byte[]) norms.getSource()
@@ -295,8 +296,12 @@ public class BM25FSimilarity extends Similarity {
 		public float score(int doc, int freq) {
 
 			// return queryBoost * freq / cache[norms[doc] & 0xFF];
-			float bField = params.getbParams().get(stats.field);
-			float boost = params.getBoosts().get(stats.field);
+			if (bParams == null || boosts == null || stats.field == null) {
+				logger.warn("bm25f not initialited... ");
+				return 1.0f;
+			}
+			float bField = bParams.get(stats.field);
+			float boost = boosts.get(stats.field);
 			float num = freq * boost;
 
 			float den = 1 - bField;
