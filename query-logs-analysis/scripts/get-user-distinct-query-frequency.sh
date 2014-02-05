@@ -14,7 +14,7 @@ then
 fi
 
 echo "convert log in $1"
-zcat $1/*tsv.gz | cut -f 2,4 | sort -k1,1 -k2,2 | uniq | cut -f 2 | sort | uniq -c | sort -nrk1 | less
+zcat $1/*tsv.gz | cut -f 2,4 | sort -k1,1 -k2,2 | uniq | cut -f 2 | sort | uniq -c | sort -nrk1 
 
 
 
