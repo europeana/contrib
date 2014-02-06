@@ -22,7 +22,7 @@ mkdir -p $JSON $TSV
 echo "convert log in $LOG to json in $JSON"
 for i in $(ls $1/*log.gz); do f=$(basename $i); ./scripts/parse-logfile-to-json.sh $i $JSON/${f/log/json}; done;
 echo "convert json log in $JSON to tsv in $TSV"
-for i in $(ls $1/*json.gz); do f=$(basename $i); ./scripts/convert-json-logs-to-tsv.sh $i $TSV/${f/json/tsv}; done;
+for i in $(ls $JSON/*json.gz); do f=$(basename $i); ./scripts/convert-json-logs-to-tsv.sh $i $TSV/${f/json/tsv}; done;
 
 echo "log converted in json $JSON and tsv $TSV"
 
