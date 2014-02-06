@@ -29,42 +29,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package eu.europeana.querylog.cli;
+package eu.europeana.querylog;
 
-import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.io.reader.JsonRecordParser;
-import it.cnr.isti.hpc.io.reader.RecordReader;
-import it.cnr.isti.hpc.log.ProgressLogger;
-import eu.europeana.querylog.EuropeanaRecord;
-import eu.europeana.querylog.HasDateFilter;
-import eu.europeana.querylog.HasQueryFilter;
+import it.cnr.isti.hpc.io.reader.Filter;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- *         Created on Feb 1, 2014
+ *         Created on Feb 3, 2014
  */
-public class EuropeanaJsonLogsToTsvCLI extends AbstractCommandLineInterface {
+public class HasDateFilter implements Filter<EuropeanaRecord> {
 
-	public EuropeanaJsonLogsToTsvCLI(String[] args) {
-		super(args);
-	}
-
-	public static void main(String[] args) {
-		EuropeanaJsonLogsToTsvCLI cli = new EuropeanaJsonLogsToTsvCLI(args);
-		JsonRecordParser<EuropeanaRecord> parser = new JsonRecordParser<EuropeanaRecord>(
-				EuropeanaRecord.class);
-		RecordReader<EuropeanaRecord> reader = new RecordReader<EuropeanaRecord>(
-				cli.getInput(), parser).filter(new HasQueryFilter(),
-				new HasDateFilter());
-		ProgressLogger pl = new ProgressLogger("reader {} records", 100);
-		cli.openOutput();
-		for (EuropeanaRecord er : reader) {
-			pl.up();
-			cli.writeLineInOutput(er.toTsv());
-		}
-		cli.closeOutput();
-
+	public boolean isFilter(EuropeanaRecord item) {
+		return item.getDate() == null;
 	}
 
 }
