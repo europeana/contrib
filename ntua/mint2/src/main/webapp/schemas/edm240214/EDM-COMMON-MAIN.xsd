@@ -314,6 +314,15 @@
         </annotation>
     </element>
     
+    
+    <element name="datasetName" type="rdf:LiteralType">
+        <annotation>
+            <documentation> The name of a dataset provided by an Organization
+            to Europeana</documentation>
+        </annotation>
+    </element>
+    
+    
     <element name="end" type="rdf:LiteralType">
         <annotation>
             <documentation>The ending of a temporal period</documentation>
