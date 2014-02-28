@@ -283,7 +283,7 @@ public class EuropeanaRecord {
 
 	public static class Parser implements RecordParser<EuropeanaRecord> {
 		private final DateFormat df = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.UK);
+				"yyyy-MM-dd'T'HH:mm:ss.SSSzzz", Locale.UK);
 
 		private final Gson gson = new Gson();
 

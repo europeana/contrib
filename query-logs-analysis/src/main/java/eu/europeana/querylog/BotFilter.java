@@ -69,7 +69,8 @@ public class BotFilter implements Filter<EuropeanaRecord> {
 		InputStream is = this.getClass().getResourceAsStream(
 				"/bot-user-agents.txt");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		for (String line = br.readLine(); line != null; br.readLine()) {
+		for (String line = br.readLine(); line != null; line = br.readLine()) {
+			// logger.info("line {} ", line);
 			botSignature.add(line.trim());
 		}
 		return;
