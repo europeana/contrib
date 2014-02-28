@@ -105,7 +105,8 @@ public class EuropeanaRecord {
 		sb.append(action).append("\t");
 		sb.append(europeanaUri).append("\t");
 		sb.append((page == null) ? "null" : page).append("\t");
-		sb.append((start == null) ? "null" : start).append("\t");
+		sb.append((userAgent == null) ? "null" : userAgent);
+
 		return sb.toString();
 
 	}
