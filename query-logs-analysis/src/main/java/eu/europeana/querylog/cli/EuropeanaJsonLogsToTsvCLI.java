@@ -35,6 +35,7 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
+import eu.europeana.querylog.BotFilter;
 import eu.europeana.querylog.EuropeanaRecord;
 import eu.europeana.querylog.HasDateFilter;
 import eu.europeana.querylog.HasQueryFilter;
@@ -56,7 +57,7 @@ public class EuropeanaJsonLogsToTsvCLI extends AbstractCommandLineInterface {
 				EuropeanaRecord.class);
 		RecordReader<EuropeanaRecord> reader = new RecordReader<EuropeanaRecord>(
 				cli.getInput(), parser).filter(new HasQueryFilter(),
-				new HasDateFilter());
+				new HasDateFilter(), new BotFilter());
 		ProgressLogger pl = new ProgressLogger("reader {} records", 100);
 		cli.openOutput();
 		for (EuropeanaRecord er : reader) {

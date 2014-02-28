@@ -70,7 +70,7 @@ public class QueryCleaner {
 		qc.addCleaner(new FieldCleaner());
 		qc.addCleaner(new LowerCaseCleaner());
 		qc.addCleaner(new RegexCleaner("[\\\\/\"*]"));
-		qc.addCleaner(new TrimCleaner(" ()\"[.]"));
+		qc.addCleaner(new TrimCleaner(" ()'\"[.],-"));
 		qc.addCleaner(new TrimCleaner(" ()"));
 		qc.addCleaner(new BooleanFilter());
 		qc.addCleaner(new NumberFilter());

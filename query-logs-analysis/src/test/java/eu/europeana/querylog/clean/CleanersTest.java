@@ -48,6 +48,7 @@ public class CleanersTest {
 	public void testHtmlClean() {
 		HTMLCleaner cleaner = new HTMLCleaner();
 		assertEquals("\"anne frank\"", cleaner.clean("%22anne%20frank%22"));
+		assertEquals("<", cleaner.clean("&lt;"));
 	}
 
 	@Test
@@ -57,7 +58,18 @@ public class CleanersTest {
 		assertEquals("anne frank", cleaner.clean("%22anne%20frank%22"));
 		assertEquals("anne frank", cleaner.clean("%22aNne\tfRank%22"));
 		assertEquals("anne frank", cleaner.clean("%22aNne\t\tfRank%22"));
+		assertEquals(
+				"afbeeldinge van de stadt amsterdam in nieuw neederlande",
+				cleaner.clean("'Afbeeldinge van de Stadt Amsterdam in Nieuw Neederlande'"));
+
+		assertEquals("william shakespeare",
+				cleaner.clean("' william shakespeare'"));
+
+		assertEquals(
+				"ogrody pamieci w sztuce ogrodowej i architekturze krajobrazu",
+				cleaner.clean(",,ogrody pamieci w sztuce ogrodowej i architekturze krajobrazu"));
+		assertEquals(null, cleaner.clean("-"));
+		assertEquals("tripoli", cleaner.clean("tripoli"));
 
 	}
-
 }
