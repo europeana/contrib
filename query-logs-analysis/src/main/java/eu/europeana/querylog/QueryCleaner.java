@@ -38,10 +38,13 @@ import eu.europeana.querylog.clean.AsciiCleaner;
 import eu.europeana.querylog.clean.BooleanFilter;
 import eu.europeana.querylog.clean.Cleaner;
 import eu.europeana.querylog.clean.FieldCleaner;
+import eu.europeana.querylog.clean.HTMLCleaner;
 import eu.europeana.querylog.clean.LowerCaseCleaner;
+import eu.europeana.querylog.clean.MultipleSpacesCleaner;
 import eu.europeana.querylog.clean.NumberFilter;
 import eu.europeana.querylog.clean.RegexCleaner;
 import eu.europeana.querylog.clean.StarQueryFilter;
+import eu.europeana.querylog.clean.TabCleaner;
 import eu.europeana.querylog.clean.TrimCleaner;
 
 /**
@@ -60,13 +63,18 @@ public class QueryCleaner {
 	public static QueryCleaner getStandardQueryCleaner() {
 		QueryCleaner qc = new QueryCleaner();
 		qc.addCleaner(new StarQueryFilter());
+		qc.addCleaner(new HTMLCleaner());
+		qc.addCleaner(new TabCleaner());
+
 		qc.addCleaner(new AsciiCleaner());
 		qc.addCleaner(new FieldCleaner());
 		qc.addCleaner(new LowerCaseCleaner());
 		qc.addCleaner(new RegexCleaner("[\\\\/\"*]"));
+		qc.addCleaner(new TrimCleaner(" ()\"[.]"));
 		qc.addCleaner(new TrimCleaner(" ()"));
 		qc.addCleaner(new BooleanFilter());
 		qc.addCleaner(new NumberFilter());
+		qc.addCleaner(new MultipleSpacesCleaner());
 		return qc;
 	}
 
@@ -82,7 +90,6 @@ public class QueryCleaner {
 		}
 		// normalize spaces
 		if (query != null) {
-			query.replaceAll("[ ]+", " ");
 			query = query.trim();
 			if (query.isEmpty())
 				return null;
