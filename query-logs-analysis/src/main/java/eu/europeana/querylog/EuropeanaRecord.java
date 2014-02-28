@@ -30,6 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
+import eu.europeana.querylog.clean.TabCleaner;
+
 /**
  * Represents a record of an Europeana query log
  * 
@@ -62,9 +64,10 @@ public class EuropeanaRecord {
 	String normalizedQuery;
 
 	String queryContraints;
-	int numFound;
-	int page;
-	int start;
+	Integer numFound;
+	Integer page;
+	Integer start;
+	TabCleaner tabCleaner = new TabCleaner();
 
 	private static QueryCleaner cleaner = QueryCleaner
 			.getStandardQueryCleaner();
@@ -97,10 +100,12 @@ public class EuropeanaRecord {
 		StringBuilder sb = new StringBuilder();
 		sb.append(date.getTime()).append("\t");
 		sb.append(userId).append("\t");
-		sb.append(query).append("\t");
+		sb.append(tabCleaner.clean(query)).append("\t");
 		sb.append(normalizedQuery).append("\t");
 		sb.append(action).append("\t");
-		sb.append(europeanaUri);
+		sb.append(europeanaUri).append("\t");
+		sb.append((page == null) ? "null" : page).append("\t");
+		sb.append((start == null) ? "null" : start).append("\t");
 		return sb.toString();
 
 	}
@@ -281,6 +286,7 @@ public class EuropeanaRecord {
 
 		private final Gson gson = new Gson();
 
+		@Override
 		public EuropeanaRecord decode(String record) {
 			// record = record.replaceAll("\\([0-9]+\\),\\([0-9]+\\)", "\1\2");
 			// System.out.println("record -> " + record);
@@ -426,6 +432,7 @@ public class EuropeanaRecord {
 
 		}
 
+		@Override
 		public String encode(EuropeanaRecord obj) {
 			return gson.toJson(obj);
 		}
