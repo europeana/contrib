@@ -283,6 +283,49 @@ public class EuropeanaRecord {
 		return Long.toHexString(hash(string));
 	}
 
+	public boolean isClick() {
+		return europeanaUri != null;
+	}
+
+	public static class TsvParser implements RecordParser<EuropeanaRecord> {
+
+		private String checkNull(String field) {
+			if (field.equals("null"))
+				return null;
+			return field;
+		}
+
+		@Override
+		public EuropeanaRecord decode(String record) {
+			Scanner scanner = new Scanner(record).useDelimiter("\t");
+			EuropeanaRecord er = new EuropeanaRecord();
+			er.setDate(new Date(scanner.nextLong()));
+			er.setUserId(scanner.next());
+			er.setQuery(scanner.next());
+			er.setNormalizedQuery(scanner.next());
+			er.setAction(checkNull(scanner.next()));
+			er.setEuropeanaUri(checkNull(scanner.next()));
+			String page = checkNull(scanner.next());
+			if (page == null)
+				er.setPage(-1);
+			else
+				er.setPage(Integer.parseInt(page));
+			String start = checkNull(scanner.next());
+			if (start == null)
+				er.setStart(-1);
+			else
+				er.setStart(Integer.parseInt(start));
+			er.setUserAgent(scanner.next());
+			return er;
+		}
+
+		@Override
+		public String encode(EuropeanaRecord obj) {
+			return obj.toTsv();
+		}
+
+	}
+
 	public static class Parser implements RecordParser<EuropeanaRecord> {
 		private final DateFormat df = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.UK);
