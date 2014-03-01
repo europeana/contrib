@@ -102,6 +102,11 @@ public class QueryAssessment {
 		for (RelevantDocument rd : uriToDocument.values()) {
 			rd.setClicks(usersPerClick.get(rd.getUri()).size());
 			totalClicks += rd.getClicks();
+			if (!usersPerPage.containsKey(rd.getPage())) {
+				logger.warn("cannot find page {} frequencies, skipping",
+						rd.getPage());
+				continue;
+			}
 			rd.setSeen(usersPerPage.get(rd.getPage()).size());
 			rd.setCtr((double) rd.getClicks() / (double) rd.getSeen());
 			assessment.add(rd);
