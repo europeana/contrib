@@ -17,7 +17,7 @@ LOG=$1
 JSON=$2
 TSV=$3
 
-mkdir -p $JSON $TSV
+mkdir -p $JSON
 
 echo "convert log in $LOG to json in $JSON"
 for i in $(ls $1/*log.gz); do f=$(basename $i); ./scripts/parse-logfile-to-json.sh $i $JSON/${f/log/json}; done;
