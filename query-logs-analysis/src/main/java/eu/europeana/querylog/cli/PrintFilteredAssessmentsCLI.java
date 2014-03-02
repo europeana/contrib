@@ -63,8 +63,9 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 				cli.getInput(), new JsonRecordParser<QueryAssessment>(
 						QueryAssessment.class));
 		cli.openOutput();
-		reader.filter(new QueryAssessment.DocumentNumberFilter(docs),
-				new QueryAssessment.MinClicksFilter(),
+		reader.filter(new QueryAssessment.MinClicksFilter(),
+				new QueryAssessment.DocumentNumberFilter(docs),
+
 				new QueryAssessment.NumberOfClicksFilter(clicks),
 				new QueryAssessment.QueryLengthFilter(),
 				new QueryAssessment.UsersFilter(users));
