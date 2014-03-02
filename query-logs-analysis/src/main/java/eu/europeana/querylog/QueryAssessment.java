@@ -163,6 +163,7 @@ public class QueryAssessment {
 		for (RelevantDocument doc : assessment) {
 			sb.append(doc.asHtml());
 		}
+		sb.append("\n<hr>\n");
 		return sb.toString();
 
 	}
