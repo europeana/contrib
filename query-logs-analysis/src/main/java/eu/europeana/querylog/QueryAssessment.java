@@ -33,6 +33,7 @@ package eu.europeana.querylog;
 
 import it.cnr.isti.hpc.io.reader.Filter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -381,6 +382,32 @@ public class QueryAssessment {
 		@Override
 		public boolean isFilter(QueryAssessment item) {
 			return item.getUsers().size() < minUsers;
+		}
+	}
+
+	public static class MinClicksFilter implements Filter<QueryAssessment> {
+
+		private int minClicks = 5;
+
+		public MinClicksFilter() {
+
+		}
+
+		public MinClicksFilter(int minClicks) {
+			this.minClicks = minClicks;
+		}
+
+		@Override
+		public boolean isFilter(QueryAssessment item) {
+			List<RelevantDocument> docs = item.getAssessment();
+			List<RelevantDocument> rel = new ArrayList<RelevantDocument>();
+			for (RelevantDocument d : docs) {
+				if (d.getClicks() >= minClicks) {
+					rel.add(d);
+				}
+			}
+			item.setAssessment(rel);
+			return false;
 		}
 	}
 

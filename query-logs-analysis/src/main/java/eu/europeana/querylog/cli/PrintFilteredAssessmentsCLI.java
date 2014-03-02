@@ -64,6 +64,7 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 						QueryAssessment.class));
 		cli.openOutput();
 		reader.filter(new QueryAssessment.DocumentNumberFilter(docs),
+				new QueryAssessment.MinClicksFilter(),
 				new QueryAssessment.NumberOfClicksFilter(clicks),
 				new QueryAssessment.QueryLengthFilter(),
 				new QueryAssessment.UsersFilter(users));
@@ -81,5 +82,4 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 		cli.closeOutput();
 
 	}
-
 }
