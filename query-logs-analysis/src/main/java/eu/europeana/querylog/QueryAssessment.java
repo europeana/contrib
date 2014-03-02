@@ -31,6 +31,8 @@
  */
 package eu.europeana.querylog;
 
+import it.cnr.isti.hpc.io.reader.Filter;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,8 +53,8 @@ public class QueryAssessment {
 
 	private static final int RESULTS_PER_PAGE = 24;
 	private final Set<String> originalQueries;
-	private final String query;
-	private final Set<String> users;
+	private String query;
+	private Set<String> users;
 	private int totalClicks = 0;
 	private transient final Map<Integer, Set<String>> usersPerPage;
 	private transient final Map<String, Set<String>> usersPerClick;
@@ -117,6 +119,53 @@ public class QueryAssessment {
 		return this;
 	}
 
+	public String asString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("query: ").append(query).append('\n');
+		sb.append("total-clicks: ").append(totalClicks).append('\n');
+		sb.append("original queries: ").append('\n');
+		for (String q : originalQueries)
+			sb.append("\t- ").append(q).append('\n');
+		sb.append("users: ").append('\n');
+		for (String u : users)
+			sb.append("\t- ").append(u).append('\n');
+		sb.append(assessment.size()).append(" rel. documents:").append('\n');
+		for (RelevantDocument doc : assessment) {
+			sb.append(doc.asString());
+		}
+		return sb.toString();
+	}
+
+	public String asHtml() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table>\n");
+		sb.append("<tr>\n");
+		sb.append("<td>query: </td>").append("<td>" + query + "</td>")
+				.append('\n');
+		sb.append("</tr>\n");
+		sb.append("<tr>\n");
+		sb.append("<td>total-clicks: </td>")
+				.append("<td>" + totalClicks + "</td>").append('\n');
+		sb.append("</tr>\n");
+		sb.append("<tr>\n");
+		sb.append("<td>original queries: </td><td><ul>").append('\n');
+		for (String q : originalQueries)
+			sb.append("<li>").append(q).append("</li>\n");
+		sb.append("</ul></tr>\n");
+		sb.append("<tr>\n");
+		sb.append("<td>users: </td><td><ul> ").append('\n');
+		for (String u : users)
+			sb.append("<li>").append(u).append("</li>\n");
+		sb.append("</ul></tr>\n");
+		sb.append("</table>\n");
+		sb.append(assessment.size()).append(" rel. documents:").append('\n');
+		for (RelevantDocument doc : assessment) {
+			sb.append(doc.asHtml());
+		}
+		return sb.toString();
+
+	}
+
 	private void incrementVisits(int page, String user) {
 		if (!usersPerPage.containsKey(page)) {
 			usersPerPage.put(page, new HashSet<String>());
@@ -133,6 +182,38 @@ public class QueryAssessment {
 
 	}
 
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public Set<String> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<String> users) {
+		this.users = users;
+	}
+
+	public int getTotalClicks() {
+		return totalClicks;
+	}
+
+	public void setTotalClicks(int totalClicks) {
+		this.totalClicks = totalClicks;
+	}
+
+	public List<RelevantDocument> getAssessment() {
+		return assessment;
+	}
+
+	public void setAssessment(List<RelevantDocument> assessment) {
+		this.assessment = assessment;
+	}
+
 	public class RelevantDocument implements Comparable<RelevantDocument> {
 		String uri;
 		int clicks;
@@ -143,6 +224,40 @@ public class QueryAssessment {
 
 		public String getUri() {
 			return uri;
+		}
+
+		public String asString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(String.format("%-10s%s\n", "uri", uri));
+			sb.append(String.format("%-10s%s\n", "clicks", clicks));
+			sb.append(String.format("%-10s%s\n", "seen", seen));
+			sb.append(String.format("%-10s%s\n", "rank", rank));
+			sb.append(String.format("%-10s%s\n", "page", page));
+			sb.append(String.format("%-10s%s\n", "ctr", ctr));
+			sb.append('\n');
+			return sb.toString();
+		}
+
+		public String asHtml() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("<table>");
+			sb.append(String
+					.format("<tr><td>%s</td><td><a href=\"http://europeana.eu/portal/record/%s.html\">%s</a></td></tr>",
+							"uri", uri, uri));
+			sb.append(String.format("<tr><td>%s</td><td>%s</td></tr>",
+					"clicks", clicks));
+			sb.append(String.format("<tr><td>%s</td><td>%s</td></tr>", "seen",
+					seen));
+			sb.append(String.format("<tr><td>%s</td><td>%s</td></tr>", "rank",
+					rank));
+			sb.append(String.format("<tr><td>%s</td><td>%s</td></tr>", "page",
+					page));
+			sb.append(String.format("<tr><td>%s</td><td>%s</td></tr>", "ctr",
+					ctr));
+			sb.append("</table>");
+
+			sb.append('\n');
+			return sb.toString();
 		}
 
 		public void setUri(String uri) {
@@ -202,4 +317,71 @@ public class QueryAssessment {
 		}
 
 	}
+
+	public static class DocumentNumberFilter implements Filter<QueryAssessment> {
+
+		private int minNumberOfDocuments = 10;
+
+		public DocumentNumberFilter(int minNumberOfDocuments) {
+			this.minNumberOfDocuments = minNumberOfDocuments;
+		}
+
+		@Override
+		public boolean isFilter(QueryAssessment item) {
+			return item.assessment.size() < minNumberOfDocuments;
+		}
+
+	}
+
+	public static class NumberOfClicksFilter implements Filter<QueryAssessment> {
+
+		private int minNumberOfClicks = 10;
+
+		public NumberOfClicksFilter(int minNumberOfClicks) {
+			this.minNumberOfClicks = minNumberOfClicks;
+		}
+
+		@Override
+		public boolean isFilter(QueryAssessment item) {
+			return item.totalClicks < minNumberOfClicks;
+		}
+
+	}
+
+	public static class QueryLengthFilter implements Filter<QueryAssessment> {
+
+		private int minTerms = 1;
+		private int maxTerms = 10;
+
+		public QueryLengthFilter(int minTerms, int maxTerms) {
+			this.minTerms = minTerms;
+			this.maxTerms = maxTerms;
+		}
+
+		public QueryLengthFilter() {
+			this(1, 4);
+		}
+
+		@Override
+		public boolean isFilter(QueryAssessment item) {
+			String[] terms = item.getQuery().split(" ");
+			int nTerms = terms.length;
+			return (nTerms > maxTerms || nTerms < minTerms);
+		}
+	}
+
+	public static class UsersFilter implements Filter<QueryAssessment> {
+
+		private int minUsers = 5;
+
+		public UsersFilter(int minUsers) {
+			this.minUsers = minUsers;
+		}
+
+		@Override
+		public boolean isFilter(QueryAssessment item) {
+			return item.getUsers().size() < minUsers;
+		}
+	}
+
 }
