@@ -139,6 +139,7 @@ public class QueryAssessment {
 
 	public String asHtml() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("<h2>" + query + "</h2>");
 		sb.append("<table>\n");
 		sb.append("<tr>\n");
 		sb.append("<td>query: </td>").append("<td>" + query + "</td>")
@@ -154,10 +155,9 @@ public class QueryAssessment {
 			sb.append("<li>").append(q).append("</li>\n");
 		sb.append("</ul></tr>\n");
 		sb.append("<tr>\n");
-		sb.append("<td>users: </td><td><ul> ").append('\n');
-		for (String u : users)
-			sb.append("<li>").append(u).append("</li>\n");
-		sb.append("</ul></tr>\n");
+		sb.append("<td>distinct users: </td><td> ").append('\n');
+		sb.append(users.size());
+		sb.append("</td></tr>\n");
 		sb.append("</table>\n");
 		sb.append(assessment.size()).append(" rel. documents:").append('\n');
 		for (RelevantDocument doc : assessment) {
