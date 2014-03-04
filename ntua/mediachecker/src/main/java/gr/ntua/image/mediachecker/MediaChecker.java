@@ -44,8 +44,8 @@ public class MediaChecker {
 	}
 
 	/**
-	 * Static function to get basie information about a video file
-	 * @param  filename                 filename of the query video
+	 * Static function to get basic information about a video file
+	 * @param  filename                 filename of the video file
 	 * @return                          a VideoInfo object with the results
 	 * @throws IOException
 	 * @throws FileNotFoundException
@@ -72,10 +72,47 @@ public class MediaChecker {
 				height    = coder.getHeight();
 				framerate = coder.getFrameRate().getDouble();
 				codec     = coder.getCodecID().toString();
+				break;
 			}
 		}
 
 		return new VideoInfo(width, height, mimeType, codec.substring(9).toLowerCase(), duration, framerate);
+	}
+
+	/**
+	 * Static function to get basic information about an audio file
+	 * @param  filename                 filename of the audio file
+	 * @return                          an AudioInfo object with the results
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws IllegalArgumentException
+	 */
+	public static AudioInfo getAudioInfo(String filename) throws IOException, FileNotFoundException, IllegalArgumentException {
+		IContainer container = IContainer.make();
+		if (container.open(filename, IContainer.Type.READ, null) < 0)
+			throw new IllegalArgumentException("Could not open file: " + filename);
+
+		String mimeType = MediaChecker.getMimeType(filename);
+		int numStreams  = container.getNumStreams();
+		long duration   = container.getDuration() == Global.NO_PTS ? -1 : container.getDuration() / 1000;
+		int channels    = 0;
+		int sampleRate  = 0;
+		int bitRate     = 0;
+		String codec    = "";
+
+		for (int i=0; i<numStreams; i++) {
+			IStream stream     = container.getStream(i);
+			IStreamCoder coder = stream.getStreamCoder();
+			if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_AUDIO) {
+				channels   = coder.getChannels();
+				sampleRate = coder.getSampleRate();
+				bitRate    = Integer.parseInt(coder.getSampleFormat().toString().substring(5));
+				codec      = coder.getCodecID().toString();
+				break;
+			}
+		}
+
+		return new AudioInfo(mimeType, codec.substring(9).toLowerCase(), duration, sampleRate, bitRate);
 	}
 
 	/**
