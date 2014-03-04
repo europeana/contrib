@@ -168,18 +168,21 @@ public class QueryAssessment {
 
 	}
 
+	private static int id = 0;
+
 	public String asTrec() {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("#query: ").append(query).append('\n');
-		sb.append("#total-clicks: ").append(totalClicks).append('\n');
-		sb.append("#distinct users: ").append(users.size()).append('\n');
+		sb.append("# query-id: ").append(id++).append('\n');
+		sb.append("# query: ").append(query).append('\n');
+		sb.append("# total-clicks: ").append(totalClicks).append('\n');
+		sb.append("# distinct users: ").append(users.size()).append('\n');
 		sb.append("# " + assessment.size()).append(" rel. documents:")
 				.append('\n');
 		for (RelevantDocument doc : assessment) {
 			sb.append(String.format(
-					"%-20s\thttp://europeana.eu/portal/record%s\t%s\n", query,
-					doc.uri, Math.min((int) ((doc.getCtr() * 5) + 1), 5)));
+					"%-20s\thttp://europeana.eu/portal/record%s.html\t%s\n",
+					query, doc.uri, Math.min((int) ((doc.getCtr() * 5) + 1), 5)));
 		}
 
 		sb.append("\n\n");
