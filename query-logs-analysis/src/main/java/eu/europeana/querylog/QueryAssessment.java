@@ -179,7 +179,7 @@ public class QueryAssessment {
 		for (RelevantDocument doc : assessment) {
 			sb.append(String.format(
 					"%-20s\thttp://europeana.eu/portal/record%s\t%s\n", query,
-					doc.uri, (int) (doc.getCtr() * 5) + 1));
+					doc.uri, Math.min((int) ((doc.getCtr() * 5) + 1), 5)));
 		}
 
 		sb.append("\n\n");
