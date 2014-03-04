@@ -176,9 +176,9 @@ public class QueryAssessment {
 		sb.append("-distinct users: ").append(users.size()).append('\n');
 		sb.append(assessment.size()).append(" rel. documents:").append('\n');
 		for (RelevantDocument doc : assessment) {
-			sb.append(sb.append(String.format(
+			sb.append(String.format(
 					"%-20s\thttp://europeana.eu/portal/record/%-20s%s\n",
-					query, doc.uri, (int) (doc.getCtr() * 5) + 1)));
+					query, doc.uri, (int) (doc.getCtr() * 5) + 1));
 		}
 
 		sb.append("\n\n");
