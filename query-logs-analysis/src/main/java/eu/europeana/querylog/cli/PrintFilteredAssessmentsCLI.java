@@ -59,6 +59,7 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 		int docs = cli.getIntParam("docs");
 		int users = cli.getIntParam("users");
 		boolean html = cli.getOutput().endsWith(".html");
+		boolean trec = cli.getOutput().endsWith(".trec");
 		RecordReader<QueryAssessment> reader = new RecordReader<QueryAssessment>(
 				cli.getInput(), new JsonRecordParser<QueryAssessment>(
 						QueryAssessment.class));
@@ -75,6 +76,8 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 			i++;
 			if (html) {
 				cli.writeInOutput(er.asHtml());
+			} else if (trec) {
+				cli.writeInOutput(er.asTrec());
 			} else {
 				cli.writeInOutput(er.asString());
 			}

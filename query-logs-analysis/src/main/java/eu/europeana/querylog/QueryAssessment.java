@@ -168,6 +168,23 @@ public class QueryAssessment {
 
 	}
 
+	public String asTrec() {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("-query: ").append(query).append('\n');
+		sb.append("-total-clicks: ").append(totalClicks).append('\n');
+		sb.append("-distinct users: ").append(users.size()).append('\n');
+		sb.append(assessment.size()).append(" rel. documents:").append('\n');
+		for (RelevantDocument doc : assessment) {
+			sb.append(sb.append(String.format(
+					"%-20s\thttp://europeana.eu/portal/record/%-20s%d\n",
+					query, doc.uri, (int) (doc.getCtr() * 5) + 1)));
+		}
+
+		sb.append("\n\n");
+		return sb.toString();
+	}
+
 	private void incrementVisits(int page, String user) {
 		if (!usersPerPage.containsKey(page)) {
 			usersPerPage.put(page, new HashSet<String>());
@@ -388,7 +405,7 @@ public class QueryAssessment {
 
 	public static class MinClicksFilter implements Filter<QueryAssessment> {
 
-		private int minClicks = 5;
+		private int minClicks = 2;
 
 		public MinClicksFilter() {
 
