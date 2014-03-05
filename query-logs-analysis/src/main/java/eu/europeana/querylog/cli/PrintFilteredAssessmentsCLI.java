@@ -34,6 +34,11 @@ package eu.europeana.querylog.cli;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import eu.europeana.querylog.QueryAssessment;
 
 /**
@@ -72,8 +77,15 @@ public class PrintFilteredAssessmentsCLI extends AbstractCommandLineInterface {
 				new QueryAssessment.UsersFilter(users));
 
 		int i = 0;
+
+		List<QueryAssessment> list = new LinkedList<QueryAssessment>();
 		for (QueryAssessment er : reader) {
 			i++;
+			list.add(er);
+
+		}
+		Collections.sort(list);
+		for (QueryAssessment er : list) {
 			if (html) {
 				cli.writeInOutput(er.asHtml());
 			} else if (trec) {

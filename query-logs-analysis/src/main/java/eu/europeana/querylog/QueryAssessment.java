@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * 
  *         Created on Mar 1, 2014
  */
-public class QueryAssessment {
+public class QueryAssessment implements Comparable<QueryAssessment> {
 
 	private static final int RESULTS_PER_PAGE = 24;
 	private final Set<String> originalQueries;
@@ -433,6 +433,11 @@ public class QueryAssessment {
 			item.setAssessment(rel);
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(QueryAssessment o) {
+		return o.totalClicks - totalClicks;
 	}
 
 }
