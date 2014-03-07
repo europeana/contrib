@@ -1,6 +1,7 @@
 package gr.ntua.ivml.mint.mapping;
 
 import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.Mappings;
 
 import java.util.HashMap;
 
@@ -33,7 +34,11 @@ public class MappingCache {
 	public MappingCache() {
 		this.reset();
 	}
-
+    
+	public MappingCache(Mappings mappings) {
+		this(mappings.getTemplate());
+	}
+	
 	public MappingCache(Element template) {
 		this.load(template.asJSONObject());
 	}

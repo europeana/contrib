@@ -61,15 +61,6 @@
 	    	 	            ]
 	     },
 	     {
-	    	 	name: "replace",
-	    	 	description: "Replace",
-	    	 	message: "Replace all occurences of first argument with contents of second argument.",
-	    	 	arguments: [
-	    	 	            { label: "replace this: " },
-	    	 	            { label: "with this: " }
-	    	 	            ]
-	     },
-	     {
 	  	 	name: "tokenize",
 	  	 	description: "Tokenize content and generate an element per token",
 	  	 	arguments: [

@@ -181,7 +181,7 @@ public class Mappings extends JSONMappingHandler {
 	 */
 	public JSONObject getNamespaces() {
 		if(this.has(TEMPLATE_NAMESPACES)) {
-			System.out.println("NAMESPACES: " + this.object.get(TEMPLATE_NAMESPACES));
+			//System.out.println("NAMESPACES: " + this.object.get(TEMPLATE_NAMESPACES));
 			return this.getObject(TEMPLATE_NAMESPACES);
 		}
 		

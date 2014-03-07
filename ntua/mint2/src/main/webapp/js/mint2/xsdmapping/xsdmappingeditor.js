@@ -123,6 +123,7 @@ XSDMappingEditor.prototype.init = function(dataUploadId, mappingId, lockId) {
 	
 	this.initTreeContainer(this.dataUploadId);
 	this.initMappingsContainer(this.mappingId);
+	//TODO: change color of mapped elements in tree
 }
 
 /**

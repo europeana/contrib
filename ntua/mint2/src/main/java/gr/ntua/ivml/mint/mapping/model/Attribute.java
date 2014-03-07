@@ -32,11 +32,11 @@ public class Attribute extends Element {
 			}
 			if(this.getPrefix() != null && this.getPrefix().equalsIgnoreCase("xml")) uri = XMLUtils.XML_NAMESPACE;
 			
-			System.out.println(this.getFullName() + " - " + uri);
+			//System.out.println(this.getFullName() + " - " + uri);
 			if(uri != null) {
 				attribute = new nu.xom.Attribute(this.getFullName(false), uri, value);
 			} else {
-				System.out.println(this.getName() + " - " + value);
+				//System.out.println(this.getName() + " - " + value);
 				attribute = new nu.xom.Attribute(this.getFullName(false), value);
 			}
 		}

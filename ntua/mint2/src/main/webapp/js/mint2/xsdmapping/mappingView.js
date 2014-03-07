@@ -8,7 +8,7 @@
  */
 function MappingView(container, options) {
 	this.defaults = {
-			root: null,				// MappingView that is the root of this view. If root has a target mapping element, it's id will be used as root in find queries.
+			root: null,				// MappingView that is the root of this view. If root has a target mapping element, its id will be used as root in find queries.
 			view: null,				// json object that describes this view
 			target: null,			// a mapping element used as the root of this view. If defined, xpath will be ignored.
 			metadata: undefined,	// metadata associated with this view's contents. Usually loaded after ajax call that retrieves a target.
@@ -18,11 +18,10 @@ function MappingView(container, options) {
 	this.settings = $.extend({}, this.defaults, options);
 	this.editor = this.settings.editor;
 	this.isLoaded = false;
-	
 	if(container != undefined) {
 		this.container = $(container);
 		if(!this.settings.lazy) this.render();
-	}	
+	}
 }
 
 MappingView.prototype.lazyLoad = function() {
@@ -44,147 +43,178 @@ MappingView.prototype.render = function() {
 	}
 	
 	this.container.empty().addClass("editor-mapping-view");
-	
+	var groupAnn = this.getView().groupAnn;
 	var type = this.getView().type;
 	var place = this.getView().place;
 	
-	if(target == null && xpath != undefined) {
-		this.container.append(Mint2.loading());
-
-		this.editor.ajax.find({
-			xpath: xpath,
-			root: rootId,
-			metadata: this.getMetadataXPaths()
-		}, function(response) {
-			var id = response.id;
-			self.container.empty();
-			
-			if(response.results != undefined && response.results.length > 0) {
-				for(var i in response.results) {
-					var target = response.results[i].target;
-					var element = $("<div>").mappingView({
-						editor: self.settings.editor,
-						root: self,
-						view: self.getView(),
-						metadata: response.results[i].metadata,
-						target: target
+	if (this.editor.annotatorMode == XMLAnnotator.MODE_GROUP) {
+		/*if (groupAnn == undefined) {
+			self.container.append(Mint2.message($("<span>No group annotator support</span>"), Mint2.WARNING));
+		}*/
+		if (groupAnn != undefined) {// && itemsQuery != undefined) {
+			var tabs = $("<div>");
+			var ul = $("<ul>");
+			for (var i in groupAnn) {
+				var element = groupAnn[i];	
+				xpath = element.xpath;
+				var label = element.label;
+				var showDuplicateWithNewValue = element.showDuplicateWithNewValue;
+				var showRemoveWithValue = element.showRemoveWithValue;
+				var showRemoveAll = element.showRemoveAll;
+				var showEditFunction = element.showEditFunction;
+				if (xpath != undefined && label != undefined) {
+					var viewElement = $("<div>").annotatorElement({
+						xpath: xpath,
+						editor: this.editor,
+						label: label,
+						showDuplicateWithNewValue: showDuplicateWithNewValue,
+						showRemoveWithValue: showRemoveWithValue,
+						showRemoveAll: showRemoveAll,
+						showEditFunction: showEditFunction
 					});
-					self.container.append(element);
-				}
-			} else {
-				self.container.append(Mint2.message($("<span>No results found for xpath '<b>" + xpath + "</b>'</span>"), Mint2.WARNING));
+					this.container.append(viewElement);
+				}	
 			}
-		})
-	} else {
-		if(type == undefined) {
-			if(target != null) {
-				var element = this.getMappingElement(target);
-				this.container.append(element);				
-			} else {
-				this.container.append(Mint2.message($("<span>No results found for xpath '<b>" + xpath + "</b>'</span>"), Mint2.WARNING));
-			}
-		} else if(type == "tabs") {
-			if(this.getView().contents != undefined) {
-				var tabs = $("<div>");
-				var ul = $("<ul>").appendTo(tabs);
-
-				for(var c in this.getView().contents) {
-					var item = this.getView().contents[c];
-					var view = $("<div>").mappingView({
-						editor: self.settings.editor,
-						root: self,
-						view: item,
-						lazy: true
-					});
-					
-					tabs.append($("<div>").attr("id", "view-" + c).append(view));
-					ul.append($("<li>").append($("<a>").attr("href", "#view-" + c).append(view.data("mappingView").getLabel())));
-				}
-
-				this.container.append(tabs);
-				tabs.tabs({
-					// tab views are lazy loaded to avoid all ajax calls issued at once.
-					show: function(event, ui) {
-						$(ui.panel).find("div").each(function(k, v) {
-							var tabView = $(v).data("mappingView");
-							if(tabView != undefined) {
-								tabView.lazyLoad();
-							}
-						});
-					},
-				});
-			} else {
-				this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
-			}
-		} else if(type == "collection") {
-			var label = this.getLabel();
-			if(this.getView().contents != undefined) {
-				for(var c in this.getView().contents) {
-					var item = this.getView().contents[c];
-					var view = $("<div>").mappingView({
-						editor: self.settings.editor,
-						root: self,
-						view: item
-					});
-					this.container.append(view);
-				}
-			} else {
-				this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
-			}
-		} else if(type == "image") {
-			var label = this.getLabel();
-			if(this.getView().xpath != undefined) {
-				if(target["mapping-cases"] != undefined) {
-					console.log("image item:", target);
-					for(var i in target["mapping-cases"]) {
-						var value = target["mapping-cases"][i].mappings[0].value;
-						var view = $("<div>").addClass("editor-mapping-view-image");
-						view.append($("<img>").attr("src", value));
-						this.container.append(view);					
-					}
-				}
-			} else {
-				this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have xpath", Mint2.ERROR));			
-			}			
-		} else if(type == "table") {
-			var label = this.getLabel();		
-			if(this.getView().contents != undefined) {
-				var array = [];
-				for(var c in this.getView().contents) {
-					var item = this.getView().contents[c];
-					var view = $("<div>").mappingView({
-						editor: this.settings.editor,
-						root: this,
-						view: item,
-						lazy: true
-					});
-					array.push(view);
-				}
-
-				var dataTable = Mint2.dataTable({
-					title: label,
-					data: array,
-					collapsed: true,
-					expand: function() {
-						console.log(self);
-						dataTable.find("div").each(function(k, v) {
-							var tableView = $(v).data("mappingView");
-							if(tableView != undefined) {
-								tableView.lazyLoad();
-							}
-						});
-					}
-				});
-
-				this.container.append(dataTable);
-			} else {
-				this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
-			}	
-		} else {
-			this.container.append(Mint2.message("No view defined for type '<b>" + type + "</b>'", Mint2.ERROR));
-		}		
+		}
 	}
+	else if (this.editor.annotatorMode == XMLAnnotator.MODE_SINGLE) {	
+		if(target == null && xpath != undefined) {
+			this.container.append(Mint2.loading());
 	
+			this.editor.ajax.find({
+				xpath: xpath,
+				root: rootId,
+				metadata: this.getMetadataXPaths()
+			}, function(response) {
+				var id = response.id;
+				self.container.empty();
+				
+				if(response.results != undefined && response.results.length > 0) {
+					for(var i in response.results) {
+						var target = response.results[i].target;
+						var element = $("<div>").mappingView({
+							editor: self.settings.editor,
+							root: self,
+							view: self.getView(),
+							metadata: response.results[i].metadata,
+							target: target
+						});
+						self.container.append(element);
+					}
+				} else {
+					self.container.append(Mint2.message($("<span>No results found for xpath '<b>" + xpath + "</b>'</span>"), Mint2.WARNING));
+				}
+			})
+		} else {
+			if(type == undefined) {
+				if(target != null) {
+					var element = this.getMappingElement(target);
+					this.container.append(element);				
+				} else {
+					this.container.append(Mint2.message($("<span>No results found for xpath '<b>" + xpath + "</b>'</span>"), Mint2.WARNING));
+				}
+			} else if(type == "tabs") {
+				if(this.getView().contents != undefined) {
+					var tabs = $("<div>");
+					var ul = $("<ul>").appendTo(tabs);
+	
+					for(var c in this.getView().contents) {
+						var item = this.getView().contents[c];
+						var view = $("<div>").mappingView({
+							editor: self.settings.editor,
+							root: self,
+							view: item,
+							lazy: true
+						});
+						
+						tabs.append($("<div>").attr("id", "view-" + c).append(view));
+						ul.append($("<li>").append($("<a>").attr("href", "#view-" + c).append(view.data("mappingView").getLabel())));
+					}
+	
+					this.container.append(tabs);
+					tabs.tabs({
+						// tab views are lazy loaded to avoid all ajax calls issued at once.
+						show: function(event, ui) {
+							$(ui.panel).find("div").each(function(k, v) {
+								var tabView = $(v).data("mappingView");
+								if(tabView != undefined) {
+									tabView.lazyLoad();
+								}
+							});
+						},
+					});
+				} else {
+					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
+				}
+			} else if(type == "collection") {
+				var label = this.getLabel();
+				if(this.getView().contents != undefined) {
+					for(var c in this.getView().contents) {
+						var item = this.getView().contents[c];
+						var view = $("<div>").mappingView({
+							editor: self.settings.editor,
+							root: self,
+							view: item
+						});
+						this.container.append(view);
+					}
+				} else {
+					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
+				}
+			} else if(type == "image") {
+				var label = this.getLabel();
+				if(this.getView().xpath != undefined) {
+					if(target["mapping-cases"] != undefined) {
+						console.log("image item:", target);
+						for(var i in target["mapping-cases"]) {
+							var value = target["mapping-cases"][i].mappings[0].value;
+							var view = $("<div>").addClass("editor-mapping-view-image");
+							view.append($("<img>").attr("src", value));
+							this.container.append(view);					
+						}
+					}
+				} else {
+					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have xpath", Mint2.ERROR));			
+				}			
+			} else if(type == "table") {
+				var label = this.getLabel();		
+				if(this.getView().contents != undefined) {
+					var array = [];
+					for(var c in this.getView().contents) {
+						var item = this.getView().contents[c];
+						var view = $("<div>").mappingView({
+							editor: this.settings.editor,
+							root: this,
+							view: item,
+							lazy: true
+						});
+						array.push(view);
+					}
+	
+					var dataTable = Mint2.dataTable({
+						title: label,
+						data: array,
+						collapsed: true,
+						expand: function() {
+							console.log(self);
+							dataTable.find("div").each(function(k, v) {
+								var tableView = $(v).data("mappingView");
+								if(tableView != undefined) {
+									tableView.lazyLoad();
+								}
+							});
+						}
+					});
+	
+					this.container.append(dataTable);
+				} else {
+					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
+				}	
+			} else {
+				this.container.append(Mint2.message("No view defined for type '<b>" + type + "</b>'", Mint2.ERROR));
+			}		
+		}
+	}
 	this.isLoaded = true;
 }
 Mint2.jQueryPlugin("mappingView", MappingView);
@@ -201,10 +231,10 @@ MappingView.prototype.getMappingElement = function(target) {
 		showChildrenToggle: false,
 		showAttributesToggle: false,
 		showValidation: false,
-		showRemove: "always",
+		//showRemove: "always",
 		onDuplicate: function(response) {
 			if(self.getRoot() != undefined) self.getRoot().render();
-			$(self.editor).trigger("documentChanged", response);
+			//$(self.editor).trigger("documentChanged", response);
 		},
 		onRemove: function(response) {
 			if(self.getRoot() != undefined) self.getRoot().render();
@@ -367,4 +397,5 @@ MappingLanguageView.prototype.render = function() {
 	select.chosen({ width: "100px" });
 	
 }
+
 Mint2.jQueryPlugin("mappingLanguageView", MappingLanguageView);

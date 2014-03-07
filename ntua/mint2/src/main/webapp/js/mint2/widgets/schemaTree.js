@@ -129,7 +129,7 @@ SchemaTree.prototype.refresh = function() {
 		var data = {
 			data: this.schema
 		};
-
+		
 		this.treeContainer.jstree({
 			core: {
 				animation: 100
@@ -161,6 +161,7 @@ SchemaTree.prototype.refresh = function() {
 						var target = data.e.currentTarget;
 						var source = data.o;
 						tree.dropCallback(source, target);
+						//tree.highlightMapped(source.data("xpath"));
 					} else {
 					}
 				}
@@ -170,7 +171,7 @@ SchemaTree.prototype.refresh = function() {
 			tree.treeContainer.find("a > ins").each(function(k, v) {
 				var tag = $(v).parent().text();
 				tags.push(tag);
-
+				
 				$(v).click(function () {
 					tree.selected = $(this).parent().parent();
 					if(tree.selectNodeCallback != null) {
@@ -178,12 +179,10 @@ SchemaTree.prototype.refresh = function() {
 					}
 				});
 			});	
-
 			tree.searchContainer.find("input").autocomplete({
 				source: tags
 			});
 			tree.treeContainer.append($("<div>").css("height", "80px"));
-		
 		});
 		
 	}	
@@ -226,6 +225,33 @@ SchemaTree.prototype.getNodeId = function(xpath, root) {
 }
 
 /**
+ * Get a the id of a schema's node that corresponds to a specified xpath.
+ * @param {String} xpath Requested XPath.
+ * @param {Object} [root=this.schema] schema subtree used to limit the search. The whole tree is searched by default.
+ * @return {String} the node id if found, undefined if not.  
+ */
+SchemaTree.prototype.getNode = function(xpath, root) {
+	if(root == undefined) root = this.schema;
+	
+	var result = undefined;
+	$.each(root, function(k, node) {
+		if(node.metadata != undefined) {
+			if(node.metadata.xpath == xpath) {
+				result = node;
+				return false;
+			}
+		}
+		
+		if(node.children != undefined) {
+			result = SchemaTree.prototype.getNode(xpath, node.children);
+			if(result != undefined) return false;
+		}
+	});
+	
+	return result;
+}
+
+/**
  * Focus on a schema's node with the specified xpath.
  * @param {String} xpath XPath of node that should be focused.
  */
@@ -250,8 +276,17 @@ SchemaTree.prototype.selectXPath = function(xpath) {
 	return false;
 }
 
+SchemaTree.prototype.highlightMapped = function(xpath) {
+	var node = this.getNode(xpath);
+	//alert(JSON.stringify(node));
+	$("#schema-tree-" + node.metadata.xpathHolderId).children("a").css({
+		"color": "purple",
+		"font-weight": "bold"
+	});
+}
+
 /**
- * Highight nodes that correspond to the specified xpaths.
+ * Highlight nodes that correspond to the specified xpaths.
  * @param {Array} xpath List of string xpaths.
  */
 SchemaTree.prototype.highlight = function(xpaths) {

@@ -44,11 +44,20 @@ MappingAjax.prototype.removeNode = function(id, callback) {
 
 /**
  * Duplicate a model's node with specified id, If callback exists, call on success with response.
- * @param {String} id id of node that should be duplicated.
+ * @param {String} [id] id of node that should be duplicated.
  * @param {function} [callback] Callback that should be called on success.
  */
-MappingAjax.prototype.duplicateNode = function(id, callback) {
-	this.call("duplicateNode", { id: id }, callback);
+MappingAjax.prototype.duplicateNode = function(id, settings, callback) {
+	$.ajax({
+		url: this.ajaxUrl,
+		context: this,
+		dataType: "json",
+		data: $.extend({}, { command: "duplicateNode" }, {id: id}),
+		success: function(response) {
+			if(callback != undefined) 
+				callback(response, settings);
+		}
+	});
 }
 
 MappingAjax.prototype.setConstantValueMapping = function(arguments, callback) {
