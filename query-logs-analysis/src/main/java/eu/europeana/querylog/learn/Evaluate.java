@@ -153,6 +153,7 @@ public class Evaluate {
 
 		double totalScore = 0d;
 		int queries = 0;
+
 		for (QueryAssessment qa : assessment) {
 			SolrQuery query = new SolrQuery(qa.getQuery());
 			query.set("b", boostsToString(bm25fParams));
@@ -163,6 +164,8 @@ public class Evaluate {
 			List<String> topDocId = results.results(query, N);
 
 			double score = measure.getScore(topDocId, qa);
+			// logger.info("query {} score {}", qa.getQuery(), score);
+
 			totalScore += score;
 			queries++;
 		}
@@ -176,6 +179,7 @@ public class Evaluate {
 
 		double totalScore = 0d;
 		int queries = 0;
+		logger.info("assessment size = {} ", assessment.size());
 		for (QueryAssessment qa : assessment) {
 			SolrQuery query = new SolrQuery(qa.getQuery());
 			List<String> topDocId = results.results(query, N);
@@ -292,8 +296,8 @@ public class Evaluate {
 		if (logFile == null)
 			return;
 		StringBuilder sb = new StringBuilder();
-		sb.append("max point found: ").append(measure.getName())
-				.append(maxValue.getScore());
+		sb.append("max point found: ").append(measure.getName()).append(" = ")
+				.append(maxValue.getScore()).append('\n').append('\n');
 		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
 				.append("</float> \n");
 		sb.append("<lst name=\"fieldsBoost\">\n");
@@ -313,7 +317,7 @@ public class Evaluate {
 			i++;
 			sb.append("</float>\n");
 		}
-		sb.append("</lst>\n");
+		sb.append("</lst>\n\n");
 		try {
 			logFile.write(sb.toString());
 			logFile.flush();

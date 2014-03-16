@@ -53,6 +53,9 @@ public class Ndcg extends AbstractMeasure implements Measure {
 
 	@Override
 	public double match(List<String> results, QueryAssessment assessment) {
+		double idcg = idcg(results, assessment);
+		if (idcg == 0.0)
+			return 0.0;
 		return dcg(results, assessment) / idcg(results, assessment);
 	}
 
