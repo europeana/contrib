@@ -76,6 +76,29 @@ public class QueryAssessment implements Comparable<QueryAssessment> {
 		add(rec);
 	}
 
+	public QueryAssessment(String query) {
+		users = new HashSet<String>();
+		originalQueries = new HashSet<String>();
+		usersPerPage = new HashMap<Integer, Set<String>>();
+		usersPerClick = new HashMap<String, Set<String>>();
+		uriToDocument = new HashMap<String, RelevantDocument>();
+		this.query = query;
+		this.assessment = new ArrayList<QueryAssessment.RelevantDocument>();
+	}
+
+	public void sort() {
+		Collections.sort(assessment);
+	}
+
+	public void addRelevantDocument(String uri, int relevance) {
+		if (relevance <= 0)
+			return;
+		QueryAssessment.RelevantDocument doc = new QueryAssessment.RelevantDocument();
+		doc.setUri(uri);
+		doc.setRelevance(relevance);
+		assessment.add(doc);
+	}
+
 	public boolean add(EuropeanaRecord rec) {
 		String rquery = rec.getNormalizedQuery();
 		if (!query.equals(rquery)) {
@@ -182,8 +205,7 @@ public class QueryAssessment implements Comparable<QueryAssessment> {
 		for (RelevantDocument doc : assessment) {
 			sb.append(String
 					.format("%d\t%-20s\thttp://europeana.eu/portal/record%s.html\t%s\n",
-							id, query, doc.uri,
-							Math.min((int) ((doc.getCtr() * 5) + 1), 5)));
+							id, query, doc.uri, doc.getRelevance()));
 		}
 		id++;
 
@@ -246,6 +268,7 @@ public class QueryAssessment implements Comparable<QueryAssessment> {
 		int seen;
 		int rank;
 		int page;
+		Integer relevance;
 
 		public String getUri() {
 			return uri;
@@ -331,14 +354,25 @@ public class QueryAssessment implements Comparable<QueryAssessment> {
 
 		@Override
 		public int compareTo(RelevantDocument rd) {
-			if (rd.ctr > ctr) {
+			if (rd.getRelevance() > getRelevance()) {
 				return 1;
 			}
-			if (ctr > rd.ctr) {
+			if (getRelevance() > rd.getRelevance()) {
 				return -1;
 			}
 			// same ctr, based on number of view
 			return rd.clicks - clicks;
+		}
+
+		public int getRelevance() {
+			if (relevance == null) {
+				relevance = Math.min((int) Math.round(getCtr() * 4), 4);
+			}
+			return relevance;
+		}
+
+		public void setRelevance(int relevance) {
+			this.relevance = relevance;
 		}
 
 	}
