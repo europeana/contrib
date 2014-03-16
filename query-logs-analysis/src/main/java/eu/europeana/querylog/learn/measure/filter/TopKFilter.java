@@ -43,15 +43,14 @@ import eu.europeana.querylog.QueryAssessment;
  */
 public class TopKFilter implements Filter {
 
-	private final int k;
+	private int k;
 
 	public TopKFilter(int k) {
 		this.k = k;
 	}
 
 	@Override
-	public synchronized void filter(List<String> results,
-			QueryAssessment assessment) {
+	public void filter(List<String> results, QueryAssessment assessment) {
 		if (results.size() <= k)
 			return;
 		List<String> filtered = new ArrayList<String>(results.subList(0, k));
@@ -59,6 +58,14 @@ public class TopKFilter implements Filter {
 		for (String f : filtered) {
 			results.add(f);
 		}
+	}
+
+	public int getK() {
+		return k;
+	}
+
+	public void setK(int k) {
+		this.k = k;
 	}
 
 	@Override

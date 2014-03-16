@@ -46,7 +46,7 @@ public class MeasureFactory {
 		int k = -1;
 		String measure = code;
 		if (code.contains("@")) {
-			Scanner scanner = new Scanner(code);
+			Scanner scanner = new Scanner(code).useDelimiter("@");
 			measure = scanner.next();
 			if (scanner.hasNextInt()) {
 				k = scanner.nextInt();

@@ -36,6 +36,10 @@ public abstract class AbstractMeasure {
 		filters.add(f);
 	}
 
+	public List<Filter> getFilters() {
+		return filters;
+	}
+
 	public double getScore(List<String> results, QueryAssessment assessment) {
 		filter(results, assessment);
 		return match(results, assessment);

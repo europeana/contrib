@@ -31,7 +31,11 @@
  */
 package eu.europeana.querylog.learn;
 
+import it.cnr.isti.hpc.io.IOUtils;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -96,6 +100,7 @@ public class Evaluate {
 	private List<Float> partialScores;
 	private Measure measure;
 	private Results results;
+	private BufferedWriter logFile;
 	private final float scores = 0.0f;
 
 	public Evaluate(File assessmentFolder, List<String> fields,
@@ -119,6 +124,10 @@ public class Evaluate {
 		assessment = loadAllAssessments(assessmentFolder);
 		partialScores = new ArrayList<Float>();
 
+	}
+
+	public void setLog(String file) {
+		logFile = IOUtils.getPlainOrCompressedUTF8Writer(file);
 	}
 
 	private float[] getParamsVector(float k1Value, float boostsValue,
@@ -268,13 +277,51 @@ public class Evaluate {
 				score = currentScore;
 				if (score > maxValue.getScore()) {
 					logger.info("new max {} = {}", measure.getName(), maxValue);
+
 					maxValue = new Point(bm25fParams, score);
+					writeLogFile();
 				}
 			}
 			bm25fParams[index] += increments[index];
 		}
 
 		bm25fParams[index] = initialValue;
+	}
+
+	private void writeLogFile() {
+		if (logFile == null)
+			return;
+		StringBuilder sb = new StringBuilder();
+		sb.append("max point found: ").append(measure.getName())
+				.append(maxValue.getScore());
+		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
+				.append("</float> \n");
+		sb.append("<lst name=\"fieldsBoost\">\n");
+		int i = 0;
+		for (String f : fields) {
+			sb.append("\t<float name=\"").append(f).append("\"> ");
+			sb.append(getBoosts(maxValue.getPoint())[i]);
+			i++;
+			sb.append("</float>\n");
+		}
+		sb.append("</lst>\n");
+		i = 0;
+		sb.append("<lst name=\"fieldsB\">\n");
+		for (String f : fields) {
+			sb.append("\t<float name=\"").append(f).append("\"> ");
+			sb.append(getBParams(maxValue.getPoint())[i]);
+			i++;
+			sb.append("</float>\n");
+		}
+		sb.append("</lst>\n");
+		try {
+			logFile.write(sb.toString());
+			logFile.flush();
+		} catch (IOException e) {
+			logger.error("writing the log: ");
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -376,7 +423,6 @@ public class Evaluate {
 		int i = 1;
 
 		float[] point = getPointOnTheLine(0, direction);
-		Point maxValue = new Point(point, evaluateAssessments(point));
 		boolean finished = false;
 		while (!finished) {
 			point = getPointOnTheLine(i, direction);
@@ -388,6 +434,7 @@ public class Evaluate {
 
 					maxValue = new Point(point, currentValue);
 					logger.info("max point found  = {}", maxValue);
+					writeLogFile();
 
 				}
 			}
@@ -404,7 +451,7 @@ public class Evaluate {
 				if (currentScore > maxValue.getScore()) {
 					maxValue = new Point(point, currentScore);
 					logger.info("max point found  = {}", maxValue);
-
+					writeLogFile();
 				}
 			} else {
 				logger.info("..not a legal point, skipping");
@@ -496,6 +543,7 @@ public class Evaluate {
 			sb.append("</float>\n");
 		}
 		sb.append("</lst>\n");
+		writeLogFile();
 		return sb.toString();
 
 	}

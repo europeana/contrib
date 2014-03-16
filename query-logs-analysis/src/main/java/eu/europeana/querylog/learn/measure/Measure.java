@@ -47,6 +47,8 @@ public interface Measure {
 
 	public void addFilter(Filter f);
 
+	public List<Filter> getFilters();
+
 	public String getName();
 
 }

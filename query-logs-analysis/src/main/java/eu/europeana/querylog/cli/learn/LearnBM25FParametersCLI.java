@@ -33,6 +33,17 @@ package eu.europeana.querylog.cli.learn;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 
+import java.io.File;
+import java.util.Arrays;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.europeana.querylog.learn.Evaluate;
+import eu.europeana.querylog.learn.measure.Measure;
+import eu.europeana.querylog.learn.measure.MeasureFactory;
+import eu.europeana.querylog.learn.query.BM25FSolrResults;
+
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -40,15 +51,29 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
  */
 public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 
+	private static String[] params = new String[] { "goldentruth", "measure",
+			"log" };
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(LearnBM25FParametersCLI.class);
+
+	private static String usage = "java -cp $jar  eu.europeana.querylog.cli.learn.LearnBM25FParametersCLI -goldentruth assessment-dir -measure measure-to-optimize -log log-file";
+
 	public LearnBM25FParametersCLI(String[] args) {
-		super(args);
+		super(args, params, usage);
 	}
 
 	public static void main(String[] args) {
 		LearnBM25FParametersCLI cli = new LearnBM25FParametersCLI(args);
-
-		cli.closeOutput();
+		File assessmentFolder = new File(cli.getParam("goldentruth"));
+		String[] fields = new String[] { "text", "title", "author",
+				"description" };
+		Measure m = MeasureFactory.getMeasure(cli.getParam("measure"));
+		logger.info("optimizing {} ", m.getName());
+		Evaluate evaluate = new Evaluate(assessmentFolder,
+				Arrays.asList(fields), m, new BM25FSolrResults());
+		evaluate.setLog(cli.getParam("log"));
+		evaluate.learningToRank();
 
 	}
-
 }
