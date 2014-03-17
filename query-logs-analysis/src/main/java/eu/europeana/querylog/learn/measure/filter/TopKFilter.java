@@ -37,6 +37,8 @@ import java.util.List;
 import eu.europeana.querylog.QueryAssessment;
 
 /**
+ * This filters returns only the top-k results for a given query.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014

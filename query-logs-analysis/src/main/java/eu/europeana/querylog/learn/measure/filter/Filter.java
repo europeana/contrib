@@ -36,6 +36,13 @@ import java.util.List;
 import eu.europeana.querylog.QueryAssessment;
 
 /**
+ * A filter cleans a list of results or an assessment, before a measure is
+ * computed. They can be used for computing a measure considering only the top-k
+ * retrieved results (i.e., {@link TopKFilter}). They could also be used for
+ * filtering out assessment record with low relevance score and get more
+ * meaningful scores.
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
