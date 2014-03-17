@@ -36,14 +36,27 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery;
 
 /**
+ * Returns a ranked list of results given a query.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
  */
-public interface Results {
-
+public interface SolrResultsRetriever {
+	/**
+	 * Queries a Solr server and returns a ranked list of results.
+	 * 
+	 * @param query
+	 *            the query to perform;
+	 * @param n
+	 *            number of results to retrieve;
+	 * @return the ranked list of results, as a list of document-id.
+	 */
 	public List<String> results(SolrQuery query, int n);
 
+	/**
+	 * the name of the Solr server retriever.
+	 */
 	public String getName();
 
 }
