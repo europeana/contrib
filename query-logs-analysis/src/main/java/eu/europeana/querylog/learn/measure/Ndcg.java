@@ -47,6 +47,9 @@ public class Ndcg extends AbstractMeasure implements Measure {
 		return dcg(results, assessment) / idcg(results, assessment);
 	}
 
+	/**
+	 * computes the discounted cumulative gain.
+	 */
 	private double dcg(List<String> results, QueryAssessment assessment) {
 		assessment.sort();
 		Map<String, RelevantDocument> relevance = new HashMap<String, RelevantDocument>();
@@ -67,7 +70,7 @@ public class Ndcg extends AbstractMeasure implements Measure {
 	}
 
 	/**
-	 * compute the ideal discounted comulative gain
+	 * computes the ideal discounted cumulative gain.
 	 */
 	private double idcg(List<String> results, QueryAssessment assessment) {
 		assessment.sort();

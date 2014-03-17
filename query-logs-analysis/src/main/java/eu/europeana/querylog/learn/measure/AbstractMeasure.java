@@ -23,6 +23,10 @@ import eu.europeana.querylog.QueryAssessment;
 import eu.europeana.querylog.learn.measure.filter.Filter;
 
 /**
+ * Represents an abstract measure, implements the filters mechanism. To add a
+ * new measure just extend this class the implements the match method, without
+ * caring of filters.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
@@ -51,6 +55,21 @@ public abstract class AbstractMeasure {
 		}
 	}
 
+	/**
+	 * returns a score reporting how much a ranking function is good, given a
+	 * goldentruth assessment. The higher is the score the better the ranking
+	 * function.
+	 * 
+	 * @param results
+	 *            the ranked document-id returned by the ranking function that
+	 *            is evaluated
+	 * @param assessment
+	 *            a query assessment;
+	 * @return a score representing how much the ranking function is good for
+	 *         the given query assessment, given a goldentruth assessment. The
+	 *         higher is the score the better the ranking function.
+	 * 
+	 */
 	public abstract double match(List<String> results,
 			QueryAssessment assessment);
 

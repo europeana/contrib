@@ -39,6 +39,8 @@ import eu.europeana.querylog.QueryAssessment;
 import eu.europeana.querylog.QueryAssessment.RelevantDocument;
 
 /**
+ * Computes Recall.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
