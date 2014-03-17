@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import eu.europeana.querylog.QueryAssessment;
 import eu.europeana.querylog.QueryAssessmentReader;
 import eu.europeana.querylog.learn.measure.Measure;
+import eu.europeana.querylog.learn.measure.MeasureFactory;
 import eu.europeana.querylog.learn.measure.Recall;
 import eu.europeana.querylog.learn.measure.filter.TopKFilter;
 import eu.europeana.querylog.learn.query.BM25FSolrResults;
@@ -54,6 +55,9 @@ import eu.europeana.querylog.learn.query.Results;
  * solution is then used as the starting point of the next iteration. This
  * iterative process continues until no improvement is found, or a maximum
  * number of epochs is reached.
+ * 
+ * For the available performance measures, please refer to
+ * {@link MeasureFactory}
  * 
  * @see research.microsoft.com/apps/pubs/default.aspx?id=65237
  * 
