@@ -36,6 +36,20 @@ import java.util.Scanner;
 import eu.europeana.querylog.learn.measure.filter.TopKFilter;
 
 /**
+ * MeasureFactory creates a benchmark measure given its code. Available codes
+ * are:
+ * <ul>
+ * <li> <code> NDCG </code>: Normalized Discount Comulative Gain;</li>
+ * <li> <code> P </code>: precision;</li>
+ * <li> <code> R </code>: recall.</li>
+ * </ul>
+ * 
+ * You can also ask to compute the benchmark only over the first K retrieved
+ * results, appending <code>@K</code> at the end of the code, e.g.,
+ * <code>P@1</code> will compute the precision only considering the first result
+ * returned by a ranking function.
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 14, 2014
