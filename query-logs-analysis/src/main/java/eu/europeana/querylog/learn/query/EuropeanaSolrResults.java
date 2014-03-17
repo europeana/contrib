@@ -26,11 +26,14 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 /**
+ * Implements a Solr Server that answers a query using the current ranking
+ * function of Europeana.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
  */
-public class EuropeanaSolrResults implements Results {
+public class EuropeanaSolrResults implements SolrResultsRetriever {
 
 	private static final String PREFIX = "http://europeana.eu/portal/record";
 	private static HttpSolrServer server;
@@ -83,6 +86,6 @@ public class EuropeanaSolrResults implements Results {
 
 	@Override
 	public String getName() {
-		return "bm25f";
+		return "europeana";
 	}
 }

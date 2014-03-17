@@ -26,11 +26,14 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 /**
+ * Implements a Solr Server that answers a query using the BM25F ranking
+ * function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Mar 11, 2014
  */
-public class BM25FSolrResults implements Results {
+public class BM25FSolrResults implements SolrResultsRetriever {
 
 	private static final String PREFIX = "http://europeana.eu/portal/record";
 	private static HttpSolrServer server;

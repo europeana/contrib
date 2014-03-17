@@ -38,7 +38,7 @@ import eu.europeana.querylog.learn.measure.Recall;
 import eu.europeana.querylog.learn.measure.filter.TopKFilter;
 import eu.europeana.querylog.learn.query.BM25FSolrResults;
 import eu.europeana.querylog.learn.query.EuropeanaSolrResults;
-import eu.europeana.querylog.learn.query.Results;
+import eu.europeana.querylog.learn.query.SolrResultsRetriever;
 
 /**
  * 
@@ -88,12 +88,12 @@ public class Evaluate {
 	private List<QueryAssessment> assessment;
 	private List<Float> partialScores;
 	private Measure measure;
-	private Results results;
+	private SolrResultsRetriever results;
 	private BufferedWriter logFile;
 	private final float scores = 0.0f;
 
 	public Evaluate(File assessmentFolder, List<String> fields,
-			Measure measure, Results results) {
+			Measure measure, SolrResultsRetriever results) {
 		nFields = fields.size();
 		this.fields = fields;
 		this.measure = measure;
