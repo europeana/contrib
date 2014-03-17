@@ -13,22 +13,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-/**
- *  Copyright 2014 Diego Ceccarelli
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package eu.europeana.querylog.learn;
 
 import it.cnr.isti.hpc.io.IOUtils;
@@ -60,15 +44,16 @@ import eu.europeana.querylog.learn.query.Results;
  * Evaluate finds the best parameter set for BM25F using the <i>line search</i>
  * algorithm. The algorithm works as follows. Given an initial point in the
  * parameter space, a search along each coordinate axis is performed by varying
- * one parameter only and keeping fixed the others. For each sample point, the
- * NDCG is computed, and the location corresponding to the best NDCG is
- * recorded. Such location identifies a promising search direction. Therefore, a
- * line search is performed along the direction from the starting point to the
- * best NDCG location. If the parameter space has dimension k, we need to
- * perform k+1 line searches to complete an iteration, or epoch, and possibly
- * move to an improved solution. The new solution is then used as the starting
- * point of the next iteration. This iterative process continues until no
- * improvement is found, or a maximum number of epochs is reached.
+ * one parameter only and keeping fixed the others. For each sample point, a
+ * given performance measure is computed, and the location corresponding to the
+ * best value of the measure is recorded. Such location identifies a promising
+ * search direction. Therefore, a line search is performed along the direction
+ * from the starting point to the best score location. If the parameter space
+ * has dimension k, we need to perform k+1 line searches to complete an
+ * iteration, or epoch, and possibly move to an improved solution. The new
+ * solution is then used as the starting point of the next iteration. This
+ * iterative process continues until no improvement is found, or a maximum
+ * number of epochs is reached.
  * 
  * @see research.microsoft.com/apps/pubs/default.aspx?id=65237
  * 
