@@ -45,6 +45,26 @@ import eu.europeana.querylog.learn.measure.MeasureFactory;
 import eu.europeana.querylog.learn.query.BM25FSolrResults;
 
 /**
+ * This CLI performs the learning of the bm25f parameters by using an
+ * {@link Evaluator}. In order to execute the cli you will have to run: <br/>
+ * <br/>
+ * <code>
+ * 		java eu.europeana.querylog.cli.learn.LearnBM25FParametersCLI -goldentruth dir -measure [NDCG@24|P@24|R@24] -log logfile
+ * </code> <br/>
+ * <br/>
+ * where:
+ * 
+ * <ul>
+ * <li> <code>goldentruth</code> a directory containing one or several
+ * assessments</li>
+ * <li> <code>measure</code> the quality measure to optimize (NDCG, precision
+ * (P), recall (R)</li>
+ * <li> <code>log</code> a log file where the best parameters found will be
+ * written.
+ * </ul>
+ * 
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 1, 2014
