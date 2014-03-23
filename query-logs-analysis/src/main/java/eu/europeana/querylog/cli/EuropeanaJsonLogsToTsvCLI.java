@@ -41,6 +41,14 @@ import eu.europeana.querylog.HasDateFilter;
 import eu.europeana.querylog.HasQueryFilter;
 
 /**
+ * Converts a json-encoded query log to a tab-separated-values query log, note
+ * that log record not containing a query, performed by bots or with no date
+ * will be removed. You can run this command with: <br/>
+ * <br/>
+ * <code> java eu.europeana.querylog.cli.EuropeanaJsonLogsToTsvCLI -input log.json[.gz] -output log.tsv[.gz] </code>
+ * <br/>
+ * <br/>
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 1, 2014

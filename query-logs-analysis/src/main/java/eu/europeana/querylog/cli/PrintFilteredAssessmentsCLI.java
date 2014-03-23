@@ -42,6 +42,14 @@ import java.util.List;
 import eu.europeana.querylog.QueryAssessment;
 
 /**
+ * Given a assessment file in json (see {@Link GenerateAssessmentsCLI})
+ * produce an plain assessment file that could be used to run the learning to
+ * rank cli. The file could be also given in input to a webinterface (provided)
+ * that allows human annotator to improve the quality of relevance judgements
+ * automatically assigned by the query log mining.
+ * 
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 1, 2014

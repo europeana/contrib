@@ -60,6 +60,7 @@ public class BM25FSolrResults implements SolrResultsRetriever {
 
 	public List<String> retrieveTopDocuments(SolrQuery solrQuery) {
 		List<String> results = new ArrayList<String>();
+		solrQuery.set("defType", "bm25f");
 		QueryResponse qr = null;
 		try {
 			qr = server.query(solrQuery);

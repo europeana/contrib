@@ -37,6 +37,8 @@ import it.cnr.isti.hpc.log.ProgressLogger;
 import eu.europeana.querylog.EuropeanaRecord;
 
 /**
+ * Parse europeana clickstream logs and produce europeana logs encoded in json.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 1, 2014

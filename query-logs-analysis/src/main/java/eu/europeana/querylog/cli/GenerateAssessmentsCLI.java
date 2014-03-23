@@ -42,6 +42,13 @@ import eu.europeana.querylog.EuropeanaRecord;
 import eu.europeana.querylog.QueryAssessment;
 
 /**
+ * Converts a tsv-encoded query log, sorted by query and produce a file with
+ * automatically generated assessments, encoded in json: <br/>
+ * <br/>
+ * <code> java eu.europeana.querylog.cli.GenerateAssessmentsCLI -input log.tsv[.gz] -output assessments.json[.gz] </code>
+ * <br/>
+ * <br/>
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 1, 2014

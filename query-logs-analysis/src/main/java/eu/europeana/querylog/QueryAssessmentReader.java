@@ -57,6 +57,8 @@ public class QueryAssessmentReader implements Iterator<QueryAssessment> {
 	String currentString = null;
 	TsvRecordParser parser = new TsvRecordParser("docid", "query", "uri",
 			"prel", "rel");
+	TsvRecordParser parser2 = new TsvRecordParser("docid", "query", "uri",
+			"prel");
 
 	public QueryAssessmentReader(String queryAssessmentFile) {
 		br = IOUtils.getPlainOrCompressedUTF8Reader(queryAssessmentFile);
@@ -81,8 +83,14 @@ public class QueryAssessmentReader implements Iterator<QueryAssessment> {
 			try {
 				currentTuple = parser.decode(currentString);
 			} catch (Exception e) {
-				logger.error("parsing line {} ", currentString);
-				nextTuple();
+				// not using human relevance
+				try {
+					currentTuple = parser2.decode(currentString);
+					currentTuple.put("rel", currentTuple.get("prel"));
+				} catch (Exception e1) {
+					logger.error("parsing line {} ", currentString);
+					nextTuple();
+				}
 			}
 		} else {
 			currentTuple = null;

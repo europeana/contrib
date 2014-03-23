@@ -115,6 +115,14 @@ public class Evaluate {
 
 	}
 
+	public Evaluate(File assessmentFolder, Measure measure,
+			SolrResultsRetriever results) {
+		this.measure = measure;
+		this.results = results;
+		assessment = loadAllAssessments(assessmentFolder);
+
+	}
+
 	public void setLog(String file) {
 		logFile = IOUtils.getPlainOrCompressedUTF8Writer(file);
 	}
