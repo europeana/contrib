@@ -87,7 +87,7 @@ public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 		LearnBM25FParametersCLI cli = new LearnBM25FParametersCLI(args);
 		File assessmentFolder = new File(cli.getParam("goldentruth"));
 		String[] fields = new String[] { "text", "title", "author",
-				"description" };
+				"description", "subject", "where" };
 		Measure m = MeasureFactory.getMeasure(cli.getParam("measure"));
 		logger.info("optimizing {} ", m.getName());
 		Evaluate evaluate = new Evaluate(assessmentFolder,
