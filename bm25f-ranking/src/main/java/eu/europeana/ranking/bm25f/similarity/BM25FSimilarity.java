@@ -241,10 +241,6 @@ public class BM25FSimilarity extends Similarity {
 		String field = collectionStats.field();
 		float avgdl = avgFieldLength(collectionStats);
 
-		float bField = 0;
-		if (lengthBoosts.containsKey(field)) {
-			bField = lengthBoosts.get(field);
-		}
 		// ignoring query boost, using bm25f query boost
 		float boost = 1;
 		if (boosts.containsKey(field)) {

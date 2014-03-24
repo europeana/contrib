@@ -77,6 +77,8 @@ public class MeasureFactory {
 	private static Measure get(String code) {
 		if (code.equals(Ndcg.NAME))
 			return new Ndcg();
+		if (code.equals(BNdcg.NAME))
+			return new BNdcg();
 		if (code.equals(Precision.NAME))
 			return new Precision();
 		if (code.equals(Recall.NAME))

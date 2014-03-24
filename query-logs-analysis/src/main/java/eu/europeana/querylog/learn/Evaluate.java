@@ -181,6 +181,11 @@ public class Evaluate {
 			SolrQuery query = new SolrQuery(qa.getQuery());
 			List<String> topDocId = results.results(query, N);
 			double score = measure.getScore(topDocId, qa);
+			// logger.info(
+			// "query {} {}",
+			// qa.getQuery(),
+			// String.format("[%s] %s = %f", results.getName(),
+			// measure.getName(), score));
 			totalScore += score;
 			queries++;
 		}
