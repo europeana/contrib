@@ -32,6 +32,7 @@
 package eu.europeana.querylog.cli.learn;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
+import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 import java.util.Arrays;
@@ -76,6 +77,8 @@ public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LearnBM25FParametersCLI.class);
+	private static ProjectProperties properties = new ProjectProperties(
+			LearnBM25FParametersCLI.class);
 
 	private static String usage = "java -cp $jar  eu.europeana.querylog.cli.learn.LearnBM25FParametersCLI -goldentruth assessment-dir -measure measure-to-optimize -log log-file";
 
@@ -86,8 +89,7 @@ public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 	public static void main(String[] args) {
 		LearnBM25FParametersCLI cli = new LearnBM25FParametersCLI(args);
 		File assessmentFolder = new File(cli.getParam("goldentruth"));
-		String[] fields = new String[] { "text", "title", "author",
-				"description", "subject", "where" };
+		String[] fields = properties.get("bm25f.fields").split(",");
 		Measure m = MeasureFactory.getMeasure(cli.getParam("measure"));
 		logger.info("optimizing {} ", m.getName());
 		Evaluate evaluate = new Evaluate(assessmentFolder,

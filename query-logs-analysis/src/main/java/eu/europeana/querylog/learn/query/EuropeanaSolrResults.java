@@ -15,6 +15,8 @@
  */
 package eu.europeana.querylog.learn.query;
 
+import it.cnr.isti.hpc.property.ProjectProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +39,13 @@ public class EuropeanaSolrResults implements SolrResultsRetriever {
 
 	private static final String PREFIX = "http://europeana.eu/portal/record";
 	private static HttpSolrServer server;
+	private static ProjectProperties properties = new ProjectProperties(
+			BM25FSolrResults.class);
 
 	public EuropeanaSolrResults() {
 		if (server == null)
 			server = new HttpSolrServer(
-					"http://node1.novello.isti.cnr.it:8080/europeana/");
+					properties.get("europeana.request.handler"));
 	}
 
 	public List<String> results(String q, int n) {
