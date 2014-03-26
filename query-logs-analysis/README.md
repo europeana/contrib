@@ -84,7 +84,19 @@ This will open a browser window showing the first document in `foo.txt` that  re
 By submitting the rating, the browser is redirected to the next document that needs an assessment. It is possible to move around assessments with the "Previous" and "Next" links, and it is possible to change the ratings.
 More documentation is available in the folder europeana-eval.
 
-Once you have goldentruth you'll be able to run the parameters the bm25f correct parameters
+
+#### How to perform the learning
+
+In order to perform the learning you will need two cores: one for the bm25f and one for europeana. The rationale for this is that
+bm25f and the standard tf-idf function use two different Similarity functions, and you can set only one similarity function per core. 
+You'll only need two cores that share the same data folder. In the bm25f core you will need to add a bm25f query parser plugin (see the 
+`bm25f-ranking` documentation for the details). 
+
+Once you have set up the cores, you will have to edit the `project.properties` file to add your server URLs and the fields to consider in the 
+bm25f ranking (that should correspond to the ones set in the solr parser plugin). Fields must be inserted in the field `bm25f.fields`, separated
+by a comma. 
+
+Then, you'll be able to run learning running: 
 
 	scripts/learn-bm25f-params.sh assessment-dir measure-to-optimize[bNDCG@24,NDCG@24,P@24,R@24] log-file
 
@@ -92,6 +104,8 @@ where `assessment-dir` is a directory containing the one or several goldentruth 
 optimize for learning the parameters, we usually used bNDCG@24 (since Europeana displays usally 24 documents). `log-file` is 
 a file where the best values for the parameters will be stored, ready to be copypasted in solr config (the last record in the file will be 
 always the best). 
+
+
 
 
 
