@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html{
+          height: 100%;
+      }
+
+      body {
+          min-height: 100%;
+          margin: 0;
+          padding: 1ex;
+          font-family: Helvetica, Arial, sans-serif; font-size: x-large;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <iframe src="{{ url_for('europeana', url=europeana_url, hl=query) }}"
+            style="width: 99%; position: absolute; height: 80%; border: 2px solid black"></iframe>
+
+    <div style="position: absolute; top: 80%; padding-top: 1em; width: 100%">
+      <div style="text-align: center"><strong>Query: </strong><span style="color: #C00; font-weight: bold">{{ query }}</span></div>
+      <strong>Line: </strong> {{ line }} <strong>Query ID: </strong> {{ query_id }}
+      <strong>Assigned rating: </strong> {{ old_ass }}
+      <form method="post" style="text-align: right; padding-right: 1em">
+        <label for="rating"><strong>New rating: </strong></label>
+        <input type="number" value="{{ cur_ass }}"
+               name="rating" id="rating" min="-1" max="5"
+               style="font-size: 100%"
+               autofocus required>
+        <button type="submit" style="font-size: 100%">Submit</button>
+
+        <input type="hidden" name="linenum" id="linenum" value="{{ line_num }}">
+      </form>
+    </div>
+    <div style="position:absolute; bottom:1em; width: 100%; text-align: center">
+      <a href="{{ url_for('skip', line=line, d=-1) }}">« Previous</a> | <a href="{{ url_for('skip', line=line, d=1)}} ">Next »</a>
+    </div>
+  </body>
+</html>

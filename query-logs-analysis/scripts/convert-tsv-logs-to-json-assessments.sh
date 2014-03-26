@@ -14,8 +14,9 @@ then
 fi
 
 echo "generate assessments from $1"
+sort -k4 $1 > /tmp/tmp
+$JAVA eu.europeana.querylog.cli.GenerateAssessmentsCLI -input /tmp/tmp -output $2
 
-$JAVA eu.europeana.querylog.cli.GenerateAssessmentsCLI -input $1 -output $2
 
 echo "assessments in $2"
 
