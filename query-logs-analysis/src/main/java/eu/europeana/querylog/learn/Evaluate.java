@@ -177,15 +177,21 @@ public class Evaluate {
 		double totalScore = 0d;
 		int queries = 0;
 		logger.info("assessment size = {} ", assessment.size());
+		boolean partial = false;
+		if (System.getProperty("partial") != null) {
+			partial = new Boolean(System.getProperty("partial"));
+
+		}
 		for (QueryAssessment qa : assessment) {
 			SolrQuery query = new SolrQuery(qa.getQuery());
 			List<String> topDocId = results.results(query, N);
 			double score = measure.getScore(topDocId, qa);
-			// logger.info(
-			// "query {} {}",
-			// qa.getQuery(),
-			// String.format("[%s] %s = %f", results.getName(),
-			// measure.getName(), score));
+			if (partial) {
+				System.out.println(String.format("%s\t%s\t%s\t%f",
+						qa.getQuery(), results.getName(), measure.getName(),
+						score));
+			}
+
 			totalScore += score;
 			queries++;
 		}
