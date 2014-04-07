@@ -27,12 +27,21 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.math3.analysis.MultivariateFunction;
+import org.apache.commons.math3.optim.ConvergenceChecker;
+import org.apache.commons.math3.optim.InitialGuess;
+import org.apache.commons.math3.optim.MaxEval;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.SimpleBounds;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
+import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.CMAESOptimizer;
+import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -553,6 +562,10 @@ public class Evaluate {
 					"Restart from a random configuration ( attempt {}/{}) ",
 					randomJumps, RANDOM_JUMPS);
 		}
+		return paramsToXML();
+	}
+	
+	private String paramsToXML() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
 				.append("</float> \n");
@@ -576,9 +589,62 @@ public class Evaluate {
 		sb.append("</lst>\n");
 		writeLogFile();
 		return sb.toString();
-
 	}
 
+	float[] doubleArrayToFloat(double[] array)
+	{
+		float[] floatArray = new float[array.length];
+		for (int i = 0; i < array.length; ++i) floatArray[i] = (float)array[i];
+		return floatArray;
+	}
+	
+	double[] floatArrayToDouble(float[] array)
+	{
+		double[] doubleArray = new double[array.length];
+		for (int i = 0; i < array.length; ++i) doubleArray[i] = (double)array[i];
+		return doubleArray;
+	}
+
+	public String learningToRankWithCMAES() {
+		 final int dim = bm25fParams.length;
+		 int lambda = 4 + (int)(3. * Math.log(dim));
+		 int maxEvaluations = 1800;
+		 
+		 double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f, 0.25f));
+		
+		 CMAESOptimizer optim = new CMAESOptimizer(maxEvaluations / 10, 1.0, false, 0,
+                 10, new MersenneTwister(), true, 
+                 new ConvergenceChecker<PointValuePair>() {
+					@Override
+					public boolean converged(int iteration, PointValuePair previous,
+							PointValuePair pv) {
+						
+						maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond().floatValue());
+						writeLogFile();
+						logger.info("{}", maxValue);
+						return false;
+					}
+		 });
+		 
+		 PointValuePair pv = optim.optimize(new MaxEval(maxEvaluations),
+				 new ObjectiveFunction(new MultivariateFunction() {
+
+					@Override
+					public double value(double[] point) {
+						return evaluateAssessments(doubleArrayToFloat(point));
+					}
+				}),
+				GoalType.MAXIMIZE,
+				new SimpleBounds(floatArrayToDouble(minValues), floatArrayToDouble(maxValues)),
+				new InitialGuess(floatArrayToDouble(bm25fParams)),
+				new CMAESOptimizer.Sigma(inSigma),
+                new CMAESOptimizer.PopulationSize(lambda));
+
+		maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond().floatValue());
+		writeLogFile();
+		return paramsToXML();
+	}
+	
 	private Point getRandomPoint() {
 		float[] newPoint = new float[nFields * 2 + 1];
 		for (int i = 0; i < newPoint.length; i++) {

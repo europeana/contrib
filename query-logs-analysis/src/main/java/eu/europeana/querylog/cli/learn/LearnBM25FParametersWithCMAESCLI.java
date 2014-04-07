@@ -70,24 +70,24 @@ import eu.europeana.querylog.learn.query.BM25FSolrResults;
  * 
  *         Created on Feb 1, 2014
  */
-public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
+public class LearnBM25FParametersWithCMAESCLI extends AbstractCommandLineInterface {
 
 	private static String[] params = new String[] { "goldentruth", "measure",
 			"log" };
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(LearnBM25FParametersCLI.class);
+			.getLogger(LearnBM25FParametersWithCMAESCLI.class);
 	private static ProjectProperties properties = new ProjectProperties(
-			LearnBM25FParametersCLI.class);
+			LearnBM25FParametersWithCMAESCLI.class);
 
 	private static String usage = "java -cp $jar  eu.europeana.querylog.cli.learn.LearnBM25FParametersCLI -goldentruth assessment-dir -measure measure-to-optimize -log log-file";
 
-	public LearnBM25FParametersCLI(String[] args) {
+	public LearnBM25FParametersWithCMAESCLI(String[] args) {
 		super(args, params, usage);
 	}
 
 	public static void main(String[] args) {
-		LearnBM25FParametersCLI cli = new LearnBM25FParametersCLI(args);
+		LearnBM25FParametersWithCMAESCLI cli = new LearnBM25FParametersWithCMAESCLI(args);
 		File assessmentFolder = new File(cli.getParam("goldentruth"));
 		String[] fields = properties.get("bm25f.fields").split(",");
 		Measure m = MeasureFactory.getMeasure(cli.getParam("measure"));
@@ -95,6 +95,6 @@ public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 		Evaluate evaluate = new Evaluate(assessmentFolder,
 				Arrays.asList(fields), m, new BM25FSolrResults());
 		evaluate.setLog(cli.getParam("log"));
-		evaluate.learningToRank();
+		evaluate.learningToRankWithCMAES();
 	}
 }
