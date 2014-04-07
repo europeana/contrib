@@ -28,6 +28,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,15 +93,14 @@ public class Evaluate {
 
 	private Point maxValue;
 	private List<QueryAssessment> assessment;
-	private List<Float> partialScores;
 	private Measure measure;
 	private SolrResultsRetriever results;
 	private BufferedWriter logFile;
-	private final float scores = 0.0f;
 	
 	private final ProjectProperties properties = new ProjectProperties(Evaluate.class);
 	private final Random rng = new Random(properties.getInt("bm25f.learn.random.seed"));
-	
+	private final ExecutorService pool = Executors.newFixedThreadPool(properties.getInt("bm25f.learn.concurrency")); 
+
 	public Evaluate(File assessmentFolder, List<String> fields,
 			Measure measure, SolrResultsRetriever results) {
 		nFields = fields.size();
@@ -116,8 +120,6 @@ public class Evaluate {
 		bm25fParams = getParamsVector(1.0f, 1.0f, 0.05f);
 
 		assessment = loadAllAssessments(assessmentFolder);
-		partialScores = new ArrayList<Float>();
-
 	}
 
 	public Evaluate(File assessmentFolder, Measure measure,
@@ -151,20 +153,49 @@ public class Evaluate {
 	private Evaluate() {
 	}
 
-	public double evaluateAssessments(float[] bm25fParams) {
+	public double evaluateAssessments(final float[] bm25fParams) {
 
+		List<Callable<List<String>>> tasks = new ArrayList<Callable<List<String>>>();
+
+		for (final QueryAssessment qa : assessment) {
+			tasks.add(new Callable<List<String>>() {
+
+				@Override
+				public List<String> call() throws Exception {
+					SolrQuery query = new SolrQuery(qa.getQuery());
+					query.set("b", boostsToString(bm25fParams));
+					query.set("lb", bParamsToString(bm25fParams));
+					query.set("k1", k1ToString(bm25fParams));
+					query.set("defType", "bm25f");
+
+					return results.results(query, N);
+				}
+				
+			});
+		}
+		
+		List<Future<List<String>>> queriesResults = null;
+		try {
+			queriesResults = pool.invokeAll(tasks);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return 0;
+		}
+		
 		double totalScore = 0d;
 		int queries = 0;
 
-		for (QueryAssessment qa : assessment) {
-			SolrQuery query = new SolrQuery(qa.getQuery());
-			query.set("b", boostsToString(bm25fParams));
-			query.set("lb", bParamsToString(bm25fParams));
-			query.set("k1", k1ToString(bm25fParams));
-			query.set("defType", "bm25f");
-
-			List<String> topDocId = results.results(query, N);
-
+		for (int i = 0; i < assessment.size(); ++i) {
+			QueryAssessment qa = assessment.get(i);
+			List<String> topDocId = null;
+			try {
+				topDocId = queriesResults.get(i).get();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				continue;
+			}
 			double score = measure.getScore(topDocId, qa);
 			// logger.info("query {} score {}", qa.getQuery(), score);
 
@@ -174,6 +205,7 @@ public class Evaluate {
 		double avgScore = totalScore / queries;
 		logger.info(String.format("[%s] %s = %f", results.getName(),
 				measure.getName(), avgScore));
+		
 		return avgScore;
 	}
 
@@ -252,7 +284,6 @@ public class Evaluate {
 	}
 
 	public static List<QueryAssessment> loadAllAssessments(File assessmentFolder) {
-		Evaluate e = new Evaluate();
 		List<QueryAssessment> assessments = new LinkedList<QueryAssessment>();
 
 		for (File f : assessmentFolder.listFiles()) {
@@ -373,16 +404,19 @@ public class Evaluate {
 			direction[i] = bm25fParamsOpt[i] - bm25fParams[i];
 			norm += direction[i] * direction[i];
 		}
-		norm = Math.sqrt(norm);
-		logger.info("direction: \t " + Arrays.toString(direction));
+		
 		while (norm == 0) {
 			// if norm is 0 then i'll move randomly
 			logger.info("norm is 0: moving randomly");
 			for (int i = 0; i < bm25fParams.length; i++) {
-				direction[i] = (float) rng.nextDouble() * maxValues[i];
+				direction[i] = (float) rng.nextGaussian();
 				norm += direction[i] * direction[i];
 			}
 		}
+
+		norm = Math.sqrt(norm);
+		logger.info("direction: \t " + Arrays.toString(direction));
+
 		for (int i = 0; i < bm25fParams.length; i++) {
 			direction[i] /= norm;
 		}
@@ -433,13 +467,13 @@ public class Evaluate {
 	 * 
 	 * @param the
 	 *            direction
-	 * @return the point that optmizes the measure
+	 * @return the point that optimizes the measure
 	 */
 	public Point findOptimumOnTheLine(float[] direction) {
 		logger.info("STEP 3: Find the optimal point in the promising direction");
 		int i = 1;
 
-		float[] point = getPointOnTheLine(0, direction);
+		float[] point = null;
 		boolean finished = false;
 		while (!finished) {
 			point = getPointOnTheLine(i, direction);
@@ -457,25 +491,8 @@ public class Evaluate {
 			}
 			i++;
 		}
-		finished = false;
-		i = -1;
-		while (!finished) {
-			point = getPointOnTheLine(i, direction);
-			// logger.info("Trying point \t" + Arrays.toString(point));
-			finished = !isLegalPoint(point);
-			if (!finished) {
-				double currentScore = evaluateAssessments(point);
-				if (currentScore > maxValue.getScore()) {
-					maxValue = new Point(point, currentScore);
-					logger.info("max point found  = {}", maxValue);
-					writeLogFile();
-				}
-			} else {
-				logger.info("..not a legal point, skipping");
-			}
-			i--;
-		}
-
+		
+		assert point != null;
 		return maxValue;
 
 	}
@@ -494,7 +511,7 @@ public class Evaluate {
 			direction[i] = increments[i] * val;
 		}
 	}
-
+	
 	/**
 	 * Performs the line search algorithm Returns a map with the best
 	 * combination of parameters
@@ -568,7 +585,9 @@ public class Evaluate {
 	private Point getRandomPoint() {
 		float[] newPoint = new float[nFields * 2 + 1];
 		for (int i = 0; i < newPoint.length; i++) {
-			newPoint[i] = (float) rng.nextDouble() * maxValues[i];
+			double start = minValues[i];
+			double end = maxValues[i];
+			newPoint[i] = (float)(start + (end - start) * rng.nextDouble());
 		}
 		return new Point(newPoint);
 	}
