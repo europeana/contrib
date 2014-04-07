@@ -1,0 +1,198 @@
+{
+    "views": [
+        {
+            "type": "tabs",
+            "contents": [
+                {
+                    "type": "collection",
+                    "label": "Object Descriptive Metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:recordType",
+                            "label": "Record type"
+                        },
+						{
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:information",
+                            "label": "Information"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:contributor",
+                            "label": "Contributor"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:relationIdentifier",
+                            "label": "Relation",
+                            "type": "table",
+                            "contents": [
+                            	{
+                            		"xpath": ".",
+                            		"label": "Relation"
+                            	},
+                            	{
+                            		"xpath": "@relationtype",
+                            		"label": "Relation type"
+                            	}
+                            ]
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:LanguageInformation/eus:languageUsed",
+                            "label": "Language used"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:LanguageInformation/eus:subtitleLanguage",
+                            "label": "Subtitle language"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:LanguageInformation/eus:metadatalanguage",
+                            "label": "Metadata language"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:SpatialInformation/eus:GeographicalCoverage",
+                            "label": "Geographical coverage"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:SpatialInformation/eus:CountryofProduction",
+                            "label": "Country of production"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:productionYear",
+                            "label": "Production year (yyyy)"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:broadcastDate",
+                            "label": "Broadcast date (dd/mm/yyyy)"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:materialType",
+                            "label": "Material type"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:itemDuration",
+                            "label": "Item duration"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:aspectRatio",
+                            "label": "Aspect ratio"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:itemColor",
+                            "label": "Item color"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:itemSound",
+                            "label": "Item sound"
+                        }
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Content Descriptive Metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInOriginalLanguage/eus:title",
+                            "label": "Title"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInOriginalLanguage/eus:seriesOrCollectionTitle",
+                            "label": "Series/Collection title"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInEnglish/eus:title",
+                            "label": "Title in english"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInEnglish/eus:seriesOrCollectionTitle",
+                            "label": "Series/Collection title in english"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:originallanguage",
+                            "label": "Original Language"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:localKeyword",
+                            "label": "Local keyword"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:clipTitle",
+                            "label": "Clip title"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:summary",
+                            "label": "Summary"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:summaryInEnglish",
+                            "label": "Summary in english"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:ThesaurusTerm",
+                            "label": "Thesaurus term"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:genre",
+                            "label": "Genre"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:topic",
+                            "label": "Topic"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:extendedDescription",
+                            "label": "Extended description"
+						},
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:seriesSeasonNumber",
+                            "label": "Series season number"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:episodeNumber",
+                            "label": "Episode number"
+                        }
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Administrative Metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:provider",
+                            "label": "Provider"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:publisherbroadcaster",
+                            "label": "Publisher/Broadcaster"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:iprRestrictions",
+                            "label": "IPR restrictions"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:rightsTermsAndConditions",
+                            "label": "Rights / Terms and conditions"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:firstBroadcastChannel",
+                            "label": "First broadcast channel"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:originalIdentifier",
+                            "label": "Original identifier"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:filename",
+                            "label": "Filename"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:digitalItemURL",
+                            "label": "Digital item URL"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:landingPageURL",
+                            "label": "Original webpage URL"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

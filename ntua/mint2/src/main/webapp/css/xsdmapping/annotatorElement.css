@@ -1,0 +1,137 @@
+.group-annotator-header {
+	padding: 10px;
+	border: 1px solid transparent;
+	border-bottom: 1px solid #aaa;
+	background: #eee;
+	font-size: 150%;
+	min-height: 38px;
+}
+
+.group-annotator-label {
+/*	float: left;*/
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	padding: 5px;
+}
+
+.group-annotator-name {
+	width: 200px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.group-annotator-actions {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	padding: 5px;
+}
+
+.group-annotator-duplicate, .group-annotator-remove, .group-annotator-edit, .group-annotator-removeAll, .group-annotator-function {
+	width: 16px;
+	height: 16px;
+	display: inline-block
+}
+
+.group-annotator-duplicate {
+	background-image: url(../../images/buttons/add.png) !important;
+}
+
+.group-annotator-remove {
+	background-image: url(../../images/buttons/delete.png) !important;
+}
+
+.group-annotator-edit {
+	background-image: url(../../images/buttons/values_on.png) !important;
+}
+
+.group-annotator-removeAll {
+	background-image: url(../../images/buttons/validation_error.png) !important;
+}
+
+.commit-button {
+	height: 32px;
+	display: table; 
+	margin: 0 auto
+}
+
+.group-annotator-function {
+	background-image: url(../../images/buttons/function_on.png)  !important;
+}
+
+.annotator-function-header {
+	background: #e0e0e0;
+	min-height: 20px;
+	padding: 5px;
+	border-radius: 5px 5px 0px 0px;
+	font-weight: bold;
+}
+
+.annotator-function-body {
+	box-sizing: border-box;
+	background: #e0e0e0;
+	padding: 5px;
+	min-height: 30px;
+}
+
+.annotator-function-footer {
+	background: #eee;
+	padding: 5px;
+	min-height: 20px;
+	border-radius: 0px 0px 5px 5px;
+}
+
+.annotator-function-container {
+}
+
+.annotator-function-argument input {
+	padding: 2px;
+}
+
+.annotator-function-argument-label {
+	padding: 6px;
+	display: inline-block;
+	width: 75px
+}
+
+.annotator-function-text {
+	display: inline-block;
+	width: 77px
+}
+
+
+.annotator-function-argument-value {
+	margin-left: 5px;
+	width: 150px;
+}
+
+.annotator-function-values {
+	margin: 10px;
+	min-height: 100px;
+	height: 100%;
+}
+
+.annotator-values-container {
+}
+
+.annotator-function-apply {
+	background-image: url(../../images/buttons/apply.png)  !important;
+}
+
+.annotator-function-argument {
+	margin-bottom: 5px;
+}
+
+.annotator-function-argument input {
+	padding: 2px;
+}
+
+.annotator-function-argument-label {
+	display: inline-block;
+	width: 70px;
+}
+
+.annotator-function-argument-value {
+	margin-left: 5px;
+}

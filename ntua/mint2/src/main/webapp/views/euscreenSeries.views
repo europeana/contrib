@@ -1,0 +1,138 @@
+{
+    "views": [
+        {
+            "type": "tabs",
+            "contents": [
+                {
+                    "type": "collection",
+                    "label": "Content Descriptive Metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInOriginalLanguage/eus:seriesOrCollectionTitle",
+                            "label": "Series/Collection title"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInEnglish/eus:seriesOrCollectionTitle",
+                            "label": "Series/Collection title in english"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:TitleSet/eus:TitleSetInOriginalLanguage/eus:alternativeSeriesOrCollectionTitle",
+                            "label": "Alternative Series or Collection title in original language"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:summary",
+                            "label": "Summary"
+                        },
+                        {
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:summaryInEnglish",
+                            "label": "Summary in english"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:extendedDescription",
+                            "label": "Extended description"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:localKeyword",
+                            "label": "Local Keyword"
+                        },
+						{
+                            "xpath": "//eus:ContentDescriptiveMetadata/eus:originallanguage",
+                            "label": "Original Language"
+                        }
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Administrative Metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:provider",
+                            "label": "Provider"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:publisherbroadcaster",
+                            "label": "Publisher/Broadcaster"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:originalIdentifier",
+                            "label": "Original identifier"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:landingPageURL",
+                            "label": "Original webpage URL"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:firstBroadcastChannel",
+                            "label": "First broadcast channel"
+                        },
+                        {
+                            "xpath": "//eus:AdministrativeMetadata/eus:filename",
+                            "label": "Filename"
+                        }
+                    ]
+                },
+                {
+                    "type": "collection",
+                    "label": "Object descriptive metadata",
+                    "contents": [
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:TechnicalInformation/eus:materialType",
+                            "label": "Material type"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:information",
+                            "label": "Information"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:contributor",
+                            "label": "Contributor"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:LanguageInformation/eus:languageUsed",
+                            "label": "Language used"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:SpatialInformation/eus:CountryofProduction",
+                            "label": "Country of Production"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:LanguageInformation/eus:metadatalanguage",
+                            "label": "Metadata language"
+                        },
+						{		
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:productionYear",
+                            "label": "Production Year (yyyy)"
+                        },
+						{	
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:lastBroadCastDate",
+                            "label": "Last Broadcast Date (dd/mm/yyyy)"
+                        },
+						{		
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:lastProductionYear",
+                            "label": "Last Production Year (yyyy)"
+                        },
+						{	
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:broadcastDate",
+                            "label": "Broadcast Date (dd/mm/yyyy)"
+                        },
+                        {
+                            "xpath": "//eus:ObjectDescriptiveMetadata/eus:relationIdentifier",
+                            "label": "Relation",
+                            "type": "table",
+                            "contents": [
+                            	{
+                            		"xpath": ".",
+                            		"label": "Relation"
+                            	},
+                            	{
+                            		"xpath": "@relationtype",
+                            		"label": "Relation type"
+                            	}
+                            ]
+                		}
+            		]
+        		}
+    		]
+    	}
+    ]
+}
