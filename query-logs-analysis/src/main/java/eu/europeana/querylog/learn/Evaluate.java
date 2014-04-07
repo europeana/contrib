@@ -150,9 +150,6 @@ public class Evaluate {
 		return vector;
 	}
 
-	private Evaluate() {
-	}
-
 	public double evaluateAssessments(final float[] bm25fParams) {
 
 		List<Callable<List<String>>> tasks = new ArrayList<Callable<List<String>>>();
@@ -467,11 +464,12 @@ public class Evaluate {
 	 * 
 	 * @param the
 	 *            direction
-	 * @return the point that optimizes the measure
+	 * @return whether a better point than maxValue has been found
 	 */
-	public Point findOptimumOnTheLine(float[] direction) {
+	public boolean findOptimumOnTheLine(float[] direction) {
 		logger.info("STEP 3: Find the optimal point in the promising direction");
 		int i = 1;
+		boolean improved = false;
 
 		float[] point = null;
 		boolean finished = false;
@@ -482,7 +480,7 @@ public class Evaluate {
 			if (!finished) {
 				double currentValue = evaluateAssessments(point);
 				if (currentValue > maxValue.getScore()) {
-
+					improved = true;
 					maxValue = new Point(point, currentValue);
 					logger.info("max point found  = {}", maxValue);
 					writeLogFile();
@@ -493,7 +491,7 @@ public class Evaluate {
 		}
 		
 		assert point != null;
-		return maxValue;
+		return improved;
 
 	}
 
@@ -530,9 +528,8 @@ public class Evaluate {
 				findBestValueForEachParameter();
 
 				float[] direction = computeDirection();
-				Point p = findOptimumOnTheLine(direction);
-				if (p.greaterThan(maxValue)) {
-					maxValue = p;
+				boolean improved = findOptimumOnTheLine(direction);
+				if (improved) {
 					unsuccessfullUpdates = 0;
 					logger.info("max point found  = " + maxValue);
 				} else {
@@ -542,7 +539,7 @@ public class Evaluate {
 							+ UNSUCCESSFUL_UPDATES);
 				}
 				unsuccessfullUpdates = 0;
-				bm25fParams = Arrays.copyOf(p.getPoint(), bm25fParams.length);
+				bm25fParams = Arrays.copyOf(maxValue.getPoint(), bm25fParams.length);
 
 				steps++;
 				logger.info("step ={}/{}", steps, maxSteps);
