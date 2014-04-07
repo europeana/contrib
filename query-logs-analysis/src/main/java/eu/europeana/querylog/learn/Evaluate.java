@@ -16,6 +16,7 @@
 package eu.europeana.querylog.learn;
 
 import it.cnr.isti.hpc.io.IOUtils;
+import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.slf4j.Logger;
@@ -91,7 +93,10 @@ public class Evaluate {
 	private SolrResultsRetriever results;
 	private BufferedWriter logFile;
 	private final float scores = 0.0f;
-
+	
+	private final ProjectProperties properties = new ProjectProperties(Evaluate.class);
+	private final Random rng = new Random(properties.getInt("bm25f.learn.random.seed"));
+	
 	public Evaluate(File assessmentFolder, List<String> fields,
 			Measure measure, SolrResultsRetriever results) {
 		nFields = fields.size();
@@ -374,7 +379,7 @@ public class Evaluate {
 			// if norm is 0 then i'll move randomly
 			logger.info("norm is 0: moving randomly");
 			for (int i = 0; i < bm25fParams.length; i++) {
-				direction[i] = (float) Math.random() * maxValues[i];
+				direction[i] = (float) rng.nextDouble() * maxValues[i];
 				norm += direction[i] * direction[i];
 			}
 		}
@@ -563,7 +568,7 @@ public class Evaluate {
 	private Point getRandomPoint() {
 		float[] newPoint = new float[nFields * 2 + 1];
 		for (int i = 0; i < newPoint.length; i++) {
-			newPoint[i] = (float) Math.random() * maxValues[i];
+			newPoint[i] = (float) rng.nextDouble() * maxValues[i];
 		}
 		return new Point(newPoint);
 	}
