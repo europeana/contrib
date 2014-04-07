@@ -12,6 +12,7 @@ import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.xml.util.SchemaExtractorHandler;
 
 import java.io.StringReader;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.core.CoreContainer;
+import org.ocpsoft.pretty.time.PrettyTime;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -52,6 +54,7 @@ public class Solarizer implements Runnable {
 	public SolrInputDocument currentSid = null;
 	public static SolrServer solrServer = null;
 
+	private int itemCounter = 0;
 	
 	public Solarizer( Dataset ds ) {
 		this.ds = ds;
@@ -124,11 +127,14 @@ public class Solarizer implements Runnable {
 				ds = item.getDataset();
 			}
 			parserSetup();
-			
+
+
 			// return if we dont have items
 			if( (item==null) && !ds.getItemizerStatus().equals( Dataset.ITEMS_OK)) {
-				if( ds != null )
+				if( ds != null ) {
 					ds.logEvent( "Cant solrize, ITEMS not OK." );
+					DB.commit();
+				}
 				return;
 			}
 
@@ -148,24 +154,40 @@ public class Solarizer implements Runnable {
 				// this shouldn't be necessary
 				// getSolrServer().deleteByQuery("item_id:"+item.getDbID().toString())
 				item.getDataset().logEvent("Solarize Item["+item.getDbID()+"]");
+				DB.commit();
 				solarizeStatelessItem( item, extraItemData );				
 				getSolrServer().commit();
 			} else {
 				ds.logEvent("Full text index started.");
+				DB.commit();
 				// delete what is there, just in case
 
 				getSolrServer().deleteByQuery("dataset_id:"+ds.getDbID().toString());
 				getSolrServer().commit();
 
+				final int totalInputItems = ds.getItemCount();
+				final long startTime = System.currentTimeMillis();
 				ApplyI<Item> itemProcessor = new ApplyI<Item>() {
 					@Override
 					public void apply(Item item) throws Exception {
 						solarizeStatelessItem( item, extraItemData );
-					}
+						itemCounter++;
+						if( totalInputItems > 2000 ) {
+							if( itemCounter == (totalInputItems/50)) {
+								long usedTime = System.currentTimeMillis()-startTime;
+								PrettyTime pt = new PrettyTime();
+								
+								String expected = pt.format( new Date( System.currentTimeMillis() + 49*usedTime )); 
+								ds.logEvent( "Expect solr index finished " + expected );
+								DB.commit();
+							}
+						}
+ 					}
 				};
 				ds.processAllItems(itemProcessor, false );
 				getSolrServer().commit();
 				ds.logEvent("Full text index finished.");
+				DB.commit();
 			}
 		} catch( Exception e ) {
 			if( item == null ) {

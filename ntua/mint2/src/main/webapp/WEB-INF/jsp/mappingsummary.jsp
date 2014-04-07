@@ -48,11 +48,86 @@
 		</s:if>
 		
 		
-     <div id="mappingPanel"> 
+      
+     
+      
+     <s:if test="recentMappings.size>0">
+        <div id="mappings-panel-recent-mappings"  style="padding: 0">
+		<div class="summary"><div class="label">Relevant Mappings</div></div>
+        <s:set var="lastOrg" value=""/>
+         <s:iterator id="smap" value="recentMappings">
+	         <s:set var="current" value="organization.dbID"/>
+	         <s:if test="#current!=#lastOrg">
+	                <div class="items separator">
+	               
+	                
+					
+					<div class="head">
+					  <img src="images/museum-icon.png" width="25" height="25" style="left:1px;top:4px;position:absolute;max-width:25px;max-height:25px;"/>
+					</div>
+					
+					<div class="label">Organization: <s:property value="organization.name"/></div>
+					
+					<div class="info"></div>
+					
+					</div>
+					<s:set var="lastOrg" value="#current"/>
+	         
+	         </s:if>
+	         
+			<div title="<s:property value="name"/>" 
+			onclick=" javascript:
+			
+			if(mapurl.indexOf('Transform.action')==-1){
+			    var cp=$($(this).closest('div[id^=kp]'));$(cp).find('div.k-active').removeClass('k-active'); $(this).toggleClass('k-active');
+				var loaddata={kConnector:'html.page', url:mapurl+'uploadId=<s:property value="uploadId"/>&selectedMapping=<s:property value="dbID"/>', kTitle:'Mapping options' };
+           		$K.kaiten('removeChildren',cp, false);$K.kaiten('load', loaddata);}else{
+           		importTransform(<s:property value="uploadId"/>,<s:property value="dbID"/>,<%=request.getParameter("orgId")%>);
+           		}" 
+			 class="items navigable">
+			          	
+			 				<div class="label" style="width:80%">						
+							<s:property value="name"/> <font style="font-size:0.9em;margin-left:5px;color:grey;">(<s:property value="targetSchema"/>)</font></div>
+							
+							<s:if test="xsl==true"><span style="color:#a00">XSL</span></s:if>
+							<div class="info">
+							<s:if test="isLocked(user, sessionId)">
+							<img src="images/locked.png" title="locked mappings" style="top:4px;position:relative;max-width:18px;max-height:18px;padding-right:4px;">
+							</s:if>
+							<s:if test="isShared()">
+							<img src="images/shared.png" title="shared mappings" style="top:4px;position:relative;max-width:18px;max-height:18px;">
+							</s:if>
+							</div>
+							<div class="tail"></div>
+						</div>		
+		</s:iterator>
+		
+       </div>
+       </s:if>
+     
+     <div class="summary">
+	</div>
+
+		<div id="mappings-panel-mappings" style="margin-top: 10px">
+
+        
+       
+       <br/>
+       
+       <div class="summary"><div class="label">All Mappings</div></div>
+       
+        <div class="mappings_pagination"></div>
+        <div id="mappingPanel">
        <script>ajaxMappingPanel(0,${orgId},${uploadId},${user.dbID});</script>
-	 </div>
+       </div>
+        <div class="mappings_pagination"></div>
+        
+       
+	 
     
+    </div>
      </s:if>
+     
      </div>
 </div>
 

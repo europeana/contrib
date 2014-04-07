@@ -319,11 +319,12 @@ public class BasePublication extends Publication {
 	 */
 	public void externalPublish( Dataset ds, User publisher ) {
 		String oaiSchema = Config.get( "oai.schema" );
+		final Dataset originalDataset = ds.getOrigin();
 		
-		log.debug( "External publish " + ds.getName() );
-		ds.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
+		log.debug( "External publish " + originalDataset.getName() );
+		originalDataset.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
 		final Dataset derivedItemsDataset = ds.getBySchemaName(oaiSchema);
-
+		
 		// get or make a publication record
 		
 		PublicationRecord pr;
@@ -334,7 +335,8 @@ public class BasePublication extends Publication {
 
 			pr.setStartDate(new Date());
 			pr.setPublisher(publisher);
-			pr.setOriginalDataset(ds);
+			pr.setOriginalDataset(originalDataset);
+			pr.setPublishedDataset(derivedItemsDataset );
 			pr.setStatus(Dataset.PUBLICATION_RUNNING);
 			pr.setOrganization(ds.getOrganization());
 			DB.getPublicationRecordDAO().makePersistent(pr);
@@ -348,7 +350,6 @@ public class BasePublication extends Publication {
 		try {
 			final RecordMessageProducer rmp = new RecordMessageProducer(Config.get("queue.host"), "mint" );
 			// this should be the derived Dataset with the right schema
-			final Dataset originalDataset = ds;
 			final Namespace ns = new Namespace();
 			final int schemaId = derivedItemsDataset.getSchema().getDbID().intValue();
 			pr.setPublishedDataset(derivedItemsDataset);

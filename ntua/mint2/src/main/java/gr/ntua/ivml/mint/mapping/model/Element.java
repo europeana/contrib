@@ -453,7 +453,7 @@ public class Element extends JSONMappingHandler {
 	 */
 	public int getMinOccurs() {
 		int value = 0;
-		if(this.has(ELEMENT_MINOCCURS)) {
+		if (this.has(ELEMENT_MINOCCURS)) {
 			String mo = this.getString(ELEMENT_MINOCCURS);
 			if(mo != null && mo.length() > 0);
 			try {

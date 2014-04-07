@@ -22,15 +22,20 @@ public class Tree extends GeneralAction {
 	public static final Logger log = Logger.getLogger(Tree.class ); 
 	public JSONObject json;
 	public long dataUploadId;
+	public int groupAnnotator = 0;
 
 	@Action(value="Tree")
 	public String execute() {
 		json = new JSONObject();
-
 		try {
 			Dataset du = DB.getDatasetDAO().findById(this.getDataUploadId(), false);
 			if(du != null) {
-				json.element("tree", JSTree.getJSONObject(du));
+				if (groupAnnotator == 0) {
+					json.element("tree", JSTree.getJSONObject(du));
+				}
+				else {
+					json.element("tree", JSTree.getJSONObjectEnriched(du));
+				}
 			}
 		} catch( Exception e ) {
 			json.element( "error", e.getMessage());

@@ -23,7 +23,6 @@ import nu.xom.XPathContext;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.xml.sax.XMLReader;
 
 /**
  * Assume the caller has the lock on dataset.
@@ -60,9 +59,15 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 					DB.getSession().evict(item);
 					itemCount++;
 					if( tick.isSet()) {
-						log.info( "Itemized " + itemCount + "/" + 
-								ds.getItemRootXpath().getCount() +" on Dataset " + 
-								ds.getName() + " [" + ds.getDbID() +"]");
+						if( ds.getItemRootXpath() != null ) {
+							log.info( "Itemized " + itemCount + "/" + 
+									ds.getItemRootXpath().getCount() +" on Dataset " + 
+									ds.getName() + " [" + ds.getDbID() +"]");
+						} else {
+							log.info( "Itemized " + itemCount + " on Dataset " + 
+									ds.getName() + " [" + ds.getDbID() +"]");
+							
+						}
 						tick.reset();
 					}
 				}
@@ -124,10 +129,11 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 				DB.commit();
 
 				if( Solarizer.isEnabled()) {
-					if( Custom.allowSolarize(ds))
-						Solarizer.queuedIndex(ds);
+					if( Custom.allowSolarize(ds)) {
+						Solarizer sl = new Solarizer(ds);
+						sl.runInThread();
+					}
 				}
-
 
 			} catch( Exception e ) {
 				log.error( "Label/Id update on items was interrupted by Exception ", e );
@@ -154,6 +160,14 @@ public class Itemizer implements Runnable, Queues.ConditionedRunnable {
 				ds.setItemCount(itemCount);
 				ds.logEvent( "Itemization finished created " + itemCount + " items." );
 				DB.commit();
+
+				if( Solarizer.isEnabled()) {
+					if( Custom.allowSolarize(ds)) {
+						Solarizer sl = new Solarizer(ds);
+						sl.runInThread();
+					}
+				}
+
 			
 			} catch(Exception e) {
 				log.error( "Itemization problem", e );

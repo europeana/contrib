@@ -6,6 +6,7 @@
  */
 XSDMappingEditor.prototype.validate = function() {
 	var tree = this.tree;
+	var self = this;
 	
 	$.ajax({
 		url: this.ajaxUrl,
@@ -46,7 +47,7 @@ XSDMappingEditor.prototype.validate = function() {
 			command: "getXPathsUsedInMapping"
 		},
 		success: function(response) {
-			tree.highlight(response.xpaths);
+			tree.highlight(response, self);
 		}
 	});
 	

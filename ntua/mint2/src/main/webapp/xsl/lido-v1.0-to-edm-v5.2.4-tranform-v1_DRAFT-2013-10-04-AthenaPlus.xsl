@@ -987,15 +987,17 @@
 		
 		<!-- edm:hasView : lido:resourceRepresentation / @lido:type=image_master or empty -->        
         <xsl:for-each select="lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation[@lido:type='image_master' or not(@lido:type)]">
+		<xsl:if test="position() > 1">
 		<xsl:for-each select="lido:linkResource[starts-with(., 'http://') or starts-with(., 'https://')]">
-          <xsl:if test="position() > 1">
+          
 			<edm:hasView>
 				<xsl:attribute name="rdf:resource">
                   <xsl:value-of select="."/>
 				</xsl:attribute>
 			</edm:hasView>
-          </xsl:if>
+          
        </xsl:for-each>
+       </xsl:if>
        </xsl:for-each>
        <!-- edm:isShownBy -->   
 		
@@ -1015,15 +1017,17 @@
 
 		<!-- edm:isShownBy : lido:resourceRepresentation / @lido:type=image_master or empty -->        
         <xsl:for-each select="lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation[@lido:type='image_master' or not(@lido:type)]">
+		<xsl:if test="position() = 1">
 		<xsl:for-each select="lido:linkResource[starts-with(., 'http://') or starts-with(., 'https://')]">
-          <xsl:if test="position() = 1">
+          
 			<edm:isShownBy>
 				<xsl:attribute name="rdf:resource">
                   <xsl:value-of select="."/>
 				</xsl:attribute>
 			</edm:isShownBy>
-          </xsl:if>
+          
        </xsl:for-each>
+       </xsl:if>
        </xsl:for-each>
        <!-- edm:isShownBy -->              
 

@@ -98,7 +98,7 @@
 		var dsDiv = $("#0_datasetLog").clone();
 		var dsId = dataset["dbID"];
 		dsDiv.attr( "id", dsId+"_datasetLog" );
-		dsDiv.find("#0_title").attr( "id", dsId+"_title").text( dataset["title"]);
+		dsDiv.find("#0_title").attr( "id", dsId+"_title").attr( "title", "#"+dsId).text( dataset["title"]);
 		var insertAfter = dsDiv.find(".datasetTitle");
 		var logs = dataset.logs;
 		if( logs != null ) {

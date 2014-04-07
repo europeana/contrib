@@ -101,7 +101,7 @@
 			<div class="head">
 				<img src="images/kaiten/download-16.png">
 			</div>
-				<b>Detailed Progress Report</b>
+				<b>Detailed progress report</b>
 			<div class="label" style="width: 80%">
 				<s:property value="title" />
 			</div>
@@ -116,7 +116,7 @@
 			<div class="head">
 				<img src="images/kaiten/download-16.png">
 			</div>
-				<b>Overall Progress Report</b>
+				<b>Overall progress report</b>
 			<div class="label" style="width: 80%">
 				<s:property value="title" />
 			</div>

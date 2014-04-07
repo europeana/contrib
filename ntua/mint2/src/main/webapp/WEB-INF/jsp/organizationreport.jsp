@@ -41,7 +41,7 @@
 		</p>
 
 
-		<div title="Download PDF report"
+		<div title="Download pdf report"
 			onclick="window.location='DownloadReport?organizationId='+$('#filterorg').val()+'\&'+'detail=details'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
@@ -55,7 +55,7 @@
 			
 		</div>
 		
-		<div title="Imports report Xlsx"
+		<div title="Imports report xlsx"
 			onclick="window.location='DownloadReport.action?organizationId='+$('#filterorg').val()+'\&'+'detail=imports'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
@@ -69,7 +69,7 @@
 			
 		</div>
 		
-		<div title="Transformations report Xlsx"
+		<div title="Transformations report xlsx"
 			onclick="window.location='DownloadReport.action?organizationId='+$('#filterorg').val()+'\&'+'detail=transformations'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
@@ -82,7 +82,7 @@
 			<div class="info"></div>
 			
 		</div>
-		<div title="Publications report Xlsx"
+		<div title="Publications report xlsx"
 			onclick="window.location='DownloadReport.action?organizationId='+$('#filterorg').val()+'\&'+'detail=publications'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
@@ -95,13 +95,13 @@
 			<div class="info"></div>
 		</div>
 		
-		<div title="Oai Publications report Xlsx"
+		<div title="Oai Publications report xlsx"
 			onclick="window.location='DownloadReport.action?organizationId='+$('#filterorg').val()+'\&'+'detail=oaipublications'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
 				<img src="images/kaiten/download-16.png">
 			</div>
-				<b>Oai Publications</b>
+				<b>Oai publications</b>
 			<div class="label" style="width: 80%">
 				<s:property value="title" />
 			</div>
@@ -109,13 +109,13 @@
 		</div>
 		
 		<%if(Config.getBoolean("mint.enableGoalReports", false)){%> 						
-					<div title="Progress Report Pdf"
+					<div title="Progress pdf report "
 			onclick="window.location='DownloadReport.action?organizationId='+$('#filterorg').val()+'\&'+'detail=progress'+'\&'+'fromDate='+fromdate+'\&'+'toDate='+todate"
 			class="items clickable">
 			<div class="head">
 				<img src="images/kaiten/download-16.png">
 			</div>
-				<b>Progress Report</b>
+				<b>Progress report</b>
 			<div class="label" style="width: 80%">
 				<s:property value="title" />
 			</div>
@@ -150,7 +150,7 @@ jQuery(document).ready(function(){
                 // If "Clear" gets clicked, then really clear it
                 if ($(window.event.srcElement).hasClass('ui-datepicker-close')) {
                     $(this).val('');
-                    fromdate = '';
+                   fromdate = '';
                 }
             }
 	   }).keyup(function(e) {

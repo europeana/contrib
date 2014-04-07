@@ -61,3 +61,9 @@
 .value-browser .slick-row:hover {
 	background: #eef;
 }
+
+.slick-cell-checkboxsel {
+      background: #f0f0f0;
+      border-right-color: silver;
+      border-right-style: solid;
+}

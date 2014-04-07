@@ -135,7 +135,6 @@ public class UploadIndexer implements Runnable, ReportI {
 		// oai harvests need to harvest ...
 		// need to start transaction
 		
-		DB.newSession();
 		DB.getSession().beginTransaction();
 		DB.getStatelessSession().beginTransaction();
 		du = DB.getDataUploadDAO().getById(du.getDbID(), false);
@@ -158,6 +157,7 @@ public class UploadIndexer implements Runnable, ReportI {
 				if( !du.isCsvUpload() ) {
 					SchemaStatsBuilder ssb = new SchemaStatsBuilder(du);
 					ssb.runInThread();
+					du = DB.getDataUploadDAO().getById(du.getDbID(), false);
 					if(( du.getItemRootXpath() != null ) && (method!= REPOX)) {
 						Itemizer itemizer = new Itemizer( du );
 						itemizer.runInThread();
@@ -171,6 +171,7 @@ public class UploadIndexer implements Runnable, ReportI {
 					ssb.runInThread();
 					
 					// now we have an XpathHolder for the item
+					du = DB.getDataUploadDAO().getById(du.getDbID(), false);
 					du.setItemRootXpath(du.getByPath("/item"));
 				}
 				
@@ -200,12 +201,6 @@ public class UploadIndexer implements Runnable, ReportI {
 					// we dont need the validation reports ...
 					val.clean();
 
-					if( Solarizer.isEnabled()) {
-						if( Custom.allowSolarize(du)) {
-							Solarizer sol = new Solarizer( du );
-							sol.runInThread();
-						}
-					}
 				}
 				
 			}
@@ -217,7 +212,7 @@ public class UploadIndexer implements Runnable, ReportI {
 			preQueue = false;
 		} finally {
 			try {
-				DB.getSession().getTransaction().commit();
+				DB.commit();
 			} catch( Exception e2 ) {
 				log.error( "Transaction cannot be commited!", e2 );
 			}

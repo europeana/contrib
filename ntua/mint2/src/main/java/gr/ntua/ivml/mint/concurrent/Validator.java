@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.xml.transform.stream.StreamSource;
 
@@ -23,11 +24,12 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.ocpsoft.pretty.time.PrettyTime;
 
 
 public class Validator implements Runnable {
 	private Dataset dataset;
-	private int validCounter=0, invalidCounter=0;
+	private int validCounter=0, invalidCounter=0, itemCounter = 0;
 	private TarArchiveOutputStream validOutput = null;
 	private TarArchiveOutputStream invalidOutput = null;
 	private File validOutputFile = null;
@@ -105,7 +107,9 @@ public class Validator implements Runnable {
 	
 	private void checkItemSchema() throws Exception {
 		final ReportErrorHandler rh = new ReportErrorHandler();
-		
+		final int totalInputItems = dataset.getItemCount();
+		final long startTime = System.currentTimeMillis();
+
 		ApplyI<Item> itemProcessor = new ApplyI<Item>() {
 			@Override
 			public void apply(Item item) throws Exception {
@@ -133,6 +137,19 @@ public class Validator implements Runnable {
 					}
 					log.debug( "Item: " + item.getLabel() + "\n" + rh.getReportMessage() );
 				}
+
+				itemCounter++;
+				if( totalInputItems > 2000 ) {
+					if( itemCounter == (totalInputItems/50)) {
+						long usedTime = System.currentTimeMillis()-startTime;
+						PrettyTime pt = new PrettyTime();
+						
+						String expected = pt.format( new Date( System.currentTimeMillis() + 49*usedTime )); 
+						dataset.logEvent( "Expect validation finished " + expected );
+						DB.commit();
+					}
+				}
+
 			}
 		};
 		dataset.processAllItems(itemProcessor, true );

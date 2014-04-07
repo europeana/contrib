@@ -3,8 +3,10 @@ package gr.ntua.ivml.mint.report;
 import gr.ntua.ivml.mint.actions.UrlApi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +18,11 @@ public class OrgOAIBeanFactory {
 	String organizationId ;
 	String projectName;
 	OaijsonFetcher oaijsonFetcher ;
+	ProjectOAIBean projectstatus;
+	//List<OrgOAIBean> orgsoaibeans ;= new ArrayList<OrgOAIBean>();
+	HashMap<String, HashMap<String,String>> organizationitemnumberpernamespace;
+	
+	
 	
 	protected final Logger log = Logger.getLogger(getClass());
 	
@@ -39,24 +46,47 @@ public class OrgOAIBeanFactory {
 		this.oaijsonFetcher = oaijsonFetcher;
 	}
 	
-	public OrgOAIBeanFactory(String organizationId) {
+	public OrgOAIBeanFactory() {
 		super();
-		this.organizationId = organizationId;
-		this.oaijsonFetcher = new OaijsonFetcher(this.organizationId);	
+	//	this.organizationId = organizationId;
+		this.oaijsonFetcher = new OaijsonFetcher(this.organizationId);
+		this.projectstatus = getProjectOAIBean();
+		this.organizationitemnumberpernamespace = getOrganizationOaiItemsPerNamespace();
 				
 	}
 	
-	public OrgOAIBeanFactory(String organizationId,String projectName) {
+	public OrgOAIBeanFactory(String projectName) {
 		super();
-		this.organizationId = organizationId;
+	//	this.organizationId = organizationId;
 		this.projectName = projectName;
 		this.oaijsonFetcher = new OaijsonFetcher(this.projectName,this.organizationId);	
-		
+		this.projectstatus = getProjectOAIBean();
+		this.organizationitemnumberpernamespace = getOrganizationOaiItemsPerNamespace();
 	}
+	
+	
+	
+	public ProjectOAIBean getProjectstatus() {
+		return projectstatus;
+	}
+	
+	
+	
+	/*public List<OrgOAIBean> getOrgsoaibeans() {
+		return orgsoaibeans;
+	}*/
+	
+	
+	public HashMap<String, HashMap<String, String>> getOrganizationitemnumberpernamespace() {
+		return organizationitemnumberpernamespace;
+	}
+	
+	
 	
 	public ProjectOAIBean getProjectOAIBean(){
 		List<String> namespaces = new ArrayList<String>(); 
 		JSONObject object = oaijsonFetcher.getProjectJson();
+		System.out.println("DEBUG, OAI FETCHED FOR PROJECT"+object);
 		if (object==null){
 			Integer unique = 0;
 			Integer duplicates = 0;
@@ -81,24 +111,42 @@ public class OrgOAIBeanFactory {
 	}
 	
 	
+	public HashMap<String, HashMap<String,String>> getOrganizationOaiItemsPerNamespace(){
+				
+		HashMap<String,String> amap  = new  HashMap<String,String>();
+		
+		HashMap<String, HashMap<String,String>> map  = new HashMap<String,HashMap<String,String>>();
 	
-	public List<OrgOAIBean> getOrgOAIBeans(){
-		List<OrgOAIBean> orgsoaibeans = new ArrayList<OrgOAIBean>();
-		if (this.getProjectOAIBean() == null){
-			return orgsoaibeans; 
-		}
-		else {ProjectOAIBean projectbean = this.getProjectOAIBean();
 		
-		List<String> listofnamespaces = projectbean.getTypes();
+		List<String> listofnamespaces = projectstatus.getTypes();
 		Iterator<String> it = listofnamespaces.iterator();
-		
 		while (it.hasNext()){
-			String namespace = (String) it.next();
+			String namespace = (String) it.next().toString(); 
 			JSONObject object = oaijsonFetcher.getOrgJson(namespace);
-			System.out.println(object.toString());
-			log.error(object.toString());
-			if (object.containsKey(this.organizationId)){
-				Integer unique = object.getInt(this.organizationId);
+			Iterator jsit = object.keys();
+			while (jsit.hasNext()){
+				String key = (String)jsit.next();
+				amap.put(key, (String) object.get(key).toString());
+			}
+			map.put(namespace, amap);
+		}
+		
+		
+		return map;
+		
+		
+		}
+	
+	
+	public List<OrgOAIBean> getOrgOAIBeans2(String OrganizationId){
+		List<OrgOAIBean> orgsoaibeans = new ArrayList<OrgOAIBean>();
+		Iterator it = organizationitemnumberpernamespace.entrySet().iterator();
+		while (it.hasNext()){
+			Map.Entry pairs = (Map.Entry)it.next();
+			String namespace= pairs.getKey().toString();
+			Map itemCountmap = (Map) pairs.getValue();
+			if (itemCountmap.containsKey(OrganizationId)){
+				Integer unique =  Integer.parseInt(itemCountmap.get(OrganizationId).toString()); //object.getInt(this.organizationId);
 				UrlApi api = new UrlApi();
 				api.setOrganizationId(this.organizationId);		
 				JSONObject json = api.listOrganizations();
@@ -128,41 +176,29 @@ public class OrgOAIBeanFactory {
 				}
 				OrgOAIBean orgoaiBean = new OrgOAIBean(organizationName, namespace, this.organizationId, unique);
 				orgsoaibeans.add(orgoaiBean);
-				
 			}
 		}
-		return orgsoaibeans;
 		
+		return orgsoaibeans;
+
 	}
-	}
-	public Integer getItemCount(){
+	
+	
+	
+
+	
+	public Integer getItemCount(String organizationId){
 		Integer count=0;
-		List<OrgOAIBean> orgoaibeans = this.getOrgOAIBeans();
-		Iterator it = orgoaibeans.iterator();
-		while (it.hasNext()){
-			OrgOAIBean bean = (OrgOAIBean) it.next();
-			if (bean.type.equals("rdf")){
-				count+=bean.getUniqueItems();
-			}
+		if (organizationitemnumberpernamespace.containsKey("rdf")){
+			 Map organizationmap = this.organizationitemnumberpernamespace.get("rdf");
+			 if (organizationmap.containsKey(organizationId)){
+				 count = Integer.parseInt(organizationmap.get(organizationId).toString());
+			 }
+				
 		}
 		return count;
 	}
 	
-	
-	/*public List<OrgOAIBean> getOrgOAIBeans(String orgid){
-		List<OrgOAIBean> orgsoaibeans = getOrgOAIBeans();
-		List<OrgOAIBean> orgoaibeans = new ArrayList<OrgOAIBean>();
-		Iterator<OrgOAIBean>  it = orgsoaibeans.iterator();
-		while (it.hasNext()){
-			OrgOAIBean bean = it.next();
-			if (bean.organizationId.equals(orgid)){
-				orgoaibeans.add(bean);
-			}
-		}
-		
-		return orgoaibeans;
-		
-	}
-	*/
+
 
 }

@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -34,12 +35,12 @@ import com.opensymphony.xwork2.Preparable;
 	})
 
 
-public class ManagementAction extends GeneralAction implements Preparable {
+public class ManagementAction extends GeneralAction implements Preparable, SessionAware {
 	  
 	//private static final long serialVersionUID = 1L;
 	  
 	  protected final Logger log = Logger.getLogger(getClass());
-	
+	  private Map<String, Object> httpSession;
 	  private List<Organization> orgs;
 	  private List<User> users;
 	  
@@ -114,8 +115,13 @@ public class ManagementAction extends GeneralAction implements Preparable {
 			   else if(getUaction().equalsIgnoreCase("createuser")){
 				   seluser=new User();
 				   return "usrmanage";
-			   }
-			   else if(getUaction().equalsIgnoreCase("createorg")){
+			   } else if(getUaction().equalsIgnoreCase("becomeuser")) {
+				   if( user.hasRight(User.ALL_RIGHTS)) {
+					   seluser=DB.getUserDAO().getById(Long.parseLong(getId()), false);
+					   httpSession.put("user", seluser);
+					   return NONE;
+				   }
+			   } else if(getUaction().equalsIgnoreCase("createorg")){
 				   selorg=new Organization();
 				   return "orgmanage";
 			   }
@@ -639,5 +645,11 @@ public class ManagementAction extends GeneralAction implements Preparable {
 			}
 			
 		 }
+
+		@Override
+		public void setSession(Map<String, Object> httpSession ) {
+			this.httpSession = httpSession;
+			
+		}
 
 }

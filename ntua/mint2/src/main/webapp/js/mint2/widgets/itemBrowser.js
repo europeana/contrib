@@ -243,7 +243,9 @@
 						    });
 					   }
 					   if($("#pageroptions").length == 0) {
-						     data.pagination.append("<span id='pageroptions' style='float:right;'>Show: <a data='15' class='pager'>15</a><a data='100' class='pager'>100</a><a data='1000' class='pager'>1000</a>");
+						     data.pagination.append("<span id='pageroptions' " +
+						     		"style='float:right;'>Show: <a data='15' class='pager'>15</a>" +
+						     		"<a data='100' class='pager'>100</a><a data='1000' class='pager'>1000</a>");
 					   }	
 					} else {
 						alert("Could not retrieve item list");

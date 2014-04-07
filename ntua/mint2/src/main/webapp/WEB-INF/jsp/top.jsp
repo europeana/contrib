@@ -7,12 +7,16 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 <link href="images/browser_icon.ico" rel="shortcut icon" />
 
 
 <!-- new stuff here -->
 <script src="js/fileuploader.js" type="text/javascript"></script>
 
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
 <link rel="stylesheet" type="text/css" href="css/jquery/jquery.layout.default.css" />
@@ -21,9 +25,11 @@
 <link rel="stylesheet" type="text/css" href="css/jquery/jquery.toolbar.css" />
 <link rel="stylesheet" type="text/css" href="css/fileuploader.css"/>
 <link rel="stylesheet" type="text/css" href="css/widgets/schemaTree.css"/>
+<link rel="stylesheet" type="text/css" href="css/widgets/schemaTree-ann.css"/>
 <link rel="stylesheet" type="text/css" href="css/widgets/valueBrowser.css"/>
 <link rel="stylesheet" type="text/css" href="css/widgets/thesaurusBrowser.css"/>
 <link rel="stylesheet" type="text/css" href="css/xsdmapping/mappingElement.css"/>
+<link rel="stylesheet" type="text/css" href="css/xsdmapping/annotatorElement.css"/>
 <link rel="stylesheet" type="text/css" href="css/xsdmapping/xsdmapping.css"/>
 <link rel="stylesheet" type="text/css" href="css/annotator/annotator.css"/>
 <link rel="stylesheet" type="text/css" href="js/slickgrid/slick.grid.css"/>
@@ -61,10 +67,12 @@
 <script type="text/javascript" src="js/jquery/jquery.blockUI.js"> </script>
 <script type="text/javascript" src="js/jquery/jquery.toolbar.min.js"> </script>
 <script type="text/javascript" src="js/jquery/jstree/jquery.jstree.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.ui.touch.js"> </script>
 
 
 
-<script type="text/javascript" src="js/jkaiten.js"> </script>
+
+<script type="text/javascript" src="js/kaiten.js"> </script>
 <script type="text/javascript" src="js/chosen/chosen.jquery.min.js"> </script>
 <script type="text/javascript" src="js/ace/ace.js"> </script>
 <script type="text/javascript" src="js/ace/mode-xml.js"> </script>
@@ -76,6 +84,8 @@
 <script type="text/javascript" src="js/slickgrid/slick.formatters.js"> </script>
 <script type="text/javascript" src="js/slickgrid/slick.editors.js"> </script>
 <script type="text/javascript" src="js/slickgrid/slick.dataview.js"> </script>
+<script type="text/javascript" src="js/slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
+<script type="text/javascript" src="js/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
 <script type="text/javascript" src="js/mint2/documentation.js"></script>
 <script type="text/javascript" src="js/mint2/documentation-resources.js"></script>
@@ -88,6 +98,8 @@
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingAjax.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingArea.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingElement.js"></script>
+<script type="text/javascript" src="js/mint2/annotator/annotatorElement.js"></script>
+<script type="text/javascript" src="js/mint2/annotator/annotatorFunction.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingFunction.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingValues.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/mappingCondition.js"></script>
@@ -98,6 +110,8 @@
 <script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingNavigation.js"></script>
 <script type="text/javascript" src="js/mint2/xsdmapping/xsdmappingPreferences.js"></script>
 <script type="text/javascript" src="js/mint2/annotator/annotator.js"></script>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
 <script type="text/javascript" src="js/modalPopup.js"></script>
@@ -111,7 +125,13 @@
 <script type="text/javascript" src="js/importRequest.js"></script>
 <script type="text/javascript" src="js/adminRequest.js"></script>
 <script src="js/oaiRequest.js" type="text/javascript"></script>
-
+ 
+ <script type="text/javascript">
+ 	google.load('visualization', '1', {'packages':['table']});
+    google.load('visualization', '1', {'packages':['corechart']});
+    google.load('visualization', '1.0', {'packages':['controls']});
+</script>
+  
 <title><%=Config.get("mint.title")%></title>
 
 </head>

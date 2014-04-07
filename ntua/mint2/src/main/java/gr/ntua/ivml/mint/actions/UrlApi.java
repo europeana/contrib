@@ -9,6 +9,7 @@ import gr.ntua.ivml.mint.persistent.PublicationRecord;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
+import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.XMLUtils;
 import gr.ntua.ivml.mint.xml.transform.XSLTGenerator;
@@ -19,6 +20,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +36,14 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.openjena.atlas.json.io.parserjavacc.javacc.JSON_ParserTokenManager;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.mongodb.util.JSON;
 import com.opensymphony.xwork2.ActionContext;
 
 @Results({
@@ -96,7 +100,7 @@ public class UrlApi extends GeneralAction  implements ServletRequestAware{
 					listPublications();
 				} else if ( type.equals("Derivative")){
 					listDerivatives();
-				}				
+				}
 		} else if( !StringUtils.empty( id )) {
 			if( "Mappingxsl".equals( type )) {
 				singleMappingxsl();
@@ -399,6 +403,7 @@ public class UrlApi extends GeneralAction  implements ServletRequestAware{
 			.element( "result", arr );
 		
 		return json;
+		
 	}		
 	
 	public JSONObject listDatasets() {
@@ -568,9 +573,16 @@ public class UrlApi extends GeneralAction  implements ServletRequestAware{
 //		return json;
 //	}
 	
-	public JSONObject listPublications() {
-		//List<DataUpload> res = DB.getDataUploadDAO().pageAll( start, maxResults );
-		List<PublicationRecord> resr  = DB.getPublicationRecordDAO().pageAll(start, maxResults);
+	/*public JSONObject listPublications() {
+		List<PublicationRecord> resr =  DB.getPublicationRecordDAO().pageAll(start, maxResults);
+		List<PublicationRecord> resr;
+		if (this.organizationId != null){
+			resr  = DB.getPublicationRecordDAO().findByOrganization(DB.getOrganizationDAO().getById(Long.parseLong(organizationId),false));
+		}
+		else {
+			resr  = DB.getPublicationRecordDAO().pageAll(start, maxResults);
+			System.out.println("size of publication records is :" + resr.size());
+		}
 		JSONArray arr = new JSONArray();
 		for( PublicationRecord du: resr ){
 			if (du.getPublishedDataset().isOk()){
@@ -579,12 +591,54 @@ public class UrlApi extends GeneralAction  implements ServletRequestAware{
 				}
 			}
 		}
+		
+		for( PublicationRecord pr: resr ){
+			if (pr.getPublishedDataset().isOk()){					
+					arr.add( pr.getPublishedDataset().toJSON());
+				}
+			}
+		
+		json = new JSONObject()
+			.element( "result", arr );
+		
+		return json;
+		
+	}*/
+	
+	
+
+	public JSONObject listPublications() {
+		List<PublicationRecord> resr;
+		if (this.organizationId != null){
+			resr  = DB.getPublicationRecordDAO().findByOrganization(DB.getOrganizationDAO().getById(Long.parseLong(organizationId),false));
+		}
+		else {
+			resr  = DB.getPublicationRecordDAO().pageAll(start, maxResults);			
+		}
+		JSONArray arr = new JSONArray();
+		for( PublicationRecord pr: resr ){
+			
+			if (pr.getPublishedDataset().isOk()){
+				
+					net.minidev.json.JSONObject jsob = new net.minidev.json.JSONObject();
+					jsob = pr.getPublishedDataset().toJSON();
+					//jsob.put("publishedItems", pr.getPublishedItemCount());
+					jsob.put("publishedItems", pr.getPublishedDataset().getValidItemCount());
+					jsob.put("publicationEndDate", StringUtils.isoTime(pr.getEndDate()));
+
+					
+										
+					arr.add( jsob);
+				}
+			}		
 		json = new JSONObject()
 			.element( "result", arr );
 		
 		return json;
 		
 	}
+
+	
 	
 	public void setAction( String action) {
 		this.action = action;

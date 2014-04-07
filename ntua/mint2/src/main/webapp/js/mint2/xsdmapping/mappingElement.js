@@ -49,12 +49,13 @@
 	 * </ul>
 	 */
 	$.fn.mappingElement = function(method) {
-	    if ( methods[method] ) {
-	        return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
-	      } else if ( typeof method == 'object' || ! method ) {
+		alert("OK");
+	    if (methods[method]) {
+	        return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+	      } else if (typeof method == 'object' || !method) {
 	        return methods.init.apply(this, arguments);
 	      } else {
-	        $.error( 'Method ' +  method + ' does not exist on ' + widget );
+	        $.error('Method ' +  method + ' does not exist on ' + widget);
 	      }   
 	};
 	
@@ -115,6 +116,7 @@
 					});
 				}
 			}
+
 			if(data.settings.showValidation) {
 				var validation = $("<div>").addClass("mapping-element-validation").appendTo(label);
 			}
@@ -158,7 +160,7 @@
 
 				name.append($("<span>").addClass("mapping-element-name").text(title));
 			}
-			
+
 			name.click(function() {
 				console.log("Clicked on target " + target.name + ": ", target);
 				if(!isStructural && mappingsStructural != undefined) mappingsStructural.slideToggle();
@@ -170,7 +172,7 @@
 				if(data.settings.showDuplicate) {
 					//alert("maxOccurs " +  target.maxOccurs);
 					//if (target.maxOccurs != undefined && target.maxOccurs != 1) {	
-					if(data.settings.showRemove == "always" ||
+					if (data.settings.showRemove == "always" || //target.minOccurs < 1 || target.minOccurs == undefined ||
 						(data.settings.showRemove == "duplicate" && target.duplicate != undefined)) {
 							var removeDuplicate = $("<div>").attr("title", "Remove duplicate element").addClass("mapping-action-remove-duplicate").appendTo(right_actions);
 							removeDuplicate.click(function() {
@@ -247,7 +249,7 @@
 			// mapping areas
 			var mappingAreas = $("<div>")
 			.addClass("mapping-element-mapping-areas")
-			.appendTo(header)
+			.appendTo(header);
 			
 			if(isSchemaMapping) {
 				var s = data.target["structural"];
@@ -297,6 +299,7 @@
 					}
 				}
 			}
+
 			// children
 			var children = $("<div>").addClass("mapping-element-children");
 			children.hide();
@@ -425,8 +428,7 @@
 					data.children.append(child);
 				}
 			}
-			
-			data.editor.validate();
+			//data.editor.validate();
 		},
 		
 		/**
@@ -457,7 +459,7 @@
 				data.attributes.append(attribute);
 			}
 			
-			data.editor.validate();
+			//data.editor.validate();
 		},
 		
 		validate: function(value, forAttributes) {

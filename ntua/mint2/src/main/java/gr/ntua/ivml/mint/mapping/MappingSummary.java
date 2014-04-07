@@ -6,6 +6,7 @@ import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class MappingSummary {
@@ -15,14 +16,14 @@ public class MappingSummary {
 	 * @param type specified SimpleMapping type.
 	 * @return collection with String values of all SimpleMapping values of specified type.
 	 */
-	public static Collection<String> getAllMappingsOfType(Mappings mappings, String type) {
+	public static HashMap<String, String> getAllMappingsOfType(Mappings mappings, String type) {
 		Element template = mappings.getTemplate();
 		
 		if(template != null) {
 			return getAllMappingsOfType(template, type); 
 		}
 		
-		return new HashSet<String>();
+		return new HashMap<String, String>();
 	}
 	
 	/**
@@ -31,17 +32,18 @@ public class MappingSummary {
 	 * @param type specified SimpleMapping type.
 	 * @return collection with String values of all SimpleMapping values of specified type.
 	 */
-	public static Collection<String> getAllMappingsOfType(Element element, String type) {
-		HashSet<String> values = new HashSet<String>();
+	public static HashMap<String, String> getAllMappingsOfType(Element element, String type) {
+		HashMap<String, String> values = new HashMap<String, String>();
 
 		ArrayList<SimpleMapping> mappings = element.getAllMappings(type);
 		for(SimpleMapping mapping: mappings) {
 			String value = mapping.getValue();
-			if(value != null) values.add(value);
+			if(value != null) 
+				values.put(value, element.getId());
 		}
 				
 		for(Element child: element.getChildrenAndAttributes()) {
-			values.addAll(MappingSummary.getAllMappingsOfType(child, type));
+			values.putAll(MappingSummary.getAllMappingsOfType(child, type));
 		}
 		
 		return values;
@@ -53,7 +55,7 @@ public class MappingSummary {
 	 * @return collection of xpaths used in this mappings object.
 	 */
 	public static Collection<String> getAllMappedXPaths(Mappings mappings) {
-		return MappingSummary.getAllMappingsOfType(mappings, SimpleMapping.MAPPING_TYPE_XPATH);
+		return MappingSummary.getAllMappingsOfType(mappings, SimpleMapping.MAPPING_TYPE_XPATH).keySet();
 	}
 
 	/**
@@ -62,9 +64,9 @@ public class MappingSummary {
 	 * @return collection of xpaths used in this element or its descendants.
 	 */
 	public static Collection<String> getAllMappedXPaths(Element element) {
-		return MappingSummary.getAllMappingsOfType(element, SimpleMapping.MAPPING_TYPE_XPATH);
+		return MappingSummary.getAllMappingsOfType(element, SimpleMapping.MAPPING_TYPE_XPATH).keySet();
 	}
-		
+	
 	/**
 	 * Returns true if this mappings object has no missing mappings.
 	 * @param mappings

@@ -18,6 +18,8 @@ XMLAnnotator.MODE_SINGLE = 0;
 XMLAnnotator.MODE_GROUP = 1;
 XMLAnnotator.MODE_ANNOTATOR_DEFAULT = XMLAnnotator.MODE_SINGLE;
 
+this.tree = [];
+
 var groupActions = function() {
 		var self=this;
 		var actions=[];
@@ -85,7 +87,6 @@ XMLAnnotator.prototype.layout = function(container) {
 
 	var cp = $(this.container.closest('div[id^=kp]'));
 	this.panel = cp;
-	var hideGroupAnnotator;
 }
 
 XMLAnnotator.prototype.init = function(dataUploadId, hideGroupAnnotator) {
@@ -103,12 +104,12 @@ XMLAnnotator.prototype.init = function(dataUploadId, hideGroupAnnotator) {
 	//groupActs.length=0;
 }
 
-XMLAnnotator.prototype.initToolbar = function(views) {
+XMLAnnotator.prototype.initToolbar = function(views, template) {
 	var toolbar =  this.container.toolbar;
 	var self = this;
 	
 
-	this.showAnnotatorMode(views);	
+	this.showAnnotatorMode(views, template);
 	
 //	var navigation = $("<button>").addClass("editor-toolbar-button").text("Navigation").attr("title", "Navigation").button({ icons: { primary: 'editor-toolbar-navigation' }}).click(function () {
 //		self.loadSubpanel(function(panel) {
@@ -193,6 +194,30 @@ XMLAnnotator.prototype.initItemsContainer = function() {
 	});
 }
 
+XMLAnnotator.prototype.getSchemaTree = function(views, template) {
+	var self = this;
+	$.ajax({
+		url: "Tree",
+		context: this,
+		data: {
+			dataUploadId: this.dataUploadId,
+			groupAnnotator: this.annotatorMode
+		},
+		success: function(response) {
+			if(response != undefined) {
+				if(response.error != undefined) {
+					alert(response.error);
+				} else if(response) {
+					tree = response.tree;
+					this.initToolbar(views, template);
+				}				
+			} else {
+				alert("Could not retrieve tree data");
+			}
+		}
+	});	
+}
+
 XMLAnnotator.prototype.initAnnotationsContainer = function() {
 	var self = this;
 	
@@ -207,13 +232,12 @@ XMLAnnotator.prototype.initAnnotationsContainer = function() {
 		success: function(response) {
 			this.configuration = response.configuration;
 			this.metadata = response.metadata;
-			this.configuration = response.configuration;
-			
+			var template = response.template;
 			this.panel.kpanel("setTitle", "Annotator demo");
 
 			this.views = response.views;
-
-			this.initToolbar(this.views);
+			
+			this.getSchemaTree(this.views, template);
 			
 			this.preferences = new EditorPreferences({
 				element: "mapping-editor-preferences",
@@ -271,16 +295,16 @@ XMLAnnotator.prototype.loadItem = function(item) {
 	});
 }
 
-XMLAnnotator.prototype.showAnnotatorMode = function(views) {
+XMLAnnotator.prototype.showAnnotatorMode = function(views, template) {
 	var self=this;
 	this.container.annotations.empty();
 	if (this.annotatorMode == XMLAnnotator.MODE_SINGLE) {
 		this.initItemsContainer();
-		this.showSingleAnnotator(views);
+		this.showSingleAnnotator(views, template);
 		this.closeSubpanel();
 	} else if (this.annotatorMode == XMLAnnotator.MODE_GROUP) {
 		this.initItemsContainer();
-		this.showGroupAnnotator(views);
+		this.showGroupAnnotator(views, template);
 		this.loadSubpanel(function(panel) {
 			var details = $("<div>").css("padding", "10px");
 			var content = $("<div>").appendTo(details).addClass("editor-preview");
@@ -289,16 +313,16 @@ XMLAnnotator.prototype.showAnnotatorMode = function(views) {
 			details.css("overflow", "auto");
 			panel.find(".panel-body").before(details);
 			self.loadActionsPreview(content);
-		}, "Group Actions Preview");
+		}, "Group Actions Preview", {width: "30%"});
 		
 	}
 }
 
-XMLAnnotator.prototype.showSingleAnnotator = function(views) {
+XMLAnnotator.prototype.showSingleAnnotator = function(views, template) {
 	var toolbar = this.container.toolbar;
 	toolbar.empty();
-	if (!this.hideGroupAnnotator){
-	   toolbar.append(this.annotatorModeButton(views)); 
+	if (!this.hideGroupAnnotator) {
+	   toolbar.append(this.annotatorModeButton(views, template)); 
 	}
 	toolbar.append(this.singleAnnotatorButtons(views));
 	this.metadata = {};
@@ -311,10 +335,10 @@ XMLAnnotator.prototype.showSingleAnnotator = function(views) {
 }
 	
 
-XMLAnnotator.prototype.showGroupAnnotator = function(views) {
+XMLAnnotator.prototype.showGroupAnnotator = function(views, template) {
 	var toolbar = this.container.toolbar;
 	toolbar.empty();
-	toolbar.append(this.annotatorModeButton(views));
+	toolbar.append(this.annotatorModeButton(views, template));
 	toolbar.append(this.groupAnnotatorButtons(views));
 	//this.groupAnnotatorButtons(views);
 }
@@ -389,7 +413,7 @@ XMLAnnotator.prototype.singleAnnotatorButtons = function(views) {
 	return buttons;
 }
 
-XMLAnnotator.prototype.annotatorModeButton = function(views) {
+XMLAnnotator.prototype.annotatorModeButton = function(views, template) {
 	var self = this;
 	var text = "";
 	if(self.annotatorMode == XMLAnnotator.MODE_SINGLE) {
@@ -409,7 +433,7 @@ XMLAnnotator.prototype.annotatorModeButton = function(views) {
 		} else {
 			self.annotatorMode = XMLAnnotator.MODE_SINGLE;		
 		}
-		self.showAnnotatorMode(views);
+		self.showAnnotatorMode(views, template);
 	});
 	return btnAnnot;
 }
@@ -418,7 +442,7 @@ XMLAnnotator.prototype.groupAnnotatorButtons = function(views) {
 	var self = this;
 	var buttons = $("<div>").addClass("editor-toolbar");
 	var itemsQuery = self.items.itemBrowser("getQuery");
-	if (views != undefined) {
+	/*if (views != undefined) {
 		for(var i in this.views.views) {
 			var view = $("<div>").mappingView({
 				view: this.views.views[i],
@@ -428,7 +452,12 @@ XMLAnnotator.prototype.groupAnnotatorButtons = function(views) {
 	}
 	else {
 		this.container.annotations.append(Mint2.message("no views defined for this schema", Mint2.WARNING));
-	}
+	*/
+	var m = $("<div>").appendTo(this.container.annotations).annotatorElement({
+		target: tree,
+		editor: this,
+		schemaMapping: false
+	});
 	var btnActionsPreview = $("<button>").addClass("editor-toolbar-button").text("Group Actions Preview").attr("title", "Group Actions Preview").button({ icons: { primary: 'editor-toolbar-preview' }}).click(function () {
 				self.lastButtonClicked = btnActionsPreview;
 				self.loadSubpanel(function(panel) {
@@ -442,8 +471,7 @@ XMLAnnotator.prototype.groupAnnotatorButtons = function(views) {
 					self.loadActionsPreview(content);
 				}, "Group Actions Preview");
 			}).appendTo(buttons);
-	return buttons;	
-	
+	return buttons;		
 }
 
 XMLAnnotator.prototype.showMapping = function(mapping) {
@@ -675,7 +703,6 @@ XMLAnnotator.prototype.loadActionsPreview = function(previewActionsContainer) {
 			.click(function () {
 				//TODO: self.ajaxUrl is sometimes Annotator_ajax and sometimes mappingAjax
 				//when called from push of groupActs, it's mappingAjax
-				//alert(JSON.stringify(self.ajaxUrl));
 				XMLAnnotator.prototype.groupAnnotate(groupActs);				
 				
 				//manage panels
@@ -774,3 +801,4 @@ XMLAnnotator.prototype.validate = function() {
 	
 	this.bookmarks();
 }
+

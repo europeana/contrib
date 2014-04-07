@@ -70,7 +70,7 @@ public class Annotator extends GeneralAction implements ServletRequestAware {
 		gr.ntua.ivml.mint.annotator.Annotator manager = (gr.ntua.ivml.mint.annotator.Annotator) session.get(ANNOTATOR_SESSION_KEY);
 		
 		if(manager == null) {
-			manager = new gr.ntua.ivml.mint.annotator.Annotator();
+			manager = new gr.ntua.ivml.mint.annotator.Annotator(user);
 			session.put(ANNOTATOR_SESSION_KEY, manager);
 		}
 		
@@ -83,6 +83,7 @@ public class Annotator extends GeneralAction implements ServletRequestAware {
 
 			JSONObject preferences = new JSONObject();
 			
+			
 			try {
 				preferences = Preferences.getObject(user, AbstractMappingManager.PREFERENCES);
 			} catch(Exception e) {
@@ -92,6 +93,7 @@ public class Annotator extends GeneralAction implements ServletRequestAware {
 			
 			result.put("preferences", preferences);				
 			result.put("metadata", manager.getMetadata());
+			result.put("template", manager.getItemTemplate().asJSONObject());
 
 		}
 		log.debug(result);

@@ -2,14 +2,20 @@ package gr.ntua.ivml.mint.actions;
 
 
 import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.Mapping;
 import gr.ntua.ivml.mint.persistent.Organization;
 
 
 
+
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import gr.ntua.ivml.mint.db.DB;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
@@ -29,6 +35,8 @@ public class MappingSummary extends GeneralAction {
 	
 	private long orgId=-1;
 	private long uploadId;
+	private List<Mapping> recentMappings = new ArrayList<Mapping>();
+	
 	
 	
 	public long getUploadId() {
@@ -54,6 +62,23 @@ public class MappingSummary extends GeneralAction {
 		
 	}
 	
+	private void findRecentMappings() {
+		List<Mapping> maplist = getUser().getAccessibleMappings();
+		if(this.getUploadId() > 0) {
+			Dataset dataset = DB.getDatasetDAO().findById(this.getUploadId(), false);
+			recentMappings = Mapping.getRecentMappings(dataset, maplist);
+		} else {
+			recentMappings = null;
+		}
+	}
+	
+	public List<Mapping> getRecentMappings() {
+	return recentMappings;
+}
+
+public void setRecentMappings(List<Mapping> recentMappings) {
+	this.recentMappings = recentMappings;
+}
 	
 	@Action("MappingSummary")
 	public String execute() {

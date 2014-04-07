@@ -7,6 +7,7 @@
  * @param {string} container The editor's container.
  */
 function XSDMappingEditor(container) {
+
 	var self = this;
 	this.ajaxUrl = "mappingAjax";
 	
@@ -91,6 +92,7 @@ XSDMappingEditor.prototype.layout = function(container) {
  * @param {Number} lockId lockId related to the mapping. It should be obtained by server when starting a mapping session. Used to release the lock when editor panel is closed.
  */
 XSDMappingEditor.prototype.init = function(dataUploadId, mappingId, lockId) {
+
 	var self = this;
 	
 	/**
@@ -111,6 +113,7 @@ XSDMappingEditor.prototype.init = function(dataUploadId, mappingId, lockId) {
 	/**
 	 * Callback that is called when editor panel closes. Releases the mapping lock.
 	 */
+
 	this.panel.data("kpanel").options.beforedestroy = function () {
     	$.ajax({
     		url: "LockSummary",
@@ -120,9 +123,11 @@ XSDMappingEditor.prototype.init = function(dataUploadId, mappingId, lockId) {
     
     this.panel.kpanel("setTitle", "Loading...");	
 	this.showLoading();
-	
+
 	this.initTreeContainer(this.dataUploadId);
+
 	this.initMappingsContainer(this.mappingId);
+
 	//TODO: change color of mapped elements in tree
 }
 
@@ -223,6 +228,7 @@ XSDMappingEditor.prototype.initToolbar = function() {
 		.append($("<span>").addClass("editor-toolbar-label").text("Created:"))
 		.append($("<span>").addClass("editor-toolbar-info").text(this.metadata.created))
 	).appendTo(toolbar);	
+	
 }
 
 /**
@@ -292,6 +298,7 @@ XSDMappingEditor.prototype.initTreeContainer = function(dataUploadId) {
 			clause.mappingConditionClause("setConditionClauseKey", "xpath", xpath);
 		}
 	};
+	
 }
 
 /**
@@ -349,6 +356,7 @@ XSDMappingEditor.prototype.initMappingsContainer = function(mappingId) {
 //					console.timeEnd("init mappings");
 
 					$K.kaiten('maximize', this.panel);	
+					
 					this.hideLoading();
 				}			
 			} else {
@@ -430,7 +438,7 @@ XSDMappingEditor.prototype.parseResponse = function(r) {
 }
 
 XSDMappingEditor.prototype.subscribeElement = function(element) {
-	$(element).bind("afterRefresh", this.validate());
+	//$(element).bind("afterRefresh", this.validate());
 }
 
 /**
@@ -443,7 +451,7 @@ XSDMappingEditor.prototype.subscribeElement = function(element) {
  */
 XSDMappingEditor.prototype.loadSubpanel = function(data, title, options) {
 	var self = this;
-	
+
 	if(this.isCreatingPanel) return false;
 	this.isCreatingPanel = true;
 
@@ -466,8 +474,7 @@ XSDMappingEditor.prototype.loadSubpanel = function(data, title, options) {
 			kTitle:title,
 			html: ""
 		});
-		
-		data(newpanel);
+	  data(newpanel);
 	} else if(data instanceof jQuery) {
 		newpanel = $K.kaiten('load', {
 			kConnector:'html.string',

@@ -174,7 +174,11 @@ if(u!=null && (uaction.equalsIgnoreCase("edituser") || uaction.equalsIgnoreCase(
 			  onclick="editUser(<s:property value="seluser.dbID"/>);">
 			  <span>Edit</span></a>  
 				<a class="navigable focus k-focus"  onclick=" javascript:var cp=$($(this).closest('div[id^=kp]'));$K.kaiten('removeChildren',cp, true);ajaxDeleteUser(<s:property value="seluser.dbID"/>);"><span>Delete</span></a>
-				</p>   	
+			<% if( user.hasRight( User.ALL_RIGHTS))  { %>
+			  <a class="navigable focus k-focus" onclick="becomeUser(<s:property value="seluser.dbID"/>);">
+			  <span>Become</span></a>  
+			<% } %>	
+				</p>   
 		<%} %>
    		</s:form>
    		

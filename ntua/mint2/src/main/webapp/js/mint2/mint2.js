@@ -351,7 +351,7 @@ Mint2.jsonViewer = function(data) {
 	var viewer = $("<div>").css("line-height", "20px");
 	viewer.append(Mint2.jsonToList(data));
 	viewer.jstree({
-		plugins : ["themes", "html_data", "ui"],
+		plugins : ["themes", "html_data", "ui","dnd"],
 		core: {
 			animation: 100
 		},

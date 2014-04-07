@@ -73,6 +73,22 @@ public class JsonOrganizationTargets {
 	}
 	
 	
+	public Tuple<Date,Integer> finalTarget(){
+		int resI = 0;		
+		Iterator<TargetPeriod> i = getPeriods().iterator();
+		Date endDate = null;
+		while( i.hasNext()) {
+			TargetPeriod tp = i.next();
+					resI = +tp.itemCount;
+				if (endDate.before(tp.end)){
+					endDate = tp.end;
+				}
+			
+		}	
+		return new Tuple<Date,Integer>( endDate, resI );
+
+
+	}
 	
 	/**
 	 * Return the currently applicable period or null if none applies.

@@ -4,7 +4,9 @@ import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.User;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
+
+import net.minidev.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -110,5 +112,21 @@ public class Custom {
 		// remove text() node marker
 		xpath = xpath.replaceAll("/[^:]+:", "/" ).replace( "/", "_" ).replaceAll( "_text\\(\\)", "" );
 		return xpath;
+	}
+	
+	public static void login( HttpServletRequest req ) {
+		getInstance().customLogin( req );
+	}
+	
+	public void customLogin( HttpServletRequest req) {
+	}
+
+
+	public static void organizationStats(JSONObject ajson) {
+		getInstance().customOrganizationStats( ajson );
+	}
+	
+	public void customOrganizationStats( JSONObject ajson ) {
+		
 	}
 }

@@ -79,21 +79,6 @@ public class EuscreenIndexHelper {
 		// get EuScreenid
 		String euScreenId = null;
 		Object field = doc.getFieldValue( "native_id_s" );
-		if( field != null ) {
-			euScreenId = field.toString();
-			// find production status from ItemMeta
-			String res = Meta.get( "ItemOnPortal["+euScreenId+"]");
-			if(! StringUtils.empty( res )) {
-				if("true".equals( res )) 
-					doc.addField( "production", "yes" );
-				else
-					doc.addField("production", "no");
-			} else {
-				// here is the default treatment
-				doc.addField( "production", "no" );
-				Meta.put( "ItemOnPortal["+euScreenId+"]", "false" );
-			}
-		}
 		addTags( doc );
 	}
 }

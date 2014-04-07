@@ -140,13 +140,13 @@ public class TransformationDetailsBean implements Comparable<TransformationDetai
 	@Override
 	public int compareTo(TransformationDetailsBean o) {
 		int result = 0 ;
-		if (this.organizationName.compareTo(o.getOrganizationName() )>0){
+		/*if (this.name.compareTo(o.getName() )>0){
 			result=1;
 		}
-		else if (this.organizationName.compareTo(o.getOrganizationName())<0){
+		else if (this.name.compareTo(o.getName())<0){
 			result=-1;
 		}
-		else if (this.organizationName.equals(o.getOrganizationName())){
+		else if (this.name.equals(o.getName())){*/
 			if (this.parentDataset.compareTo(o.getParentDataset()) > 0){
 				result=1 ;			
 			}
@@ -164,7 +164,7 @@ public class TransformationDetailsBean implements Comparable<TransformationDetai
 					result=0;
 				}
 			}
-		}
+		//}
 		
 		
 		return result;

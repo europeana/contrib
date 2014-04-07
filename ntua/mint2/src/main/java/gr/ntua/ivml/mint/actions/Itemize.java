@@ -1,11 +1,13 @@
 package gr.ntua.ivml.mint.actions;
 
+import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.concurrent.Itemizer;
 import gr.ntua.ivml.mint.concurrent.Queues;
+import gr.ntua.ivml.mint.concurrent.Solarizer;
+import gr.ntua.ivml.mint.concurrent.Queues.ConditionedRunnable;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Dataset;
-
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
@@ -54,10 +56,12 @@ public class Itemize extends GeneralAction {
 					du.setItemLabelXpath(du.getByPath(this.getItemLabel()));
 				if( this.getItemNativeId().length() > 0 )
 					du.setItemNativeIdXpath(du.getByPath(this.getItemNativeId()));
+				du.logEvent("Queued for itemization.");
 				
 				DB.commit();
 
 				Queues.queue(new Itemizer(du), "db");
+				
 			}
 		} catch( Exception e ) {
 			log.error( "Itemization error", e );

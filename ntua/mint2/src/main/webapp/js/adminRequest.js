@@ -154,6 +154,20 @@ function editUser(id){
 	  $K.kaiten('load',{kConnector:'html.page', url:'Management.action?uaction=edituser&id='+id, kTitle:'Edit user' });
 	
 }
+function becomeUser(id){
+	  var $p=$('div[id^="kp"]:first');
+	  $.ajax({
+		   	 url: "Management.action",
+		   	 type: "POST",
+		   	 data: "uaction=becomeuser&id="+id,
+		     error: function(){
+		   		alert("An error occured. Please try again.");
+		   		},
+		   	 success: function(response){
+		   	  $K.kaiten('reload',$p,{},false);
+		   	  }
+		 });
+}
 
 function checkOrg(adminorg){
 	

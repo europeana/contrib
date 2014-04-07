@@ -48,21 +48,44 @@
 </style>
 
 <script>
-	function recentMappings(container) {
+	function recentMappings() {
 		var recent = $("<div>");
 		
 		$.get("Recent", {
 			type: "mapping"
+		}, function(result) {			
+			if(result.mappings != undefined) {
+				recent.append($("<div>").addClass("summary").append($("<div>").addClass("label").text("Recent mappings")));
+				for(var i in result.mappings) {
+					var entry = result.mappings[i];
+					var div = kTemplater.jQuery('line.navigation', {
+						label : "Mapping: " + entry.mapping.name,
+						data : { kConnector:"html.page", url:"MappingOptions.action?uploadId=" + entry.dataset.dbID + "&selaction=editmaps&selectedMapping=" + entry.mapping.dbID, kTitle:"Mapping" }
+					}).css({ height: "50px" }).appendTo(recent);
+					div.append($("<div>").addClass("label").css({ top: "20px" }).text("Dataset: " + entry.dataset.name));
+				}
+			}
+		}, "json");
+		
+		return recent;
+	}
+	
+	function recentAnnotations() {
+		var recent = $("<div>");
+		
+		$.get("Recent", {
+			type: "annotation"
 		}, function(result) {
-			recent.append($("<div>").addClass("summary").append($("<div>").addClass("label").text("Recent mappings")));
+			recent.append($("<div>").addClass("summary").append($("<div>").addClass("label").text("Recent annotations")));
 			
-			if(result.mappings != undefined) for(var i in result.mappings) {
-				var entry = result.mappings[i];
-				var div = kTemplater.jQuery('line.navigation', {
-					label : "Mapping: " + entry.mapping.name,
-					data : { kConnector:"html.page", url:"MappingOptions.action?uploadId=" + entry.dataset.dbID + "&selaction=editmaps&selectedMapping=" + entry.mapping.dbID, kTitle:"Mapping" }
-				}).css({ height: "50px" }).appendTo(recent);
-				div.append($("<div>").addClass("label").css({ top: "20px" }).text("Dataset: " + entry.dataset.name));
+			if(result.annotations != undefined) {
+				for(var i in result.annotations) {
+					var entry = result.annotations[i];
+					var div = kTemplater.jQuery('line.navigation', {
+						label : "Dataset: " + entry.dataset.name,
+						data : { kConnector:"html.page", url:"Annotator.action?uploadId=" + entry.dataset.dbID, kTitle:"Annotation" }
+					}).appendTo(recent);
+				}
 			}
 		}, "json");
 		
@@ -128,14 +151,20 @@
 					}));
                 <%}%>                
                 
-                <%if(Config.getBoolean("mint.enableReports")){%>
-                <%if(user.hasRight(User.SUPER_USER) || Config.getBoolean("mint.enableGoalReports")){%>			
+                <%if(user.hasRight(User.SUPER_USER) || Config.getBoolean("mint.enableGoalReports", false)){%>			
 					$navBlock.append(kTemplater.jQuery('line.navigation', {
-						label : 'Data Report',
+						label : 'Data reports',
 						data : { kConnector:"html.page", url:"DataReport", kTitle:"Data Report" }
 					}));
 					<%}%>                    
-				<%}%>      
+	            
+	                <%if(user.hasRight(User.SUPER_USER) || Config.getBoolean("mint.enableGoalReports")){%>			
+						$navBlock.append(kTemplater.jQuery('line.navigation', {
+							label : 'Data statistics',
+							data : { kConnector:"html.page", url:"DataStatistics", kTitle:"Data Statistics" }
+						}));
+						<%}%>                    
+	           
 	           
 				this.kaiten('load', function(data, $panel, $kaiten){
 					$panel.kpanel('setTitle', 'MINT Home');							
@@ -164,6 +193,7 @@
 	$(document).ready(function () {
 		var nav = $(".block-nav");
 		nav.append(recentMappings());
+		nav.append(recentAnnotations());		
 	});
 </script>
 

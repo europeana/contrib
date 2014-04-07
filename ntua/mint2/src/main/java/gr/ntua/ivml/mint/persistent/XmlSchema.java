@@ -325,19 +325,17 @@ public class XmlSchema {
 	}
 
 	public Mappings getTemplate() {
-		if(this.getJsonTemplate() != null) {
+		if (this.getJsonTemplate() != null) {
 			try {
 				Mappings mappings = new Mappings(this.getJsonTemplate());
 				if(MappingConverter.upgradeToLatest(mappings)) {
 					this.setJsonTemplate(mappings.toString());
 				}
-				
 				return mappings;
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
-		
 		return null;
 	}	
 }

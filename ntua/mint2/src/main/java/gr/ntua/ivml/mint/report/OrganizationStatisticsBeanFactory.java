@@ -13,10 +13,12 @@ import net.sf.json.JSONObject;
 
 public class OrganizationStatisticsBeanFactory {
 
-	private DataUploadDetailsBeanFactory datauploadDetailsFactory;
-	private TransformationDetailsBeanFactory transformationDetailsBeanFactory;
-	private PublicationDetailsBeanFactory publicationDetailsBeanFactory;
-	private OrgOAIBeanFactory orgOaiBeanFactory;
+	DataUploadDetailsBeanFactory datauploadDetailsFactory;
+	TransformationDetailsBeanFactory transformationDetailsBeanFactory;
+	PublicationDetailsBeanFactory publicationDetailsBeanFactory;
+	OrgOAIBeanFactory orgOaiBeanFactory;
+
+
 
 	private Date startDate;
 	private Date endDate;
@@ -26,6 +28,11 @@ public class OrganizationStatisticsBeanFactory {
 
 		this.startDate = startDate;
 		this.endDate = endDate;
+		
+		this.datauploadDetailsFactory = new DataUploadDetailsBeanFactory(startDate, endDate);
+		this.transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(startDate, endDate);
+		this.publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(startDate, endDate);
+		this.orgOaiBeanFactory = new OrgOAIBeanFactory();
 	}
 
 	public Date getStartDate() {
@@ -58,69 +65,36 @@ public class OrganizationStatisticsBeanFactory {
 		JSONArray result = (JSONArray) json.get("result");
 
 		Iterator it = result.iterator();
+		int uploadedItems = 0;
+		int transformedItems = 0;
+		int publishedItems = 0 ;
+		int oaicommited = 0 ;
+		
 		while (it.hasNext()) {
 			JSONObject jsonObject = (JSONObject) it.next();
 			String organizationId = jsonObject.get("dbID").toString();
 			String name = jsonObject.get("englishName").toString();
-			if (name.equals("Old euscreen data")) continue;
 			String country = jsonObject.get("country").toString();
-			String publishAllowed = jsonObject.get("publishAllowed").toString();
-
-			this.populateFactories(organizationId);
-
-		//	List<DataUploadDetailsBean> uploadsbeanCollection = null;
-		//	uploadsbeanCollection = datauploadDetailsFactory.getUploads(organizationId);
-
-			List<TransformationDetailsBean> transformationsbeanCollection = null;
-			transformationsbeanCollection = transformationDetailsBeanFactory
-					.getTransformations(organizationId);
-
-			List<PublicationDetailsBean> publicationsbeanCollection = null;
-			publicationsbeanCollection = publicationDetailsBeanFactory
-					.getPublications(organizationId);
-
-		/*	Iterator ite = uploadsbeanCollection.iterator();
-			int uploadedItems = 0;
-			while (ite.hasNext()) {
-				DataUploadDetailsBean uploadbean = (DataUploadDetailsBean) ite
-						.next();
-				if (uploadbean.getItemCount() == -1) {
-					continue;
-				}
-				uploadedItems += uploadbean.getItemCount();
-			}
-*/
-			int uploadedItems = datauploadDetailsFactory.getUploadedItems(organizationId);
-			int transformedItems = transformationDetailsBeanFactory.getTransformedItems(organizationId);
-			int publishedItems = publicationDetailsBeanFactory.getPublishedItems(organizationId);
-			int oaicommited = orgOaiBeanFactory.getItemCount();
+		
+			 uploadedItems = 0;
+			 transformedItems = 0;
+			 publishedItems = 0 ;
+			 oaicommited = 0 ;
 			
-//			Iterator ite = transformationsbeanCollection.iterator();
-//			int transformedItems = 0;
-//			while (ite.hasNext()) {
-//				TransformationDetailsBean transformationbean = (TransformationDetailsBean) ite
-//						.next();
-//
-//				if (transformationbean.getValidItems() == -1) {
-//					continue;
-//				}
-//				transformedItems += transformationbean.getValidItems();
-//			}
-//
-//			ite = publicationsbeanCollection.iterator();
-//			int publishedItems = 0;
-//			while (ite.hasNext()) {
-//				PublicationDetailsBean publicationbean = (PublicationDetailsBean) ite
-//						.next();
-//				if (publicationbean.getItemCount() == -1) {
-//					continue;
-//				}
-//				publishedItems += publicationbean.getItemCount();
-//			}
+			
+			if (name.equals("NTUA"))
+				continue;
+			
+			if (name.equals("Old euscreen data")) continue;
 
-//			int numberofpublications = publicationsbeanCollection.size();
-//			int numberoftransformations = transformationsbeanCollection.size();
-//			int numberofuploads = uploadsbeanCollection.size();
+			 uploadedItems = datauploadDetailsFactory.getUploadedItems(organizationId);
+			
+			
+			 transformedItems = transformationDetailsBeanFactory.getTransformedItems(organizationId);
+			
+			 publishedItems = publicationDetailsBeanFactory.getPublishedItems(organizationId);
+			
+			 oaicommited = orgOaiBeanFactory.getItemCount(organizationId);
 
 
 			OrganizationStatisticsBean organizationStatisticsbean = new OrganizationStatisticsBean(
@@ -130,19 +104,9 @@ public class OrganizationStatisticsBeanFactory {
 			organizations.add(organizationStatisticsbean);
 		}
 
-		Collections.sort(organizations);
+		//Collections.sort(organizations);
 		return organizations;
 
-	}
-
-	protected void populateFactories(String organizationId) {
-		transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(
-				organizationId, startDate, endDate);
-		publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(
-				organizationId, startDate, endDate);
-		datauploadDetailsFactory = new DataUploadDetailsBeanFactory(
-				organizationId, startDate, endDate);
-		orgOaiBeanFactory = new OrgOAIBeanFactory(organizationId);
 	}
 
 }

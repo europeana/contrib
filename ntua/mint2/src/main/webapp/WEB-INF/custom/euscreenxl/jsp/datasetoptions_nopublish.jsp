@@ -1,5 +1,8 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-
+<%@ page import="gr.ntua.ivml.mint.persistent.Dataset" %>
+<%@ page import="java.util.*" %>
+<%@ page import="gr.ntua.ivml.mint.util.*" %>
+<%@ page import="com.opensymphony.xwork2.util.TextParseUtil" %>
 
 	<s:set var="portalSchema" value="@gr.ntua.ivml.mint.util.Config@get('euscreen.portal.schema')"/>
 	<s:set var="aggregateSchema" value="@gr.ntua.ivml.mint.util.Config@get('euscreen.aggregate.schema')"/>
@@ -27,31 +30,37 @@
 	</s:else>
 	</s:if>
 	<!--  if schema for euscreen is there, with valid items -->
-	<s:if test="current.getValidBySchemaName(#portalSchema)>0">
-	<s:if test="du.getBySchemaName(#portalSchema).isPublished()" >
+	<!--  The code here should be in a java class, but its specific to euscreen
+	      and its harder to make project specific view classes, than it is to make
+	      project specific jsp's  -->
+	<% 
+		Dataset ds = (Dataset) request.getAttribute( "du");
+		Set<String> schemas = TextParseUtil.commaDelimitedStringToSet(Config.get("euscreen.portal.schema"));
+		boolean published = false;
+		boolean hasValidItems = false;
+		for( String schema: schemas ) { 
+			Dataset publishedDs = ds.getBySchemaName( schema );
+			// only one should be in here
+			if( publishedDs != null ) {
+				published |= publishedDs.isPublished();
+				hasValidItems |= ( publishedDs.getValidItemCount() > 0 );
+			}
+		}
+		
+		if( hasValidItems ) {
+			if( published ) {			
+	%>
 	<div title="Unpublish from portal"
 	data-load='{"kConnector":"html.page", "url":"EuscreenPublish?cmd=portalUnpublish&datasetId=<s:property value='uploadId'/>", "kTitle":"Unpublish from Europeana" }'
 		class="items navigable">
 		<div class="label">Unpublish from Portal</div>
 	</div>
-	</s:if>
-	<s:else>
+	<% } else { %>
 	<div title="Publish to portal"
 	data-load='{"kConnector":"html.page", "url":"EuscreenPublish?cmd=portalPublish&datasetId=<s:property value='uploadId'/>", "kTitle":"Publish to Portal" }'
 		class="items navigable">
 		<div class="label">Publish to Portal</div>
 		<div class="tail"></div>
 	</div>
-	</s:else>
-	</s:if>
-	
-	<!--  link to modified item browser page, that allows to send and remove items from portal -->
-	<s:if test="current.getValidBySchemaName(#portalSchema)>0">
-	<div title="Portal status"
-	data-load='{"kConnector":"html.page", "url":"EuscreenPublish.action?cmd=portalState&datasetId=<s:property value='uploadId'/>", "kTitle":"Set portal visibility" }'
-		class="items navigable">
-		<div class="label">Items Portal status</div>
-		<div class="tail"></div>
-	</div>
-	</s:if>
+<% } } %>	
 		

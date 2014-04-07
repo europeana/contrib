@@ -58,19 +58,11 @@ MappingView.prototype.render = function() {
 				var element = groupAnn[i];	
 				xpath = element.xpath;
 				var label = element.label;
-				var showDuplicateWithNewValue = element.showDuplicateWithNewValue;
-				var showRemoveWithValue = element.showRemoveWithValue;
-				var showRemoveAll = element.showRemoveAll;
-				var showEditFunction = element.showEditFunction;
 				if (xpath != undefined && label != undefined) {
 					var viewElement = $("<div>").annotatorElement({
 						xpath: xpath,
 						editor: this.editor,
-						label: label,
-						showDuplicateWithNewValue: showDuplicateWithNewValue,
-						showRemoveWithValue: showRemoveWithValue,
-						showRemoveAll: showRemoveAll,
-						showEditFunction: showEditFunction
+						label: label
 					});
 					this.container.append(viewElement);
 				}	
@@ -88,7 +80,7 @@ MappingView.prototype.render = function() {
 			}, function(response) {
 				var id = response.id;
 				self.container.empty();
-				
+
 				if(response.results != undefined && response.results.length > 0) {
 					for(var i in response.results) {
 						var target = response.results[i].target;
@@ -113,12 +105,12 @@ MappingView.prototype.render = function() {
 				} else {
 					this.container.append(Mint2.message($("<span>No results found for xpath '<b>" + xpath + "</b>'</span>"), Mint2.WARNING));
 				}
-			} else if(type == "tabs") {
-				if(this.getView().contents != undefined) {
+			} else if (type == "tabs") {
+				if (this.getView().contents != undefined) {
 					var tabs = $("<div>");
 					var ul = $("<ul>").appendTo(tabs);
 	
-					for(var c in this.getView().contents) {
+					for (var c in this.getView().contents) {
 						var item = this.getView().contents[c];
 						var view = $("<div>").mappingView({
 							editor: self.settings.editor,
@@ -146,7 +138,7 @@ MappingView.prototype.render = function() {
 				} else {
 					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
 				}
-			} else if(type == "collection") {
+			} else if (type == "collection") {
 				var label = this.getLabel();
 				if(this.getView().contents != undefined) {
 					for(var c in this.getView().contents) {
@@ -161,9 +153,9 @@ MappingView.prototype.render = function() {
 				} else {
 					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have contents", Mint2.ERROR));			
 				}
-			} else if(type == "image") {
+			} else if (type == "image") {
 				var label = this.getLabel();
-				if(this.getView().xpath != undefined) {
+				if (this.getView().xpath != undefined) {
 					if(target["mapping-cases"] != undefined) {
 						console.log("image item:", target);
 						for(var i in target["mapping-cases"]) {
@@ -176,7 +168,7 @@ MappingView.prototype.render = function() {
 				} else {
 					this.container.append(Mint2.message("View with label '<b>" + label + "</b>' does not have xpath", Mint2.ERROR));			
 				}			
-			} else if(type == "table") {
+			} else if (type == "table") {
 				var label = this.getLabel();		
 				if(this.getView().contents != undefined) {
 					var array = [];

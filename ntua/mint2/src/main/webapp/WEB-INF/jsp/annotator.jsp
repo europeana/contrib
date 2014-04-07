@@ -1,11 +1,15 @@
+<%@ include file="_include.jsp"%>
+
 <script type="text/javascript"><!--
 	$(document).ready(function() {
 	    var annotatorPanel = $('div[id^="kp"]:last');
-		
+		var hideGroupAnnotator =
+		<%= Config.getBoolean("ui.hide.groupAnnotator")%>;//?"true":"false";%>
 		_annotator = new XMLAnnotator("annotator");
 		_annotator.init(
-			"<%= request.getAttribute("uploadId") %>"
-		);		
+			"<%= request.getAttribute("uploadId") %>",
+			hideGroupAnnotator
+		);	
 	});
 
 </script>

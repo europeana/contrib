@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.hibernate.FlushMode;
 
 @Results({
 	@Result(name="error", location="importsPanel.jsp"),
@@ -188,6 +189,7 @@ public class ImportsPanel extends GeneralAction{
 	
 
 	public List<Import> getImports() {
+		DB.getSession().setFlushMode(FlushMode.MANUAL);
 		List<Import> result = new ArrayList<Import>();
 		
 		if(this.getUserId()!=-1){

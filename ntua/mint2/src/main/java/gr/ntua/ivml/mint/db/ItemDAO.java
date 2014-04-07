@@ -58,6 +58,23 @@ public class ItemDAO extends DAO<Item, Long> {
 		return result;		
 	}
 	
+	/**
+	 * Under which schemas is this persistent id published? In which datasets
+	 * @param id
+	 * @return
+	 */
+	public List<Object[]> getIdPublished( String id) {
+		List<Object[]> published = getSession().createQuery( "select xs.name, ds from Item i, PublicationRecord pr " +
+				"join i.dataset as ds " +
+				"join ds.schema as xs " +
+				"where pr.publishedDataset = ds " +
+				"and pr.status = 'OK' " +
+				"and i.valid = true " +
+				"and i.persistentId = :id" )
+			.setString( "id", id )
+			.list();
+		return published;
+	}
 	
 	/**
 	 * Go over the item for the Dataset and apply operation.
@@ -74,6 +91,29 @@ public class ItemDAO extends DAO<Item, Long> {
 			onAllStateless(operation, cond);
 	}
 	
+	/**
+	 * Apply operation for each item in the id list, store all the changed items back into the db.
+	 * Keep caches clean and mem use low.
+	 * @param idList
+	 * @param operation
+	 * @throws Exception
+	 */
+	public void applyForIdList( List<Long> idList, ApplyI<Item> operation ) throws Exception {
+		// make id list string
+		if(( idList == null ) || idList.isEmpty()) return;
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for( Long id: idList ) {
+			if( !first ) {
+				sb.append( ", " );
+			} else {
+				first = false;
+			}
+			sb.append( id.toString());
+		}
+
+		onAll( operation, "dbID in (" + sb.toString()+")", true );
+	}
 	
 	
 	/**

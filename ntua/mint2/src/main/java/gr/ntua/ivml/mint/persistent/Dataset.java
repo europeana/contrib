@@ -808,6 +808,7 @@ public class Dataset implements Lockable, SecurityEnabled {
 		res.put("publishedItems",getPublishedItemCount());
 		res.put( "itemizerStatus", getItemizerStatus());
 		res.put( "lastModified",  StringUtils.isoTime(getLastModified()));
+		//res.put("publicationStatus", getPublicationStatus());
 		
 		JSONObject org = new JSONObject();
 		org.put( "dbID", getOrganization().getDbID());
