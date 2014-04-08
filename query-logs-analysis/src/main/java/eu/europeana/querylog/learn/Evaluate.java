@@ -101,14 +101,17 @@ public class Evaluate {
 	private int maxSteps = 100;
 
 	private Point maxValue;
-	private List<QueryAssessment> assessment;
-	private Measure measure;
-	private SolrResultsRetriever results;
+	private final List<QueryAssessment> assessment;
+	private final Measure measure;
+	private final SolrResultsRetriever results;
 	private BufferedWriter logFile;
-	
-	private final ProjectProperties properties = new ProjectProperties(Evaluate.class);
-	private final Random rng = new Random(properties.getInt("bm25f.learn.random.seed"));
-	private final ExecutorService pool = Executors.newFixedThreadPool(properties.getInt("bm25f.learn.concurrency")); 
+
+	private final ProjectProperties properties = new ProjectProperties(
+			Evaluate.class);
+	private final Random rng = new Random(
+			properties.getInt("bm25f.learn.random.seed"));
+	private final ExecutorService pool = Executors
+			.newFixedThreadPool(properties.getInt("bm25f.learn.concurrency"));
 
 	public Evaluate(File assessmentFolder, List<String> fields,
 			Measure measure, SolrResultsRetriever results) {
@@ -176,10 +179,10 @@ public class Evaluate {
 
 					return results.results(query, N);
 				}
-				
+
 			});
 		}
-		
+
 		List<Future<List<String>>> queriesResults = null;
 		try {
 			queriesResults = pool.invokeAll(tasks);
@@ -188,7 +191,7 @@ public class Evaluate {
 			e1.printStackTrace();
 			return 0;
 		}
-		
+
 		double totalScore = 0d;
 		int queries = 0;
 
@@ -211,7 +214,7 @@ public class Evaluate {
 		double avgScore = totalScore / queries;
 		logger.info(String.format("[%s] %s = %f", results.getName(),
 				measure.getName(), avgScore));
-		
+
 		return avgScore;
 	}
 
@@ -410,7 +413,7 @@ public class Evaluate {
 			direction[i] = bm25fParamsOpt[i] - bm25fParams[i];
 			norm += direction[i] * direction[i];
 		}
-		
+
 		while (norm == 0) {
 			// if norm is 0 then i'll move randomly
 			logger.info("norm is 0: moving randomly");
@@ -498,7 +501,7 @@ public class Evaluate {
 			}
 			i++;
 		}
-		
+
 		assert point != null;
 		return improved;
 
@@ -518,7 +521,7 @@ public class Evaluate {
 			direction[i] = increments[i] * val;
 		}
 	}
-	
+
 	/**
 	 * Performs the line search algorithm Returns a map with the best
 	 * combination of parameters
@@ -548,7 +551,8 @@ public class Evaluate {
 							+ UNSUCCESSFUL_UPDATES);
 				}
 				unsuccessfullUpdates = 0;
-				bm25fParams = Arrays.copyOf(maxValue.getPoint(), bm25fParams.length);
+				bm25fParams = Arrays.copyOf(maxValue.getPoint(),
+						bm25fParams.length);
 
 				steps++;
 				logger.info("step ={}/{}", steps, maxSteps);
@@ -564,7 +568,7 @@ public class Evaluate {
 		}
 		return paramsToXML();
 	}
-	
+
 	private String paramsToXML() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
@@ -591,66 +595,69 @@ public class Evaluate {
 		return sb.toString();
 	}
 
-	float[] doubleArrayToFloat(double[] array)
-	{
+	float[] doubleArrayToFloat(double[] array) {
 		float[] floatArray = new float[array.length];
-		for (int i = 0; i < array.length; ++i) floatArray[i] = (float)array[i];
+		for (int i = 0; i < array.length; ++i)
+			floatArray[i] = (float) array[i];
 		return floatArray;
 	}
-	
-	double[] floatArrayToDouble(float[] array)
-	{
+
+	double[] floatArrayToDouble(float[] array) {
 		double[] doubleArray = new double[array.length];
-		for (int i = 0; i < array.length; ++i) doubleArray[i] = (double)array[i];
+		for (int i = 0; i < array.length; ++i)
+			doubleArray[i] = array[i];
 		return doubleArray;
 	}
 
 	public String learningToRankWithCMAES() {
-		 final int dim = bm25fParams.length;
-		 int lambda = 4 + (int)(3. * Math.log(dim));
-		 int maxEvaluations = 1800;
-		 
-		 double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f, 0.25f));
-		
-		 CMAESOptimizer optim = new CMAESOptimizer(maxEvaluations / 10, 1.0, false, 0,
-                 10, new MersenneTwister(), true, 
-                 new ConvergenceChecker<PointValuePair>() {
+		final int dim = bm25fParams.length;
+		int lambda = 4 + (int) (3. * Math.log(dim));
+		int maxEvaluations = 20; // 1800;
+
+		double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f, 0.25f));
+
+		CMAESOptimizer optim = new CMAESOptimizer(maxEvaluations / 10, 1.0,
+				false, 0, 10, new MersenneTwister(), true,
+				new ConvergenceChecker<PointValuePair>() {
 					@Override
-					public boolean converged(int iteration, PointValuePair previous,
-							PointValuePair pv) {
-						
-						maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond().floatValue());
+					public boolean converged(int iteration,
+							PointValuePair previous, PointValuePair pv) {
+
+						maxValue = new Point(doubleArrayToFloat(pv.getFirst()),
+								pv.getSecond().floatValue());
 						writeLogFile();
 						logger.info("{}", maxValue);
 						return false;
 					}
-		 });
-		 
-		 PointValuePair pv = optim.optimize(new MaxEval(maxEvaluations),
-				 new ObjectiveFunction(new MultivariateFunction() {
+				});
+
+		PointValuePair pv = optim.optimize(new MaxEval(maxEvaluations),
+				new ObjectiveFunction(new MultivariateFunction() {
 
 					@Override
 					public double value(double[] point) {
 						return evaluateAssessments(doubleArrayToFloat(point));
 					}
-				}),
-				GoalType.MAXIMIZE,
-				new SimpleBounds(floatArrayToDouble(minValues), floatArrayToDouble(maxValues)),
-				new InitialGuess(floatArrayToDouble(bm25fParams)),
+				}), GoalType.MAXIMIZE, new SimpleBounds(
+						floatArrayToDouble(minValues),
+						floatArrayToDouble(maxValues)), new InitialGuess(
+						floatArrayToDouble(bm25fParams)),
 				new CMAESOptimizer.Sigma(inSigma),
-                new CMAESOptimizer.PopulationSize(lambda));
+				new CMAESOptimizer.PopulationSize(lambda));
 
-		maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond().floatValue());
+		maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond()
+				.floatValue());
 		writeLogFile();
+		logger.info("final value: \n{}", maxValue);
 		return paramsToXML();
 	}
-	
+
 	private Point getRandomPoint() {
 		float[] newPoint = new float[nFields * 2 + 1];
 		for (int i = 0; i < newPoint.length; i++) {
 			double start = minValues[i];
 			double end = maxValues[i];
-			newPoint[i] = (float)(start + (end - start) * rng.nextDouble());
+			newPoint[i] = (float) (start + (end - start) * rng.nextDouble());
 		}
 		return new Point(newPoint);
 	}

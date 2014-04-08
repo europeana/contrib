@@ -70,7 +70,8 @@ import eu.europeana.querylog.learn.query.BM25FSolrResults;
  * 
  *         Created on Feb 1, 2014
  */
-public class LearnBM25FParametersWithCMAESCLI extends AbstractCommandLineInterface {
+public class LearnBM25FParametersWithCMAESCLI extends
+		AbstractCommandLineInterface {
 
 	private static String[] params = new String[] { "goldentruth", "measure",
 			"log" };
@@ -87,7 +88,8 @@ public class LearnBM25FParametersWithCMAESCLI extends AbstractCommandLineInterfa
 	}
 
 	public static void main(String[] args) {
-		LearnBM25FParametersWithCMAESCLI cli = new LearnBM25FParametersWithCMAESCLI(args);
+		LearnBM25FParametersWithCMAESCLI cli = new LearnBM25FParametersWithCMAESCLI(
+				args);
 		File assessmentFolder = new File(cli.getParam("goldentruth"));
 		String[] fields = properties.get("bm25f.fields").split(",");
 		Measure m = MeasureFactory.getMeasure(cli.getParam("measure"));
@@ -95,6 +97,8 @@ public class LearnBM25FParametersWithCMAESCLI extends AbstractCommandLineInterfa
 		Evaluate evaluate = new Evaluate(assessmentFolder,
 				Arrays.asList(fields), m, new BM25FSolrResults());
 		evaluate.setLog(cli.getParam("log"));
-		evaluate.learningToRankWithCMAES();
+		String snippet = evaluate.learningToRankWithCMAES();
+		logger.info("learning finished, copy and paste the final values in solrconfig");
+		System.out.println(snippet);
 	}
 }

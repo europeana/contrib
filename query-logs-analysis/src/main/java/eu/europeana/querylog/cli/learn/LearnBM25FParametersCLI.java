@@ -95,6 +95,9 @@ public class LearnBM25FParametersCLI extends AbstractCommandLineInterface {
 		Evaluate evaluate = new Evaluate(assessmentFolder,
 				Arrays.asList(fields), m, new BM25FSolrResults());
 		evaluate.setLog(cli.getParam("log"));
-		evaluate.learningToRank();
+		String snippet = evaluate.learningToRank();
+		logger.info("learning finished, copy and paste the final values in solrconfig");
+		System.out.println(snippet);
+
 	}
 }
