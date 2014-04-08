@@ -110,8 +110,7 @@ public class Evaluate {
 			Evaluate.class);
 	private final Random rng = new Random(
 			properties.getInt("bm25f.learn.random.seed"));
-	private final ExecutorService pool = Executors
-			.newFixedThreadPool(properties.getInt("bm25f.learn.concurrency"));
+	private ExecutorService pool = null;
 
 	public Evaluate(File assessmentFolder, List<String> fields,
 			Measure measure, SolrResultsRetriever results) {
@@ -527,46 +526,53 @@ public class Evaluate {
 	 * combination of parameters
 	 */
 	public String learningToRank() {
-		maxValue = new Point(bm25fParams, evaluateAssessments(bm25fParams));
-		int unsuccessfullUpdates = 0;
-		int randomJumps = 0;
-		int steps = 0;
-		logger.info("starting learning to rank");
-		while (randomJumps < RANDOM_JUMPS && steps < maxSteps) {
-			Point r = getRandomPoint();
-			bm25fParams = r.getPoint();
+		pool = Executors.newFixedThreadPool(properties
+				.getInt("bm25f.learn.concurrency"));
+		try {
+			maxValue = new Point(bm25fParams, evaluateAssessments(bm25fParams));
+			int unsuccessfullUpdates = 0;
+			int randomJumps = 0;
+			int steps = 0;
+			logger.info("starting learning to rank");
+			while (randomJumps < RANDOM_JUMPS && steps < maxSteps) {
+				Point r = getRandomPoint();
+				bm25fParams = r.getPoint();
 
-			while (unsuccessfullUpdates < UNSUCCESSFUL_UPDATES) {
-				findBestValueForEachParameter();
+				while (unsuccessfullUpdates < UNSUCCESSFUL_UPDATES) {
+					findBestValueForEachParameter();
 
-				float[] direction = computeDirection();
-				boolean improved = findOptimumOnTheLine(direction);
-				if (improved) {
+					float[] direction = computeDirection();
+					boolean improved = findOptimumOnTheLine(direction);
+					if (improved) {
+						unsuccessfullUpdates = 0;
+						logger.info("max point found  = " + maxValue);
+					} else {
+						unsuccessfullUpdates++;
+						logger.info("unsuccessful updates \t ="
+								+ unsuccessfullUpdates + " / "
+								+ UNSUCCESSFUL_UPDATES);
+					}
 					unsuccessfullUpdates = 0;
-					logger.info("max point found  = " + maxValue);
-				} else {
-					unsuccessfullUpdates++;
-					logger.info("unsuccessful updates \t ="
-							+ unsuccessfullUpdates + " / "
-							+ UNSUCCESSFUL_UPDATES);
+					bm25fParams = Arrays.copyOf(maxValue.getPoint(),
+							bm25fParams.length);
+
+					steps++;
+					logger.info("step ={}/{}", steps, maxSteps);
+					if (steps >= maxSteps)
+						break;
+
 				}
-				unsuccessfullUpdates = 0;
-				bm25fParams = Arrays.copyOf(maxValue.getPoint(),
-						bm25fParams.length);
-
-				steps++;
-				logger.info("step ={}/{}", steps, maxSteps);
-				if (steps >= maxSteps)
-					break;
-
+				logger.info("best configuration = {}", maxValue);
+				randomJumps++;
+				logger.info(
+						"Restart from a random configuration ( attempt {}/{}) ",
+						randomJumps, RANDOM_JUMPS);
 			}
-			logger.info("best configuration = {}", maxValue);
-			randomJumps++;
-			logger.info(
-					"Restart from a random configuration ( attempt {}/{}) ",
-					randomJumps, RANDOM_JUMPS);
+			return paramsToXML();
+		} finally {
+			pool.shutdown();
+			pool = null;
 		}
-		return paramsToXML();
 	}
 
 	private String paramsToXML() {
@@ -610,46 +616,56 @@ public class Evaluate {
 	}
 
 	public String learningToRankWithCMAES() {
-		final int dim = bm25fParams.length;
-		int lambda = 4 + (int) (3. * Math.log(dim));
-		int maxEvaluations = 20; // 1800;
+		pool = Executors.newFixedThreadPool(properties
+				.getInt("bm25f.learn.concurrency"));
+		try {
+			final int dim = bm25fParams.length;
+			int lambda = 4 + (int) (3. * Math.log(dim));
+			int maxEvaluations = 20; // 1800;
 
-		double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f, 0.25f));
+			double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f,
+					0.25f));
 
-		CMAESOptimizer optim = new CMAESOptimizer(maxEvaluations / 10, 1.0,
-				false, 0, 10, new MersenneTwister(), true,
-				new ConvergenceChecker<PointValuePair>() {
-					@Override
-					public boolean converged(int iteration,
-							PointValuePair previous, PointValuePair pv) {
+			CMAESOptimizer optim = new CMAESOptimizer(maxEvaluations / 10, 1.0,
+					false, 0, 10, new MersenneTwister(), true,
+					new ConvergenceChecker<PointValuePair>() {
+						@Override
+						public boolean converged(int iteration,
+								PointValuePair previous, PointValuePair pv) {
 
-						maxValue = new Point(doubleArrayToFloat(pv.getFirst()),
-								pv.getSecond().floatValue());
-						writeLogFile();
-						logger.info("{}", maxValue);
-						return false;
-					}
-				});
+							maxValue = new Point(
+									doubleArrayToFloat(pv.getFirst()), pv
+											.getSecond().floatValue());
+							writeLogFile();
+							logger.info("{}", maxValue);
+							return false;
+						}
+					});
 
-		PointValuePair pv = optim.optimize(new MaxEval(maxEvaluations),
-				new ObjectiveFunction(new MultivariateFunction() {
+			PointValuePair pv = optim.optimize(
+					new MaxEval(maxEvaluations),
+					new ObjectiveFunction(new MultivariateFunction() {
 
-					@Override
-					public double value(double[] point) {
-						return evaluateAssessments(doubleArrayToFloat(point));
-					}
-				}), GoalType.MAXIMIZE, new SimpleBounds(
-						floatArrayToDouble(minValues),
-						floatArrayToDouble(maxValues)), new InitialGuess(
-						floatArrayToDouble(bm25fParams)),
-				new CMAESOptimizer.Sigma(inSigma),
-				new CMAESOptimizer.PopulationSize(lambda));
+						@Override
+						public double value(double[] point) {
+							return evaluateAssessments(doubleArrayToFloat(point));
+						}
+					}), GoalType.MAXIMIZE, new SimpleBounds(
+							floatArrayToDouble(minValues),
+							floatArrayToDouble(maxValues)), new InitialGuess(
+							floatArrayToDouble(bm25fParams)),
+					new CMAESOptimizer.Sigma(inSigma),
+					new CMAESOptimizer.PopulationSize(lambda));
 
-		maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv.getSecond()
-				.floatValue());
-		writeLogFile();
-		logger.info("final value: \n{}", maxValue);
-		return paramsToXML();
+			maxValue = new Point(doubleArrayToFloat(pv.getFirst()), pv
+					.getSecond().floatValue());
+			writeLogFile();
+			logger.info("final value: \n{}", maxValue);
+			return paramsToXML();
+		} finally {
+			pool.shutdown();
+			pool = null;
+		}
 	}
 
 	private Point getRandomPoint() {
