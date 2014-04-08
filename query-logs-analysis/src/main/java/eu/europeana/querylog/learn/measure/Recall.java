@@ -56,10 +56,13 @@ public class Recall extends AbstractMeasure implements Measure {
 	@Override
 	public double match(List<String> results, QueryAssessment assessment) {
 		Set<String> relevant = new HashSet<String>();
+
 		for (RelevantDocument rd : assessment.getAssessment()) {
 			relevant.add(rd.getUri());
 
 		}
+		if (relevant.isEmpty())
+			return 0;
 		int tp = truePositive(results, relevant);
 		return (double) tp / (double) relevant.size();
 	}

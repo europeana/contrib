@@ -61,6 +61,8 @@ public class Precision extends AbstractMeasure implements Measure {
 
 		}
 		int tp = truePositive(results, relevant);
+		if (results.isEmpty())
+			return 0;
 		return (double) tp / (double) results.size();
 	}
 
