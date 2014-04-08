@@ -100,6 +100,8 @@ public class Evaluate {
 	private final int RANDOM_JUMPS = 10;
 	private int maxSteps = 100;
 
+	private long startTime;
+
 	private Point maxValue;
 	private final List<QueryAssessment> assessment;
 	private final Measure measure;
@@ -347,31 +349,10 @@ public class Evaluate {
 	private void writeLogFile() {
 		if (logFile == null)
 			return;
-		StringBuilder sb = new StringBuilder();
-		sb.append("max point found: ").append(measure.getName()).append(" = ")
-				.append(maxValue.getScore()).append('\n').append('\n');
-		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
-				.append("</float> \n");
-		sb.append("<lst name=\"fieldsBoost\">\n");
-		int i = 0;
-		for (String f : fields) {
-			sb.append("\t<float name=\"").append(f).append("\"> ");
-			sb.append(getBoosts(maxValue.getPoint())[i]);
-			i++;
-			sb.append("</float>\n");
-		}
-		sb.append("</lst>\n");
-		i = 0;
-		sb.append("<lst name=\"fieldsB\">\n");
-		for (String f : fields) {
-			sb.append("\t<float name=\"").append(f).append("\"> ");
-			sb.append(getBParams(maxValue.getPoint())[i]);
-			i++;
-			sb.append("</float>\n");
-		}
-		sb.append("</lst>\n\n");
+
+		String s = paramsToXML();
 		try {
-			logFile.write(sb.toString());
+			logFile.write(s);
 			logFile.flush();
 		} catch (IOException e) {
 			logger.error("writing the log: ");
@@ -526,6 +507,7 @@ public class Evaluate {
 	 * combination of parameters
 	 */
 	public String learningToRank() {
+		startTime = System.currentTimeMillis();
 		pool = Executors.newFixedThreadPool(properties
 				.getInt("bm25f.learn.concurrency"));
 		try {
@@ -577,6 +559,9 @@ public class Evaluate {
 
 	private String paramsToXML() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("# %f %f\n",
+				(System.currentTimeMillis() - startTime) / 1000.,
+				maxValue.value));
 		sb.append("<float name=\"k1\">").append(getK1(maxValue.getPoint()))
 				.append("</float> \n");
 		sb.append("<lst name=\"fieldsBoost\">\n");
@@ -597,7 +582,7 @@ public class Evaluate {
 			sb.append("</float>\n");
 		}
 		sb.append("</lst>\n");
-		writeLogFile();
+
 		return sb.toString();
 	}
 
@@ -616,12 +601,13 @@ public class Evaluate {
 	}
 
 	public String learningToRankWithCMAES() {
+		startTime = System.currentTimeMillis();
 		pool = Executors.newFixedThreadPool(properties
 				.getInt("bm25f.learn.concurrency"));
 		try {
 			final int dim = bm25fParams.length;
 			int lambda = 4 + (int) (3. * Math.log(dim));
-			int maxEvaluations = 20; // 1800;
+			int maxEvaluations = 1800;
 
 			double[] inSigma = floatArrayToDouble(getParamsVector(0.5f, 0.5f,
 					0.25f));
