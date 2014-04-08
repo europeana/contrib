@@ -1,6 +1,7 @@
 package gr.ntua.ivml.mint.mapping;
 
 import gr.ntua.ivml.mint.mapping.model.Element;
+import gr.ntua.ivml.mint.mapping.model.MappingCase;
 import gr.ntua.ivml.mint.mapping.model.Mappings;
 import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
 
@@ -44,6 +45,45 @@ public class MappingSummary {
 				
 		for(Element child: element.getChildrenAndAttributes()) {
 			values.putAll(MappingSummary.getAllMappingsOfType(child, type));
+		}
+		
+		return values;
+	}
+	
+	public static HashMap<String, String> getMapped(Mappings mappings) {
+		Element template = mappings.getTemplate();
+		
+		if(template != null) {
+			return getMapped(template); 
+		}
+		
+		return new HashMap<String, String>();
+	}
+	
+	/**
+	 * Get recursively all mapping values of xpath type, including mappings of structural
+	 */
+	public static HashMap<String, String> getMapped(Element element) {
+		HashMap<String, String> values = new HashMap<String, String>();
+
+		ArrayList<SimpleMapping> mappings = element.getAllMappings(SimpleMapping.MAPPING_TYPE_XPATH);
+		for(SimpleMapping mapping: mappings) {
+			String value = mapping.getValue();
+			if(value != null) 
+				values.put(value, element.getId());
+		}
+		if (element.isStructural()) {
+			MappingCase mc = element.getStructural();
+			if (mc != null) {
+				for (SimpleMapping m: mc.getMappings()) {
+					String value = m.getValue();
+					if(value != null) 
+						values.put(value, element.getId());
+				}
+			}
+		}
+		for(Element child: element.getChildrenAndAttributes()) {
+			values.putAll(MappingSummary.getMapped(child));
 		}
 		
 		return values;

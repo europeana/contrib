@@ -8,6 +8,10 @@ import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.JSONUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -705,9 +709,8 @@ public abstract class AbstractMappingManager {
 		
 		Mappings mappings = new Mappings(this.getTargetDefinition());
 		if(mappings != null) {
-			map = MappingSummary.getAllMappingsOfType(mappings, SimpleMapping.MAPPING_TYPE_XPATH);
+			map = MappingSummary.getMapped(mappings);
 		}
-
 		return map; 
 	}
 	
