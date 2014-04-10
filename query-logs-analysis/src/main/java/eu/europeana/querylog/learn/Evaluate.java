@@ -49,7 +49,6 @@ import org.slf4j.LoggerFactory;
 import eu.europeana.querylog.QueryAssessment;
 import eu.europeana.querylog.QueryAssessmentReader;
 import eu.europeana.querylog.learn.measure.Measure;
-import eu.europeana.querylog.learn.measure.MeasureFactory;
 import eu.europeana.querylog.learn.measure.Recall;
 import eu.europeana.querylog.learn.measure.filter.TopKFilter;
 import eu.europeana.querylog.learn.query.BM25FSolrResults;
@@ -59,23 +58,10 @@ import eu.europeana.querylog.learn.query.SolrResultsRetriever;
 /**
  * 
  * Evaluate finds the best parameter set for BM25F using the <i>line search</i>
- * algorithm. The algorithm works as follows. Given an initial point in the
- * parameter space, a search along each coordinate axis is performed by varying
- * one parameter only and keeping fixed the others. For each sample point, a
- * given performance measure is computed, and the location corresponding to the
- * best value of the measure is recorded. Such location identifies a promising
- * search direction. Therefore, a line search is performed along the direction
- * from the starting point to the best score location. If the parameter space
- * has dimension k, we need to perform k+1 line searches to complete an
- * iteration, or epoch, and possibly move to an improved solution. The new
- * solution is then used as the starting point of the next iteration. This
- * iterative process continues until no improvement is found, or a maximum
- * number of epochs is reached.
- * 
- * For the available performance measures, please refer to
- * {@link MeasureFactory}
+ * algorithm, or CMA-ES algorithms.
  * 
  * @see research.microsoft.com/apps/pubs/default.aspx?id=65237
+ * @see http://en.wikipedia.org/wiki/CMA-ES
  * 
  * @author diego.ceccarelli@isti.cnr.it
  * 
@@ -600,6 +586,9 @@ public class Evaluate {
 		return doubleArray;
 	}
 
+	/**
+	 * Performs the CMA learning algorithm.
+	 */
 	public String learningToRankWithCMAES() {
 		startTime = System.currentTimeMillis();
 		pool = Executors.newFixedThreadPool(properties

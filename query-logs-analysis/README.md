@@ -100,14 +100,22 @@ Once you set up the cores, you will have to edit the `project.properties` file t
 bm25f ranking (that should correspond to the ones set in the solr parser plugin). Fields must be inserted in the field `bm25f.fields`, separated
 by a comma. 
 
-You'll be able to run the learning by running: 
+We provided two different algorithms to perform the learning: 
 
-	scripts/learn-bm25f-params.sh assessment-dir measure-to-optimize[bNDCG@24,NDCG@24,P@24,R@24] log-file
-
-where `assessment-dir` is a directory containing the one or several goldentruth files, `measure-to-optmize` is the measure to 
+   * **Line Search**, that starting from an initial point in the parameter space, performs a search along each coordinate axis varying one parameter only and keeping fixed the others. For each sample point, a given performance measure is computed, and the location corresponding to the best value of the measure is recorded. Such location identifies a promising search direction. Therefore, a line search is performed along the direction from the starting point to the best score location. If the parameter space has dimension k, we need to perform k+1 line searches to complete an iteration, or epoch, and possibly move to an improved solution. The new solution is then used as the starting point of the next iteration. This iterative process continues until no improvement is found, or a maximum number of epochs is reached (for more details see [this paper](research.microsoft.com/apps/pubs/default.aspx?id=65237) ). You can start this learning strategy with the command: 
+   
+    	scripts/learn-bm25f-params-linesearch.sh assessment-dir measure-to-optimize[bNDCG@24,NDCG@24,P@24,R@24] log-file    
+ 
+   * **CMA-ES** stands for Covariance Matrix Adaptation Evolution Strategy. Evolution strategies (ES) are stochastic, derivative-free methods for numerical optimization of non-linear or non-convex continuous optimization problems. They belong to the class of evolutionary algorithms and evolutionary computation (for more details see [this article](http://en.wikipedia.org/wiki/CMA-ES)).  You can start this learning strategy with the command: 
+   
+		scripts/learn-bm25f-params-cma.sh assessment-dir measure-to-optimize[bNDCG@24,NDCG@24,P@24,R@24] log-file    
+   
+ 
+where in both the commands `assessment-dir` is a directory containing the one or several goldentruth files, `measure-to-optmize` is the measure to 
 optimize for learning the parameters, we usually used bNDCG@24 (since Europeana usually displays  24 documents). `log-file` is 
 a file where the best values for the parameters will be stored, ready to be copypasted in solr config (the last record in the file will be 
 always the best). 
+
 
 
 
