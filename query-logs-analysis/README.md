@@ -116,7 +116,24 @@ optimize for learning the parameters, we usually used bNDCG@24 (since Europeana 
 a file where the best values for the parameters will be stored, ready to be copypasted in solr config (the last record in the file will be 
 always the best). 
 
+#### Some results
 
+Using an assessment composed by 640 queries: 
+
+  * Europeana-ranking: P@24 = 0.075574
+  * BM25F (CMA): P@24 = 0.083130 (+10%)
+  
+  * score europeana > bm25f  75 queries
+  * score bm25f > europeana 103 queries
+  * same score on 462 queries
+  
+  * in 284 queries bm25f has at least one relevant result in the first page. 
+  * in 276 queries europeana has at least one relevant result in the first page.
+ 
+ 
+ Learning progress:  
+ 
+ ![Learning](https://dl.dropboxusercontent.com/u/4663256/tmp/learning.png)
 
 
 
