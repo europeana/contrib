@@ -136,8 +136,8 @@ Using an assessment composed by 640 queries:
 ![learning](https://dl.dropboxusercontent.com/u/4663256/tmp/learning.png) 
 
 The x-axis represents time in seconds while, y-axis represents the precision over the first 24 results (number of relevant results / retrieved results, averaged over all the queries in the assessment).
-Both the methods converge in around 1 hour. 
-
+Red line represents how the learning based on CMA-ES evolves over the time, while blue represents the line search learning (Both the methods converge in around 1 hour). The dashed line represents the results obtained by the current 
+ranking function used by Europeana. 
 
 
 
