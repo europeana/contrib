@@ -29,15 +29,23 @@ def plot_convergence(ax, curves):
 
 
 def plot_convergence_envelope(ax, curves):
+    from matplotlib import ticker
+
     max_x = max(curve[-1, 0] for curve, _ in curves)
 
     for curve, label in curves:
         cx = np.hstack([curve[:, 0], max_x])
         cy = np.hstack([curve[:, 1], 0])
-        ax.plot(cx, np.maximum.accumulate(cy), label=label)
+
+        ls = '-'
+        if label == 'Baseline':
+            ls = '--'
+
+        ax.plot(cx, np.maximum.accumulate(cy), label=label, ls=ls)
 
     ax.legend(loc=4)
 
+    ax.yaxis.set_minor_locator(ticker.AutoMinorLocator())
     ax.grid(True, 'major', color='w', linestyle='-', linewidth=0.7)
     ax.grid(True, 'minor', color='0.95', linestyle='-', linewidth=0.2)
 
@@ -65,10 +73,12 @@ def plot_logs(*logs_with_labels):
                                               for ll in logs_with_labels)]
 
     plot_convergence(fig.gca(), curves)
+    fig.set_size_inches(6, 4)
     fig.savefig('convergence.pdf', bbox_inches='tight')
 
     fig = figure()
     plot_convergence_envelope(fig.gca(), curves)
+    fig.set_size_inches(6, 4)
     fig.savefig('convergence_envelope.pdf', bbox_inches='tight')
 
 
