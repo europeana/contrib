@@ -131,9 +131,12 @@ Using an assessment composed by 640 queries:
   * in 276 queries europeana has at least one relevant result in the first page.
  
  
-##### Learning progress:  
+#### Learning progress:  
  
 ![learning](https://dl.dropboxusercontent.com/u/4663256/tmp/learning.png) 
+
+The x-axis represents time in seconds while, y-axis represents the precision over the first 24 results (number of relevant results / retrieved results, averaged over all the queries in the assessment).
+Both the methods converge in around 1 hour. 
 
 
 
