@@ -133,7 +133,7 @@ Using an assessment composed by 640 queries:
  
 ##### Learning progress:  
  
-<img width="300" height="300" src="https://dl.dropboxusercontent.com/u/4663256/tmp/learning.png" /> 
+![learning](https://dl.dropboxusercontent.com/u/4663256/tmp/learning.png) 
 
 
 
