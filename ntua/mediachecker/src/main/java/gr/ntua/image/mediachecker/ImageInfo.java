@@ -1,9 +1,9 @@
 package gr.ntua.image.mediachecker;
 
-public class ImageInfo {
+public final class ImageInfo {
 
-	protected int _Width, _Height;
-	protected String _MimeType, _FileFormat, _ColorSpace;
+	protected final int _Width, _Height;
+	protected final String _MimeType, _FileFormat, _ColorSpace;
 
 	public ImageInfo(int width, int height, String mimeType, String fileFormat, String colorSpace) {
 		_Width      = width;

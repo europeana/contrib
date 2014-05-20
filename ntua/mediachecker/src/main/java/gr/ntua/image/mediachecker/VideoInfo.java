@@ -1,11 +1,11 @@
 package gr.ntua.image.mediachecker;
 
-public class VideoInfo {
+public final class VideoInfo {
 
-	protected int _Width, _Height;
-	protected long _Duration;
-	protected String _MimeType, _FileFormat;
-	protected double _FrameRate;
+	protected final int _Width, _Height;
+	protected final long _Duration;
+	protected final String _MimeType, _FileFormat;
+	protected final double _FrameRate;
 
 	public VideoInfo(int width, int height, String mimetype, String fileFormat, long duration, double framerate) {
 		_Width      = width;
@@ -13,6 +13,7 @@ public class VideoInfo {
 		_MimeType   = mimetype;
 		_FileFormat = fileFormat;
 		_Duration   = duration;
+		_FrameRate  = framerate;
 	}
 
 	public int getWidth() {

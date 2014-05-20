@@ -1,9 +1,9 @@
 package gr.ntua.image.mediachecker;
 
-public class AudioInfo {
-	protected int _SampleRate, _BitRate;
-	protected long _Duration;
-	protected String _MimeType, _FileFormat;
+public final class AudioInfo {
+	protected final int _SampleRate, _BitRate;
+	protected final long _Duration;
+	protected final String _MimeType, _FileFormat;
 
 	public AudioInfo(String mimeType, String fileFormat, long duration, int sampleRate, int bitRate) {
 		_SampleRate = sampleRate;
