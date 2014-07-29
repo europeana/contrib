@@ -172,6 +172,13 @@ public class SimpleCollectionTest {
 
 	}
 
+	@Test
+	public void testOR() throws SolrServerException {
+		SolrDocumentList results = getResults("picasso OR test");
+		assertEquals(2, results.size());
+
+	}
+
 	// <float name="k1">18.0</float>
 	//
 	// <lst name="fieldsBoost">

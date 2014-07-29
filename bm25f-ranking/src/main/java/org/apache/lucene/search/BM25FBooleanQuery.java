@@ -232,6 +232,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			Set<Term> terms = new HashSet<Term>();
 			for (int i = 0; i < clauses.size(); i++) {
 				BooleanClause c = clauses.get(i);
+
 				terms.clear();
 				c.getQuery().extractTerms(terms);
 				assert terms.size() == 1;

@@ -19,6 +19,7 @@ package eu.europeana.ranking.bm25f;
 import java.util.Scanner;
 
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BM25FBooleanQuery;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -80,6 +81,8 @@ public class BM25FQueryParser extends QParser {
 			param = bm25fparams;
 
 		SolrQueryParser parser = new SolrQueryParser(this, mainField);
+		parser.setDefaultOperator(Operator.AND);
+
 		Query q = parser.parse(qstr);
 		// if (q instanceof DisjunctionMaxQuery ){
 		// return new BM25FQuery((DisjunctionMaxQuery)q);
@@ -89,6 +92,10 @@ public class BM25FQueryParser extends QParser {
 
 			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(param);
 			for (BooleanClause clause : bq) {
+				Occur occur = clause.getOccur();
+				if (occur == Occur.SHOULD) {
+					return bq;
+				}
 				bm25fQuery.add(clause);
 			}
 			return bm25fQuery;
