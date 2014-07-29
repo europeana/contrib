@@ -713,7 +713,7 @@ public class Evaluate {
 			bParamsSB.setLength(bParamsSB.length() - 1);
 			boostsSB.setLength(boostsSB.length() - 1);
 			return "[k1=" + k1 + ", boosts=[" + boostsSB.toString()
-					+ "], bParams=[" + bParamsSB.toString() + "]  ndcg="
+					+ "], bParams=[" + bParamsSB.toString() + "]  performance="
 					+ value + "]";
 
 		}
