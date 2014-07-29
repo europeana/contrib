@@ -179,6 +179,13 @@ public class SimpleCollectionTest {
 
 	}
 
+	@Test
+	public void testFieldQuery() throws SolrServerException {
+		SolrDocumentList results = getResults("description:leonardo description:vinci");
+		assertEquals(1, results.size());
+
+	}
+
 	// <float name="k1">18.0</float>
 	//
 	// <lst name="fieldsBoost">

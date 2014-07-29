@@ -54,11 +54,12 @@ public class BM25FBooleanTermQuery extends Query {
 		private final Similarity similarity;
 		private final Similarity.SimWeight[] stats;
 		private final TermContext termStates;
-		private final TermContext[] fieldTermStates;
 		float idf;
 		public float k1;
 		private final String[] fields;
 		private final BM25FParameters bm25fParams;
+		private final String defaultField;
+		private final int field = -1;
 
 		protected float idf(long docFreq, long numDocs) {
 			return (float) Math.log(1 + (numDocs - docFreq + 0.5D)
@@ -70,6 +71,7 @@ public class BM25FBooleanTermQuery extends Query {
 				throws IOException {
 			assert termStates != null : "TermContext must not be null";
 			this.bm25fParams = bm25fParams;
+			this.defaultField = bm25fParams.getMainField();
 			this.termStates = termStates;
 
 			this.similarity = searcher.getSimilarity();
@@ -78,20 +80,38 @@ public class BM25FBooleanTermQuery extends Query {
 				((BM25FSimilarity) this.similarity).setBM25FParams(bm25fParams);
 			}
 
-			this.fieldTermStates = fieldTermStates;
 			this.k1 = bm25fParams.getK1();
 			this.fields = bm25fParams.getFields();
 
-			this.stats = new Similarity.SimWeight[fields.length];
-			for (int i = 0; i < fields.length; i++) {
-				Term fieldTerm = new Term(fields[i], term.text());
+			String termField = term.field();
+			if (termField.equals(defaultField)) {
+				this.stats = new Similarity.SimWeight[fields.length];
+				for (int i = 0; i < fields.length; i++) {
+					Term fieldTerm = new Term(fields[i], term.text());
+					// getBoosts is not used
+					this.stats[i] = similarity.computeWeight(0, searcher
+							.collectionStatistics(fieldTerm.field()), searcher
+							.termStatistics(fieldTerm, fieldTermStates[i]));
+				}
+			} else {
+				int fieldPos = 0;
+				for (int i = 0; i < fields.length; i++) {
+					if (fields[i].equals(termField))
+						fieldPos = i;
+					break;
+				}
+
+				Term fieldTerm = new Term(fields[fieldPos], term.text());
 				// getBoosts is not used
-				this.stats[i] = similarity.computeWeight(0,
-						searcher.collectionStatistics(fieldTerm.field()),
-						searcher.termStatistics(fieldTerm, fieldTermStates[i]));
+				this.stats = new Similarity.SimWeight[1];
+				this.stats[0] = similarity.computeWeight(0, searcher
+						.collectionStatistics(fieldTerm.field()), searcher
+						.termStatistics(fieldTerm, fieldTermStates[fieldPos]));
+
 			}
+
 			// System.out.println("term field is " + term.field());
-			Term fieldTerm = new Term(term.text(), term.field());
+			Term fieldTerm = new Term(term.field(), term.text());
 			TermStatistics termStat = searcher.termStatistics(fieldTerm,
 					termStates);
 			long df = termStat.docFreq();

@@ -16,8 +16,11 @@
  */
 package eu.europeana.ranking.bm25f;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BM25FBooleanQuery;
@@ -79,7 +82,7 @@ public class BM25FQueryParser extends QParser {
 		BM25FParameters param = manageRuntimeBm25fParams();
 		if (param == null)
 			param = bm25fparams;
-
+		String[] fields = bm25fparams.getFields();
 		SolrQueryParser parser = new SolrQueryParser(this, mainField);
 		parser.setDefaultOperator(Operator.AND);
 
@@ -91,23 +94,45 @@ public class BM25FQueryParser extends QParser {
 			BooleanQuery bq = (BooleanQuery) q;
 
 			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(param);
+			Set<Term> terms = new HashSet<Term>();
+			bm25fQuery.extractTerms(terms);
+			for (Term t : terms) {
+				// if is using external fields
+				if (indexOf(t.field(), fields) < 0) {
+					return bq;
+				}
+			}
 			for (BooleanClause clause : bq) {
 				Occur occur = clause.getOccur();
+
 				if (occur == Occur.SHOULD) {
 					return bq;
 				}
+
 				bm25fQuery.add(clause);
 			}
 			return bm25fQuery;
 
 		}
 		if (q instanceof TermQuery) {
+
 			TermQuery tq = (TermQuery) q;
+			String field = tq.getTerm().field();
+			if (indexOf(field, fields) < 0)
+				return q;
 			BM25FBooleanQuery bm25fQuery = new BM25FBooleanQuery(param);
 			bm25fQuery.add(new BooleanClause(tq, Occur.MUST));
 			return bm25fQuery;
 		}
 		return q;
+	}
+
+	private int indexOf(String element, String[] array) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equals(element))
+				return i;
+		}
+		return -1;
 	}
 
 	private BM25FParameters manageRuntimeBm25fParams() {
