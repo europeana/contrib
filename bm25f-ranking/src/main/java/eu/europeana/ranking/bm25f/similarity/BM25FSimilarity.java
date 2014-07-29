@@ -406,8 +406,9 @@ public class BM25FSimilarity extends Similarity {
 
 		Explanation num = new Explanation();
 		num.setDescription(" numerator, product of: ");
-
-		float boost = boosts.get(stats.field);
+		float boost = 0;
+		if (boosts != null)
+			boosts.get(stats.field);
 
 		Explanation boostExpl = new Explanation(boost, "boost[" + stats.field
 				+ "]");
@@ -415,8 +416,13 @@ public class BM25FSimilarity extends Similarity {
 		num.addDetail(freq);
 		num.addDetail(boostExpl);
 		num.setValue(freq.getValue() * boostExpl.getValue());
+		float b = 0;
+		if (lengthBoosts != null && stats != null && stats.field != null) {
 
-		float b = lengthBoosts.get(stats.field);
+			Float f = lengthBoosts.get(stats.field);
+			if (f != null)
+				b = f;
+		}
 		Explanation bField = new Explanation(b, "lengthBoost(" + stats.field
 				+ ")");
 		Explanation averageLength = new Explanation(stats.avgdl,
