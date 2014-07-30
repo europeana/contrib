@@ -25,6 +25,8 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 public class MediaChecker {
 
+	private static final String version = "0.8";
+
 	/**
 	 * Static function to get basic information about an image file
 	 * @param  filename              filename of the query image
@@ -182,5 +184,13 @@ public class MediaChecker {
 	public static long getFileSize(String filename) throws IOException, FileNotFoundException {
 		File file = new File(filename);
 		return file.length();
+	}
+
+	/**
+	 * Function to get the version of MediaChecker
+	 * @return
+	 */
+	public static String getVersion() {
+		return MediaChecker.version;
 	}
 }
