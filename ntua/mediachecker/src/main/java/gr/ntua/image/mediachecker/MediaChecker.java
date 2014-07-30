@@ -20,6 +20,9 @@ import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IStream;
 import com.xuggle.xuggler.IStreamCoder;
 
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+
 public class MediaChecker {
 
 	/**
@@ -113,6 +116,44 @@ public class MediaChecker {
 		}
 
 		return new AudioInfo(mimeType, codec.substring(9).toLowerCase(), duration, sampleRate, bitRate);
+	}
+
+	/**
+	 * Function to determine if a text file is searchable.
+	 * XML, RTF, ePub and text files are by definition searchable. A PDF file is considered searchable if it contains
+	 * ANY text on any page.
+	 * @param  filename              file to be checked
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+ 	protected boolean isSearchable(String filename) throws IOException, FileNotFoundException {
+		String mimeType = MediaChecker.getMimeType(filename);
+
+		switch (mimeType) {
+			case "application/xml":
+			case "application/rtf":
+			case "application/epub":
+			case "text/plain":
+				return true;
+			case "application/pdf":
+				PdfReader reader   = new PdfReader(filename);
+				boolean searchable = false;
+
+				String page;
+				for (int i=0; i<reader.getNumberOfPages(); i++) {
+					page = PdfTextExtractor.getTextFromPage(reader, i);
+					if (page != null && !page.isEmpty()) {
+						searchable = true;
+						break;
+					}
+				}
+				reader.close();
+
+				return searchable;
+			default:
+				return false;
+		}
 	}
 
 	/**
