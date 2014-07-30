@@ -171,4 +171,16 @@ public class MediaChecker {
 
 		return mimeType;
 	}
+
+	/**
+	 * Function to get the size of a file in bytes
+	 * @param  filename              name of the file to be checked
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	public static long getFileSize(String filename) throws IOException, FileNotFoundException {
+		File file = new File(filename);
+		return file.length();
+	}
 }
