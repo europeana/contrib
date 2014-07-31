@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.lucene.search.BM25FBooleanQuery.BM25FBooleanWeight;
+import org.apache.lucene.util.Bits;
 
 /**
  * Implements a Boolean Scorer, scores are computed using the BM25F similarity
@@ -37,6 +38,7 @@ final class BM25FBooleanScorer extends Scorer {
 	private final Scorer[] requiredScorers;
 	private final Scorer[] optionalScorers;
 	private final Scorer[] prohibitedScorers;
+	private final Bits acceptDocs;
 
 	// min number of terms that should match in a document, in order to return
 	// it.
@@ -45,9 +47,9 @@ final class BM25FBooleanScorer extends Scorer {
 	BM25FBooleanScorer(BM25FBooleanWeight weight, boolean disableCoord,
 			int minNrShouldMatch, List<Scorer> requiredScorers,
 			List<Scorer> optionalScorers, List<Scorer> prohibitedScorers,
-			int maxCoord) throws IOException {
+			int maxCoord, Bits acceptDocs) throws IOException {
 		super(weight);
-
+		this.acceptDocs = acceptDocs;
 		this.requiredScorers = requiredScorers
 				.toArray(new Scorer[requiredScorers.size()]);
 		this.optionalScorers = optionalScorers
@@ -119,6 +121,14 @@ final class BM25FBooleanScorer extends Scorer {
 
 	@Override
 	public int nextDoc() throws IOException {
+		int nextDoc = _nextDoc();
+		while (nextDoc != NO_MORE_DOCS && acceptDocs != null
+				&& !acceptDocs.get(nextDoc))
+			nextDoc = _nextDoc();
+		return nextDoc;
+	}
+
+	private int _nextDoc() throws IOException {
 
 		if (!this.initialized) {
 			this.initialized = true;

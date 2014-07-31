@@ -20,6 +20,7 @@ import java.io.IOException;
 import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.search.BM25FBooleanTermQuery.BM25FTermWeight;
 import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
+import org.apache.lucene.util.Bits;
 
 /**
  * Scorer for a query composed by only one term. Documents are scored using the
@@ -32,6 +33,7 @@ import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
 public class BM25FTermScorer extends Scorer {
 	ExactSimScorer[] scorers;
 	DocsEnum[] docsEnums;
+	Bits acceptDocs;
 	int docId = 0;
 	float k1;
 	float idf;
@@ -45,10 +47,11 @@ public class BM25FTermScorer extends Scorer {
 	 * @param docFreq
 	 */
 	public BM25FTermScorer(BM25FTermWeight bm25fTermWeight,
-			ExactSimScorer[] scorers, DocsEnum[] docs) {
+			ExactSimScorer[] scorers, DocsEnum[] docs, Bits acceptDocs) {
 		super(bm25fTermWeight);
 		this.scorers = scorers;
 		this.docsEnums = docs;
+		this.acceptDocs = acceptDocs;
 		idf = bm25fTermWeight.idf;
 		k1 = bm25fTermWeight.k1;
 
@@ -101,6 +104,14 @@ public class BM25FTermScorer extends Scorer {
 
 	@Override
 	public int nextDoc() throws IOException {
+		int nextDoc = _nextDoc();
+		while (nextDoc != NO_MORE_DOCS && acceptDocs != null
+				&& !acceptDocs.get(nextDoc))
+			nextDoc = _nextDoc();
+		return nextDoc;
+	}
+
+	private int _nextDoc() throws IOException {
 
 		if (!initializated) {
 			this.initializated = true;

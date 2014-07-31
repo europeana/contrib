@@ -171,7 +171,7 @@ public class BM25FBooleanTermQuery extends Query {
 
 			}
 
-			return new BM25FTermScorer(this, scorers, docsEnums);
+			return new BM25FTermScorer(this, scorers, docsEnums, acceptDocs);
 
 		}
 

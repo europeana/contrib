@@ -346,7 +346,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			if (!scoreDocsInOrder && topScorer && required.size() == 0) {
 				return new BM25FBooleanScorer(this, disableCoord,
 						minNrShouldMatch, required, optional, prohibited,
-						maxCoord);
+						maxCoord, acceptDocs);
 			}
 
 			if (required.size() == 0 && optional.size() == 0) {
@@ -362,7 +362,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			}
 
 			return new BM25FBooleanScorer(this, disableCoord, minNrShouldMatch,
-					required, optional, prohibited, maxCoord);
+					required, optional, prohibited, maxCoord, acceptDocs);
 			// Return a BooleanScorer2
 			// return new BooleanScorer2(this, disableCoord, minNrShouldMatch,
 			// required, prohibited, optional, maxCoord);
