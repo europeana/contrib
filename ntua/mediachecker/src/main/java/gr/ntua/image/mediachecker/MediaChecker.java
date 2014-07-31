@@ -67,6 +67,7 @@ public class MediaChecker {
 		int width        = 0;
 		int height       = 0;
 		double framerate = 0.0;
+		int bitRate      = 0;
 		String codec     = "";
 
 		for (int i=0; i<numStreams; i++) {
@@ -77,11 +78,12 @@ public class MediaChecker {
 				height    = coder.getHeight();
 				framerate = coder.getFrameRate().getDouble();
 				codec     = coder.getCodecID().toString();
+				bitRate   = coder.getBitRate();
 				break;
 			}
 		}
 
-		return new VideoInfo(width, height, mimeType, codec.substring(9).toLowerCase(), duration, framerate);
+		return new VideoInfo(width, height, mimeType, codec.substring(9).toLowerCase(), duration, framerate, bitRate);
 	}
 
 	/**
