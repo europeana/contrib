@@ -104,6 +104,7 @@ public class MediaChecker {
 		long duration   = container.getDuration() == Global.NO_PTS ? -1 : container.getDuration() / 1000;
 		int channels    = 0;
 		int sampleRate  = 0;
+		int bitDepth    = 0;
 		int bitRate     = 0;
 		String codec    = "";
 
@@ -113,13 +114,14 @@ public class MediaChecker {
 			if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_AUDIO) {
 				channels   = coder.getChannels();
 				sampleRate = coder.getSampleRate();
-				bitRate    = Integer.parseInt(coder.getSampleFormat().toString().substring(5));
+				bitDepth   = Integer.parseInt(coder.getSampleFormat().toString().substring(5));
+				bitRate    = coder.getBitRate();
 				codec      = coder.getCodecID().toString();
 				break;
 			}
 		}
 
-		return new AudioInfo(mimeType, codec.substring(9).toLowerCase(), duration, sampleRate, bitRate);
+		return new AudioInfo(mimeType, codec.substring(9).toLowerCase(), duration, sampleRate, bitDepth, bitRate, channels);
 	}
 
 	/**
