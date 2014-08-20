@@ -186,6 +186,25 @@ public class SimpleCollectionTest {
 
 	}
 
+	@Test
+	public void testFieldQuery2() throws SolrServerException {
+		SolrDocumentList results = null; // getResults("vinci");
+		results = getResults("description:vinci");
+		assertEquals(2, results.size());
+
+	}
+
+	@Test
+	public void testQueryParsing() {
+		try {
+			SolrDocumentList results = getResults("la joconde OR la gioconda OR mona lisa");
+
+		} catch (SolrServerException e) {
+			fail(e.toString());
+		}
+
+	}
+
 	// <float name="k1">18.0</float>
 	//
 	// <lst name="fieldsBoost">

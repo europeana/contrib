@@ -90,6 +90,8 @@ public class BM25FQueryParser extends QParser {
 		// if (q instanceof DisjunctionMaxQuery ){
 		// return new BM25FQuery((DisjunctionMaxQuery)q);
 		// }
+		
+		
 		if (q instanceof BooleanQuery) {
 			BooleanQuery bq = (BooleanQuery) q;
 

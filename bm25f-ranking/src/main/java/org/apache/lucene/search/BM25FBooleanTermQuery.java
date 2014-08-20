@@ -96,9 +96,10 @@ public class BM25FBooleanTermQuery extends Query {
 			} else {
 				int fieldPos = 0;
 				for (int i = 0; i < fields.length; i++) {
-					if (fields[i].equals(termField))
+					if (fields[i].equals(termField)) {
 						fieldPos = i;
-					break;
+						break;
+					}
 				}
 
 				Term fieldTerm = new Term(fields[fieldPos], term.text());
@@ -155,20 +156,30 @@ public class BM25FBooleanTermQuery extends Query {
 			DocsEnum[] docsEnums = new DocsEnum[stats.length];
 			// TermsEnum termDocs = null;
 			DocsEnum docsEnum = null;
-			for (int i = 0; i < stats.length; i++) {
+			if (stats.length == 1) {
 				// termDocs = getTermsEnum(context, fields[i],i);
-				docsEnum = getDocsEnum(context, fields[i]);
+				docsEnum = getDocsEnum(context, term.field());
 				if (docsEnum != null) {
-					scorers[i] = similarity.exactSimScorer(stats[i], context);
-					docsEnums[i] = docsEnum;
+					scorers[0] = similarity.exactSimScorer(stats[0], context);
+					docsEnums[0] = docsEnum;
 				}
-				// System.out.println("DOC ENUM "+i);
-				// while (docsEnum[i].nextDoc() != Scorer.NO_MORE_DOCS){
-				// System.out.println(" -> "+docsEnum[i].docID()+"("+docsEnum[i].freq()+")");
-				// }
+			} else {
+				for (int i = 0; i < stats.length; i++) {
+					// termDocs = getTermsEnum(context, fields[i],i);
+					docsEnum = getDocsEnum(context, fields[i]);
+					if (docsEnum != null) {
+						scorers[i] = similarity.exactSimScorer(stats[i],
+								context);
+						docsEnums[i] = docsEnum;
+					}
+					// System.out.println("DOC ENUM "+i);
+					// while (docsEnum[i].nextDoc() != Scorer.NO_MORE_DOCS){
+					// System.out.println(" -> "+docsEnum[i].docID()+"("+docsEnum[i].freq()+")");
+					// }
 
-				// assert docsEnum[i] != null;
+					// assert docsEnum[i] != null;
 
+				}
 			}
 
 			return new BM25FTermScorer(this, scorers, docsEnums, acceptDocs);
@@ -276,7 +287,14 @@ public class BM25FBooleanTermQuery extends Query {
 
 	@Override
 	public Weight createWeight(IndexSearcher searcher) throws IOException {
+		// if (term.field().equals(bm25fParams.getMainField())) {
 		fields = bm25fParams.getFields();
+		// }
+
+		// else {
+		// fields = new String[] { term.field() };
+		// }
+
 		final IndexReaderContext context = searcher.getTopReaderContext();
 		final TermContext termState;
 		if (perReaderTermState == null
