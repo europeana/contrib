@@ -90,8 +90,7 @@ public class BM25FQueryParser extends QParser {
 		// if (q instanceof DisjunctionMaxQuery ){
 		// return new BM25FQuery((DisjunctionMaxQuery)q);
 		// }
-		
-		
+
 		if (q instanceof BooleanQuery) {
 			BooleanQuery bq = (BooleanQuery) q;
 
@@ -107,7 +106,8 @@ public class BM25FQueryParser extends QParser {
 			for (BooleanClause clause : bq) {
 				Occur occur = clause.getOccur();
 
-				if (occur == Occur.SHOULD) {
+				if (occur == Occur.SHOULD
+						|| !(clause.getQuery() instanceof TermQuery)) {
 					return bq;
 				}
 

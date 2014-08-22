@@ -180,6 +180,25 @@ public class SimpleCollectionTest {
 	}
 
 	@Test
+	public void phraseTest() throws SolrServerException {
+		SolrDocumentList results = getResults("author:\"leonardo da\"");
+		assertEquals(3, results.size());
+		results = getResults("author:\"leonardo da\" AND description:test");
+		assertEquals(1, results.size());
+		results = getResults("author:\"leonardo da\" AND description:test");
+		assertEquals(1, results.size());
+
+	}
+
+	public static SimpleCollectionSolrInstance getInstance() {
+		return instance;
+	}
+
+	public static void setInstance(SimpleCollectionSolrInstance instance) {
+		SimpleCollectionTest.instance = instance;
+	}
+
+	@Test
 	public void testFieldQuery() throws SolrServerException {
 		SolrDocumentList results = getResults("description:leonardo description:vinci");
 		assertEquals(1, results.size());
