@@ -7,11 +7,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import org.apache.tika.Tika;
 
 import org.im4java.core.Info;
 import org.im4java.core.InfoException;
+import org.im4java.core.IMOperation;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IM4JavaException;
+import org.im4java.process.ArrayListOutputConsumer;
 
 import com.xuggle.xuggler.Configuration;
 import com.xuggle.xuggler.Global;
@@ -25,17 +33,19 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 public class MediaChecker {
 
-	private static final String version = "0.8";
+	private static final String version = "0.9";
+	private static final int PALETTE_SIZE = 6;
 
 	/**
 	 * Static function to get basic information about an image file
 	 * @param  filename              filename of the query image
+	 * @param  colormal              filename of the colormap to be used for creating the color palette
 	 * @return                       an ImageInfo object with the results
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws InfoException
 	 */
-	public static ImageInfo getImageInfo(String filename) throws IOException, FileNotFoundException, InfoException {
+	public static ImageInfo getImageInfo(String filename, String colormap) throws IOException, FileNotFoundException, InfoException, InterruptedException, IM4JavaException {
 		Info ii           = new Info(filename, true);
 		int width         = ii.getImageWidth();
 		int height        = ii.getImageHeight();
@@ -45,7 +55,40 @@ public class MediaChecker {
 		ii                = new Info(filename);
 		String colorSpace = ii.getProperty("Colorspace");
 
-		return new ImageInfo(width, height, mimeType, format, colorSpace);
+		// Get 6 dominant colors from the image
+		ConvertCmd cmd                 = new ConvertCmd();
+		IMOperation op                 = new IMOperation();
+		ArrayListOutputConsumer output = new ArrayListOutputConsumer();
+		op.addImage(filename);
+		op.dither("Riemersma");
+		op.remap(colormap);
+		op.format("%c");
+		op.addImage("histogram:info:-");
+		cmd.setOutputConsumer(output);
+		cmd.run(op);
+
+		// Parse output
+		ArrayList<String> lines = output.getOutput();
+		Collections.sort(lines);
+		Collections.reverse(lines);
+		Pattern p = Pattern.compile("#(?:[0-9a-fA-F]{6}){1,2}");
+		ArrayList<String> colors = new ArrayList<String>();
+
+ 		for (String line : lines) {
+ 			Matcher m = p.matcher(line);
+			if (m.find()) {
+				String clr = m.group(0).substring(1);
+				colors.add(m.group(0));
+
+				if (colors.size() >= PALETTE_SIZE)
+					break;
+			}
+		}
+
+		String[] palette = new String[colors.size()];
+		colors.toArray(palette);
+
+		return new ImageInfo(width, height, mimeType, format, colorSpace, palette);
 	}
 
 	/**

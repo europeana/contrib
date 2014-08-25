@@ -4,13 +4,15 @@ public final class ImageInfo {
 
 	protected final int _Width, _Height;
 	protected final String _MimeType, _FileFormat, _ColorSpace;
+	protected final String[] _Palette;
 
-	public ImageInfo(int width, int height, String mimeType, String fileFormat, String colorSpace) {
+	public ImageInfo(int width, int height, String mimeType, String fileFormat, String colorSpace, String[] palette) {
 		_Width      = width;
 		_Height     = height;
 		_MimeType   = mimeType;
 		_FileFormat = fileFormat;
 		_ColorSpace = colorSpace;
+		_Palette    = palette;
 	}
 
 	public int getWidth() {
@@ -31,6 +33,10 @@ public final class ImageInfo {
 
 	public String getColorSpace() {
 		return _ColorSpace;
+	}
+
+	public String[] getPalette() {
+		return _Palette;
 	}
 
 	public String toString() {
