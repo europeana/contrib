@@ -40,4 +40,8 @@ public final class VideoInfo {
 	public double getFrameRate() {
 		return _FrameRate;
 	}
+
+	public String getResolution() {
+		return _Width + "x" + _Height;
+	}
 }
