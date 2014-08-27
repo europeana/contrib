@@ -33,13 +33,13 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 public class MediaChecker {
 
-	private static final String version = "0.9";
+	private static final String version = "1.0 RC";
 	private static final int PALETTE_SIZE = 6;
 
 	/**
 	 * Static function to get basic information about an image file
 	 * @param  filename              filename of the query image
-	 * @param  colormal              filename of the colormap to be used for creating the color palette
+	 * @param  colormap              filename of the colormap to be used for creating the color palette
 	 * @return                       an ImageInfo object with the results
 	 * @throws IOException
 	 * @throws FileNotFoundException
