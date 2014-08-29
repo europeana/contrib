@@ -1,5 +1,7 @@
 package gr.ntua.image.mediachecker;
 
+import java.util.Arrays;
+
 public final class ImageInfo {
 
 	protected final int _Width, _Height;
@@ -44,7 +46,8 @@ public final class ImageInfo {
 			"File Format: " + _FileFormat + "\n" +
 			"Width: " + _Width + "\n" +
 			"Height: " + _Height + "\n" +
-			"Colorspace: " + _ColorSpace + "\n";
+			"Colorspace: " + _ColorSpace + "\n" +
+			"Color Palette: " + Arrays.toString(_Palette);
 
 		return out;
 	}

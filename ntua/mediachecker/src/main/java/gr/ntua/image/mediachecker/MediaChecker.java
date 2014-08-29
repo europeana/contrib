@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -21,7 +19,6 @@ import org.im4java.core.ConvertCmd;
 import org.im4java.core.IM4JavaException;
 import org.im4java.process.ArrayListOutputConsumer;
 
-import com.xuggle.xuggler.Configuration;
 import com.xuggle.xuggler.Global;
 import com.xuggle.xuggler.ICodec;
 import com.xuggle.xuggler.IContainer;
@@ -29,7 +26,9 @@ import com.xuggle.xuggler.IStream;
 import com.xuggle.xuggler.IStreamCoder;
 
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
 public class MediaChecker {
 
@@ -74,8 +73,8 @@ public class MediaChecker {
 		Pattern p = Pattern.compile("#(?:[0-9a-fA-F]{6}){1,2}");
 		ArrayList<String> colors = new ArrayList<String>();
 
- 		for (String line : lines) {
- 			Matcher m = p.matcher(line);
+		for (String line : lines) {
+			Matcher m = p.matcher(line);
 			if (m.find()) {
 				String clr = m.group(0).substring(1);
 				colors.add(m.group(0));
@@ -125,6 +124,8 @@ public class MediaChecker {
 				break;
 			}
 		}
+
+		container.close();
 
 		return new VideoInfo(width, height, mimeType, codec.substring(9).toLowerCase(), duration, framerate, bitRate);
 	}
@@ -176,7 +177,7 @@ public class MediaChecker {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
- 	protected boolean isSearchable(String filename) throws IOException, FileNotFoundException {
+	protected static boolean isSearchable(String filename) throws IOException, FileNotFoundException {
 		String mimeType = MediaChecker.getMimeType(filename);
 
 		switch (mimeType) {
@@ -186,12 +187,16 @@ public class MediaChecker {
 			case "text/plain":
 				return true;
 			case "application/pdf":
-				PdfReader reader   = new PdfReader(filename);
-				boolean searchable = false;
+				PdfReader reader              = new PdfReader(filename);
+				PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+				boolean searchable            = false;
 
 				String page;
-				for (int i=0; i<reader.getNumberOfPages(); i++) {
-					page = PdfTextExtractor.getTextFromPage(reader, i);
+				TextExtractionStrategy strategy;
+				for (int i=1; i<=reader.getNumberOfPages(); i++) {
+					strategy = parser.processContent(i, new SimpleTextExtractionStrategy());
+
+					page = strategy.getResultantText();
 					if (page != null && !page.isEmpty()) {
 						searchable = true;
 						break;
@@ -213,9 +218,9 @@ public class MediaChecker {
 	 * @throws FileNotFoundException
 	 */
 	public static String getMimeType(String filename) throws IOException, FileNotFoundException {
-		File file         = new File(filename);
-		InputStream is    = new FileInputStream(file);
-		String mimeType   = new Tika().detect(file);
+		File file       = new File(filename);
+		InputStream is  = new FileInputStream(file);
+		String mimeType = new Tika().detect(file);
 		is.close();
 
 		return mimeType;
