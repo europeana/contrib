@@ -69,7 +69,7 @@ public class BM25FQueryParser extends QParser {
 		super(qstr, localParams, params, req);
 		this.bm25fparams = bm25fparams;
 		this.qstr = qstr;
-
+		logger.info("q: {}", qstr);
 		mainField = bm25fparams.getMainField();
 
 		// WAT?
