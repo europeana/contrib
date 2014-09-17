@@ -131,6 +131,12 @@ public class SimpleCollectionTest2 {
 		return qr.getResults();
 	}
 
+	@Test
+	public void testExplain() throws SolrServerException {
+		explain("leonardo");
+		System.out.println(explain("\"leonardo da\""));
+	}
+
 	private static Map<String, Object> explain(String query)
 			throws SolrServerException {
 		System.out.println("query performed " + query);

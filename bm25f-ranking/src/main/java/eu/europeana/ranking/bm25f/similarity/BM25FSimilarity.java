@@ -408,7 +408,7 @@ public class BM25FSimilarity extends Similarity {
 		num.setDescription(" numerator, product of: ");
 		float boost = 0;
 		if (boosts != null)
-			boosts.get(stats.field);
+			boost = boosts.get(stats.field);
 
 		Explanation boostExpl = new Explanation(boost, "boost[" + stats.field
 				+ "]");
