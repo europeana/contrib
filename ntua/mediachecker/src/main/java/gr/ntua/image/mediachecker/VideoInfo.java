@@ -44,4 +44,8 @@ public final class VideoInfo {
 	public String getResolution() {
 		return _Width + "x" + _Height;
 	}
+
+	public int getBitRate() {
+		return _BitRate;
+	}
 }

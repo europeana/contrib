@@ -37,7 +37,7 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
 public class MediaChecker {
 
-	private static final String version = "1.0 RC2";
+	private static final String version = "1.0 RC3";
 	private static final int PALETTE_SIZE = 6;
 
 	/**
@@ -224,7 +224,7 @@ public class MediaChecker {
 		for (int i=1; i<=reader.getNumberOfPages(); i++) {
 			parser.processContent(i, listener);
 
-			// On the second image we come accross, we break out of the loop and return 0.
+			// On the second image we come accross, we break out of the loop and return -1.
 			if (dpi > 0 && listener.getDPI() > 0) {
 				return -1;
 			}
