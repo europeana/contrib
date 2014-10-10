@@ -21,8 +21,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BM25FBooleanQuery;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -30,9 +28,11 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.solr.common.params.SolrParams;
+import org.apache.solr.parser.QueryParser.Operator;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.search.QParser;
 import org.apache.solr.search.SolrQueryParser;
+import org.apache.solr.search.SyntaxError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +78,7 @@ public class BM25FQueryParser extends QParser {
 	}
 
 	@Override
-	public Query parse() throws ParseException {
+	public Query parse() throws SyntaxError{
 		BM25FParameters param = manageRuntimeBm25fParams();
 		if (param == null)
 			param = bm25fparams;

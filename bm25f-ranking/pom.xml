@@ -156,7 +156,7 @@
             			</systemProperty>
             			<systemProperty>
               				<name>europeana.index.dir</name>
-							<value>/data/diego/europeana/data</value>
+							<value>${basedir}/src/test/resources/solr/europeana/data</value>
 							
             			</systemProperty>
          			</systemProperties>   
