@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-codecs</artifactId>
-			<version>4.0.0</version>
+			<version>4.10.1</version>
 		</dependency>
 
 
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-test-framework</artifactId>
-			<version>4.0.0</version>
+			<version>4.10.1</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -144,7 +144,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
 				<configuration>
-					<war>${basedir}/src/test/resources/apache-solr-4.0.0.war</war>
+					<war>${basedir}/src/test/resources/solr-4.10.1.war</war>
 					<webAppConfig>
 					 	 <extraClasspath>${basedir}/target/classes/</extraClasspath>   
 					 </webAppConfig>
@@ -168,9 +168,9 @@
 	</build>
 
 	<properties>
-		<lucene.version>4.0.0</lucene.version>
-		<solr.version>4.0.0</solr.version>
-		<jdkLevel>1.5</jdkLevel>
+		<lucene.version>4.10.1</lucene.version>
+		<solr.version>4.10.1</solr.version>
+		<jdkLevel>1.7</jdkLevel>
 		<jetty.version>9.1.0.v20131115</jetty.version>
 		<http.port>8080</http.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
