@@ -165,7 +165,7 @@ public class DownloadReport extends GeneralAction{
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("From");
 				stringBuilder.append(" ");
-				String datestring = String.format("%tB %<te, %<tY", startDate);
+				String datestring = String.format("%tB %<te  %<tY", startDate);
 				stringBuilder.append(datestring);
 				this.reportRange = stringBuilder.toString();
 			} catch (ParseException e) {
@@ -183,7 +183,7 @@ public class DownloadReport extends GeneralAction{
 				stringBuilder.append(" ");
 				stringBuilder.append("To");
 				stringBuilder.append(" ");
-				String datestring = String.format("%tB %<te, %<tY", endDate);
+				String datestring = String.format("%tB %<te %<tY", endDate);
 				stringBuilder.append(datestring);
 				this.reportRange += stringBuilder.toString();
 			} catch (ParseException e) {
@@ -294,6 +294,7 @@ public class DownloadReport extends GeneralAction{
 	}
 
 	private void makeData(String choice){
+	//	System.out.println("DEBUG, Startmaking data lists " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		String orgid = null;
 		if (organizationId != null)
 		{
@@ -340,7 +341,7 @@ public class DownloadReport extends GeneralAction{
 
 		}
 		else if (choice.equals("projectprogress")){
-			OrganizationGoalsSummaryBeanFactory beanfactory = new OrganizationGoalsSummaryBeanFactory(null, startDate, endDate);
+			ProjectGoalBeanFactory beanfactory = new ProjectGoalBeanFactory(startDate, endDate);
 			List<OrganizationGoalsSummaryBean> beanCollection = null;
 			beanCollection = beanfactory.getProjectGoalBeans();	
 			datacollection = new JRBeanCollectionDataSource(beanCollection);	
@@ -353,17 +354,20 @@ public class DownloadReport extends GeneralAction{
 			datacollection = new JRBeanCollectionDataSource(beanCollection);
 		}
 
+		//System.out.println("DEBUG,Stopped making data lists " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 	}
 
 	private JasperPrint fillReport() throws JRException{
 
-		
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperfile,parameters, datacollection);				
+	//	System.out.println("DEBUG, Start filling reports " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperfile,parameters, datacollection);
+	//	System.out.println("DEBUG, Stopped filling reports " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		return jasperPrint;
 
 	}
 
 	private void export(JasperPrint jasperprint){
+	//	System.out.println("DEBUG, Started exporting  reports to a file " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		if (output==null || output.equals("pdf")){
 			setContentType("application/pdf");
 			exportPdf(jasperprint);
@@ -385,6 +389,7 @@ public class DownloadReport extends GeneralAction{
 			setContentType("text/html");
 			exportHtml(jasperprint);
 		}
+//		System.out.println("DEBUG, Stopped exporting  reports to a file " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 	}
 
 	private void exportPdf(JasperPrint jasperprint){
@@ -548,7 +553,6 @@ public class DownloadReport extends GeneralAction{
 			}
 			else if (detail.equals("projectprogress")){
 				name = name +  "_overall";
-
 			}
 		}
 		else {

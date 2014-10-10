@@ -17,26 +17,41 @@ public class OrganizationProgressBeanFactory {
 	Date startDate;
 	Date endDate;
 
-	private PublicationDetailsBeanFactory publicationDetailsBeanFactory;
-	private TransformationDetailsBeanFactory transformationDetailsBeanFactory;
-	private OrgOAIBeanFactory orgoaibeanfactory;
-	private OrganizationGoalsSummaryBeanFactory orggoalsFactory;
+	  PublicationDetailsBeanFactory publicationDetailsBeanFactory;
+	  TransformationDetailsBeanFactory transformationDetailsBeanFactory;
+	  OrgOAIBeanFactory orgoaibeanfactory;
+	  OrganizationGoalsSummaryBeanFactory orggoalsFactory;
 
-	public OrganizationProgressBeanFactory(String id, Date startdate,
+	public OrganizationProgressBeanFactory(String organizationId,Date startdate,
 			Date enddate) {
 		super();
-
-		this.organizationId = id;
+		this.organizationId = organizationId;
 		this.startDate = startdate;
 		this.endDate = enddate;
 
-//		this.transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(
-//				id, startDate, endDate);
-//		this.publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(
-//				id, startDate, endDate);
-//		this.orggoalsFactory = new OrganizationGoalsSummaryBeanFactory(id,
-//				startDate, endDate);
-//		this.orgoaibeanfactory = new OrgOAIBeanFactory(id);
+		this.transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(
+			startDate, endDate);
+		this.publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(
+			 startDate, endDate);
+		this.orggoalsFactory = new OrganizationGoalsSummaryBeanFactory(
+				startDate, endDate);
+		this.orgoaibeanfactory = new OrgOAIBeanFactory();
+	}
+	
+	
+	public OrganizationProgressBeanFactory(Date startdate,
+			Date enddate) {
+		super();
+		this.startDate = startdate;
+		this.endDate = enddate;
+
+		this.transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(
+			startDate, endDate);
+		this.publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(
+			 startDate, endDate);
+		this.orggoalsFactory = new OrganizationGoalsSummaryBeanFactory(
+				startDate, endDate);
+		this.orgoaibeanfactory = new OrgOAIBeanFactory();
 	}
 
 	public String getOrganizationId() {
@@ -62,6 +77,8 @@ public class OrganizationProgressBeanFactory {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+	
 
 	public List<OrganizationProgressDetailsBean> getOrgProgressbeans() {
 		UrlApi api = new UrlApi();
@@ -106,23 +123,32 @@ public class OrganizationProgressBeanFactory {
 		String country = jsonObject.get("country").toString();
 		String organizationId = jsonObject.get("dbID").toString();
 		
-		this.populateFactories(organizationId);
+	//	this.populateFactories(organizationId);
 
 		List<PublicationDetailsBean> publicationsbeanCollection = null;
 		List<TransformationDetailsBean> transformationsbeanCollection = null;
-		List<OaiPublicationDetailsBean> oaipublicationbeanCollection = null;
 		List<OrganizationGoalsSummaryBean> goalsbeanColleection = null;
-
 		List<OrgOAIBean> orgoaibeanCollection = null;
-
-		transformationsbeanCollection = transformationDetailsBeanFactory
-				.getTransformations(organizationId);
+		
+		//System.out.println("DEBUG, Started making lists  " + "for organization "+name+" "+ new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+		transformationsbeanCollection = transformationDetailsBeanFactory.getTransformations(organizationId);
+		//System.out.println("DEBUG, finished making transformed lists  " + "for organization "+name+" "+ new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		publicationsbeanCollection = publicationDetailsBeanFactory
 				.getPublications(organizationId);
-		orgoaibeanCollection = orgoaibeanfactory.getOrgOAIBeans();
+		//System.out.println("DEBUG, finished making published lists  " + "for organization "+name+" "+ new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+		orgoaibeanCollection = orgoaibeanfactory.getOrgOAIBeans2(organizationId);
+		//System.out.println("DEBUG, finished making oai published lists  " + "for organization "+name+" "+ new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+		
+		Integer transformed = transformationDetailsBeanFactory.getTransformedItems(organizationId);
+		Integer published = publicationDetailsBeanFactory.getPublishedItems(organizationId);
+		Integer oaipublished = orgoaibeanfactory.getItemCount(organizationId);
+		
+		//System.out.println("DEBUG, passing "+" "+transformed+" "+ published+" "+ oaipublished);
 
-		goalsbeanColleection = orggoalsFactory.getOrgGoalBeans(organizationId);
+		goalsbeanColleection = orggoalsFactory.getOrgGoalBeans(organizationId,transformed,published,oaipublished);
 
+		//System.out.println("DEBUG, finished making goals  lists  " + "for organization "+name+" "+ new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+		
 		OrganizationProgressDetailsBean orgBean = new OrganizationProgressDetailsBean(
 				name, country, transformationsbeanCollection,
 				publicationsbeanCollection, goalsbeanColleection,
@@ -132,14 +158,12 @@ public class OrganizationProgressBeanFactory {
 		return organizations;
 	}
 	
-	protected void populateFactories(String organizationId) {
-		transformationDetailsBeanFactory = new TransformationDetailsBeanFactory(
-				organizationId, startDate, endDate);
-		publicationDetailsBeanFactory = new PublicationDetailsBeanFactory(
-				organizationId, startDate, endDate);
-		orgoaibeanfactory = new OrgOAIBeanFactory(organizationId) ;
-		orggoalsFactory =  new OrganizationGoalsSummaryBeanFactory(organizationId, startDate, endDate);	
+	/*protected void populateFactories(String organizationId) {
+		transformationDetailsBeanFactory.setOrganizationId(organizationId);
+		publicationDetailsBeanFactory.setOrganizationId(organizationId);
+		orgoaibeanfactory.setOrganizationId(organizationId);
+	//	orggoalsFactory.setOrganizationid(organizationId);	
 	}
-
+*/
 
 }

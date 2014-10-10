@@ -16,6 +16,7 @@ Maybe an rsync to the target tomcat??
 		<copy overwrite="true" todir="${dist}/${appname}/WEB-INF/src/java" >
 			<fileset dir="${deploydir}" includes="*.properties" />
 		</copy>
+		<copy overwrite="true" tofile="${dist}/${appname}/WEB-INF/web.xml" file="WEB-INF/custom/dm2e/web.xml"/>
 </target>
 
 
@@ -35,7 +36,7 @@ Maybe an rsync to the target tomcat??
 </target>
 
 <target name="deploy-local"  if="deploy_local" >
-	  <sync todir="/data/tomcat6/webapps/${appname}">
+	  <sync todir="/data/tomcat6-9091/webapps/${appname}">
 	   	<fileset dir="${dist}/${appname}" />
 	  </sync>
 </target>

@@ -41,7 +41,7 @@ public class MappingsPanel extends GeneralAction {
 	private Organization o=null;
 
 	private List<Mapping> accessibleMappings = new ArrayList<Mapping>();
-	private List<Mapping> recentMappings = new ArrayList<Mapping>();
+	//private List<Mapping> recentMappings = new ArrayList<Mapping>();
 	
 	
 	public int getMaxMappings() {
@@ -77,7 +77,7 @@ public class MappingsPanel extends GeneralAction {
 	}
    
 	public void findAccessibleMappings() {
-		List<Mapping> maplist = new ArrayList();
+		List<Mapping> maplist = new ArrayList<Mapping>();
 		try {
 			if(this.orgId==-1){
 				maplist.addAll(getUser().getAccessibleMappings());
@@ -105,7 +105,7 @@ public class MappingsPanel extends GeneralAction {
 	}
 	
 	
-	private void findRecentMappings() {
+	/*private void findRecentMappings() {
 		List<Mapping> maplist = getUser().getAccessibleMappings();
 		if(this.getUploadId() > 0) {
 			Dataset dataset = DB.getDatasetDAO().findById(this.getUploadId(), false);
@@ -113,7 +113,7 @@ public class MappingsPanel extends GeneralAction {
 		} else {
 			recentMappings = null;
 		}
-	}
+	}*/
 
 	public List<Mapping> getAccessibleMappings() {
 		return accessibleMappings;
@@ -151,7 +151,7 @@ public class MappingsPanel extends GeneralAction {
 
 
 	
-	public int getMappingsCount() {
+	public int getMappingCount() {
 
 		
 		return mappingCount;
@@ -175,7 +175,7 @@ public class MappingsPanel extends GeneralAction {
 			}
 		}
 		findAccessibleMappings();
-		findRecentMappings();
+		//findRecentMappings();
 		if( isApi()) return "json";
 		return "success";
 	}
@@ -190,11 +190,11 @@ public class MappingsPanel extends GeneralAction {
 		return result;
 	}
 
-	public List<Mapping> getRecentMappings() {
+	/*public List<Mapping> getRecentMappings() {
 		return recentMappings;
 	}
 
 	public void setRecentMappings(List<Mapping> recentMappings) {
 		this.recentMappings = recentMappings;
-	}
+	}*/
 }

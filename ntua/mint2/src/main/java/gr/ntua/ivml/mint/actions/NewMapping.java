@@ -1,15 +1,8 @@
 package gr.ntua.ivml.mint.actions;
 
-import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
-
-
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.MappingConverter;
 import gr.ntua.ivml.mint.mapping.model.Mappings;
-
-
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Mapping;
 import gr.ntua.ivml.mint.persistent.Organization;
@@ -18,13 +11,18 @@ import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 
-import net.minidev.json.JSONObject;
-
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+
+import com.opensymphony.xwork2.util.TextParseUtil;
 
 
 
@@ -85,12 +83,23 @@ public class NewMapping extends GeneralAction {
 		this.httpUp = httpUp;
 	}
 
-
+	/**
+	 * allow for filtering the schemas, only do that for non super users
+	 */
 	public void findSchemas() {
 		List<XmlSchema> allSchemas = DB.getXmlSchemaDAO().findAll();
 
+		Set<String> visibleSchemas = null;
+		if( !getUser().hasRight(User.ALL_RIGHTS)) {
+			String schemaFilter = Config.getWithDefault( "schema.filter", "");
+			if( !StringUtils.empty(schemaFilter)) {
+				visibleSchemas = TextParseUtil.commaDelimitedStringToSet(schemaFilter);
+			}
+		}
+		
 		for(XmlSchema schema: allSchemas) {
 			if(schema.getJsonTemplate() != null) {
+				if(( visibleSchemas!= null ) && ( !visibleSchemas.contains(schema.getName()))) continue;
 				schemas.add(schema);
 			}
 		}

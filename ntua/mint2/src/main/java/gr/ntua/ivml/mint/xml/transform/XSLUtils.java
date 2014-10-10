@@ -305,16 +305,13 @@ public class XSLUtils {
 		String result = string;
 
 		if(prefix != null) {
-			if(result.indexOf(prefix) == 0) {
-				result = result.replaceFirst(prefix, "");
-				
-				if(result.startsWith("/")) {
-					result = result.replaceFirst("/", "");
-				}
-				
-				if(result.length() == 0) {
-					result = ".";
-				}
+			// if two xpaths are the same, return "."
+			if(string.equals(prefix)) {
+				return ".";
+			// if string xpath starts with prefix xpath
+			} else if(result.indexOf(prefix + "/") == 0) {
+				result = result.replaceFirst(prefix + "/", "");
+			// otherwise try to find common root and work from there
 			} else {
 				String[] tokens1 = string.split("/"); 
 				String[] tokens2 = prefix.split("/"); 

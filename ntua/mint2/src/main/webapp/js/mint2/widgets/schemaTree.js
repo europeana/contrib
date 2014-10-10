@@ -16,6 +16,7 @@
  * @returns
  */
 function SchemaTree(containerId, options) {
+	
 	this.defaults = {
 			dataUploadId: null,
 			select: null,
@@ -23,9 +24,8 @@ function SchemaTree(containerId, options) {
 			afterLoad: null,
 			ajaxUrl: "Tree"
 	}
-	
-	this.options = $.extend({}, this.defaults, options);
 
+	this.options = $.extend({}, this.defaults, options);
 	this.ajaxUrl = this.options.ajaxUrl;
 	this.selectNodeCallback = this.options.select;
 	this.dropCallback = this.options.drop;
@@ -84,7 +84,7 @@ SchemaTree.prototype.loadFromDataUpload = function(dataUploadId, afterLoadCallba
 		url: this.ajaxUrl,
 		context: this,
 		data: {
-			dataUploadId: id,
+			dataUploadId: id
 		},
 		success: function(response) {
 			if(response != undefined) {
@@ -94,9 +94,6 @@ SchemaTree.prototype.loadFromDataUpload = function(dataUploadId, afterLoadCallba
 					this.load(response.tree);
 					if(afterLoadCallback != undefined) {
 						afterLoadCallback();
-					}
-					if(this.afterLoadCallback != undefined) {
-						this.afterLoadCallback();
 					}
 				}				
 			} else {
@@ -129,7 +126,7 @@ SchemaTree.prototype.refresh = function() {
 		var data = {
 			data: this.schema
 		};
-
+		
 		this.treeContainer.jstree({
 			core: {
 				animation: 100
@@ -157,20 +154,22 @@ SchemaTree.prototype.refresh = function() {
 				drag_target: false,
 				drop_target: ".schema-tree-drop",
 				drop_finish: function(data) {
-					if(tree.dropCallback != null) {
+					if (tree.dropCallback != null) {
 						var target = data.e.currentTarget;
 						var source = data.o;
 						tree.dropCallback(source, target);
 					} else {
+						alert("1");
 					}
 				}
 			}
 		}).bind("loaded.jstree", function(event, data) {
+			
 			var tags = [];
 			tree.treeContainer.find("a > ins").each(function(k, v) {
 				var tag = $(v).parent().text();
 				tags.push(tag);
-
+				
 				$(v).click(function () {
 					tree.selected = $(this).parent().parent();
 					if(tree.selectNodeCallback != null) {
@@ -178,12 +177,20 @@ SchemaTree.prototype.refresh = function() {
 					}
 				});
 			});	
-
 			tree.searchContainer.find("input").autocomplete({
 				source: tags
 			});
 			tree.treeContainer.append($("<div>").css("height", "80px"));
+			tree.treeContainer.find("li a").each(function(k, v) {
+				$(this).addTouch();
+			});
+			
+			
+		});
 		
+		$("div.schema-tree-drop").each(function(k, v) {
+			console.log($(this).html());
+			$(this).addTouch();
 		});
 		
 	}	
@@ -205,8 +212,8 @@ SchemaTree.prototype.search = function(term) {
  * @return {String} the node id if found, undefined if not.  
  */
 SchemaTree.prototype.getNodeId = function(xpath, root) {
-	if(root == undefined) root = this.schema;
-	
+	if (root == undefined) 
+		root = this.schema;
 	var result = undefined;
 	$.each(root, function(k, node) {
 		if(node.metadata != undefined) {
@@ -215,9 +222,34 @@ SchemaTree.prototype.getNodeId = function(xpath, root) {
 				return false;
 			}
 		}
-		
 		if(node.children != undefined) {
 			result = SchemaTree.prototype.getNodeId(xpath, node.children);
+			if(result != undefined) return false;
+		}
+	});
+	
+	return result;
+}
+
+/**
+ * Get a the id of a schema's node that corresponds to a specified xpath.
+ * @param {String} xpath Requested XPath.
+ * @param {Object} [root=this.schema] schema subtree used to limit the search. The whole tree is searched by default.
+ * @return {String} the node id if found, undefined if not.  
+ */
+SchemaTree.prototype.getNode = function(xpath, root) {
+	if (root == undefined) 
+		root = this.schema;
+	var result = undefined;
+	$.each(root, function(k, node) {
+		if(node.metadata != undefined) {
+			if(node.metadata.xpath == xpath) {
+				result = node;
+				return false;
+			}
+		}	
+		if(node.children != undefined) {
+			result = SchemaTree.prototype.getNode(xpath, node.children);
 			if(result != undefined) return false;
 		}
 	});
@@ -250,24 +282,49 @@ SchemaTree.prototype.selectXPath = function(xpath) {
 	return false;
 }
 
+/*
+SchemaTree.prototype.highlightMapped = function(xpath) {
+	var node = this.getNode(xpath);
+	var nodeId = node.metadata.xpathHolderId;
+	$("#schema-tree-" + nodeId).children("a").css({
+		"color": "purple",
+		"font-weight": "bold"
+	});
+}
+*/
+
 /**
- * Highight nodes that correspond to the specified xpaths.
+ * Highlight nodes that correspond to the specified xpaths.
  * @param {Array} xpath List of string xpaths.
  */
-SchemaTree.prototype.highlight = function(xpaths) {
+SchemaTree.prototype.highlight = function(xpathMappings, editor) {
 	this.treeContainer.find("a").css({
-		"color": "",
-		"font-weight": ""
+		//"color": "blue",
+		"font-weight": "normal",
+		"text-decoration": "none"
 	});
-	
-	if(xpaths != undefined) {
-		for(var i in xpaths) {
-			var xpath = xpaths[i];
-			var id = this.getNodeId(xpath);
-			$("#schema-tree-" + id).children("a").css({
-				"color": "blue",
-				"font-weight": "bold"
+	var nodes = [];
+	var xpaths = [];
+    for (var xpath in xpathMappings) {
+        var nodeId = this.getNodeId(xpath);
+        if (nodeId != undefined) {
+	        var node = $("#schema-tree-" + nodeId)
+	        .children("a")
+	        .css({
+				//"color": "blue",
+				"font-weight": "bold",
+				"text-decoration":  "underline"
 			});
-		}
-	}
+	        nodes.push(node);
+	        xpaths.push(xpath);
+        }
+    }
+    for (var i=0; i<xpaths.length; i++) {
+    	var node = nodes.pop();
+    	node
+        .click(function() {
+        	var targetId = xpathMappings[xpaths.pop()];
+			editor.showMapping(targetId);
+		});
+    }
 }

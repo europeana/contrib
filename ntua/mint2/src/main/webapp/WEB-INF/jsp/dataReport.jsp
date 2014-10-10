@@ -24,14 +24,14 @@
     
      <%if(Config.getBoolean("mint.enableGoalReports", true) ||user.hasRight(User.SUPER_USER)){%>
     <div title="Organization Report" data-load='{"kConnector":"html.page", "url":"OrganizationReport", "kTitle":"Organization Report" }' class="items navigable">
- 	<div class="label">Organization Report</div>
+ 	<div class="label">Organization reports</div>
 	<div class="tail"></div>
  -	</div>	
  	<%} %>
  	
  <%if(user.hasRight(User.SUPER_USER)){%>
 	<div title="Project Report" data-load='{"kConnector":"html.page", "url":"projectreport", "kTitle":"Project Report" }' class="items navigable">
-	<div class="label">Project Report</div>
+	<div class="label">Project reports</div>
 	<div class="tail"></div>
     </div> 
  

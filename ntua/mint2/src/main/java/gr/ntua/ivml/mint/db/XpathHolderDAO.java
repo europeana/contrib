@@ -104,9 +104,9 @@ public class XpathHolderDAO extends DAO<XpathHolder, Long> {
 	 * @param ds
 	 */
 	public void clearDatasetStats( Dataset ds ) {
-		getSession().createQuery( "update XpathHolder set count=0, optional=false, distinctCount=-1, multiple=false, " 
-				+ "uniqueValue=false, avgLength=-1" 
-				+ " where dataset=:ds")
+		getSession().createQuery( "update XpathHolder xp set xp.count=0, xp.optional=false, xp.distinctCount=-1, xp.multiple=false, " 
+				+ "xp.unique=false, xp.avgLength=-1" 
+				+ " where xp.dataset=:ds")
 				.setEntity("ds", ds)
 				.executeUpdate();
 	}

@@ -10,16 +10,13 @@
 		'showDuplicate': true,
 		'showRemove': "duplicate",
 		'preferedInput': undefined,
-		'onDuplicate': function(response) {
+		'onDuplicate': function(response, settings) {
 			var original = response.original;
 			var newItem = response.duplicate;
 			if(original != undefined && newItem != undefined) {
-				var node = $("<div>").mappingElement($.extend({}, data.settings, {
-					target: newItem
-				}));
+				var node = $("<div>").mappingElement($.extend({}, settings, {target: newItem}));
 				node.insertBefore($("#" + original));
 				node.hide().fadeIn();
-				duplicate.toggleClass("mapping-element-loading");
 				data.editor.validate();
 			}
 		},
@@ -34,10 +31,10 @@
 			removeDuplicate.toggleClass("mapping-element-loading");
 			data.editor.validate();
 		},
-		'label': null,
+		'label': null
 	};
 	
-
+	var xpathsInMappings = [];
 	/**
 	 * @class mappingElement
 	 * @name mappingElement
@@ -52,19 +49,26 @@
 	 * </ul>
 	 */
 	$.fn.mappingElement = function(method) {
-	    if ( methods[method] ) {
-	        return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-	      } else if ( typeof method === 'object' || ! method ) {
-	        return methods.init.apply( this, arguments );
+	    if (methods[method]) {
+	        return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+	      } else if (typeof method == 'object' || !method) {
+	        return methods.init.apply(this, arguments);
 	      } else {
-	        $.error( 'Method ' +  method + ' does not exist on ' + widget );
+	        $.error('Method ' +  method + ' does not exist on ' + widget);
 	      }   
 	};
+	
+	function existsInArray(jsonArray, value) {
+	    for (var i = 0; jsonArray.length > i; i += 1) {
+	        if (jsonArray[i] == value) 
+	            return true;
+	    }
+	    return false;
+	}
 	
 	function render(container) {
 		var data = container.data(widget);
 		var target = data.target;
-		
 		/** Belongs to an XSD Mapping editor - enables schema mappings on top of value edits */
 		var isSchemaMapping = (data.settings.schemaMapping == true);
 		/** Structural elements must have children and cannot receive constant mappings. */
@@ -81,10 +85,8 @@
 //			console.log(data.editor);
 			var hasSchema = data.editor.configuration.schemaId != undefined; 
 			var header = $("<div>").addClass("mapping-element-header");
-
 			// label
 			var label = $("<div>").addClass("mapping-element-label").appendTo(header);
-			
 			// children toggle
 			if(data.settings.showChildrenToggle) {
 				var childrenToggle = $("<div>").appendTo(label);
@@ -99,7 +101,6 @@
 					});
 				}
 			}
-			
 			// attributes toggle
 			if(data.settings.showAttributesToggle) {
 				var attributesToggle = $("<div>").appendTo(label);
@@ -158,7 +159,7 @@
 
 				name.append($("<span>").addClass("mapping-element-name").text(title));
 			}
-			
+
 			name.click(function() {
 				console.log("Clicked on target " + target.name + ": ", target);
 				if(!isStructural && mappingsStructural != undefined) mappingsStructural.slideToggle();
@@ -166,27 +167,32 @@
 
 			// right side actions
 			var right_actions = $("<div>").addClass("mapping-element-right-actions").appendTo(header);
-
 			if(target.fixed == undefined) {
 				if(data.settings.showDuplicate) {
-					if(target.maxOccurs != undefined && target.maxOccurs != 1) {
-						if(data.settings.showRemove == "always" || (data.settings.showRemove == "duplicate" && target.duplicate != undefined)) {
+					//alert("maxOccurs " +  target.maxOccurs);
+					//if (target.maxOccurs != undefined && target.maxOccurs != 1) {	
+					if (data.settings.showRemove == "always" || //target.minOccurs < 1 || target.minOccurs == undefined ||
+						(data.settings.showRemove == "duplicate" && target.duplicate != undefined)) {
 							var removeDuplicate = $("<div>").attr("title", "Remove duplicate element").addClass("mapping-action-remove-duplicate").appendTo(right_actions);
 							removeDuplicate.click(function() {
 								removeDuplicate.toggleClass("mapping-element-loading");
 								data.editor.ajax.removeNode(target.id, data.settings.onRemove);
 							});
-						}
-						
-						var duplicate = $("<div>").attr("title", "Duplicate element").addClass("mapping-action-duplicate").appendTo(right_actions);
-						duplicate.click(function() {
-							duplicate.toggleClass("mapping-element-loading");
-							data.editor.ajax.duplicateNode(target.id, data.settings.onDuplicate);
+					}
+					if ((target.maxOccurs == undefined || target.maxOccurs != 1) && 
+							target.name.indexOf("@") < 0) {
+						var duplicate = $("<div>").
+							attr("title", "Duplicate element").
+							addClass("mapping-action-duplicate").
+							appendTo(right_actions);
+							duplicate.click(function() {
+								duplicate.toggleClass("mapping-element-loading");
+								data.editor.ajax.duplicateNode(target.id, data.settings, data.settings.onDuplicate);
+								duplicate.toggleClass("mapping-element-loading");
 						});
 					}
 				}
 			}
-			
 			if(hasSchema) {
 				// documentation
 				var documentation = $("<div>").attr("title", "Element documentation").addClass("mapping-action-info").appendTo(right_actions);
@@ -242,9 +248,17 @@
 			// mapping areas
 			var mappingAreas = $("<div>")
 			.addClass("mapping-element-mapping-areas")
-			.appendTo(header)
+			.appendTo(header);
 			
 			if(isSchemaMapping) {
+				var s = data.target["structural"];
+				if (s!= undefined) {
+					var m = s.mappings;
+					for (var j in m) {
+						if (m[j].type == "xpath" && !existsInArray(xpathsInMappings, m[j].value))
+							xpathsInMappings.push(m[j].value);
+					}
+				}
 				var mappingsStructural = $("<div>")
 				.mappingArea($.extend({}, data.settings, {
 					element: container,
@@ -268,6 +282,11 @@
 				} else {
 					for(var i in data.target["mapping-cases"]) {
 						var aCase = data.target["mapping-cases"][i];
+						for (var j in aCase.mappings) {
+							var m = aCase.mappings[j];
+							if (m.type == "xpath" && !existsInArray(xpathsInMappings, m.value))
+								xpathsInMappings.push(m.value);
+						}
 						var mappings = $("<div>")
 						.mappingArea($.extend({}, data.settings, {
 							element: container,
@@ -279,7 +298,7 @@
 					}
 				}
 			}
-			
+
 			// children
 			var children = $("<div>").addClass("mapping-element-children");
 			children.hide();
@@ -408,8 +427,7 @@
 					data.children.append(child);
 				}
 			}
-			
-			data.editor.validate();
+			//data.editor.validate();
 		},
 		
 		/**
@@ -440,7 +458,7 @@
 				data.attributes.append(attribute);
 			}
 			
-			data.editor.validate();
+			//data.editor.validate();
 		},
 		
 		validate: function(value, forAttributes) {
@@ -562,10 +580,13 @@
 				}
 			}
 				
-			if((data.target.minOccurs > 0) && !data.container.mappingElement("hasMappings")) return true;
-
+			if((data.target.minOccurs > 0) && !data.container.mappingElement("hasMappings")) 
+				return true;
 			return false;
 		},
+		getXpathsInMappings: function() {
+			return xpathsInMappings;
+		}
 	};
 })(jQuery);
 

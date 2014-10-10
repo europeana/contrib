@@ -100,7 +100,7 @@ public class ReportErrorHandler implements ErrorHandler {
 	}
 
 	public boolean isValid() {
-		return report.isEmpty();
+		return errors.isEmpty();
 	}
 
 	public ArrayList<SAXParseException> getReport() {

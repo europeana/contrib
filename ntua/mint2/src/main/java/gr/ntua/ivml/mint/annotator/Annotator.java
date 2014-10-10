@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.annotator;
 
+import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.AbstractMappingManager;
 import gr.ntua.ivml.mint.mapping.MappingCache;
@@ -13,6 +14,7 @@ import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.Preferences;
+import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.XMLUtils;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
 
@@ -22,15 +24,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.xml.sax.SAXException;
 
 public class Annotator {
@@ -69,20 +79,21 @@ public class Annotator {
 	protected final Logger log = Logger.getLogger(getClass());
 	private MappingCache cache = new MappingCache();
 	private JSONObject configuration = new JSONObject();
-	
+
 	private long datasetId;
 	private XmlSchema schema = null;
 	AnnotationDocument document = null;
+	private User user;
 	
 	private JSONObject errorResponse(String error, HttpServletRequest request) {
 		JSONObject response = new JSONObject();
 		if(request != null) response.put("request", request.getParameterMap());
 		response.put("error", error);
-		
 		return response;
 	}
 
-	public Annotator() {
+	public Annotator(User user) {
+		this.user = user;
 	}
 
 	/**
@@ -105,10 +116,8 @@ public class Annotator {
 	 */
 	public JSONObject execute(HttpServletRequest request) {
 		JSONObject response = new JSONObject();
-		
 		String command = request.getParameter("command");
 		if(command == null) return this.errorResponse("No command defined", request);
-
 		try {
 			// get loggedin user
 			User user= (User) request.getSession().getAttribute("user");
@@ -134,8 +143,7 @@ public class Annotator {
 				String id = request.getParameter("id");
 				String value = request.getParameter("value");
 				String annotation = request.getParameter("annotation");
-				int index = Integer.parseInt(request.getParameter("index"));
-				
+				int index = Integer.parseInt(request.getParameter("index"));	
 				if(id != null) {
 					if(value != null) value = URLDecoder.decode(value, "UTF-8");
 					if(annotation != null) annotation = URLDecoder.decode(annotation, "UTF-8");
@@ -168,7 +176,7 @@ public class Annotator {
 				} else {
 					return this.errorResponse("argument missing", request);
 				}
-			} else if(command.equals("find")) {
+			} else if (command.equals("find")) {
 				String id = request.getParameter("root");				
 				String xpath = request.getParameter("xpath");
 				HashMap<String, String> metadata = new HashMap<String, String>();
@@ -209,15 +217,111 @@ public class Annotator {
 				JSONObject xml = new JSONObject();
 				xml.put("xml", this.getXML());
 				return xml;
-			} else {
+			}
+			else if (command.equals("groupAnnotate")) {
+				String stringGroupActs = request.getParameter("groupActs");
+				JSONParser jp = new JSONParser(0);
+				List<JSONObject> groupActs = (List<JSONObject>) jp.parse(stringGroupActs);
+				System.out.println(groupActs.toString());
+				JSONArray itemsXpathActions = formItemsXpathActions(groupActs);
+				response = groupAnnotate(itemsXpathActions);
+			}
+			else {
 				return this.errorResponse("unsupported operation", request);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			return this.errorResponse(e.getMessage(), request);
 		}
-		
 		return response;
+	}
+	
+	private JSONArray formItemsXpathActions(List<JSONObject> groupActs) {
+		JSONArray itemsXpathActions = new JSONArray();
+		List<Long> omitted = new ArrayList<Long>();
+		List<Long> itemList = solrQueryItems("", "");
+		boolean lastActionIsSelect = false;
+		for (JSONObject act: groupActs) {
+			String type = (String) act.get("type");
+			if (type.equals("search")) {
+				JSONObject cquery = (JSONObject) act.get("arguments");
+				itemList = solrQueryItems((String) cquery.get("query"), (String) cquery.get("queryType"));
+			}
+			else if (type.equals("select")) {
+				JSONArray args = (JSONArray) ((JSONArray) act.get("arguments")).get(1);
+				for (Object arg: args) {
+					omitted.add((Long) arg);
+				}
+				lastActionIsSelect = true;
+			}
+			else {
+				for (Long item: omitted) {
+					itemList.remove(item);
+				}
+				if (itemList.size() > 0) {
+					JSONObject xpathAction = new JSONObject();
+					xpathAction.put("type", type);
+					xpathAction.put("xpath", (String) act.get("xpath"));
+					xpathAction.put("arguments", (JSONArray) act.get("arguments"));
+					if (lastActionIsSelect) {
+						JSONObject itemsXpathAction = new JSONObject();
+						itemsXpathAction.put("itemIds", itemList);
+						itemsXpathAction.put("actionList", new JSONArray());
+						itemsXpathActions.add(itemsXpathAction);
+					}
+					((JSONArray) ((JSONObject) itemsXpathActions.get(itemsXpathActions.size()-1))
+					.get("actionList")).add(xpathAction);
+				}
+				lastActionIsSelect = false;
+			}
+		}
+		return itemsXpathActions;
+	}
+	
+	private JSONObject groupAnnotate(JSONArray itemsXpathActions) {
+		GroupAnnotator ga = new GroupAnnotator(datasetId, user);
+		ga.modifyElementsInItemsList(itemsXpathActions);  
+		JSONObject response = new JSONObject();
+		return response;
+	}
+	
+	
+	private List<Long> solrQueryItems(String query, String queryType) {
+		List<Long> itemIds;
+		SolrQuery sq = new SolrQuery();
+		sq.addFilterQuery("dataset_id:"+String.valueOf(datasetId));
+		sq.setFields("item_id");
+		sq.setStart(0);
+		sq.setRows(10000000);
+		if (StringUtils.empty(query))
+			sq.setQuery("*");
+		else
+			if (StringUtils.empty(queryType) || queryType.equals("label"))
+				sq.setQuery("label_tg:(" + query + ")");
+			else if(queryType.equals( "all" ))
+				sq.setQuery("all:(" + query + ")");
+			else
+				sq.setQuery(query);
+		itemIds = queryToList(sq);
+		return itemIds;
+	}
+	
+	private List<Long> queryToList(SolrQuery sq) {
+		ArrayList<Long> result = new ArrayList<Long>();
+		SolrServer ss = Solarizer.getSolrServer();
+		try {
+			if( ss != null ) {
+				QueryResponse qr = ss.query(sq);
+				SolrDocumentList sdl = qr.getResults();
+				for(SolrDocument sd: sdl) {
+					Long itemId = Long.parseLong(sd.getFirstValue("item_id").toString());
+					result.add(itemId);
+				}
+			}
+		} catch(SolrServerException e) {
+			log.error( "Solr query failed" ,e );
+		}
+		return result;
 	}
 
 	private JSONObject newItem() throws ValidityException, SAXException, ParsingException, IOException {
@@ -268,7 +372,7 @@ public class Annotator {
 		return this.schema;
 	}
 
-	private Mappings getItemTemplate() {
+	public Mappings getItemTemplate() {
 		Dataset dataset = DB.getDatasetDAO().findById(this.datasetId, false);
 		if(dataset != null && dataset.getSchema() != null) {
 			return dataset.getSchema().getTemplate();
@@ -364,6 +468,7 @@ public class Annotator {
 		return result;
 	}
 
+	
 	public String getXML() {
 		String xml = "";
 
@@ -401,10 +506,13 @@ public class Annotator {
 	}
 	
 	public Collection<Element> find(String xpath, String rootId) {
-		if(rootId == null) return this.find(xpath);
-		
+		if (rootId == null) 
+			return this.find(xpath);
 		Element root = this.cache.getElementHandler(rootId);
-		return root.find(xpath);
+		if (root != null)
+			return root.find(xpath);
+		else
+			return new ArrayList<Element>();
 	}
 	
 	public String findValue(String xpath) {

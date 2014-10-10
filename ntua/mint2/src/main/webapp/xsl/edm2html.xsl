@@ -1,5 +1,5 @@
 <xsl:stylesheet version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="html" doctype-system="about:legacy-compat"/>
+<xsl:output method="html" doctype-system="about:legacy-compat" encoding="UTF-8"/>
 <xsl:variable name="vallAbouts" select="/rdf:RDF/edm:ProvidedCHO/@rdf:about"/>
 <xsl:template match="/">
 <!--[if IE 8]><html xmlns:cc="http://creativecommons.org/ns#" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#" class="ie ie8" lang=""><![endif]-->

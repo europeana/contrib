@@ -453,7 +453,7 @@ public class Element extends JSONMappingHandler {
 	 */
 	public int getMinOccurs() {
 		int value = 0;
-		if(this.has(ELEMENT_MINOCCURS)) {
+		if (this.has(ELEMENT_MINOCCURS)) {
 			String mo = this.getString(ELEMENT_MINOCCURS);
 			if(mo != null && mo.length() > 0);
 			try {
@@ -469,15 +469,15 @@ public class Element extends JSONMappingHandler {
 	 */
 	public int getMaxOccurs() {
 		int value = -1;
-		if(this.has(ELEMENT_MAXOCCURS)) {
+		if (this.has(ELEMENT_MAXOCCURS)) {
 			String mo = this.getString(ELEMENT_MAXOCCURS);
-			if(mo != null && mo.length() > 0);
-			try {
-				value = Integer.parseInt(mo);
-			} catch(Exception e) {
+			if (mo != null && mo.length() > 0) {
+				try {
+					value = Integer.parseInt(mo);
+				} catch(Exception e) {
+				}
 			}
 		}
-		
 		return value;
 	}
 	
@@ -981,7 +981,6 @@ public class Element extends JSONMappingHandler {
 	 */
 	public nu.xom.Element toElement(Map<String, String> namespaceDeclarations) {
 		nu.xom.Element root = null;
-		
 		String uri = null;
 		if(this.getPrefix() != null && namespaceDeclarations != null && namespaceDeclarations.containsKey(this.getPrefix())) {
 			uri = namespaceDeclarations.get(this.getPrefix());
@@ -1001,7 +1000,6 @@ public class Element extends JSONMappingHandler {
 				root.addNamespaceDeclaration(prefix, namespaceDeclarations.get(prefix));
 			}
 		}
-		
 		if(this.hasMappingsRecursive()) {
 			if(this.hasMappings()) {
 				List<SimpleMapping> mappings = this.getAllMappings(SimpleMapping.MAPPING_TYPE_CONSTANT);
@@ -1019,7 +1017,7 @@ public class Element extends JSONMappingHandler {
 				}
 			}			
 		}
-		
+
 		return root;
 	}
 	
@@ -1418,9 +1416,23 @@ public class Element extends JSONMappingHandler {
 
 		if(targetIndex >= 0) {
 			children.remove(targetIndex);
-		}
+	    }
 		
 		return element;
+	}
+	
+	public void removeChildren(String name) {
+		if (this.has(ELEMENT_CHILDREN)) {
+			int targetIndex = -1;
+			JSONArray children = this.getArray(ELEMENT_CHILDREN);
+			for(int i = 0; i < children.size(); i++) {
+				JSONObject child = (JSONObject) children.get(i);
+				if(child.get("name").toString().equals(name)) {
+					targetIndex = i;
+					children.remove(targetIndex);
+				}
+			}
+		}
 	}
 
 	public Element removeStructuralMapping() {
@@ -1647,7 +1659,7 @@ public class Element extends JSONMappingHandler {
 		boolean searchAll = false;
 		boolean isAbsolute = false;
 		if(xpath.startsWith("//")) searchAll = true;
-		else if(xpath.startsWith("/")) isAbsolute = true; 
+		else if(xpath.startsWith("/")) isAbsolute = true;
 
 		String searchXPath = xpath;
 		if(xpath.startsWith("/")) searchXPath = xpath.replaceFirst("[/]*", "");

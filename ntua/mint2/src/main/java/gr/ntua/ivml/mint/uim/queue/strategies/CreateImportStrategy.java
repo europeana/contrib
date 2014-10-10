@@ -57,7 +57,6 @@ public class CreateImportStrategy implements MessageConsumerStrategy{
 			User u = DB.getUserDAO().findById(userId, false);
 			
 			Organization org = DB.getOrganizationDAO().findById(orgId, false);
-			
 			DataUpload du;
 			
 			du = DB.getDataUploadDAO().findByName("Repox Import " + repoxSetName);
@@ -72,6 +71,8 @@ public class CreateImportStrategy implements MessageConsumerStrategy{
 			du.setUploadMethod(DataUpload.METHOD_REPOX);
 			du.setStructuralFormat(DataUpload.FORMAT_XML);
 
+//			log.debug( "Import " + repoxSetName + " for Organization " + u.getOrganization().getEnglishName());
+//			du.setOrganization(u.getOrganization());
 			log.debug( "Import " + repoxSetName + " for Organization " + org.getEnglishName());
 			du.setOrganization(org);
 			du.setOriginalFilename(repoxSetName);

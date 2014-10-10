@@ -43,7 +43,7 @@ public class OrganizationDetailsBeanFactory {
 				id, startDate, endDate);
 		this.datauploadDetailsFactory = new DataUploadDetailsBeanFactory(
 				organizationId, startDate, endDate);
-		this.orgoaibeanfactory = new OrgOAIBeanFactory(this.organizationId);
+		this.orgoaibeanfactory = new OrgOAIBeanFactory();
 	}
 
 	public String getOrganizationId() {
@@ -96,16 +96,24 @@ public class OrganizationDetailsBeanFactory {
 		List<MappingDetailsBean> mappingsbeanCollection = null;
 		List<OaiPublicationDetailsBean> oaipublicationbeanCollection = null;
 		List<OrgOAIBean> orgoaibeanCollection = null;
-
+		
+		System.out.println("DEBUG,lists starting" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		uploadsbeanCollection = datauploadDetailsFactory.getUploads(organizationId);
+		System.out.println("DEBUG,uploadslist done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		transformationsbeanCollection = transformationDetailsBeanFactory
 				.getTransformations(organizationId);
+		System.out.println("DEBUG,transformations done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		publicationsbeanCollection = publicationDetailsBeanFactory
 				.getPublications(organizationId);
+		System.out.println("DEBUG,publications done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		mappingsbeanCollection = mappingDetailsBeanFactory.getMappings();
+		System.out.println("DEBUG,mappings done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		oaipublicationbeanCollection = oaipublicationbeanFactory
 				.getOaiPublicationDetailsBeans();
-		orgoaibeanCollection = orgoaibeanfactory.getOrgOAIBeans();
+		System.out.println("DEBUG,oai commits done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+	//	orgoaibeanCollection = orgoaibeanfactory.getOrgOAIBeans();
+		orgoaibeanCollection = orgoaibeanfactory.getOrgOAIBeans2(organizationId);
+		System.out.println("DEBUG,oai status done" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 
 		OrganizationDetailsBean organizationdetailsbean = new OrganizationDetailsBean(
 				name, country, uploadsbeanCollection, mappingsbeanCollection,

@@ -117,7 +117,7 @@ repositoryLocation = repositorySet.getChild("lido:repositoryLocation").getChild(
 // Add the event types
 eventTypes = template.find("//lido:eventType/lido:conceptID");
 for(eventType in eventTypes) {
-    eventType.setThesaurus(MappingPrimitives.thesaurus("http://terminology.lido-schema.org",[ "http://terminology.lido-schema.org/IndexingConcepts" ]));
+    eventType.setThesaurus(MappingPrimitives.thesaurus("http://terminology.lido-schema-types.org"));
 }
 //Original Event
 event = template.findFirst("//lido:descriptiveMetadata/lido:eventWrap/lido:eventSet");
@@ -132,23 +132,42 @@ eventSetConceptID.getAttribute("@lido:type").addConstantMapping("URI");
 eventSetProduction.setRemovable(true);
 eventPrAuthor = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:actor");
 eventPrAuthorForSkos = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:actor/lido:actorID");
-eventPrAuthorRole = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:roleActor");
-eventPrAuthorRoleForSkos = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:roleActor/lido:conceptID");
 eventPrDate = eventSetProduction.findFirst("lido:event/lido:eventDate/lido:date");
 eventPrPlace = eventSetProduction.findFirst("lido:event/lido:eventPlace/lido:place");
+eventPrPlaceName = eventSetProduction.findFirst("lido:event/lido:eventPlace/lido:place/lido:namePlaceSet/lido:appellationValue");
 
-eventPrMaterial = cache.duplicate(eventSetProduction.findFirst("lido:event/lido:eventMaterialsTech/lido:materialsTech/lido:termMaterialsTech").getId());
-eventPrTechnique = cache.duplicate(eventSetProduction.findFirst("lido:event/lido:eventMaterialsTech/lido:materialsTech/lido:termMaterialsTech").getId());
 
-eventPrMaterial.getAttribute("@lido:type").addConstantMapping("material");
-eventPrMaterialForSkos = eventPrMaterial.findFirst("lido:conceptID");
-eventPrTechnique.getAttribute("@lido:type").addConstantMapping("technique");
-eventPrTechniqueForSkos = eventPrTechnique.findFirst("lido:conceptID");
 
-objectWorkType = template.findFirst("lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType");
+
+//Object Work Type
+objectWorkType = cache.duplicate(template.findFirst("lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType").getId());
+objectWorkType.setLabel("objectWorkType - Controlled by PP vocabulary")
+objectWorkTypeForSkos = objectWorkType.findFirst("lido:conceptID");
+objectWorkTypeForSkos.setThesaurus(MappingPrimitives.thesaurus("http://partage.vocnet.org/Objects"));
+
+//Subject
+subject = cache.duplicate(template.findFirst("lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept").getId());
+subject.setLabel("subjectConcept - Controlled by EuPhoto vocabulary")
+subjectForSkos = subject.findFirst("lido:conceptID");
+subjectForSkos.setThesaurus(MappingPrimitives.thesaurus("http://bib.arts.kuleuven.be/photoVocabulary/Subject"));
 
 //PPMaterial
-eventPrMaterialForSkos.setThesaurus(MappingPrimitives.thesaurus("http://partage.vocnet.org/Materials", [ "http://partage.vocnet.org/IndexingConcepts" ]));
+eventPrMaterial = cache.duplicate(eventSetProduction.findFirst("lido:event/lido:eventMaterialsTech/lido:materialsTech/lido:termMaterialsTech").getId());
+eventPrMaterial.getAttribute("@lido:type").addConstantMapping("material");
+eventPrMaterialForSkos = eventPrMaterial.findFirst("lido:conceptID");
+eventPrMaterialForSkos.setThesaurus(MappingPrimitives.thesaurus("http://partage.vocnet.org/Materials"));
+
+//PPTechnique
+eventPrTechnique = cache.duplicate(eventSetProduction.findFirst("lido:event/lido:eventMaterialsTech/lido:materialsTech/lido:termMaterialsTech").getId());
+eventPrTechnique.getAttribute("@lido:type").addConstantMapping("technique");
+eventPrTechniqueForSkos = eventPrTechnique.findFirst("lido:conceptID");
+eventPrTechniqueForSkos.setThesaurus(MappingPrimitives.thesaurus("http://partage.vocnet.org/Activities"));
+
+
+//Actor Role
+eventPrAuthorRole = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:roleActor");
+eventPrAuthorRoleForSkos = eventSetProduction.findFirst("lido:event/lido:eventActor/lido:actorInRole/lido:roleActor/lido:conceptID");
+eventPrAuthorRoleForSkos.setThesaurus(MappingPrimitives.thesaurus("http://terminology.lido-schema.org"));
 
 ////////////////////
 // Bookmarks
@@ -160,9 +179,11 @@ mappings.addBookmarkForXpath("Administrative metadata language", "/lido/administ
 
 mappings.addBookmark("Europeana type", europeanaClassification);
 
-
-mappings.addBookmark("Object/Work Type", objectWorkType);
+mappings.addBookmark("Object/Work Type", template.find("lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType").get(1));
+mappings.addBookmark("Object/Work Type (PP vocabulary)", objectWorkType);
 mappings.addBookmarkForXpath("Object Title/Name", "/lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue");
+mappings.addBookmarkForXpath("Object Description","/lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue");
+
 
 mappings.addBookmarkForXpath("Dimensions", "/lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet");
  
@@ -171,13 +192,15 @@ mappings.addBookmark("Production Event",eventSetProduction);
 mappings.addBookmark("- Producer", eventPrAuthor);
 mappings.addBookmark("- Producer's role", eventPrAuthorRole);
 mappings.addBookmark("- Production Date",  eventPrDate);
-mappings.addBookmark("- Material (Production Event)",  eventPrMaterial);
-mappings.addBookmark("- Technique (Production Event)", eventPrTechnique); 
+mappings.addBookmark("- Production Place Name",  eventPrPlaceName);
+mappings.addBookmark("- Material (Production Event - PP Vocab)",  eventPrMaterial); 
+mappings.addBookmark("- Technique (Production Event - PP Vocab)", eventPrTechnique);
 
 mappings.addBookmark("Other Event (type to specify)", event); 
- 
-mappings.addBookmarkForXpath("Subject / Theme (Concept)", "/lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectConcept"); 
 
+
+mappings.addBookmark("Subject / Theme (Concept)", template.find("lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept").get(1)); 
+mappings.addBookmark("Subject / Theme (Concept) (EuPhoto vocabulary)", subject);  
 
 mappings.addBookmark("Repository",  repositorySet); 
 

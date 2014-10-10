@@ -15,10 +15,13 @@ import net.sf.saxon.FeatureKeys;
 
 import org.xml.sax.*;
 
+import org.apache.log4j.Logger;
 import org.openjena.atlas.logging.Log;
 import org.w3c.dom.*;
 
 public class XSLTransform implements ItemTransform {
+	private static final Logger log = Logger.getLogger(XSLTransform.class);
+	
 	String xsl = null;
 	Transformer tr = null;
 	Map<String, String> parameters;
@@ -47,7 +50,13 @@ public class XSLTransform implements ItemTransform {
 		    tFactory.setAttribute( FeatureKeys.DTD_VALIDATION, false );
 		    tFactory.setURIResolver(new XSLURIResolver());
 		    StreamSource xslSource = new StreamSource(new StringReader(xsl));
+		    try {
 		    tr = tFactory.newTransformer(xslSource);
+		    } catch( TransformerConfigurationException tce ) {
+		    	log.error( tce.getMessageAndLocation(), tce );
+		    	throw tce;
+		    }
+		    
 		    this.applyParameters(tr);
 		    
 		    tr.setErrorListener(new ErrorListener() {
@@ -72,6 +81,8 @@ public class XSLTransform implements ItemTransform {
 		    	
 		    });
 		}
+		// dont know if this helps with anything
+		tr.reset();
 		return tr;
 	}
 	

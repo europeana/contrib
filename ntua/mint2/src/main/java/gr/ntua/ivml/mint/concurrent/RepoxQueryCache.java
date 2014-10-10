@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 /**
- * Efficient mechanism for caching and tranfering data from Repox 
+ * Efficient mechanism for caching and tranfering data from Repox
  * 
  * @author Georgios Markakis (gwarkx@hotmail.com)
  * @since 16 Jan 2013
@@ -55,7 +55,7 @@ public class RepoxQueryCache implements Iterator<ResultSet>{
 		
 		while( rs.next()) {
 			Integer count = new Integer(rs.getString("count"));
-			instance.totalNoOfItems = count;
+			instance.totalNoOfItems = count +1;
 			instance.currentpointer = 1;
 		}
 		return instance;

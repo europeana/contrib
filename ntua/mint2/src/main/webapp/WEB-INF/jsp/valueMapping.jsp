@@ -15,10 +15,13 @@
 <link href="images/browser_icon.ico" rel="shortcut icon" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/screen.css"/>
 <title><%= Config.get("mint.title") %> Value Mapping Tool</title>
-<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery/jquery-ui.min.js"></script>
+<script src="js/slickgrid/lib/jquery-1.7.min.js"></script>
+ 
+<script type="text/javascript" src="js/jquery/jquery-ui.min.js"> </script>
+
 <script type="text/javascript" src="js/jquery/jquery.layout.js"></script>
 <script type="text/javascript" src="js/jquery/jstree/jquery.jstree.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.ui.touch.js"> </script>
 <script type="text/javascript" src="js/esejs/results.js"></script>
 <script type="text/javascript" src="js/esejs/js_utilities.js"></script>
 

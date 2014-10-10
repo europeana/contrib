@@ -257,13 +257,15 @@ function ajaxMappingShare(selectedMapping, uploadId, userId,orgId,kpan) {
 }
 
 
-function mappingsselectCallback(page_index){
+function mappingsselectCallback(page_index,jq){
  	/*find start, end from page_index*/
- 	end=(page_index+1)*mappinglimit;
+	end=(page_index+1)*mappinglimit;
  	start=end-(mappinglimit);
  	ajaxMappingPanel(start,mapping_oid,uId,mapping_uid);
     return false;
  }
+
+
 
 /** 
  * Callback function for the AJAX content loader.

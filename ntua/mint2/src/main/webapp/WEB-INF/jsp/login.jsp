@@ -2,6 +2,7 @@
 <%@ page language="java" errorPage="error.jsp"%>
 <%@page pageEncoding="UTF-8"%>
 
+<cst:customJsp jsp="login-redirect.jsp">
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
@@ -84,3 +85,4 @@ $(function() {
 
 </div>
 </body>
+</cst:customJsp>

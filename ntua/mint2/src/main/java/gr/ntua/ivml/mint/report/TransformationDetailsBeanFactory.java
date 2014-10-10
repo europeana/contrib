@@ -188,8 +188,8 @@ public class TransformationDetailsBeanFactory {
 		}
 
 		
-		//return transformations;
-		return filterransformationsofSameParentDataset(transformations);
+		return transformations;
+		//return filterransformationsofSameParentDataset(transformations);
 
 
 	}
@@ -206,7 +206,7 @@ public class TransformationDetailsBeanFactory {
 	public Integer getTransformedItems(JSONObject json,
 			String orgid) {
 		List<TransformationDetailsBean> transformations = new ArrayList<TransformationDetailsBean>();
-		transformations = filterransformationsofSameParentDataset(getTransformations(json, orgid));
+		transformations = getTransformations(json, orgid);
 		Integer transformedItems = 0;
 		Iterator<TransformationDetailsBean> it =  transformations.iterator();
 		while (it.hasNext()){

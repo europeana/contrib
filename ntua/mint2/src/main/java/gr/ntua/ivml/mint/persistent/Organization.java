@@ -5,11 +5,13 @@ import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.Meta;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
+import gr.ntua.ivml.mint.util.Tuple;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -151,6 +153,22 @@ public class Organization implements SecurityEnabled {
 		} else {
 			Meta.put( this, "targets", targets.toJson() );
 		}
+	}
+	
+	public Tuple<Date, Integer> getCurrentTarget() {
+		String json = Meta.get( this, "targets" );
+		if( json != null ) 
+			return new JsonOrganizationTargets(json).currentTarget();
+		else
+			return null;
+	}
+	
+	public Tuple<Date, Integer> getFinalTarget() {
+		String json = Meta.get( this, "targets" );
+		if( json != null ) 	
+			return new JsonOrganizationTargets(json). finalTarget();
+		else
+			return null;
 	}
 	
 	// convenience 

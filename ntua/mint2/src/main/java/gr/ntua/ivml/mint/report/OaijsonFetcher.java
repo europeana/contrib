@@ -61,6 +61,7 @@ public class OaijsonFetcher {
 		HttpURLConnection http = (HttpURLConnection) theurl.openConnection();
 		int statusCode = http.getResponseCode();
 		if (statusCode != 200) {
+		//	System.out.println("DEBUG statuscode != 200");
 			return null;
 		} else {
 			try {

@@ -75,7 +75,7 @@ public class Queues {
 			}
 		}
 	}
-	static public interface ConditionedRunnable {
+	static public interface ConditionedRunnable extends Runnable {
 		// when this returns true, the Runnable is put to the queue it was 
 		// submitted to
 		public boolean isRunnable();

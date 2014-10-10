@@ -13,12 +13,15 @@ import gr.ntua.ivml.mint.util.PublishQueue;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+
+import com.opensymphony.xwork2.util.TextParseUtil;
 
 /**
  * All activities around publishing in Euscreenxl should happen here.
@@ -67,7 +70,7 @@ public class EuscreenPublish extends GeneralAction {
 					// if they don't have eus id, make one
 					// if they do, compare it and see if its still ok
 					// make a note in log if there has been a change
-					ds.logEvent(publish?"Publish":"Unpublish" + " started" );
+					ds.logEvent((publish?"Publish":"Unpublish") + " started" );
 					DB.commit();
 					ApplyI<Item> modifyId = new ApplyI<Item>() {
 						@Override
@@ -110,8 +113,6 @@ public class EuscreenPublish extends GeneralAction {
 					};
 
 					ds.processAllValidItems( modifyId, true );
-					
-					
 				}
 				
 				Solarizer si = new Solarizer( ds );
@@ -201,7 +202,13 @@ public class EuscreenPublish extends GeneralAction {
 		// send of runnable that reindexes all published items from dataset
 		// field published removed
 		Dataset origin = ds.getOrigin();
-		Dataset published = ds.getBySchemaName(Config.get("euscreen.portal.schema"));
+		Set<String> schemas= TextParseUtil.commaDelimitedStringToSet(Config.get("euscreen.portal.schema"));
+		Dataset published = null;
+		for( String schemaName: schemas ) {
+			published = ds.getBySchemaName(schemaName);
+			if( published != null ) break;
+		}
+		
 		if(( origin == null) || ( published == null )) {
 			title = "Error";
 			message = "Can't find Dataset to publish! Program Bug!";
@@ -232,11 +239,17 @@ public class EuscreenPublish extends GeneralAction {
 
 	private String portalPublish() {
 		Dataset origin = ds.getOrigin();
-		Dataset published = ds.getBySchemaName(Config.get("euscreen.portal.schema"));
-
+		
+		Set<String> schemas= TextParseUtil.commaDelimitedStringToSet(Config.get("euscreen.portal.schema"));
+		Dataset published = null;
+		for( String schemaName: schemas ) {
+			published = ds.getBySchemaName(schemaName);
+			if( published != null ) break;
+		}
+		
 		if(( origin == null) || ( published == null )) {
 			title = "Error";
-			message = "Can't find Dataset to publish! Program Bug!";
+			message = "Can\\'t find Dataset to publish! Program Bug!";
 			return ERROR;
 		}
 		PublicationRecord pr = published.getPublicationRecord();
@@ -304,7 +317,7 @@ public class EuscreenPublish extends GeneralAction {
 		}
 		
 		BasePublication bp = new BasePublication(ds.getOrganization());
-		bp.unpublish(origin);
+		bp.unpublish(ds);
 		// TODO Auto-generated method stub
 		title = "Success";
 		message = "Your dataset was unpublished.";

@@ -119,6 +119,7 @@ public class XSLselection extends GeneralAction  {
 		if( du.isPublished() ) {
 			// not much to do here 
 			du.unpublish();
+			success = "Unpublished";
 			return "success";
 		} else if( du.isDirectlyPublishable()) {
 			try {
@@ -171,8 +172,11 @@ public class XSLselection extends GeneralAction  {
     	if( (user.getOrganization() == null && !user.hasRight(User.SUPER_USER)) || !user.hasRight(User.MODIFY_DATA)) {
     		throw new IllegalAccessException( "No publication rights!" );
     	}
-
-		return super.input();
+    	
+    	if( Config.getBoolean( "publication.eseconfirm"))
+    		return super.input();
+    	else
+    		return execute();
 	}
 	
 	

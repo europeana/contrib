@@ -8,8 +8,13 @@ import gr.ntua.ivml.mint.mapping.model.SimpleMapping;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
 import gr.ntua.ivml.mint.util.JSONUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
 
@@ -77,7 +82,8 @@ public abstract class AbstractMappingManager {
 	
 	public JSONArray addBookmark(JSONObject bookmark) {
 		JSONArray bookmarks = this.getBookmarks();
-		bookmarks.add(bookmark);
+		if(!bookmarks.contains(bookmark))
+			bookmarks.add(bookmark);
 		this.save();
 		
 		return bookmarks;
@@ -698,15 +704,14 @@ public abstract class AbstractMappingManager {
 		return result;
 	}
 	
-	public Collection<String> getXPathsUsedInMapping() {
-		Collection<String> list = new ArrayList<String>();
+	public HashMap<String, String> getXPathsUsedInMapping() {
+		HashMap<String, String> map = new HashMap<String, String>();
 		
 		Mappings mappings = new Mappings(this.getTargetDefinition());
 		if(mappings != null) {
-			list = MappingSummary.getAllMappedXPaths(mappings);
+			map = MappingSummary.getMapped(mappings);
 		}
-
-		return list; 
+		return map; 
 	}
 	
 	public String getXpathForElement(String id) {

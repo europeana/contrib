@@ -67,7 +67,8 @@ public class Transformation extends Dataset implements Lockable {
 		tr.setName(source.getName());
 		tr.setParentDataset(source);
 		tr.setCreated(new Date());
-
+		tr.setOrganization(source.getOrganization());
+		
 		return tr;		
 	}
 	
@@ -240,6 +241,7 @@ public class Transformation extends Dataset implements Lockable {
 		else if (getCrosswalk() != null ){
 			res.put("targetSchema",getCrosswalk().getTargetSchema().getName());
 		}
+
 		if (parentDataset !=null){
 			res.put("parentDataset",parentDataset.getName());
 		

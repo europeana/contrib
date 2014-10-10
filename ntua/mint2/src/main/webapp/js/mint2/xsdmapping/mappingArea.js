@@ -73,6 +73,7 @@
 				maptemp.push({ type: "xpath", value: target.structural.mappings[0].value });
 			}
 		} else {
+			
 			// normal mappings
 //			console.log("Annotation", target);
 			var mappingCase = target["mapping-cases"][data.settings.case];
@@ -173,7 +174,7 @@
 			// mapping actions
 			var actions = $("<div>").addClass("mapping-element-mapping-actions").appendTo(mapping);
 			// mapping area for double click and/or drop
-			var area = $("<div>").addClass("mapping-element-mapping-area").appendTo(mapping);			
+			var area = $("<div>").addClass("mapping-element-mapping-area").appendTo(mapping);	
 			// toggle mapping actions - experimental
 			if(false && data.editor.preferences.get("enableExperimental")) {
 				actions.hide();
@@ -222,16 +223,20 @@
 					if(isThesaurus) text = "unmapped (thesaurus)";
 					area.text(text);
 					mapping.addClass("unmapped-mapping");
+
 				}
 			} else if(input.type == "empty") {
 				area.text("unmapped");
+				area.attr('contenteditable','true');
 				mapping.addClass("unmapped-mapping");
 			} else if(isConstant) {
 				if(input.annotation != undefined) {
 					area.text(input.annotation);
 					area.addClass("annotation");
+					area.attr('contenteditable','true');
 				} else {
 					area.text(input.value);
+					area.attr('contenteditable','true');
 				}
 				defaultTooltip(area, input.value);
 				mapping.addClass("constant-mapping");
@@ -277,7 +282,7 @@
 			if(!isEmpty && !isFixed) {
 				// add action
 				if(isSchemaMapping && !isStructural && !isEnumerated && !isThesaurus) {
-					var add = $("<span>").attr("title", "Concatenate mapping").addClass("mapping-action-add").css("left", "32px").appendTo(actions);
+				var add = $("<span>").attr("title", "Concatenate mapping").addClass("mapping-action-add").css("left", "32px").appendTo(actions);
 					add.data("mapping", { index: index, button: add });
 					add.click(function() {
 						var idx = $(this).data("mapping").index;
@@ -386,7 +391,33 @@
 				var selected = input.value;
 				if(isThesaurus) {
 					area.data("mapping", { index: index, mapping: input, element: this, mapdiv: mapping });
-					area.dblclick(function() {
+					area.attr('contenteditable','false');
+					
+					
+					area.on("touchstart",function(e) {
+							var idx = $(this).data("mapping").index;
+							var map = $(this).data("mapping").mapping;
+							var elm = $(this).data("mapping").element;
+							var mapdiv = $(this).data("mapping").mapdiv;
+							var target = data.target;
+							data.editor.loadSubpanel(function(panel) {
+								var thesaurusContainer = $("<div>").addClass("mapping-thesaurus-container").append(node);
+								var node = $("<div>").appendTo(thesaurusContainer);
+								panel.find('.panel-options').after(thesaurusContainer);
+								var thesaurus = new ThesaurusBrowser(node, {
+									thesaurus: data.target.thesaurus,
+									select: function(concept) {
+										data.container.mappingArea("setConstantValueMapping", {
+											index: idx,
+											value: concept.concept,
+											annotation: concept.label
+										});
+									}
+								});
+							}, data.target.name + " thesaurus", { reference: mapdiv });
+						});
+					
+					area.on("dblclick",function() {
 						var idx = $(this).data("mapping").index;
 						var map = $(this).data("mapping").mapping;
 						var elm = $(this).data("mapping").element;
@@ -409,6 +440,7 @@
 						}, data.target.name + " thesaurus", { reference: mapdiv });
 					});
 				} else {
+					
 					area.editable(function(value, settings) {
 						var index = $(this).data("mapping").index;
 						var selected = undefined;
@@ -428,7 +460,7 @@
 				
 						return value;
 					},{
-						event: "dblclick",
+						event: "dblclick touchstart",
 						style: "width: 100%",
 						type:(isEnumerated)?"select":data.settings.preferedInput,
 						data:(isEnumerated)?editable_enumerations(target.enumerations, selected):undefined,
@@ -497,7 +529,6 @@
 			
 			var command = "setXPathMapping";
 			if(structural) { command = "setStructuralMapping"; }
-			
 			$.ajax({
 				url: data.settings.ajaxUrl,
 				context: this,
@@ -514,8 +545,8 @@
 				success: function(response) {
 					data.target = response;
 					data.container.mappingArea("refresh");
-					
-					$(data.editor).trigger("documentChanged", response);
+					data.editor.validate();
+					//$(data.editor).trigger("documentChanged", response);
 				}
 			});
 		},
@@ -528,7 +559,7 @@
 					data.target = response;
 					data.container.mappingArea("refresh");
 			
-					$(data.editor).trigger("documentChanged", response);
+					//$(data.editor).trigger("documentChanged", response);
 				});
 		},
 		
@@ -544,15 +575,16 @@
 			
 			var callback = function(response) {
 				data.target = response;
-				data.container.mappingArea("refresh");	
-				$(data.editor).trigger("documentChanged", response);
+				data.container.mappingArea("refresh");
+				data.editor.validate();
+				//$(data.editor).trigger("documentChanged", response);
 			}
 
 			if(structural) {
 				data.editor.ajax.removeStructuralMapping(arguments, callback);
 			} else {
-				data.editor.ajax.removeMapping(arguments, callback);				
-			}			
+				data.editor.ajax.removeMapping(arguments, callback);		
+			}	
 		},
 
 		addMappingCase: function() {
@@ -571,7 +603,7 @@
 				success: function(response) {
 					data.settings.element.mappingElement("refresh", response);
 					
-					$(data.editor).trigger("documentChanged", response);
+					//$(data.editor).trigger("documentChanged", response);
 				}
 			});
 		},
@@ -592,7 +624,7 @@
 				success: function(response) {
 					data.settings.element.mappingElement("refresh", response);
 					
-					$(data.editor).trigger("documentChanged", response);
+					//$(data.editor).trigger("documentChanged", response);
 				}
 			});
 		},
@@ -610,7 +642,7 @@
 			this.mappingArea(data.settings);
 			
 			this.trigger("afterRefresh");
-//			data.editor.validate();
+			//data.editor.validate();
 		}		
 	};
 	
@@ -627,4 +659,6 @@
 		
 		return result;
 	}
+	
+	
 })(jQuery);

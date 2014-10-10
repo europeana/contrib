@@ -184,21 +184,21 @@ public class ItemList extends GeneralAction {
 	}
 
 	
-	private List<Long> queryToList( SolrQuery sq) {
+	private List<Long> queryToList(SolrQuery sq) {
 		ArrayList<Long> result = new ArrayList<Long>();
 		SolrServer ss = Solarizer.getSolrServer();
 		try {
-			if( ss != null ) {
-				QueryResponse qr = ss.query( sq );
+			if(ss != null) {
+				QueryResponse qr = ss.query(sq);
 				SolrDocumentList sdl = qr.getResults();
 				json.element("total", sdl.getNumFound());
-				for( SolrDocument sd: sdl ) {
+				for(SolrDocument sd: sdl) {
 					Long itemId = Long.parseLong(sd.getFirstValue("item_id").toString());
 					result.add( itemId );
 				}
 			}
 		} catch(Exception e ) {
-			log.error( "Solr query failed" ,e );
+			log.error( "Solr query failed", e );
 		}
 		return result;
 	}

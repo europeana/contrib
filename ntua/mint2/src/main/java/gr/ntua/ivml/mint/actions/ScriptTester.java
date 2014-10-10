@@ -78,12 +78,10 @@ public class ScriptTester extends GeneralAction implements ServletRequestAware {
 		binding.setVariable("request", req);
 		
 		String head = "import gr.ntua.ivml.mint.db.DB\n";
-		PrintStream originalOut = System.out;
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		
+	    binding.setProperty("out", new PrintStream(buffer)); 
 		GroovyShell shell = new GroovyShell(binding);
 		try {
-			System.setOut(new PrintStream( buffer));
 			Object o = shell.evaluate(head+ script);
 			result = (o==null?null:o.toString());
 		} catch( Exception e ) {
@@ -93,7 +91,6 @@ public class ScriptTester extends GeneralAction implements ServletRequestAware {
 			e.printStackTrace( pw );
 			result = sw.toString();
 		} finally {
-			System.setOut(originalOut);
 			stdOut= buffer.toString();
 		}
 		return "success";

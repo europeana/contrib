@@ -54,7 +54,11 @@ public class Preferences {
 	 * @throws ParseException 
 	 */
 	public static JSONObject getObject(User user, String key) throws ParseException {
-		return JSONUtils.parse(Meta.get(user, Preferences.generateKey(key)));
+		String s = Meta.get(user, Preferences.generateKey(key));
+		if (s!=null)
+			return JSONUtils.parse(s);
+		else 
+			return new JSONObject();
 	}
 	
 	/**

@@ -1,6 +1,17 @@
-{
+{	
     "views": [
-        {
+        {	
+        	"groupAnn" : [
+        		{
+        			"xpath": "//edm:ProvidedCHO/gr:color/skos:Concept/@rdf:about",
+                    "label": "Color"
+        		},
+        		{
+        			"xpath": //edm:ProvidedCHO/dc:subject,
+        			"label": "Subject",
+        			"showDuplicateWithNewValue": "false"
+        		}
+        	],
             "type": "tabs",
             "contents": [
                 {

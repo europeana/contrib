@@ -11,6 +11,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 
 import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -33,7 +34,7 @@ public class SchemaValidator {
 	private static TransformerFactory tFactory;
 
 	private static HashMap<Long, Schema> schemaCache = new HashMap<Long, Schema>();
-	private static HashMap<Long, Transformer> schematronCache = new HashMap<Long, Transformer>();
+	private static HashMap<Long, Templates> schematronCache = new HashMap<Long, Templates>();
 	
 	static {
 		factory = org.apache.xerces.jaxp.validation.XMLSchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
@@ -189,17 +190,18 @@ public class SchemaValidator {
 	}
 	
 	private static synchronized Transformer getTransformer(XmlSchema schema) throws TransformerConfigurationException {
-		Transformer transformer = SchemaValidator.schematronCache.get(schema.getDbID());
+		Templates templates = SchemaValidator.schematronCache.get(schema.getDbID());
+
 		
-		if(transformer == null) {
+		if(templates == null) {
 			String schematronXSL = schema.getSchematronXSL();
 	//	    log.debug("schematron XSL: " + schematronXSL);
 			StringReader xslReader = new StringReader(schematronXSL);
-			transformer = tFactory.newTransformer(new StreamSource(xslReader));
-			SchemaValidator.schematronCache.put(schema.getDbID(), transformer);
+			templates = tFactory.newTemplates(new StreamSource(xslReader));
+			SchemaValidator.schematronCache.put(schema.getDbID(), templates);
 		}
 
-		return transformer;
+		return templates.newTransformer();
 	}
 
 	public static synchronized Schema getSchema( String schemaPath ) throws SAXException  {

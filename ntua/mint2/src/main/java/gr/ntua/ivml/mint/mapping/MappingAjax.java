@@ -307,8 +307,8 @@ public class MappingAjax {
 			} else
 				
 			if(command.equals("getXPathsUsedInMapping")) {
-				JSONObject result = new JSONObject();
-				result.put("xpath", JSONUtils.toArray(mappings.getXPathsUsedInMapping()));
+				//JSONObject result = new JSONObject();
+				JSONObject result = new JSONObject(mappings.getXPathsUsedInMapping());
 				out.println(result.toString());
 			}
 			

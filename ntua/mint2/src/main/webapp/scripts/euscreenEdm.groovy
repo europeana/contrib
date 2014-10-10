@@ -63,6 +63,19 @@ language.setThesaurus(MappingPrimitives.vocabulary("http://mint.image.ece.ntua.g
 
 //Bookmarks
 mappings.addBookmark("Title", template.findFirst("edm:ProvidedCHO/dc:title"));
+mappings.addBookmark("Alternative Title", template.findFirst("edm:ProvidedCHO/dcterms:alternative"));
+
+mappings.addBookmark("Creator", template.findFirst("edm:ProvidedCHO/dc:creator"));
+mappings.addBookmark("Contributor", template.findFirst("edm:ProvidedCHO/dc:contributor"));
+mappings.addBookmark("Date", template.findFirst("edm:ProvidedCHO/dc:date"));
+mappings.addBookmark("Creation Date", template.findFirst("edm:ProvidedCHO/dcterms:created"));
+mappings.addBookmark("Broadcast date", template.findFirst("edm:ProvidedCHO/dcterms:issued"));
+mappings.addBookmark("Language", template.findFirst("edm:ProvidedCHO/dc:language"));
+mappings.addBookmark("Temporal", template.findFirst("edm:ProvidedCHO/dcterms:temporal"));
+mappings.addBookmark("Publisher/Broadcaster", template.findFirst("edm:ProvidedCHO/dc:publisher"));
+mappings.addBookmark("Medium", template.findFirst("edm:ProvidedCHO/dcterms:medium"));
+mappings.addBookmark("Duration", template.findFirst("edm:ProvidedCHO/dcterms:extent"));
+mappings.addBookmark("Provider Rights", template.findFirst("edm:ProvidedCHO/dc:rights"));
 mappings.addBookmark("Description", template.findFirst("edm:ProvidedCHO/dc:description"));
 mappings.addBookmark("Subject", template.findFirst("edm:ProvidedCHO/dc:subject"));
 mappings.addBookmark("Genre", template.findFirst("edm:ProvidedCHO/dc:type"));

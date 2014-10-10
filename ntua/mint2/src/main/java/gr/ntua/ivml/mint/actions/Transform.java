@@ -233,6 +233,7 @@ public class Transform extends GeneralAction  {
 
 				XSLTransform execTrans = new XSLTransform(tr);
 				execTrans.setAquiredLocks(locks);
+				tr.logEvent("Queued Transformation.");
 				Queues.queue( execTrans, "db" );
 				return "success";
 			} catch (Exception ex) {

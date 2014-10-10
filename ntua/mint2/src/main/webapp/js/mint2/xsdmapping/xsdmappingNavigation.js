@@ -31,7 +31,7 @@
 	
 	function xpathPartElement(editor, part) {
 		var div = $("<div>").addClass("part");
-		
+
 		div.text(part.name);
 		div.click(function() {
 			editor.showMapping(part.id);
@@ -280,6 +280,7 @@
 					data.searchResults.empty();
 					for(i in response) {
 						var result = response[i];
+						
 						var div = $("<div>").addClass("editor-navigation-search-result");
 
 						if(result.mapped != undefined) div.addClass("mapped");

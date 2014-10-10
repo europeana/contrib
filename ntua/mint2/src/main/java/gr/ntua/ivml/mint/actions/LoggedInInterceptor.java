@@ -1,5 +1,6 @@
 package gr.ntua.ivml.mint.actions;
 
+import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.util.Config;
@@ -32,6 +33,8 @@ public class LoggedInInterceptor extends AbstractInterceptor {
 		log.debug( "Name " + invocation.getInvocationContext().getName());
 		HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(StrutsStatics.HTTP_REQUEST);
 		HttpSession httpSession = request.getSession();
+		// allow for custom login schema
+		Custom.login( request );
 		ga.setSessionId(httpSession.getId());
 		Map<String, Object> s = invocation.getInvocationContext().getSession();
 		User u = (User) s.get( "user" );
@@ -44,12 +47,15 @@ public class LoggedInInterceptor extends AbstractInterceptor {
 		} else {
 		
 			// not good enough, not deep: DB.getSession().update(u);
-			u = DB.getUserDAO().findById(u.getDbID(), false);
+			u = DB.getUserDAO().getById(u.getDbID(), false);
 		}
 		ga.setUser( u );
 		s.put( "user", u);
 
 		String result =  invocation.invoke();
+		// make sure the user is loaded and displayed in tomcat session list
+		log.info( "User: " + u.toString() + "->" + result );
+		
 		return result;
 	}
 }

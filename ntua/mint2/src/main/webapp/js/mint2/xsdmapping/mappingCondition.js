@@ -455,6 +455,7 @@
 				}
 			} else {
 				right.addClass("unmapped-mapping");
+				right.attr('contenteditable','true');
 				right.text("value");
 			}
 			

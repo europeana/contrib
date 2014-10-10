@@ -12,6 +12,7 @@ import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.StringUtils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import nux.xom.xquery.StreamingPathFilter;
 import nux.xom.xquery.StreamingTransform;
 
 import org.apache.log4j.Logger;
+import org.ocpsoft.pretty.time.PrettyTime;
 
 public class XSLTransform implements Runnable {
 	public final Logger log = Logger.getLogger(XSLTransform.class );
@@ -62,6 +64,9 @@ public class XSLTransform implements Runnable {
 			// TODO: Only run when we expect XML
 			SchemaStatsBuilder ssb = new SchemaStatsBuilder(transformation);
 			ssb.runInThread();
+			
+			// stats clear session !!!
+			transformation = DB.getTransformationDAO().getById(transformation.getDbID(), false);
 
 			// Validator only makes sense on XML.
 			// ALL ITEMS have to be valid xml though
@@ -137,6 +142,7 @@ public class XSLTransform implements Runnable {
 	
 	private void transform() throws Exception {		
 		try {
+			
 			transformation.logEvent("Transformation started.",  transformation.getTargetName());
 			transformation.setTransformStatus(Transformation.TRANSFORM_RUNNING);
 			DB.commit();
@@ -148,10 +154,22 @@ public class XSLTransform implements Runnable {
 		
 			if( xslTransformationParams != null )  t.setParameters(xslTransformationParams);
 		
+			final int totalInputItems = transformation.getParentDataset().getItemCount();
+			final long startTime = System.currentTimeMillis();
 			ApplyI<Item> itemTransform = new ApplyI<Item>() {
 				@Override
 				public void apply(Item inputItem) throws Exception {
 					transformItem( inputItem );
+					if( totalInputItems > 2000 ) {
+						if( currentInputItemNo == (totalInputItems/50)) {
+							long usedTime = System.currentTimeMillis()-startTime;
+							PrettyTime pt = new PrettyTime();
+							
+							String expected = pt.format( new Date( System.currentTimeMillis() + 49*usedTime )); 
+							transformation.logEvent( "Expect finished " + expected );
+							DB.commit();
+						}
+					}
 				}	
 			};
 		
