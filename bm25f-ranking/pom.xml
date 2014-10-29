@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.cnr.isti.hpc</groupId>
 	<artifactId>bm25-ranking</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${solr.version}</version>
 	<name>Simple bm25 ranking function</name>
 	<dependencies>
 		<dependency>
