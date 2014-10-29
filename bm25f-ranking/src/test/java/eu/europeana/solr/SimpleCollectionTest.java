@@ -41,6 +41,7 @@ public class SimpleCollectionTest {
 	@BeforeClass
 	public static void runSolrInstance() throws SolrServerException,
 			IOException {
+		System.setProperty("solr.allow.unsafe.resourceloading", "true");
 		instance = new SimpleCollectionSolrInstance();
 		instance.setSolrdir(new File(
 				"./src/test/resources/solr/simple-collection"));
@@ -135,10 +136,24 @@ public class SimpleCollectionTest {
 	}
 
 	@Test
-	public void testResults() {
+	public void test1Result() {
 		try {
+
+			// // check if the status is not corrupted
 			SolrDocumentList results = getResults("leonardo");
 			assertEquals(3, results.size());
+		} catch (SolrServerException e) {
+			fail(e.toString());
+		}
+	}
+
+	@Test
+	public void testResults() {
+		try {
+
+			SolrDocumentList results = getResults("*:*");
+			assertEquals(4, results.size());
+
 			// // check if the status is not corrupted
 			results = getResults("leonardo");
 			assertEquals(3, results.size());

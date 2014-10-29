@@ -54,8 +54,8 @@ public class SolrServerTester extends SolrServer implements Closeable {
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(SolrServerTester.class);
-	//private static final String CORE1 = "collection1";
-	private static final String CORE1="collection2";
+	// private static final String CORE1 = "collection1";
+	private static final String CORE1 = "collection2";
 	private static final long serialVersionUID = 1L;
 	private File solrdir = null;
 	private File datadir = null;
@@ -77,10 +77,11 @@ public class SolrServerTester extends SolrServer implements Closeable {
 		this.solrdir = solrdir;
 
 		System.setProperty("solr.home", solrdir.getPath());
-		
+
 		if (this.datadir == null) {
 			File dataDir = FileUtils.getTempDirectory();
-			logger.info("created tmp data dir in {}/{}",dataDir.getAbsolutePath(),"data");
+			logger.info("created tmp data dir in {}/{}",
+					dataDir.getAbsolutePath(), "data");
 			setDatadir(new File(solrdir, "data"));
 		}
 	}
@@ -136,15 +137,14 @@ public class SolrServerTester extends SolrServer implements Closeable {
 		}
 
 	}
-	
-//	public void index(SolrInputDocument doc) throws SolrServerException, IOException{
-//		getDelegate(); // force the delegate to be created
-//		logger.info("indexing doc {} ",doc);
-//		delegate.add(doc);		
-//		delegate.commit();
-//	}
-	
-	
+
+	// public void index(SolrInputDocument doc) throws SolrServerException,
+	// IOException{
+	// getDelegate(); // force the delegate to be created
+	// logger.info("indexing doc {} ",doc);
+	// delegate.add(doc);
+	// delegate.commit();
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -195,9 +195,9 @@ public class SolrServerTester extends SolrServer implements Closeable {
 					solrdir.getAbsolutePath());
 
 			core = cc.create(cd);
-			cc.register(CORE1, core, false);
-			delegate = new EmbeddedSolrServer(cc,
-					CORE1);
+
+			// cc.register(CORE1, core, false);
+			delegate = new EmbeddedSolrServer(cc, CORE1);
 			return delegate;
 
 		} catch (ParserConfigurationException ex) {
@@ -233,36 +233,35 @@ public class SolrServerTester extends SolrServer implements Closeable {
 	public IndexSchema getIndexSchema() throws SolrServerException {
 		getDelegate(); // force the delegate to be created
 
-		return core.getSchema();
+		return core.getLatestSchema();
 	}
 
 	// just to see if things work
-	public static void main(String[] args) throws SolrServerException, IOException {
+	public static void main(String[] args) throws SolrServerException,
+			IOException {
 		SolrServerTester tester = new SolrServerTester();
 		tester.setSolrdir(new File(new File(new File(new File("src"), "test"),
-				"resources"), "solr/"+CORE1));
+				"resources"), "solr/" + CORE1));
 		SolrServerIndexer indexer = new SolrServerIndexer();
-		indexer.index(tester);		
+		indexer.index(tester);
 		tester.commit();
-		
+
 		SolrQuery q = new SolrQuery("Watermark");
 		q.set("debugQuery", "on");
-		q.set("defType","bm25f");
-		q.set("qf","title text");
-		
-		
-		
-	    q.setRows(10);  // don't actually request any data
-	    
-	    
-	    QueryResponse qr = tester.query(q);
-	    Map<String, String> explainmap = qr.getExplainMap();
-	    System.out.println("results "+qr.getResults().getNumFound());
-	    for (SolrDocument doc : qr.getResults()){
-	    	System.out.println("Title: "+doc.getFieldValue("title"));
-	    	System.out.println("Expl: "+explainmap.get(doc.getFieldValue("europeana_id")));
-	    }
-	    
+		q.set("defType", "bm25f");
+		q.set("qf", "title text");
+
+		q.setRows(10); // don't actually request any data
+
+		QueryResponse qr = tester.query(q);
+		Map<String, String> explainmap = qr.getExplainMap();
+		System.out.println("results " + qr.getResults().getNumFound());
+		for (SolrDocument doc : qr.getResults()) {
+			System.out.println("Title: " + doc.getFieldValue("title"));
+			System.out.println("Expl: "
+					+ explainmap.get(doc.getFieldValue("europeana_id")));
+		}
+
 		tester.close();
 	}
 

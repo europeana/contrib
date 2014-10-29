@@ -78,7 +78,7 @@ public class BM25FQueryParser extends QParser {
 	}
 
 	@Override
-	public Query parse() throws SyntaxError{
+	public Query parse() throws SyntaxError {
 		BM25FParameters param = manageRuntimeBm25fParams();
 		if (param == null)
 			param = bm25fparams;

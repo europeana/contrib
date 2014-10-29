@@ -26,7 +26,7 @@ import org.apache.lucene.index.ReaderUtil;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermContext;
 import org.apache.lucene.search.similarities.Similarity;
-import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
+import org.apache.lucene.search.similarities.Similarity.SimScorer;
 import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.ToStringUtils;
 
@@ -143,8 +143,21 @@ public class BM25FBooleanTermQuery extends Query {
 		}
 
 		@Override
-		public Scorer scorer(AtomicReaderContext context,
-				boolean scoreDocsInOrder, boolean topScorer, Bits acceptDocs)
+		public BulkScorer bulkScorer(AtomicReaderContext context,
+				boolean scoreDocsInOrder, Bits acceptDocs) throws IOException {
+
+			Scorer scorer = scorer(context, acceptDocs);
+			if (scorer == null) {
+				// No docs match
+				return null;
+			}
+			// This impl always scores docs in order, so we can
+			// ignore scoreDocsInOrder:
+			return new DefaultBulkScorer(scorer);
+		}
+
+		@Override
+		public Scorer scorer(AtomicReaderContext context, Bits acceptDocs)
 				throws IOException {
 			assert termStates.topReaderContext == ReaderUtil
 					.getTopLevelContext(context) : "The top-reader used to create Weight ("
@@ -152,7 +165,7 @@ public class BM25FBooleanTermQuery extends Query {
 					+ ") is not the same as the current reader's top-reader ("
 					+ ReaderUtil.getTopLevelContext(context);
 
-			ExactSimScorer[] scorers = new ExactSimScorer[stats.length];
+			SimScorer[] scorers = new SimScorer[stats.length];
 			DocsEnum[] docsEnums = new DocsEnum[stats.length];
 			// TermsEnum termDocs = null;
 			DocsEnum docsEnum = null;
@@ -160,7 +173,7 @@ public class BM25FBooleanTermQuery extends Query {
 				// termDocs = getTermsEnum(context, fields[i],i);
 				docsEnum = getDocsEnum(context, term.field());
 				if (docsEnum != null) {
-					scorers[0] = similarity.exactSimScorer(stats[0], context);
+					scorers[0] = similarity.simScorer(stats[0], context);
 					docsEnums[0] = docsEnum;
 				}
 			} else {
@@ -168,8 +181,7 @@ public class BM25FBooleanTermQuery extends Query {
 					// termDocs = getTermsEnum(context, fields[i],i);
 					docsEnum = getDocsEnum(context, fields[i]);
 					if (docsEnum != null) {
-						scorers[i] = similarity.exactSimScorer(stats[i],
-								context);
+						scorers[i] = similarity.simScorer(stats[i], context);
 						docsEnums[i] = docsEnum;
 					}
 					// System.out.println("DOC ENUM "+i);
@@ -196,17 +208,15 @@ public class BM25FBooleanTermQuery extends Query {
 		@Override
 		public Explanation explain(AtomicReaderContext context, int doc)
 				throws IOException {
-			Scorer scorer = scorer(context, true, false, context.reader()
-					.getLiveDocs());
+			Scorer scorer = scorer(context, context.reader().getLiveDocs());
 			if (scorer != null) {
 				int newDoc = scorer.advance(doc);
 				if (newDoc == doc) {
 
-					ExactSimScorer[] scorers = new ExactSimScorer[stats.length];
+					SimScorer[] scorers = new SimScorer[stats.length];
 					for (int i = 0; i < stats.length; i++) {
 
-						scorers[i] = similarity.exactSimScorer(stats[i],
-								context);
+						scorers[i] = similarity.simScorer(stats[i], context);
 					}
 
 					ComplexExplanation result = new ComplexExplanation();
@@ -301,8 +311,8 @@ public class BM25FBooleanTermQuery extends Query {
 				|| perReaderTermState.topReaderContext != context) {
 			// make TermQuery single-pass if we don't have a PRTS or if the
 			// context differs!
-			termState = TermContext.build(context, term, true); // cache term
-																// lookups!
+			termState = TermContext.build(context, term); // cache term
+															// lookups!
 		} else {
 			// PRTS was pre-build for this IS
 			termState = this.perReaderTermState;
@@ -312,7 +322,7 @@ public class BM25FBooleanTermQuery extends Query {
 		for (int i = 0; i < fields.length; i++) {
 			Term t = new Term(fields[i], term.text());
 
-			fieldTermContext[i] = TermContext.build(context, t, false);
+			fieldTermContext[i] = TermContext.build(context, t);
 		}
 		// we must not ignore the given docFreq - if set use the given value
 		// (lie)

@@ -26,8 +26,6 @@ import java.util.Set;
 import org.apache.lucene.index.AtomicReaderContext;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.ConjunctionTermScorer.DocsAndFreqs;
-import org.apache.lucene.search.TermQuery.TermWeight;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.ToStringUtils;
@@ -299,8 +297,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 				result.addDetail(w.explain(context, doc));
 
 			}
-			Scorer s = scorer(context, true, false, context.reader()
-					.getLiveDocs());
+			Scorer s = scorer(context, context.reader().getLiveDocs());
 			float score = 0;
 			int docId = s.advance(doc);
 			if (docId == doc) {
@@ -313,8 +310,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 		}
 
 		@Override
-		public Scorer scorer(AtomicReaderContext context,
-				boolean scoreDocsInOrder, boolean topScorer, Bits acceptDocs)
+		public Scorer scorer(AtomicReaderContext context, Bits acceptDocs)
 				throws IOException {
 			// TODO investigate on term conjunction
 			// if (termConjunction) {
@@ -327,7 +323,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			Iterator<BooleanClause> cIter = clauses.iterator();
 			for (Weight w : weights) {
 				BooleanClause c = cIter.next();
-				Scorer subScorer = w.scorer(context, true, false, acceptDocs);
+				Scorer subScorer = w.scorer(context, acceptDocs);
 				if (subScorer == null) {
 					if (c.isRequired()) {
 						return null;
@@ -343,7 +339,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			// FIXME if optional is not empty, it never finish
 
 			// Check if we can return a BooleanScorer
-			if (!scoreDocsInOrder && topScorer && required.size() == 0) {
+			if (required.size() == 0) {
 				return new BM25FBooleanScorer(this, disableCoord,
 						minNrShouldMatch, required, optional, prohibited,
 						maxCoord, acceptDocs);
@@ -368,28 +364,29 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			// required, prohibited, optional, maxCoord);
 		}
 
-		private Scorer createConjunctionTermScorer(AtomicReaderContext context,
-				Bits acceptDocs) throws IOException {
-
-			// TODO: fix scorer API to specify "needsScores" up
-			// front, so we can do match-only if caller doesn't
-			// needs scores
-
-			final DocsAndFreqs[] docsAndFreqs = new DocsAndFreqs[weights.size()];
-			for (int i = 0; i < docsAndFreqs.length; i++) {
-				final TermWeight weight = (TermWeight) weights.get(i);
-				final Scorer scorer = weight.scorer(context, true, false,
-						acceptDocs);
-				if (scorer == null) {
-					return null;
-				} else {
-					assert scorer instanceof TermScorer;
-					docsAndFreqs[i] = new DocsAndFreqs((TermScorer) scorer);
-				}
-			}
-			return new ConjunctionTermScorer(this, disableCoord ? 1.0f : coord(
-					docsAndFreqs.length, docsAndFreqs.length), docsAndFreqs);
-		}
+		// private Scorer createConjunctionTermScorer(AtomicReaderContext
+		// context,
+		// Bits acceptDocs) throws IOException {
+		//
+		// // TODO: fix scorer API to specify "needsScores" up
+		// // front, so we can do match-only if caller doesn't
+		// // needs scores
+		//
+		// final DocsAndFreqs[] docsAndFreqs = new DocsAndFreqs[weights.size()];
+		// for (int i = 0; i < docsAndFreqs.length; i++) {
+		// final TermWeight weight = (TermWeight) weights.get(i);
+		// final Scorer scorer = weight.scorer(context, true, false,
+		// acceptDocs);
+		// if (scorer == null) {
+		// return null;
+		// } else {
+		// assert scorer instanceof TermScorer;
+		// docsAndFreqs[i] = new DocsAndFreqs(scorer);
+		// }
+		// }
+		// return new ConjunctionTermScorer(this, disableCoord ? 1.0f : coord(
+		// docsAndFreqs.length, docsAndFreqs.length), docsAndFreqs);
+		// }
 
 		@Override
 		public boolean scoresDocsOutOfOrder() {
@@ -401,6 +398,20 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 
 			// scorer() will return an out-of-order scorer if requested.
 			return true;
+		}
+
+		@Override
+		public BulkScorer bulkScorer(AtomicReaderContext context,
+				boolean scoreDocsInOrder, Bits acceptDocs) throws IOException {
+
+			Scorer scorer = scorer(context, acceptDocs);
+			if (scorer == null) {
+				// No docs match
+				return null;
+			}
+			// This impl always scores docs in order, so we can
+			// ignore scoreDocsInOrder:
+			return new DefaultBulkScorer(scorer);
 		}
 
 	}

@@ -19,12 +19,12 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.lucene.index.AtomicReaderContext;
-import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.FieldInvertState;
-import org.apache.lucene.index.Norm;
+import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.search.CollectionStatistics;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.TermStatistics;
+import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.SmallFloat;
@@ -102,11 +102,8 @@ public class BM25FSimilarity extends Similarity {
 	// which is encoded in 1 byte (i.e., 256 different values).
 	// the decoded values are stored in a cache.
 	static {
-		NORM_TABLE[0] = 0;
-		for (int i = 1; i < 256; i++) {
-			float f = SmallFloat.byte315ToFloat((byte) i);
-
-			NORM_TABLE[i] = 1.0f / (f * f);
+		for (int i = 0; i < 256; i++) {
+			NORM_TABLE[i] = SmallFloat.byte315ToFloat((byte) i);
 		}
 	}
 
@@ -125,34 +122,29 @@ public class BM25FSimilarity extends Similarity {
 	 * Lucene's default implementation. If you change this, then you should
 	 * change {@link #decodeNormValue(byte)} to match.
 	 */
-	protected byte encodeNormValue(float boost, int fieldLength) {
-		return SmallFloat
-				.floatToByte315(boost / (float) Math.sqrt(fieldLength));
+	protected long encodeNormValue(float f) {
+		DefaultSimilarity s = new DefaultSimilarity();
+		return s.encodeNormValue(f);
+
+		// return SmallFloat.floatToByte315(f);
 	}
 
 	/**
 	 * The default implementation returns <code>1 / f<sup>2</sup></code> where
 	 * <code>f</code> is {@link SmallFloat#byte315ToFloat(byte)}.
 	 */
-	protected float decodeNormValue(byte b) {
-		return NORM_TABLE[b & 0xFF];
+	protected float decodeNormValue(long norm) {
+		DefaultSimilarity s = new DefaultSimilarity();
+		return s.decodeNormValue(norm);
+		// return NORM_TABLE[(int) (norm & 0xFF)];
 	}
 
-	@Override
-	public final void computeNorm(FieldInvertState state, Norm norm) {
-		final int numTerms = discountOverlaps ? state.getLength()
-				- state.getNumOverlap() : state.getLength();
-		norm.setByte(encodeNormValue(state.getBoost(), numTerms));
-	}
-
-	@Override
-	public final ExactSimScorer exactSimScorer(SimWeight weight,
-			AtomicReaderContext context) throws IOException {
-		BM25FSimWeight w = (BM25FSimWeight) weight;
-
-		return new BM25FExactSimScorer(w, context.reader().normValues(w.field));
-
-	}
+	// @Override
+	// public final void computeNorm(FieldInvertState state, Norm norm) {
+	// final int numTerms = discountOverlaps ? state.getLength()
+	// - state.getNumOverlap() : state.getLength();
+	// norm.setByte(encodeNormValue(state.getBoost(), numTerms));
+	// }
 
 	/**
 	 * Compute the average length for a field, given its stats.
@@ -258,23 +250,16 @@ public class BM25FSimilarity extends Similarity {
 		return new BM25FSimWeight(field, idf, boost, avgdl, null, k1);
 	}
 
-	@Override
-	public SloppySimScorer sloppySimScorer(SimWeight weight,
-			AtomicReaderContext context) throws IOException {
-		BM25FSimWeight w = (BM25FSimWeight) weight;
-		return new BM25FSloppySimScorer(w, context.reader().normValues(w.field));
-	}
-
-	public class BM25FExactSimScorer extends ExactSimScorer {
+	public class BM25FExactSimScorer extends SimScorer {
 
 		private final BM25FSimWeight stats;
-		private final byte[] norms;
+		private final NumericDocValues norms;
 		private final Map<String, Float> bParams;
 		private final Map<String, Float> boosts;
 
 		// private final float[] cache;
 
-		BM25FExactSimScorer(BM25FSimWeight stats, DocValues norms)
+		BM25FExactSimScorer(BM25FSimWeight stats, NumericDocValues norms)
 				throws IOException {
 
 			this.stats = stats;
@@ -283,13 +268,12 @@ public class BM25FSimilarity extends Similarity {
 
 			// this.cache = stats.cache;
 
-			this.norms = norms == null ? null : (byte[]) norms.getSource()
-					.getArray();
+			this.norms = norms;
 
 		}
 
 		@Override
-		public float score(int doc, int freq) {
+		public float score(int doc, float freq) {
 
 			// return queryBoost * freq / cache[norms[doc] & 0xFF];
 			if (bParams == null || boosts == null || stats.field == null
@@ -306,8 +290,9 @@ public class BM25FSimilarity extends Similarity {
 				logger.warn("no norms for field {} ", stats.field);
 			} else {
 
-				byte norm = this.norms[doc];
-				den += bField * decodeNormValue(norm) / stats.avgdl;
+				float norm = norms == null ? k1 : decodeNormValue(norms
+						.get(doc));
+				den += bField * norm / stats.avgdl;
 			}
 
 			if (den == 0)
@@ -322,6 +307,20 @@ public class BM25FSimilarity extends Similarity {
 			return explainScore(doc, freq, stats, norms,
 					score(doc, (int) freq.getValue()));
 		}
+
+		@Override
+		public float computePayloadFactor(int arg0, int arg1, int arg2,
+				BytesRef arg3) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public float computeSlopFactor(int arg0) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
 	}
 
 	public class BM25FSimWeight extends SimWeight {
@@ -378,7 +377,7 @@ public class BM25FSimilarity extends Similarity {
 	}
 
 	private Explanation explainScore(int doc, Explanation freq,
-			BM25FSimWeight stats, byte[] norms, float finalScore) {
+			BM25FSimWeight stats, NumericDocValues norms, float finalScore) {
 		boosts = params.getBoosts();
 		lengthBoosts = params.getbParams();
 		k1 = params.getK1();
@@ -434,7 +433,7 @@ public class BM25FSimilarity extends Similarity {
 
 		if (norms != null) {
 			product.setDescription("denominator: ((1 - bField) + bField * length / avgFieldLength) :");
-			length = decodeNormValue(norms[doc]);
+			length = norms == null ? k1 : decodeNormValue(norms.get(doc));
 
 			product.setValue((1 - b) + b * (length / stats.avgdl));
 
@@ -457,44 +456,68 @@ public class BM25FSimilarity extends Similarity {
 		return result;
 	}
 
-	public class BM25FSloppySimScorer extends SloppySimScorer {
+	// public class BM25FSloppySimScorer extends SloppySimScorer {
+	//
+	// private final BM25FSimWeight stats;
+	// // private final float weightValue; // boost * idf * (k1 + 1)
+	// private final byte[] norms;
+	//
+	// BM25FSloppySimScorer(BM25FSimWeight stats, DocValues norms)
+	// throws IOException {
+	// this.stats = stats;
+	// // this.weightValue = stats.weight ;
+	// this.norms = norms == null ? null : (byte[]) norms.getSource()
+	// .getArray();
+	//
+	// }
+	//
+	// @Override
+	// public float score(int doc, float freq) {
+	// // FIXME compute score in sloppy sim scorer
+	// return freq;
+	// }
+	//
+	// @Override
+	// public Explanation explain(int doc, Explanation freq) {
+	//
+	// return explainScore(doc, freq, stats, norms,
+	// score(doc, freq.getValue()));
+	// }
+	//
+	// @Override
+	// public float computeSlopFactor(int distance) {
+	// return sloppyFreq(distance);
+	// }
+	//
+	// @Override
+	// public float computePayloadFactor(int doc, int start, int end,
+	// BytesRef payload) {
+	// return scorePayload(doc, start, end, payload);
+	// }
+	//
+	// }
 
-		private final BM25FSimWeight stats;
-		// private final float weightValue; // boost * idf * (k1 + 1)
-		private final byte[] norms;
+	@Override
+	public long computeNorm(FieldInvertState state) {
+		float normValue = lengthNorm(state);
+		return encodeNormValue(normValue);
+	}
 
-		BM25FSloppySimScorer(BM25FSimWeight stats, DocValues norms)
-				throws IOException {
-			this.stats = stats;
-			// this.weightValue = stats.weight ;
-			this.norms = norms == null ? null : (byte[]) norms.getSource()
-					.getArray();
+	public float lengthNorm(FieldInvertState state) {
+		final int numTerms;
+		if (discountOverlaps)
+			numTerms = state.getLength() - state.getNumOverlap();
+		else
+			numTerms = state.getLength();
+		return state.getBoost() * ((float) (1.0 / Math.sqrt(numTerms)));
+	}
 
-		}
-
-		@Override
-		public float score(int doc, float freq) {
-			// FIXME compute score in sloppy sim scorer
-			return freq;
-		}
-
-		@Override
-		public Explanation explain(int doc, Explanation freq) {
-
-			return explainScore(doc, freq, stats, norms,
-					score(doc, freq.getValue()));
-		}
-
-		@Override
-		public float computeSlopFactor(int distance) {
-			return sloppyFreq(distance);
-		}
-
-		@Override
-		public float computePayloadFactor(int doc, int start, int end,
-				BytesRef payload) {
-			return scorePayload(doc, start, end, payload);
-		}
+	@Override
+	public SimScorer simScorer(SimWeight weight, AtomicReaderContext context)
+			throws IOException {
+		BM25FSimWeight w = (BM25FSimWeight) weight;
+		return new BM25FExactSimScorer(w, context.reader().getNormValues(
+				w.field));
 
 	}
 

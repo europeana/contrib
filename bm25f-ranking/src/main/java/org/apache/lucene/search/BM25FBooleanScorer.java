@@ -97,8 +97,8 @@ final class BM25FBooleanScorer extends Scorer {
 	}
 
 	@Override
-	public float freq() throws IOException {
-		float freq = 0;
+	public int freq() throws IOException {
+		int freq = 0;
 		for (Scorer s : requiredScorers) {
 
 			if (s.docID() == docID) {
@@ -203,6 +203,16 @@ final class BM25FBooleanScorer extends Scorer {
 		while ((docID = nextDoc()) < target) {
 		}
 		return docID;
+	}
+
+	@Override
+	public long cost() {
+		long cost = 0;
+		for (Scorer s : requiredScorers) {
+			cost += s.cost();
+		}
+		return cost;
+
 	}
 
 }

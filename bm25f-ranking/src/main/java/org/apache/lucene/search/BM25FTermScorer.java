@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.search.BM25FBooleanTermQuery.BM25FTermWeight;
-import org.apache.lucene.search.similarities.Similarity.ExactSimScorer;
+import org.apache.lucene.search.similarities.Similarity.SimScorer;
 import org.apache.lucene.util.Bits;
 
 /**
@@ -31,7 +31,7 @@ import org.apache.lucene.util.Bits;
  *         Created on Nov 25, 2012
  */
 public class BM25FTermScorer extends Scorer {
-	ExactSimScorer[] scorers;
+	SimScorer[] scorers;
 	DocsEnum[] docsEnums;
 	Bits acceptDocs;
 	int docId = 0;
@@ -47,7 +47,7 @@ public class BM25FTermScorer extends Scorer {
 	 * @param docFreq
 	 */
 	public BM25FTermScorer(BM25FTermWeight bm25fTermWeight,
-			ExactSimScorer[] scorers, DocsEnum[] docs, Bits acceptDocs) {
+			SimScorer[] scorers, DocsEnum[] docs, Bits acceptDocs) {
 		super(bm25fTermWeight);
 		this.scorers = scorers;
 		this.docsEnums = docs;
@@ -85,8 +85,8 @@ public class BM25FTermScorer extends Scorer {
 	}
 
 	@Override
-	public float freq() throws IOException {
-		float freq = 0;
+	public int freq() throws IOException {
+		int freq = 0;
 		for (int i = 0; i < scorers.length; i++) {
 			if (docsEnums[i] == null || scorers[i] == null)
 				continue;
@@ -165,6 +165,15 @@ public class BM25FTermScorer extends Scorer {
 		}
 		docId = min;
 		return result;
+	}
+
+	@Override
+	public long cost() {
+		long cost = 0;
+		for (DocsEnum de : docsEnums) {
+			cost += de.cost();
+		}
+		return cost;
 	}
 
 }

@@ -49,14 +49,15 @@ import org.xml.sax.SAXException;
  * 
  *         Created on Nov 7, 2012
  */
-public class SimpleCollectionSolrInstance extends SolrServer implements Closeable {
+public class SimpleCollectionSolrInstance extends SolrServer implements
+		Closeable {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(SimpleCollectionSolrInstance.class);
-	//private static final String CORE1 = "collection1";
-	private static final String CORE1="simple-collection";
+	// private static final String CORE1 = "collection1";
+	private static final String CORE1 = "simple-collection";
 	private static final long serialVersionUID = 1L;
 	private File solrdir = null;
 	private File datadir = null;
@@ -78,10 +79,11 @@ public class SimpleCollectionSolrInstance extends SolrServer implements Closeabl
 		this.solrdir = solrdir;
 
 		System.setProperty("solr.home", solrdir.getPath());
-		
+
 		if (this.datadir == null) {
 			File dataDir = FileUtils.getTempDirectory();
-			logger.info("created tmp data dir in {}/{}",dataDir.getAbsolutePath(),"data");
+			logger.info("created tmp data dir in {}/{}",
+					dataDir.getAbsolutePath(), "data");
 			setDatadir(new File(solrdir, "data"));
 		}
 	}
@@ -137,7 +139,7 @@ public class SimpleCollectionSolrInstance extends SolrServer implements Closeabl
 		}
 
 	}
-	
+
 	@Override
 	public void shutdown() {
 		// TODO Auto-generated method stub
@@ -154,21 +156,22 @@ public class SimpleCollectionSolrInstance extends SolrServer implements Closeabl
 		}
 
 		try {
-			
+
 			final File dir = FileUtils.getTempDirectory();
 			System.setProperty("solr.solr.home", dir.getAbsolutePath());
 			final File conf = new File(new File(solrdir, "conf"),
 					"solrconfig.xml");
 
-			final CoreContainer cc = new CoreContainer();
+			CoreContainer cc = CoreContainer.createAndLoad(
+					dir.getAbsolutePath(), conf);
 			final SolrConfig sc = new SolrConfig(conf.getAbsolutePath());
 			final CoreDescriptor cd = new CoreDescriptor(cc, CORE1,
 					solrdir.getAbsolutePath());
 
 			core = cc.create(cd);
-			cc.register(CORE1, core, false);
-			delegate = new EmbeddedSolrServer(cc,
-					CORE1);
+			cc.load();
+
+			delegate = new EmbeddedSolrServer(cc, CORE1);
 			return delegate;
 
 		} catch (ParserConfigurationException ex) {
@@ -204,24 +207,25 @@ public class SimpleCollectionSolrInstance extends SolrServer implements Closeabl
 	public IndexSchema getIndexSchema() throws SolrServerException {
 		getDelegate(); // force the delegate to be created
 
-		return core.getSchema();
+		return core.getLatestSchema();
 	}
-	
-	public static void index(SimpleCollectionSolrInstance tester) throws SolrServerException, IOException{
+
+	public static void index(SimpleCollectionSolrInstance tester)
+			throws SolrServerException, IOException {
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("europeana_id", "0");
 		doc.addField("title", "leonardo da vinci");
 		doc.addField("author", "leonardo da vinci");
 		doc.addField("description", "leonardo leonardo leonardo");
 		tester.add(doc);
-		
-		 doc = new SolrInputDocument();
+
+		doc = new SolrInputDocument();
 		doc.addField("europeana_id", "1");
 		doc.addField("title", "leonardo ");
 		doc.addField("author", "leonardo da vinci");
 		doc.addField("description", "leonardo");
 		tester.add(doc);
-		 doc = new SolrInputDocument();
+		doc = new SolrInputDocument();
 		doc.addField("europeana_id", "2");
 		doc.addField("title", "leonardo leonardo vinci");
 		doc.addField("author", "leonardo da vinci");
@@ -231,29 +235,27 @@ public class SimpleCollectionSolrInstance extends SolrServer implements Closeabl
 	}
 
 	// just to see if things work
-	public static void main(String[] args) throws SolrServerException, IOException {
+	public static void main(String[] args) throws SolrServerException,
+			IOException {
 		SimpleCollectionSolrInstance tester = new SimpleCollectionSolrInstance();
 		tester.setSolrdir(new File(new File(new File(new File("src"), "test"),
-				"resources"), "solr/"+CORE1));
-		
-		
-		
-		
+				"resources"), "solr/" + CORE1));
+
 		SolrQuery q = new SolrQuery("leonardo");
 		q.set("debugQuery", "on");
-		q.set("defType","bm25f");
-		
-	    q.setRows(10);  // don't actually request any data
-	    
-	    
-	    QueryResponse qr = tester.query(q);
-	    Map<String, String> explainmap = qr.getExplainMap();
-	    System.out.println("results "+qr.getResults().getNumFound());
-	    for (SolrDocument doc : qr.getResults()){
-	    	System.out.println("Title: "+doc.getFieldValue("title"));
-	    	System.out.println("Expl: "+explainmap.get(doc.getFieldValue("europeana_id")));
-	    }
-	    
+		q.set("defType", "bm25f");
+
+		q.setRows(10); // don't actually request any data
+
+		QueryResponse qr = tester.query(q);
+		Map<String, String> explainmap = qr.getExplainMap();
+		System.out.println("results " + qr.getResults().getNumFound());
+		for (SolrDocument doc : qr.getResults()) {
+			System.out.println("Title: " + doc.getFieldValue("title"));
+			System.out.println("Expl: "
+					+ explainmap.get(doc.getFieldValue("europeana_id")));
+		}
+
 		tester.close();
 	}
 
