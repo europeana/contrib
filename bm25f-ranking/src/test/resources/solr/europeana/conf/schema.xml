@@ -397,7 +397,7 @@
    <field name="cc_skos_closeMatch" type="string" indexed="true" stored="false"  />
    <field name="cc_skos_notation" type="string" indexed="true" stored="false"  />
       <dynamicField name="cc_skos_notation.*" type="string" indexed="true" stored="false"  />
-   <field name="cc_skos_inScheme" type="string" indexedd="true" stored="false"  />
+   <field name="cc_skos_inScheme" type="string" indexed="true" stored="false"  />
    
    <!-- CONCEPTSCHEME -->
    <field name="skos_conceptScheme" type="string" indexed="true" stored="false"  />
