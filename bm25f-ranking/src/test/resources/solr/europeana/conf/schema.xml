@@ -87,7 +87,7 @@
    <field name="rights" type="text" indexed="true" stored="true"   />
    <field name="identifier" type="string" indexed="true" stored="true"   />
    <field name="relation" type="text" indexed="true" stored="true"   />
-   <field name="country" type="text" indexed="true" stored="true" multivalued="true" />
+   <field name="country" type="text" indexed="true" stored="true"   />
    <field name="title" type="text" indexed="true" stored="true"   termVectors="true"/>
    <field name="who" type="text" indexed="true" stored="true"   termVectors="true"/>
    <field name="when" type="text" indexed="true" stored="true"   termVectors="true"/>
