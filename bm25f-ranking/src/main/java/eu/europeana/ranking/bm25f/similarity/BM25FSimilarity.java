@@ -24,7 +24,6 @@ import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.search.CollectionStatistics;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.TermStatistics;
-import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.SmallFloat;
@@ -102,8 +101,10 @@ public class BM25FSimilarity extends Similarity {
 	// which is encoded in 1 byte (i.e., 256 different values).
 	// the decoded values are stored in a cache.
 	static {
-		for (int i = 0; i < 256; i++) {
-			NORM_TABLE[i] = SmallFloat.byte315ToFloat((byte) i);
+		NORM_TABLE[0] = 0;
+		for (int i = 1; i < 256; i++) {
+			float f = SmallFloat.byte315ToFloat((byte) i);
+			NORM_TABLE[i] = 1.0f / (f * f);
 		}
 	}
 
@@ -123,8 +124,7 @@ public class BM25FSimilarity extends Similarity {
 	 * change {@link #decodeNormValue(byte)} to match.
 	 */
 	protected long encodeNormValue(float f) {
-		DefaultSimilarity s = new DefaultSimilarity();
-		return s.encodeNormValue(f);
+		return SmallFloat.floatToByte315(f);
 
 		// return SmallFloat.floatToByte315(f);
 	}
@@ -134,17 +134,16 @@ public class BM25FSimilarity extends Similarity {
 	 * <code>f</code> is {@link SmallFloat#byte315ToFloat(byte)}.
 	 */
 	protected float decodeNormValue(long norm) {
-		DefaultSimilarity s = new DefaultSimilarity();
-		return s.decodeNormValue(norm);
-		// return NORM_TABLE[(int) (norm & 0xFF)];
+		float f = NORM_TABLE[(int) (norm & 0xFF)];
+		return f;
 	}
 
-	// @Override
-	// public final void computeNorm(FieldInvertState state, Norm norm) {
-	// final int numTerms = discountOverlaps ? state.getLength()
-	// - state.getNumOverlap() : state.getLength();
-	// norm.setByte(encodeNormValue(state.getBoost(), numTerms));
-	// }
+	@Override
+	public final long computeNorm(FieldInvertState state) {
+		float normValue = lengthNorm(state);
+
+		return encodeNormValue(normValue);
+	}
 
 	/**
 	 * Compute the average length for a field, given its stats.
@@ -496,12 +495,6 @@ public class BM25FSimilarity extends Similarity {
 	// }
 	//
 	// }
-
-	@Override
-	public long computeNorm(FieldInvertState state) {
-		float normValue = lengthNorm(state);
-		return encodeNormValue(normValue);
-	}
 
 	public float lengthNorm(FieldInvertState state) {
 		final int numTerms;
