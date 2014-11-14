@@ -411,9 +411,71 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 			}
 			// This impl always scores docs in order, so we can
 			// ignore scoreDocsInOrder:
-			return new DefaultBulkScorer(scorer);
+			return new BM25FDefaultBulkScorer(scorer);
 		}
 
+	}
+
+	/** Just wraps a Scorer and performs top scoring using it. */
+	static class BM25FDefaultBulkScorer extends BulkScorer {
+		private final Scorer scorer;
+
+		public BM25FDefaultBulkScorer(Scorer scorer) {
+			if (scorer == null) {
+				throw new NullPointerException();
+			}
+			this.scorer = scorer;
+		}
+
+		@Override
+		public boolean score(Collector collector, int max) throws IOException {
+			// TODO: this may be sort of weird, when we are
+			// embedded in a BooleanScorer, because we are
+			// called for every chunk of 2048 documents. But,
+			// then, scorer is a FakeScorer in that case, so any
+			// Collector doing something "interesting" in
+			// setScorer will be forced to use BS2 anyways:
+			collector.setScorer(scorer);
+			if (max == DocIdSetIterator.NO_MORE_DOCS) {
+				scoreAll(collector, scorer);
+				return false;
+			} else {
+				int doc = scorer.docID();
+				if (doc < 0) {
+					doc = scorer.nextDoc();
+				}
+				return scoreRange(collector, scorer, doc, max);
+			}
+		}
+
+		/**
+		 * Specialized method to bulk-score a range of hits; we separate this
+		 * from {@link #scoreAll} to help out hotspot. See <a
+		 * href="https://issues.apache.org/jira/browse/LUCENE-5487"
+		 * >LUCENE-5487</a>
+		 */
+		static boolean scoreRange(Collector collector, Scorer scorer,
+				int currentDoc, int end) throws IOException {
+			while (currentDoc < end) {
+				collector.collect(currentDoc);
+				currentDoc = scorer.nextDoc();
+			}
+			return currentDoc != DocIdSetIterator.NO_MORE_DOCS;
+		}
+
+		/**
+		 * Specialized method to bulk-score all hits; we separate this from
+		 * {@link #scoreRange} to help out hotspot. See <a
+		 * href="https://issues.apache.org/jira/browse/LUCENE-5487"
+		 * >LUCENE-5487</a>
+		 */
+		static void scoreAll(Collector collector, Scorer scorer)
+				throws IOException {
+			int doc;
+			while ((doc = scorer.nextDoc()) != DocIdSetIterator.NO_MORE_DOCS) {
+				collector.collect(doc);
+			}
+		}
 	}
 
 	@Override
