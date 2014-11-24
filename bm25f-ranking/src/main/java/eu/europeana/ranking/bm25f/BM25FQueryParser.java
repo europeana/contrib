@@ -79,6 +79,7 @@ public class BM25FQueryParser extends QParser {
 
 	@Override
 	public Query parse() throws SyntaxError {
+
 		BM25FParameters param = manageRuntimeBm25fParams();
 		if (param == null)
 			param = bm25fparams;
@@ -87,6 +88,7 @@ public class BM25FQueryParser extends QParser {
 		parser.setDefaultOperator(Operator.AND);
 
 		Query q = parser.parse(qstr);
+		System.out.println("query + " + q);
 		// if (q instanceof DisjunctionMaxQuery ){
 		// return new BM25FQuery((DisjunctionMaxQuery)q);
 		// }

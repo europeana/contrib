@@ -24,10 +24,8 @@
 
 -->
 <elevate>
- <query text="foo bar">
-  <doc id="1" />
+ <query text="vinci">
   <doc id="2" />
-  <doc id="3" />
  </query>
  
  <query text="ipod">

@@ -480,6 +480,7 @@ public class BM25FBooleanQuery extends Query implements Iterable<BooleanClause> 
 
 	@Override
 	public Weight createWeight(IndexSearcher searcher) throws IOException {
+		System.out.println("bm25fboolquery " + this);
 		return new BM25FBooleanWeight(searcher, disableCoord);
 	}
 

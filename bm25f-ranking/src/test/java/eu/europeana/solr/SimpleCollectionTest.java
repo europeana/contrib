@@ -43,6 +43,7 @@ public class SimpleCollectionTest {
 			IOException {
 		System.setProperty("solr.allow.unsafe.resourceloading", "true");
 		instance = new SimpleCollectionSolrInstance();
+
 		instance.setSolrdir(new File(
 				"./src/test/resources/solr/simple-collection"));
 		instance.deleteByQuery("*:*");
@@ -465,6 +466,16 @@ public class SimpleCollectionTest {
 		assertPicassoAndGoodSameScores(0, new float[] { 1f, 0f, 0f, 0f },
 				new float[] { 0.1f, 0f, 0f, 0f });
 
+	}
+
+	@Test
+	public void testElevate() throws SolrServerException {
+		SolrDocumentList results = getResults("vinci");
+		assertEquals(4, results.size());
+		System.out.println(results.get(0));
+		System.out.println(results.get(1));
+		System.out.println(results.get(2));
+		System.out.println(results.get(3));
 	}
 
 	private float idf(long docFreq, long numDocs) {

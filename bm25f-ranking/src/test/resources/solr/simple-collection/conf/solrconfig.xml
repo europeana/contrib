@@ -484,6 +484,19 @@
 			<str name="echoParams">explicit</str>
 		</lst>
 	</requestHandler>
+
+	<requestHandler name="/select" class="solr.SearchHandler">
+		<lst name="defaults">
+			<str name="defType">bm25f</str>
+			<str name="echoParams">explicit</str>
+		</lst>
+		<arr name="last-components">
+			<str>elevator</str>
+		</arr>
+	</requestHandler>
+
+
+
 	<!-- DIEGO -->
 
 	<!-- realtime get handler, guaranteed to return the latest stored fields 
@@ -496,6 +509,8 @@
 			<str name="indent">true</str>
 		</lst>
 	</requestHandler>
+
+
 
 
 	<!-- A Robust Example This example SearchHandler declaration shows off usage 
@@ -1141,6 +1156,7 @@
 			<float name="description">10.0</float>
 		</lst>
 		<lst name="fieldsB">
+		    
 			<float name="text">0.15</float>
 			<float name="title">0.05</float>
 			<float name="author">0</float>

@@ -116,6 +116,14 @@ final class BM25FBooleanScorer extends Scorer {
 
 	@Override
 	public int docID() {
+		if (!initialized)
+			try {
+				_nextDoc();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return NO_MORE_DOCS;
+			}
 		return docID;
 	}
 
